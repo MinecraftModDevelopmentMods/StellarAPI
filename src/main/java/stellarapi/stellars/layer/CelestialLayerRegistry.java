@@ -11,12 +11,6 @@ import stellarapi.client.ClientSettings;
 import stellarapi.common.CommonSettings;
 import stellarapi.config.IConfigHandler;
 import stellarapi.config.INBTConfig;
-import stellarapi.stellars.milkyway.LayerMilkyway;
-import stellarapi.stellars.milkyway.MilkywaySettings;
-import stellarapi.stellars.star.brstar.LayerBrStar;
-import stellarapi.stellars.system.LayerSolarSystem;
-import stellarapi.stellars.system.SolarSystemClientSettings;
-import stellarapi.stellars.system.SolarSystemSettings;
 
 public class CelestialLayerRegistry {
 	
@@ -33,9 +27,6 @@ public class CelestialLayerRegistry {
 	private Map<Class, String> layerNameMap = Maps.newHashMap();
 	
 	public CelestialLayerRegistry() {
-		this.registerClientLayer(LayerBrStar.class, null, null);
-		this.registerClientLayer(LayerMilkyway.class, "MilkyWay", MilkywaySettings.class);
-		this.registerCommonLayer(LayerSolarSystem.class, "SolarSystem", SolarSystemSettings.class, SolarSystemClientSettings.class);
 	}
 	
 	public String getConfigName(ICelestialLayer layer) {
