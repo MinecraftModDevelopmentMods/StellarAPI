@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.client.ClientSettings;
 import stellarapi.config.IConfigHandler;
 
@@ -43,7 +43,7 @@ public class Optics implements IConfigHandler {
 		brightnessContrastProperty.setRequiresMcRestart(false);
 		brightnessContrastProperty.setLanguageKey("config.property.client.brcontrast");
 		
-		settings = StellarSky.proxy.getClientSettings();
+		settings = StellarAPI.proxy.getClientSettings();
 	}
 
 	@Override

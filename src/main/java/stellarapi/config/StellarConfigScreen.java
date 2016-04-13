@@ -9,16 +9,16 @@ import cpw.mods.fml.client.config.IConfigElement;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 
 public class StellarConfigScreen extends GuiConfig {
 
 	public StellarConfigScreen(GuiScreen parentScreen) {
-		super(parentScreen, getConfigElement(), StellarSky.modid, false, false, "Stellar Sky");
+		super(parentScreen, getConfigElement(), StellarAPI.modid, false, false, "Stellar Sky");
 	}
 	
 	private static List<IConfigElement> getConfigElement() {
-		Configuration config = StellarSky.proxy.getConfig();
+		Configuration config = StellarAPI.proxy.getConfig();
 		
 		List<IConfigElement> retList = Lists.newArrayList();
 		for(String category : config.getCategoryNames())

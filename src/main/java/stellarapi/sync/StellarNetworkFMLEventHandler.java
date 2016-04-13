@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import stellarapi.StellarEventHook;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.stellars.StellarManager;
 import stellarapi.stellars.view.StellarDimensionManager;
 

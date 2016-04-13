@@ -8,7 +8,7 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import sciapi.api.value.euclidian.EVector;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.render.CelestialRenderingRegistry;
 import stellarapi.stellars.layer.ICelestialLayerCommon;
 
@@ -43,9 +43,9 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		objects.clear();
 		
 		////Solar System
-		StellarSky.logger.info("Initializing Solar System...");
+		StellarAPI.logger.info("Initializing Solar System...");
 		///Sun
-		StellarSky.logger.info("Initializing Sun...");
+		StellarAPI.logger.info("Initializing Sun...");
 		sun = new Sun(isRemote);
 		sun.radius=0.00465469;
 		sun.mass=1.0;
@@ -57,7 +57,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		earth = new Earth(isRemote, this.sun);
 		moon = new Moon(isRemote, this.earth);
 		
-		StellarSky.logger.info("Initializing Earth...");
+		StellarAPI.logger.info("Initializing Earth...");
 		
 		earth.radius=4.2634e-5;
 		earth.mass=3.002458398e-6;
@@ -79,7 +79,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		earth.Omegad=-0.24123856;
 		
 		//-Moon
-		StellarSky.logger.info("Initializing Moon...");
+		StellarAPI.logger.info("Initializing Moon...");
 		moon.albedo=0.12 * settings.propMoonBrightness.getDouble();
 		moon.a0=0.00257184;
 		moon.e0=0.0549006;
@@ -100,7 +100,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		
 		///Planets
 		//Mercury
-		StellarSky.logger.info("Initializing Mercury...");
+		StellarAPI.logger.info("Initializing Mercury...");
 		mercury = new Planet(isRemote, this.sun);
 		mercury.albedo=0.119;
 		mercury.radius=1.630815508e-5;
@@ -122,7 +122,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		objects.add(this.mercury);
 		
 		//Venus
-		StellarSky.logger.info("Initizlizing Venus...");
+		StellarAPI.logger.info("Initizlizing Venus...");
 		venus = new Planet(isRemote, this.sun);
 		venus.albedo=0.90;
 		venus.radius=4.0453208556e-5;
@@ -144,7 +144,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		objects.add(this.venus);
 		
 		//Mars
-		StellarSky.logger.info("Initializing Mars...");
+		StellarAPI.logger.info("Initializing Mars...");
 		mars = new Planet(isRemote, this.sun);
 		mars.albedo=0.25;
 		mars.radius=2.26604278e-5;
@@ -166,7 +166,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		objects.add(this.mars);
 		
 		//Jupiter
-		StellarSky.logger.info("Initializing Jupiter...");
+		StellarAPI.logger.info("Initializing Jupiter...");
 		jupiter = new Planet(isRemote, this.sun);
 		jupiter.albedo=0.343;
 		jupiter.radius=4.673195187e-4;
@@ -192,7 +192,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		objects.add(this.jupiter);
 		
 		//Saturn
-		StellarSky.logger.info("Initializing Saturn...");
+		StellarAPI.logger.info("Initializing Saturn...");
 		saturn = new Planet(isRemote, this.sun);
 		saturn.albedo=0.342;
 		saturn.radius=3.83128342e-4;
@@ -218,7 +218,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		objects.add(this.saturn);
 		
 		//Uranus
-		StellarSky.logger.info("Initializing Uranus...");
+		StellarAPI.logger.info("Initializing Uranus...");
 		uranus = new Planet(isRemote, this.sun);
 		uranus.albedo=0.300;
 		uranus.radius=1.68890374e-4;
@@ -244,7 +244,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		objects.add(this.uranus);
 		
 		//Neptune
-		StellarSky.logger.info("Initializing Neptune...");
+		StellarAPI.logger.info("Initializing Neptune...");
 		neptune = new Planet(isRemote, this.sun);
 		neptune.albedo=0.290;
 		neptune.radius=1.641209893e-4;
@@ -269,7 +269,7 @@ public class LayerSolarSystem implements ICelestialLayerCommon<SolarSystemSettin
 		neptune.initialize();
 		objects.add(this.neptune);
 		
-		StellarSky.logger.info("Solar System Initialized!");
+		StellarAPI.logger.info("Solar System Initialized!");
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class StellarTickHandler {
 	@SubscribeEvent
 	public void tickStart(TickEvent.ClientTickEvent e) {
 		if(e.phase == Phase.START){
-			World world = StellarSky.proxy.getDefWorld(true);
+			World world = StellarAPI.proxy.getDefWorld(true);
 			
 			if(world != null) {
 				StellarManager manager = StellarManager.getManager(true);
@@ -42,7 +42,7 @@ public class StellarTickHandler {
 					if(dimManager != null)
 					{
 						dimManager.update(world, world.getWorldTime());
-						manager.updateClient(StellarSky.proxy.getClientSettings(),
+						manager.updateClient(StellarAPI.proxy.getClientSettings(),
 								dimManager.getViewpoint());
 					}
 				}
@@ -53,7 +53,7 @@ public class StellarTickHandler {
 	@SubscribeEvent
 	public void tickStart(TickEvent.ServerTickEvent e) {
 		if(e.phase == Phase.START){
-			World world = StellarSky.proxy.getDefWorld(false);
+			World world = StellarAPI.proxy.getDefWorld(false);
 			
 			if(world != null) {
 				StellarManager manager = StellarManager.getManager(false);
@@ -76,7 +76,7 @@ public class StellarTickHandler {
 				if(!StellarSkyAPI.hasSkyProvider(e.world))
 					return;
 				
-				if(StellarSky.proxy.wakeManager.isEnabled()) {
+				if(StellarAPI.proxy.wakeManager.isEnabled()) {
 					WorldServer world = (WorldServer) e.world;
 
 					world.updateAllPlayersSleepingFlag();
@@ -100,7 +100,7 @@ public class StellarTickHandler {
         {
         	WorldInfo info = world.getWorldInfo();
         	long worldTime = info.getWorldTime();
-            info.setWorldTime(StellarSky.proxy.wakeManager.getWakeTime(world, skyProvider, worldTime));
+            info.setWorldTime(StellarAPI.proxy.wakeManager.getWakeTime(world, skyProvider, worldTime));
         }
 
         Iterator iterator = world.playerEntities.iterator();

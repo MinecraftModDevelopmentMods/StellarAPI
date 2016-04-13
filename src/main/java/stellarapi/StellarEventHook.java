@@ -51,7 +51,7 @@ public class StellarEventHook {
 		
 		String dimName = e.world.provider.getDimensionName();
 		if(!e.world.isRemote || !manager.getSettings().serverEnabled)
-			if(StellarSky.proxy.dimensionSettings.hasSubConfig(dimName)) {
+			if(StellarAPI.proxy.dimensionSettings.hasSubConfig(dimName)) {
 				StellarDimensionManager dimManager = StellarDimensionManager.loadOrCreate(e.world, manager, dimName);
 				setupDimension(e.world, manager, dimManager);
 			}
@@ -64,7 +64,7 @@ public class StellarEventHook {
 	
 	public static void setupManager(World world, StellarManager manager) {
 		if(world.isRemote)
-			manager.setup(StellarSky.proxy.getClientCelestialManager());
+			manager.setup(StellarAPI.proxy.getClientCelestialManager());
 		else manager.setup(new CelestialManager(false));
 	}
 	
@@ -100,7 +100,7 @@ public class StellarEventHook {
 			StellarEventHook.setupManager(world, manager);
 			
 			String dimName = world.provider.getDimensionName();
-			if(StellarSky.proxy.dimensionSettings.hasSubConfig(dimName)) {
+			if(StellarAPI.proxy.dimensionSettings.hasSubConfig(dimName)) {
 				StellarDimensionManager dimManager = StellarDimensionManager.loadOrCreate(world, manager, dimName);
 				StellarEventHook.setupDimension(world, manager, dimManager);
 			}
@@ -113,13 +113,13 @@ public class StellarEventHook {
 	
 	@SubscribeEvent
 	public void onSleepInBed(PlayerSleepInBedEvent event) {
-		if(!StellarSky.proxy.wakeManager.isEnabled() || event.entityPlayer.worldObj.isRemote) {
+		if(!StellarAPI.proxy.wakeManager.isEnabled() || event.entityPlayer.worldObj.isRemote) {
 			return;
 		}
 
 		if(event.result == null || event.result == EnumStatus.OK || event.result == EnumStatus.NOT_POSSIBLE_NOW) {
 			World worldObj = event.entityPlayer.worldObj;
-			if (StellarSkyAPI.hasSkyProvider(worldObj) && !StellarSky.proxy.wakeManager.canSkipTime(worldObj, StellarSkyAPI.getSkyProvider(worldObj), worldObj.getWorldTime()))
+			if (StellarSkyAPI.hasSkyProvider(worldObj) && !StellarAPI.proxy.wakeManager.canSkipTime(worldObj, StellarSkyAPI.getSkyProvider(worldObj), worldObj.getWorldTime()))
 				event.result = EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW;
 		}
 	}

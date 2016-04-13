@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import stellarapi.StellarEventHook;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.stellars.StellarManager;
 import stellarapi.stellars.view.StellarDimensionManager;
 
@@ -43,7 +43,7 @@ public class MessageSyncCommon implements IMessage {
 			StellarManager manager = StellarManager.getManager(true);
 			manager.syncFromNBT(message.compoundInfo, true);
 			
-			World world = StellarSky.proxy.getDefWorld();
+			World world = StellarAPI.proxy.getDefWorld();
 			
 			StellarDimensionManager dimManager = null;
 			

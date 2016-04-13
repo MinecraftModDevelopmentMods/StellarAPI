@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import sciapi.api.value.IValRef;
 import sciapi.api.value.euclidian.EVector;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.config.INBTConfig;
 import stellarapi.stellars.StellarManager;
 import stellarapi.util.math.SpCoord;
@@ -63,7 +63,7 @@ public final class StellarDimensionManager extends WorldSavedData {
 	}
 	
 	private void loadSettingsFromConfig() {
-		this.settings = (PerDimensionSettings) ((INBTConfig) StellarSky.proxy.dimensionSettings.getSubConfig(this.dimensionName)).copy();
+		this.settings = (PerDimensionSettings) ((INBTConfig) StellarAPI.proxy.dimensionSettings.getSubConfig(this.dimensionName)).copy();
 		this.markDirty();
 	}
 
@@ -88,11 +88,11 @@ public final class StellarDimensionManager extends WorldSavedData {
 	}
 	
 	public void setup() {
-		StellarSky.logger.info("Initializing Dimension Settings...");
+		StellarAPI.logger.info("Initializing Dimension Settings...");
 		if(settings.allowRefraction())
 			this.viewpoint = new RefractiveViewpoint(manager.getSettings(), this.settings);
 		else this.viewpoint = new NonRefractiveViewpoint(manager.getSettings(), this.settings);
-		StellarSky.logger.info("Initialized Dimension Settings.");
+		StellarAPI.logger.info("Initialized Dimension Settings.");
 	}
 	
 	public void update(World world, double currentTick) {

@@ -14,30 +14,25 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
-import stellarapi.api.StellarSkyAPI;
 import stellarapi.command.CommandLock;
 import stellarapi.command.FixedCommandTime;
 import stellarapi.compat.CompatManager;
-import stellarapi.render.SkyRenderTypeEnd;
-import stellarapi.render.SkyRenderTypeOverworld;
 import stellarapi.sync.StellarNetworkEventHandler;
 import stellarapi.sync.StellarNetworkFMLEventHandler;
 import stellarapi.sync.StellarNetworkManager;
-import stellarapi.world.DefaultWorldProviderReplacer;
-import stellarapi.world.EndReplacer;
 
-@Mod(modid=StellarSky.modid, version=StellarSky.version,
-	dependencies="required-after:sciapi@[1.1.0.0,1.2.0.0)", guiFactory="stellarium.config.StellarConfigGuiFactory")
-public class StellarSky {
+@Mod(modid=StellarAPI.modid, version=StellarAPI.version,
+	dependencies="required-after:sciapi@[1.1.0.0,1.2.0.0)", guiFactory="stellarapi.config.StellarConfigGuiFactory")
+public class StellarAPI {
 	
 		public static final String modid = "stellarsky";
 		public static final String version = "@VERSION@";
 
         // The instance of Stellarium
-        @Instance(StellarSky.modid)
-        public static StellarSky instance;
+        @Instance(StellarAPI.modid)
+        public static StellarAPI instance;
         
-        @SidedProxy(clientSide="stellarium.ClientProxy", serverSide="stellarium.CommonProxy")
+        @SidedProxy(clientSide="stellarapi.ClientProxy", serverSide="stellarapi.CommonProxy")
         public static CommonProxy proxy;
         
         public static Logger logger;

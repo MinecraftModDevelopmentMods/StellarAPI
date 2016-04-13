@@ -9,7 +9,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.api.IHourProvider;
 import stellarapi.api.StellarSkyAPI;
 import stellarapi.command.CommandLock;
@@ -22,7 +22,7 @@ public class StellarSkyClientHandler {
 	@SubscribeEvent
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(event.type == RenderGameOverlayEvent.ElementType.ALL) {
-			ClientSettings setting = StellarSky.proxy.getClientSettings();
+			ClientSettings setting = StellarAPI.proxy.getClientSettings();
 			EnumViewMode viewMode = setting.getViewMode();
 			if(!viewMode.showOnHUD())
 				return;
@@ -89,7 +89,7 @@ public class StellarSkyClientHandler {
 					return;
 				
 				boolean locked = StellarManager.getManager(true).isLocked();
-				EnumLockBtnPosition position = StellarSky.proxy.getClientSettings().getBtnPosition();
+				EnumLockBtnPosition position = StellarAPI.proxy.getClientSettings().getBtnPosition();
 				GuiButton guibutton = new GuiButton(30, position.getPosX(event.gui.width), position.getPosY(event.gui.height), 150, 20,
 						locked? I18n.format("stellarsky.gui.unlock") : I18n.format("stellarsky.gui.lock"));
 				event.buttonList.add(guibutton);

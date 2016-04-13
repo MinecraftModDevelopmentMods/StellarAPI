@@ -1,7 +1,7 @@
 package stellarapi.client;
 
 import akka.actor.ActorSystem.Settings;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.api.IHourProvider;
 import stellarapi.util.math.Spmath;
 

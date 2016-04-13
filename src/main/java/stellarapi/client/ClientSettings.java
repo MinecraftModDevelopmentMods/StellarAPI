@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.config.IConfigHandler;
 import stellarapi.config.SimpleHierarchicalConfig;
 import stellarapi.config.property.ConfigPropertyDouble;
@@ -127,7 +127,7 @@ public class ClientSettings extends SimpleHierarchicalConfig {
 	
 	public void incrementViewMode() {
 		this.setViewMode(viewMode.nextMode());
-		StellarSky.proxy.getCfgManager().syncFromFields();
+		StellarAPI.proxy.getCfgManager().syncFromFields();
 	}
 	
 	public EnumViewMode getViewMode() {

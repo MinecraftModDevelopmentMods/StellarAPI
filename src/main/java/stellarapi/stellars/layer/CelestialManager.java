@@ -7,7 +7,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 
 import sciapi.api.value.euclidian.EVector;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.client.ClientSettings;
 import stellarapi.common.CommonSettings;
 import stellarapi.config.IConfigHandler;
@@ -36,7 +36,7 @@ public class CelestialManager {
 	}
 	
 	public void initializeClient(ClientSettings settings) {
-		StellarSky.logger.info("Initializing Celestial Layers with Client Settings...");
+		StellarAPI.logger.info("Initializing Celestial Layers with Client Settings...");
 		String layerName = null;
 		try {
 			for(ICelestialLayer layer : this.layers) {
@@ -44,15 +44,15 @@ public class CelestialManager {
 				layer.initialize(true, layerName != null? settings.getSubConfig(layerName) : null);
 			}
 		} catch(Exception exception) {
-	    	StellarSky.logger.fatal("Failed to initialize Celestial Layer %s by Exception %s",
+	    	StellarAPI.logger.fatal("Failed to initialize Celestial Layer %s by Exception %s",
 	    			layerName, exception.toString());
 			Throwables.propagate(exception);
 		}
-    	StellarSky.logger.info("Successfully initialized Celestial Layers with Client Settings!");
+    	StellarAPI.logger.info("Successfully initialized Celestial Layers with Client Settings!");
 	}
 	
 	public void initializeCommon(CommonSettings settings) {
-		StellarSky.logger.info("Initializing Celestial Layers with Common Settings...");
+		StellarAPI.logger.info("Initializing Celestial Layers with Common Settings...");
 		String layerName = null;
 		try {
 			for(ICelestialLayerCommon layer : this.commonLayers) {
@@ -60,15 +60,15 @@ public class CelestialManager {
 				layer.initializeCommon(true, layerName != null? settings.getSubConfig(layerName) : null);
 			}
 		} catch(Exception exception) {
-	    	StellarSky.logger.fatal("Failed to initialize Celestial Layer %s by Exception %s",
+	    	StellarAPI.logger.fatal("Failed to initialize Celestial Layer %s by Exception %s",
 	    			layerName, exception.toString());
 			Throwables.propagate(exception);
 		}
-    	StellarSky.logger.info("Successfully initialized Celestial Layers with Common Settings!");
+    	StellarAPI.logger.info("Successfully initialized Celestial Layers with Common Settings!");
 	}
 	
 	public void reloadClientSettings(ClientSettings settings) {
-		StellarSky.logger.info("Reloading Client Settings...");
+		StellarAPI.logger.info("Reloading Client Settings...");
 		String layerName = null;
 		for(ICelestialLayer<? extends IConfigHandler> layer : this.layers)
 			for(CelestialObject object : layer.getObjectList())
@@ -77,7 +77,7 @@ public class CelestialManager {
 					layerName = CelestialLayerRegistry.getInstance().getConfigName(layer);
 					object.getRenderCache().initialize(settings, layerName != null? settings.getSubConfig(layerName) : null);
 				}
-		StellarSky.logger.info("Client Settings reloaded.");
+		StellarAPI.logger.info("Client Settings reloaded.");
 	}
 	
 	public void update(double year) {

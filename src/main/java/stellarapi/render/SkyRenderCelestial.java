@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialRenderer;
 import stellarapi.client.ClientSettings;
 import stellarapi.stellars.StellarManager;
@@ -19,10 +19,10 @@ public class SkyRenderCelestial implements ICelestialRenderer {
 	private boolean updated = false;
 	
 	public SkyRenderCelestial() {
-		this.settings = StellarSky.proxy.getClientSettings();
+		this.settings = StellarAPI.proxy.getClientSettings();
 		this.renderer = new CelestialRenderer();
 		
-		CelestialManager celManager = StellarSky.proxy.getClientCelestialManager();
+		CelestialManager celManager = StellarAPI.proxy.getClientCelestialManager();
 		renderer.refreshRenderer(celManager.getLayers());
 		settings.checkDirty();
 		celManager.reloadClientSettings(this.settings);
@@ -32,7 +32,7 @@ public class SkyRenderCelestial implements ICelestialRenderer {
 	public void renderCelestial(Minecraft mc, float bglight, float weathereff, float partialTicks) {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		
-		CelestialManager manager = StellarSky.proxy.getClientCelestialManager();
+		CelestialManager manager = StellarAPI.proxy.getClientCelestialManager();
 
 		if(settings.checkDirty())
 		{
@@ -59,7 +59,7 @@ public class SkyRenderCelestial implements ICelestialRenderer {
 				if(dimManager != null)
 				{
 					dimManager.update(world, world.getWorldTime());
-					manager.updateClient(StellarSky.proxy.getClientSettings(),
+					manager.updateClient(StellarAPI.proxy.getClientSettings(),
 							dimManager.getViewpoint());
 				}
 			}

@@ -7,7 +7,7 @@ import com.google.common.base.Throwables;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
-import stellarapi.StellarSky;
+import stellarapi.StellarAPI;
 import stellarapi.client.ClientSettings;
 import stellarapi.common.CommonSettings;
 import stellarapi.stellars.layer.CelestialManager;
@@ -26,8 +26,8 @@ public final class StellarManager extends WorldSavedData {
 	}
 	
 	public static StellarManager loadOrCreateManager(World world) {
-		if(!world.isRemote && StellarSky.proxy.getDefWorld(world.isRemote) != null)
-			world = StellarSky.proxy.getDefWorld(world.isRemote);
+		if(!world.isRemote && StellarAPI.proxy.getDefWorld(world.isRemote) != null)
+			world = StellarAPI.proxy.getDefWorld(world.isRemote);
 		
 		WorldSavedData data = world.mapStorage.loadData(StellarManager.class, ID);
 		
@@ -45,14 +45,14 @@ public final class StellarManager extends WorldSavedData {
 	}
 	
 	public static boolean hasManager(World loadedWorld, boolean isRemote) {
-		World world = isRemote? loadedWorld : StellarSky.proxy.getDefWorld(isRemote);
+		World world = isRemote? loadedWorld : StellarAPI.proxy.getDefWorld(isRemote);
 		if(world == null)
 			return false;
 		return (world.mapStorage.loadData(StellarManager.class, ID) instanceof StellarManager);
 	}
 
 	public static StellarManager getManager(boolean isRemote) {
-		World world = StellarSky.proxy.getDefWorld(isRemote);
+		World world = StellarAPI.proxy.getDefWorld(isRemote);
 		WorldSavedData data = world.mapStorage.loadData(StellarManager.class, ID);
 		
 		if(!(data instanceof StellarManager)) {
@@ -64,7 +64,7 @@ public final class StellarManager extends WorldSavedData {
 	}
 	
 	private void loadSettingsFromConfig() {
-		this.settings = (CommonSettings) StellarSky.proxy.commonSettings.copy();
+		this.settings = (CommonSettings) StellarAPI.proxy.commonSettings.copy();
 		this.markDirty();
 	}
 	
@@ -96,10 +96,10 @@ public final class StellarManager extends WorldSavedData {
 	
 	
 	public void setup(CelestialManager manager) {
-		StellarSky.logger.info("Starting Common Initialization...");
+		StellarAPI.logger.info("Starting Common Initialization...");
 		this.celestialManager = manager;
 		manager.initializeCommon(this.settings);
-		StellarSky.logger.info("Common Initialization Ended.");
+		StellarAPI.logger.info("Common Initialization Ended.");
 	}
 	
 	public CommonSettings getSettings() {

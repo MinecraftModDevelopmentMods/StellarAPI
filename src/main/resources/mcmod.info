@@ -1,0 +1,12 @@
+[{
+  "modid": "stellarapi",
+  "name": "Stellar API",
+  "description": "API for mods related with sky and celestial sphere.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "authorList": [ "Abastro" ],
+  "credits": "CC BY-SA",
+  "requiredMods": [ "Forge" ],
+  "depenencies": [  ]
+}]
