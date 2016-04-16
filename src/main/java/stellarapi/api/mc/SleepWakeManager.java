@@ -74,7 +74,7 @@ public class SleepWakeManager implements IConfigHandler {
 		
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
-				
+		
 		if(coordinate != null && lightSources != null)
 		{
 			long wakeTime;

@@ -4,7 +4,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 /**
- * Interface for per dimension resource handler to get per-dimension resource.
+ * Interface for per dimension resource handler to get per-dimension resource. <p>
+ * Note that resource is only available on client.
  * */
 public interface IPerDimensionResourceHandler {
 	/**

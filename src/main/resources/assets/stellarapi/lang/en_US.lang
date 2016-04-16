@@ -1,0 +1,10 @@
+command.perdimres.usage=/perdimres <set|remove|list|available> [resourceId] [perDimensionResourceLocation]
+
+command.perdimres.list=Current list of per-dimension resources are:\n[%s]
+command.perdimres.available=Available resource IDs for per-dimension resources are:\n[%s]
+
+command.perdimres.set.success=Successfully injected per-dimension resource on the world for ID %s with location %s.
+command.perdimres.set.fail=There is no available resource with ID %s.
+
+command.perdimres.remove.success=Successfully removed per-dimension resource on the world for ID %s.
+command.perdimres.remove.fail=There was no per-dimension resource on this world with ID %s.

@@ -5,10 +5,13 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.eventhandler.EventBus;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IRenderHandler;
+import stellarapi.StellarAPI;
 import stellarapi.api.mc.DaytimeChecker;
 import stellarapi.api.mc.SleepWakeManager;
+import stellarapi.api.perdimension.IPerDimensionResourceHandler;
 import stellarapi.api.perdimension.IPerWorldGetter;
 import stellarapi.api.perdimension.IntegratedPerWorldGetter;
 import stellarapi.api.perdimension.PerDimensionResourceManager;
@@ -64,6 +67,14 @@ public final class StellarAPIReference {
 	 * */
 	public static void registerSkyEffect(IPerWorldGetter<ISkyEffect> getter) {
 		INSTANCE.skyEffectGetter.register(getter);
+	}
+	
+	/**
+	 * registers per dimension resource handler. 
+	 * @param handler the handler
+	 * */
+	public static void registerPerDimResourceHandler(IPerDimensionResourceHandler handler) {
+		INSTANCE.resourceManager.register(handler);
 	}
 	
 	
@@ -124,5 +135,16 @@ public final class StellarAPIReference {
 	}
 	
 	
-	
+	/**
+	 * Gets per-dimension resource location for certain resource ID. <p>
+	 * Note that this should only be called on client.
+	 * @param resourceId the resource ID
+	 * @param defaultLocation the default resource location
+	 * */
+	public static ResourceLocation getLocation(String resourceId, ResourceLocation defaultLocation) {
+		World world = StellarAPI.proxy.getDefWorld();
+		if(world != null)
+			return INSTANCE.resourceManager.getLocation(world, resourceId, defaultLocation);
+		else return defaultLocation;
+	}
 }

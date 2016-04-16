@@ -1,10 +1,9 @@
 package stellarapi.stellars.util;
 
-import sciapi.api.value.IValRef;
-import sciapi.api.value.euclidian.EVector;
+import javax.vecmath.Vector3d;
+
 import stellarapi.util.math.SpCoord;
 import stellarapi.util.math.Spmath;
-import stellarapi.util.math.VecMath;
 
 //Will be corrected
 public class ExtinctionRefraction {
@@ -32,21 +31,9 @@ public class ExtinctionRefraction {
 		return am;
 	}
 	
-	//Get Extinction magnitude(in V band) of EVectortor(its size must be 1)
-	public static double airmass(IValRef<EVector> vec, boolean IsApparent){
-		return airmass(VecMath.normalize(vec).getVal().getCoord(2).asDouble(), IsApparent);
-	}
-	
-	//Get Refraction-applied Vector(IsApplying=true) or Refraction-disapplied Vector(IsApplying=false)
-	public static IValRef<EVector> refraction(IValRef<EVector> vec, boolean IsApplying){
-				
-		double R;
-		SpCoord sp = new SpCoord();
-		sp.setWithVec(VecMath.normalize(vec));
-				
-		refraction(sp, IsApplying);
- 		
- 		return VecMath.mult(VecMath.size(vec), sp.getVec());
+	//Get Airmass for certain position
+	public static double airmass(Vector3d vec, boolean IsApparent){
+		return airmass(vec.z / vec.length(), IsApparent);
 	}
 	
 	public static void refraction(SpCoord sp, boolean isApplying) {

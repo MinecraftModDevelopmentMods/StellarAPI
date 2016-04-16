@@ -7,6 +7,9 @@ import com.google.common.collect.Lists;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+/**
+ * Per-dimension resource manager. Pretty straightforward.
+ * */
 public class PerDimensionResourceManager {
 	private List<IPerDimensionResourceHandler> listGetters = Lists.newArrayList();
 	

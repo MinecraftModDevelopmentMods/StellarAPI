@@ -1,4 +1,4 @@
-package stellarapi.api.impl;
+package stellarapi.api.example;
 
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ICelestialObject;
@@ -14,7 +14,7 @@ import stellarapi.util.math.Spmath;
  *  <li>{@link ICelestialObject#getPhasePeriod()} is not null for Moon.
  * </ul>
  * */
-public class DefaultCelestialHelper {
+public class CelestialHelperExample {
 	
 	private final float relativeMultiplierSun;
 	private final float relativeMultiplierMoon;
@@ -26,7 +26,7 @@ public class DefaultCelestialHelper {
 	
 	private final ISkyEffect sky;
 	
-	public DefaultCelestialHelper(float relativeMultiplierSun, float relativeMultiplierMoon,
+	public CelestialHelperExample(float relativeMultiplierSun, float relativeMultiplierMoon,
 			ICelestialObject sun, ICelestialObject moon,
 			ICelestialCoordinate coordinate, ISkyEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;

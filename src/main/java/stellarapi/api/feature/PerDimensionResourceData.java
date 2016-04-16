@@ -2,6 +2,7 @@ package stellarapi.api.feature;
 
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,6 +10,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 
+/**
+ * Per dimension resource data.
+ * */
 public class PerDimensionResourceData extends WorldSavedData {
 	
 	private static final String ID  = "perdimensionresourcedata";
@@ -24,10 +28,24 @@ public class PerDimensionResourceData extends WorldSavedData {
 		return (PerDimensionResourceData) data;
 	}
 	
-	public Map<String, ResourceLocation> resourceMap = Maps.newHashMap();
+	private final Map<String, ResourceLocation> resourceMap = Maps.newHashMap();
 
 	private PerDimensionResourceData(String id) {
 		super(id);
+	}
+	
+	public ImmutableMap<String, ResourceLocation> getResourceMap() {
+		return ImmutableMap.copyOf(this.resourceMap);
+	}
+	
+	public void addToResourceMap(String id, ResourceLocation location) {
+		resourceMap.put(id, location);
+		this.markDirty();
+	}
+	
+	public void removeFromResourceMap(String id) {
+		resourceMap.remove(id);
+		this.markDirty();
 	}
 
 	@Override

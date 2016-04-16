@@ -1,9 +1,29 @@
 package stellarapi.api;
 
+import stellarapi.util.math.SpCoord;
+
 public interface ISkyEffect {
 	
 	/**
-	 * Gets absorption factor. <p>
+	 * Applies atmospheric refraction to horizontal spherical position.
+	 * @param pos the horizontal spherical position
+	 * */
+	public void applyAtmRefraction(SpCoord pos);
+	
+	/**
+	 * Disapply atmospheric refraction to horizontal spherical position.
+	 * @param pos the horizontal spherical position
+	 * */
+	public void disapplyAtmRefraction(SpCoord pos);
+	
+	/**
+	 * Calculates airmass for certain horizontal spherical position.
+	 * @param pos the horizontal spherical position
+	 * */
+	public float calculateAirmass(SpCoord pos);
+	
+	/**
+	 * Gets light absorption factor. <p>
 	 * Affects the ground brightness by absorbing lights from celestial light source,
 	 *  and does not affect the brightness of sky.
 	 * @param partialTicks the partial tick
@@ -11,7 +31,7 @@ public interface ISkyEffect {
 	public float getAbsorptionFactor(float partialTicks);
 	
 	/**
-	 * Gets dispersion factor. <p>
+	 * Gets light dispersion factor. <p>
 	 * Affects the brightness of sky, and does not affect the ground brightness.
 	 * @param partialTicks the partial tick
 	 * */

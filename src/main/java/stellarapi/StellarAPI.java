@@ -16,15 +16,15 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.feature.PerDimensionResourceRegistry;
 import stellarapi.api.impl.AlarmWakeHandler;
-import stellarapi.api.impl.LightWakeHandler;
+import stellarapi.api.impl.DefaultDaytimeChecker;
+import stellarapi.api.impl.SunHeightWakeHandler;
 import stellarapi.api.mc.SleepWakeManager;
 import stellarapi.command.FixedCommandTime;
 import stellarapi.compat.CompatManager;
 import stellarapi.config.ConfigManager;
-import stellarapi.sync.StellarNetworkEventHandler;
-import stellarapi.sync.StellarNetworkFMLEventHandler;
-import stellarapi.sync.StellarNetworkManager;
+import stellarapi.network.StellarNetworkManager;
 
 @Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.config.StellarConfigGuiFactory")
 public final class StellarAPI {
@@ -40,6 +40,8 @@ public final class StellarAPI {
         public static CommonProxy proxy;
         
         public static Logger logger;
+        
+    	private static final String wakeCategory = "wake";
         
         private StellarEventHook eventHook = new StellarEventHook();
         private StellarTickHandler tickHandler = new StellarTickHandler();
@@ -64,20 +66,21 @@ public final class StellarAPI {
     		MinecraftForge.EVENT_BUS.register(this.eventHook);
     		FMLCommonHandler.instance().bus().register(this.tickHandler);
     		FMLCommonHandler.instance().bus().register(this.fmlEventHook);
+    		FMLCommonHandler.instance().bus().register(this.networkManager);
     		
-    		MinecraftForge.EVENT_BUS.register(new StellarNetworkEventHandler(this.networkManager));
-    		FMLCommonHandler.instance().bus().register(new StellarNetworkFMLEventHandler(this.networkManager));
+    		
+    		StellarAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
     		
     		this.config = new Configuration(event.getSuggestedConfigurationFile());
     		this.cfgManager = new ConfigManager(this.config);
     		
-            cfgManager.register(serverConfigCategory, this.commonSettings);
-            cfgManager.register(serverConfigDimensionCategory, this.dimensionSettings);
-            cfgManager.register(serverConfigWakeCategory, StellarAPIReference.getSleepWakeManager());
+            cfgManager.register(wakeCategory, StellarAPIReference.getSleepWakeManager());
     		
     		SleepWakeManager sleepWake = StellarAPIReference.getSleepWakeManager();
-    		sleepWake.register("wakeByBright", new LightWakeHandler());
+    		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler());
     		sleepWake.register("wakeByAlarm", new AlarmWakeHandler());
+    		
+    		StellarAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
     		
         	proxy.preInit(event);
     		

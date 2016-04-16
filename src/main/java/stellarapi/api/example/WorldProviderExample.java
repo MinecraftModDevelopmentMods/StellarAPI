@@ -1,4 +1,4 @@
-package stellarapi.api.impl;
+package stellarapi.api.example;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,17 +14,22 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 
+/**
+ * Example of WorldProvider with celestial helper. <p>
+ * In most case, custom WorldProvider should know celestial conditions of the world,
+ * e.g. the celestial objects as Sun and Moon.
+ * */
 public class WorldProviderExample extends WorldProvider {
 	
 	private WorldProvider parProvider;
-	private DefaultCelestialHelper celestialHelper;
+	private CelestialHelperExample celestialHelper;
 	
     /** Array for sunrise/sunset colors (RGBA) */
     private float[] colorsSunriseSunset = new float[4];
     
     private long cloudColour = 16777215L;
 	
-	public WorldProviderExample(WorldProvider provider, DefaultCelestialHelper celestialHelper) {
+	public WorldProviderExample(WorldProvider provider, CelestialHelperExample celestialHelper) {
 		this.parProvider = provider;
 		this.worldObj = provider.worldObj;
 		this.field_82913_c = provider.field_82913_c;
