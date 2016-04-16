@@ -1,15 +1,22 @@
-package stellarapi.sleepwake;
+package stellarapi.api.impl;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import stellarapi.api.CelestialLightSources;
+import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyProvider;
+import stellarapi.api.mc.IWakeHandler;
 
 public class LightWakeHandler implements IWakeHandler {
 
 	private static final int DEFAULT_OFFSET = 1000;
 	private double wakeAngle;
+	
+	public LightWakeHandler(double wakeAngle) {
+		this.wakeAngle = wakeAngle;
+	}
 	
 	@Override
 	public long getWakeTime(World world, ISkyProvider skyProvider, long sleepTime) {
@@ -29,21 +36,17 @@ public class LightWakeHandler implements IWakeHandler {
 	}
 
 	@Override
-	public void setupConfig(Configuration config, String category) {
-		Property wakeAngle = config.get(category, "Sun_Height_for_Wake", 10.0);
-		wakeAngle.comment = "Solar azimuth(height) angle to wake up. (in degrees)";
-		wakeAngle.setRequiresWorldRestart(true);
-		wakeAngle.setLanguageKey("config.property.server.wakeangle");
-	}
-	
-
-	@Override
-	public void loadFromConfig(Configuration config, String category) {
-		ConfigCategory cfgCategory = config.getCategory(category);
-		this.wakeAngle = cfgCategory.get("Sun_Height_for_Wake").getDouble();
+	public long getWakeTime(World world, CelestialLightSources lightSource, ICelestialCoordinate coordinate,
+			long sleepTime) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public void saveToConfig(Configuration config, String category) { }
+	public boolean canSleep(World world, CelestialLightSources lightSource, ICelestialCoordinate coordinate,
+			long sleepTime) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

@@ -1,6 +1,6 @@
 package stellarapi.util.math;
 
-import javax.vecmath.AxisAngle4d;
+import javax.vecmath.Matrix3d;
 import javax.vecmath.Vector3d;
 
 import net.minecraft.util.MathHelper;
@@ -266,12 +266,15 @@ public class Spmath {
 		return delM/(1.0-e*cosd(E));
 	}
 	
-	public static Vector3d GetOrbVec(double a, double e, AxisAngle4d Ir, AxisAngle4d wr, AxisAngle4d Omr, double M){
+	public static Vector3d GetOrbVec(double a, double e, Matrix3d Ir, Matrix3d wr, Matrix3d Omr, double M){
 		M=Spmath.fmod(M+180.0,360.0)-180.0;
 		double e2=Spmath.Degrees(e);
 		double E=Spmath.CalEcanomaly(e2, M);
 		Vector3d r = new Vector3d(a*(cosd(E)-e), a*Math.sqrt(1-e*e)*sind(E), 0.0);
-		return Omr.transform(Ir.transform(wr.transform(r)));
+		wr.transform(r);
+		Ir.transform(r);
+		Omr.transform(r);
+		return r;
 	}
 
 	public static double TemptoB_V(double temp) {

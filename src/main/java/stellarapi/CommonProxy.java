@@ -9,13 +9,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
+import stellarapi.api.impl.AlarmWakeHandler;
+import stellarapi.api.impl.LightWakeHandler;
+import stellarapi.api.mc.SleepWakeManager;
 import stellarapi.client.ClientSettings;
 import stellarapi.common.CommonSettings;
 import stellarapi.common.DimensionSettings;
 import stellarapi.config.ConfigManager;
-import stellarapi.sleepwake.AlarmWakeHandler;
-import stellarapi.sleepwake.LightWakeHandler;
-import stellarapi.sleepwake.SleepWakeManager;
 import stellarapi.stellars.layer.CelestialManager;
 import stellarapi.util.math.Spmath;
 

@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
 import stellarapi.api.ISkyProvider;
-import stellarapi.api.StellarSkyAPI;
+import stellarapi.api.StellarAPIReference;
 import stellarapi.stellars.StellarManager;
 import stellarapi.stellars.view.StellarDimensionManager;
 
@@ -28,41 +28,6 @@ public class StellarTickHandler {
 	public static Field getField(Class<?> clazz, String... fieldNames) {
 		return ReflectionHelper.findField(clazz, ObfuscationReflectionHelper.remapFieldNames(clazz.getName(), fieldNames));
 	}
-	
-	@SubscribeEvent
-	public void tickStart(TickEvent.ClientTickEvent e) {
-		if(e.phase == Phase.START){
-			World world = StellarAPI.proxy.getDefWorld(true);
-			
-			if(world != null) {
-				StellarManager manager = StellarManager.getManager(true);
-				if(manager.getCelestialManager() != null) {
-					manager.update(world.getWorldTime());
-					StellarDimensionManager dimManager = StellarDimensionManager.get(world);
-					if(dimManager != null)
-					{
-						dimManager.update(world, world.getWorldTime());
-						manager.updateClient(StellarAPI.proxy.getClientSettings(),
-								dimManager.getViewpoint());
-					}
-				}
-			}
-		}
-	}
-	
-	@SubscribeEvent
-	public void tickStart(TickEvent.ServerTickEvent e) {
-		if(e.phase == Phase.START){
-			World world = StellarAPI.proxy.getDefWorld(false);
-			
-			if(world != null) {
-				StellarManager manager = StellarManager.getManager(false);
-				
-				if(manager.getSettings().serverEnabled)
-					manager.update(world.getWorldTime());
-			}
-		}
-	}
 		
 	@SubscribeEvent
 	public void tickStart(TickEvent.WorldTickEvent e) {
@@ -73,7 +38,7 @@ public class StellarTickHandler {
 					dimManager.update(e.world, e.world.getWorldTime());
 				
 				StellarManager manager = StellarManager.getManager(false);
-				if(!StellarSkyAPI.hasSkyProvider(e.world))
+				if(!StellarAPIReference.hasSkyProvider(e.world))
 					return;
 				
 				if(StellarAPI.proxy.wakeManager.isEnabled()) {
@@ -81,7 +46,7 @@ public class StellarTickHandler {
 
 					world.updateAllPlayersSleepingFlag();
 					if (world.areAllPlayersAsleep())
-						this.tryWakePlayers(world, StellarSkyAPI.getSkyProvider(e.world));
+						this.tryWakePlayers(world, StellarAPIReference.getSkyProvider(e.world));
 
 					try {
 						sleep.setBoolean(world, false);

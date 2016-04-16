@@ -21,11 +21,10 @@ import stellarapi.sync.StellarNetworkEventHandler;
 import stellarapi.sync.StellarNetworkFMLEventHandler;
 import stellarapi.sync.StellarNetworkManager;
 
-@Mod(modid=StellarAPI.modid, version=StellarAPI.version,
-	dependencies="required-after:sciapi@[1.1.0.0,1.2.0.0)", guiFactory="stellarapi.config.StellarConfigGuiFactory")
+@Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.config.StellarConfigGuiFactory")
 public class StellarAPI {
 	
-		public static final String modid = "stellarsky";
+		public static final String modid = "StellarAPI";
 		public static final String version = "@VERSION@";
 
         // The instance of Stellarium

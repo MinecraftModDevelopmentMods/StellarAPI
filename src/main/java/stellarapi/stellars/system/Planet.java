@@ -12,7 +12,7 @@ public class Planet extends SolarObject {
 	protected double ad, ed, Id, Ld, wbard, Omegad;
 	protected double b, c, s, f;
 
-	private Rotate roti = new Rotate('X'), rotw = new Rotate('Z'), rotom = new Rotate('Z');
+	private Matrix3fd roti = new Rotate('X'), rotw = new Rotate('Z'), rotom = new Rotate('Z');
 	
 	public Planet(boolean isRemote, SolarObject parent) {
 		super(isRemote, parent);

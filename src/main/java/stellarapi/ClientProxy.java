@@ -3,19 +3,14 @@ package stellarapi;
 import java.io.File;
 import java.io.IOException;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import stellarapi.api.StellarSkyAPI;
+import stellarapi.api.StellarAPIReference;
 import stellarapi.client.ClientSettings;
 import stellarapi.client.DefaultHourProvider;
-import stellarapi.client.StellarKeyHook;
-import stellarapi.client.StellarSkyClientHandler;
-import stellarapi.stellars.Optics;
 import stellarapi.stellars.layer.CelestialManager;
 
 public class ClientProxy extends CommonProxy implements IProxy {
@@ -39,11 +34,8 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {		
         this.setupConfigManager(event.getSuggestedConfigurationFile());
-        
-		MinecraftForge.EVENT_BUS.register(new StellarSkyClientHandler());
-		FMLCommonHandler.instance().bus().register(new StellarKeyHook());
-		
-		StellarSkyAPI.registerHourProvider(new DefaultHourProvider(this.clientSettings));
+        		
+		StellarAPIReference.registerHourProvider(new DefaultHourProvider(this.clientSettings));
 	}
 
 	@Override
@@ -62,7 +54,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	public void setupConfigManager(File file) {
 		super.setupConfigManager(file);
 		cfgManager.register(clientConfigCategory, this.clientSettings);
-		cfgManager.register(clientConfigOpticsCategory, Optics.instance);
+		//cfgManager.register(clientConfigOpticsCategory, Optics.instance);
 	}
 	
 	@Override

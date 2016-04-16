@@ -2,7 +2,7 @@ package stellarapi.stellars.view;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.StellarSkyAPI;
+import stellarapi.api.StellarAPIReference;
 import stellarapi.config.INBTConfig;
 import stellarapi.config.SimpleHierarchicalNBTConfig;
 import stellarapi.config.property.ConfigPropertyBoolean;
@@ -31,7 +31,7 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
 		
 		this.propPatchProvider = new ConfigPropertyBoolean("Patch_Provider", "patchProvider", true);
 		
-        String[] list = StellarSkyAPI.getRenderTypesForDimension(this.dimensionName);
+        String[] list = StellarAPIReference.getRenderTypesForDimension(this.dimensionName);
 		this.propRenderType = new ConfigPropertyString("Sky_Renderer_Type", "skyRendererType", list[0]);
 		
 		this.propLatitude = new ConfigPropertyDouble("Latitude", "lattitude", !dimensionName.equals("The End")? 37.5 : -52.5);
@@ -66,7 +66,7 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
 		propPatchProvider.setRequiresWorldRestart(true);
 		propPatchProvider.setLanguageKey("config.property.dimension.patchprovider");
         
-        String[] list = StellarSkyAPI.getRenderTypesForDimension(this.dimensionName);
+        String[] list = StellarAPIReference.getRenderTypesForDimension(this.dimensionName);
         propRenderType.setComment("Sky renderer type for this dimension.\n"
         		+ "There are 'Overworld Sky' and 'End Sky' type by default.");
         propRenderType.setRequiresWorldRestart(true);

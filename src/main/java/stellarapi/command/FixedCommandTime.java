@@ -6,8 +6,12 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import stellarapi.api.CelestialLightSources;
+import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyProvider;
-import stellarapi.api.StellarSkyAPI;
+import stellarapi.api.StellarAPIReference;
+import stellarapi.api.mc.DaytimeChecker;
+import stellarapi.api.mc.EnumDaytimeDescriptor;
 
 public class FixedCommandTime extends CommandTime {
 	
@@ -22,11 +26,11 @@ public class FixedCommandTime extends CommandTime {
             {
                 if (args[1].equals("day"))
                 {
-                    i = this.getModifiedTimeByAngle(sender.getEntityWorld(), 10.0);
+                    i = this.getDay(sender.getEntityWorld());
                 }
                 else if (args[1].equals("night"))
                 {
-                    i = this.getModifiedTimeByOffset(sender.getEntityWorld(), 0.5);
+                    i = this.getModifiedTime(sender.getEntityWorld());
                 }
                 else
                 {
@@ -73,31 +77,21 @@ public class FixedCommandTime extends CommandTime {
         }
     }
 	
-	public long getModifiedTimeByAngle(World world, double angle) {
-		if(!StellarSkyAPI.hasSkyProvider(world)) {
-			return (long) (angle / 180.0 * 24000);
-		}
+	public long getDay(World world) {
+		long defaultValue = 1000L;
 		
-		long time = world.getWorldTime();
-    	ISkyProvider skyProvider = StellarSkyAPI.getSkyProvider(world);
-    	double wakeDayOffset = skyProvider.dayOffsetUntilSunReach(angle);
-		double currentDayOffset = skyProvider.getDaytimeOffset(time);
-		double dayLength = skyProvider.getDayLength();
-
-    	double modifiedWorldTime = time + (-wakeDayOffset - currentDayOffset) * dayLength;
-    	while(modifiedWorldTime < time)
-    		modifiedWorldTime += dayLength;
-    	
-    	return (long) modifiedWorldTime;
+		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
+		
+		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MORNING, defaultValue);
 	}
 	
-	public long getModifiedTimeByOffset(World world, double timeOffset) {
-		if(!StellarSkyAPI.hasSkyProvider(world)) {
+	public long getMidnight(World world) {
+		if(!StellarAPIReference.hasSkyProvider(world)) {
 			return (long) (timeOffset * 24000);
-		}
+		}/**=>Daytime descriptor?*/
 		
 		long time = world.getWorldTime();
-    	ISkyProvider skyProvider = StellarSkyAPI.getSkyProvider(world);
+    	ISkyProvider skyProvider = StellarAPIReference.getSkyProvider(world);
     	double wakeDayOffset = timeOffset;
 		double currentDayOffset = skyProvider.getDaytimeOffset(time);
 		double dayLength = skyProvider.getDayLength();

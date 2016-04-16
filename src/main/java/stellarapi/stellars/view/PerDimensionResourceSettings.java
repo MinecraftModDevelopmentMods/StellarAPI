@@ -2,7 +2,7 @@ package stellarapi.stellars.view;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.StellarSkyAPI;
+import stellarapi.api.StellarAPIReference;
 import stellarapi.config.INBTConfig;
 import stellarapi.config.SimpleNBTConfig;
 import stellarapi.config.property.ConfigProperty;
@@ -11,7 +11,7 @@ import stellarapi.config.property.ConfigPropertyString;
 public class PerDimensionResourceSettings extends SimpleNBTConfig {
 	
 	public PerDimensionResourceSettings() {
-		for(String resourceId : StellarSkyAPI.getPerDimensionResourceIdList())
+		for(String resourceId : StellarAPIReference.getPerDimensionResourceIdList())
 			this.addConfigProperty(new ConfigPropertyString(resourceId, resourceId.toLowerCase(),
 					"default"));
 	}

@@ -1,4 +1,4 @@
-package stellarapi.sleepwake;
+package stellarapi.api.mc;
 
 import java.util.List;
 
@@ -7,7 +7,8 @@ import com.google.common.collect.Lists;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.ISkyProvider;
+import stellarapi.api.CelestialLightSources;
+import stellarapi.api.ICelestialCoordinate;
 import stellarapi.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
@@ -17,8 +18,8 @@ public class SleepWakeManager implements IConfigHandler {
 	private boolean mode;
 	private List<WakeHandler> wakeHandlers = Lists.newArrayList();
 	
-	public void register(String name, IWakeHandler handler, boolean defaultEnabled) {
-		wakeHandlers.add(new WakeHandler(name, handler, defaultEnabled));
+	public void register(String name, IWakeHandler handler) {
+		wakeHandlers.add(new WakeHandler(name, handler));
 	}
 	
 	public boolean isEnabled() {
@@ -42,54 +43,45 @@ public class SleepWakeManager implements IConfigHandler {
 				+ "among these wake properties";
 		mode.setRequiresWorldRestart(true);
 		mode.setLanguageKey("config.property.server.wakemode");
-		
-		for(WakeHandler entry : this.wakeHandlers) {
-			String cat2 = category + Configuration.CATEGORY_SPLITTER + entry.name.toLowerCase();
-			Property enabled = config.get(cat2, "Enabled", entry.enabled);
-			enabled.comment = "Enable this wake property.";
-			enabled.setRequiresWorldRestart(true);
-			enabled.setLanguageKey("config.property.server.enablewake");
-			entry.handler.setupConfig(config, cat2);
-		}
 	}
 
 	@Override
 	public void loadFromConfig(Configuration config, String category) {
 		this.enabled = config.getCategory(category).get("Custom_Wake_Enabled").getBoolean();
 		this.mode = config.getCategory(category).get("Wake_Mode").getString().equals("first");
-		for(WakeHandler entry : this.wakeHandlers) {
-			String cat2 = category + Configuration.CATEGORY_SPLITTER + entry.name.toLowerCase();
-			entry.enabled = config.getCategory(cat2).get("Enabled").getBoolean();
-			entry.handler.loadFromConfig(config, cat2);
-		}
 	}
+
+	@Override
+	public void saveToConfig(Configuration config, String category) { }
 	
-	public long getWakeTime(World world, ISkyProvider skyProvider, long sleepTime) {
+	public long getWakeTime(World world, CelestialLightSources lightSource,
+			ICelestialCoordinate coordinate, long sleepTime) {
 		long wakeTime;
 		if(this.mode)
 		{
 			wakeTime=Integer.MAX_VALUE;
 			for(WakeHandler handler : wakeHandlers) {
-				if(handler.enabled)
-					wakeTime = Math.min(wakeTime, handler.handler.getWakeTime(world, skyProvider, sleepTime));
+				if(handler.handler.accept(world, lightSource, coordinate))
+					wakeTime = Math.min(wakeTime, handler.handler.getWakeTime(world, lightSource, coordinate, sleepTime));
 			}
 		} else {
 			wakeTime=Integer.MIN_VALUE;
 			for(WakeHandler handler : wakeHandlers) {
-				if(handler.enabled)
-					wakeTime = Math.max(wakeTime, handler.handler.getWakeTime(world, skyProvider, sleepTime));
+				if(handler.handler.accept(world, lightSource, coordinate))
+					wakeTime = Math.max(wakeTime, handler.handler.getWakeTime(world, lightSource, coordinate, sleepTime));
 			}
 		}
 		return wakeTime;
 	}
 	
-	public boolean canSkipTime(World world, ISkyProvider skyProvider, long sleepTime) {
+	public boolean canSkipTime(World world, CelestialLightSources lightSource,
+			ICelestialCoordinate coordinate, long sleepTime) {
 		boolean canSkip = true;
 		boolean wakeHandlerExist = false;
 		for(WakeHandler handler : wakeHandlers) {
-			if(handler.enabled) {
+			if(handler.handler.accept(world, lightSource, coordinate)) {
 				wakeHandlerExist = true;
-				if(!handler.handler.canSleep(world, skyProvider, sleepTime))
+				if(!handler.handler.canSleep(world, lightSource, coordinate, sleepTime))
 					canSkip = false;
 			}
 		}
@@ -97,16 +89,11 @@ public class SleepWakeManager implements IConfigHandler {
 	}
 	
 	private class WakeHandler {
-		public WakeHandler(String name2, IWakeHandler handler2, boolean defaultEnabled) {
-			this.name = name2;
-			this.handler = handler2;
-			this.enabled = defaultEnabled;
+		public WakeHandler(String name, IWakeHandler handler) {
+			this.name = name;
+			this.handler = handler;
 		}
 		protected String name;
 		protected IWakeHandler handler;
-		protected boolean enabled;
 	}
-
-	@Override
-	public void saveToConfig(Configuration config, String category) { }
 }

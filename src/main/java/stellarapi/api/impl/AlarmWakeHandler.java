@@ -1,28 +1,21 @@
-package stellarapi.sleepwake;
+package stellarapi.api.impl;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import stellarapi.api.CelestialLightSources;
+import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyProvider;
+import stellarapi.api.mc.IWakeHandler;
 
 public class AlarmWakeHandler implements IWakeHandler {
 
 	//Wake time from midnight
 	private int wakeTime;
 
-	@Override
-	public void setupConfig(Configuration config, String category) {
-		Property pWakeTime = config.get(category, "Wake_Time_from_midnight", 6000);
-		pWakeTime.comment = "Wake-up time from midnight, in tick.";
-		pWakeTime.setRequiresWorldRestart(true);
-		pWakeTime.setLanguageKey("config.property.server.waketime");
-	}
-
-	@Override
-	public void loadFromConfig(Configuration config, String category) {
-		ConfigCategory cfgCategory = config.getCategory(category);
-		this.wakeTime = cfgCategory.get("Wake_Time_from_midnight").getInt();
+	public AlarmWakeHandler(int wakeTime) {
+		this.wakeTime = wakeTime;
 	}
 
 	@Override
@@ -41,6 +34,17 @@ public class AlarmWakeHandler implements IWakeHandler {
 	}
 
 	@Override
-	public void saveToConfig(Configuration config, String category) { }
+	public long getWakeTime(World world, CelestialLightSources lightSource, ICelestialCoordinate coordinate,
+			long sleepTime) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean canSleep(World world, CelestialLightSources lightSource, ICelestialCoordinate coordinate,
+			long sleepTime) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
