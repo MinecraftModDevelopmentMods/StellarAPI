@@ -8,6 +8,6 @@ public class StellarFMLEventHook {
 	public void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event)
 	{
 		if(event.modID == StellarAPI.modid)
-			StellarAPI.proxy.getCfgManager().syncFromGUI();
+			StellarAPI.instance.getCfgManager().syncFromGUI();
 	}
 }

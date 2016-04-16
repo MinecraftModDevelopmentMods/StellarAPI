@@ -31,12 +31,15 @@ public class DaytimeChecker {
 	 * @param tolerance the time tolerance in tick
 	 * */
 	public boolean isDescriptorApply(World world,
-			CelestialLightSources sources, ICelestialCoordinate coordinate,
 			EnumDaytimeDescriptor descriptor, long time, int tolerance) {
-		for(IDaytimeChecker checker : this.daytimeCheckers) {
-			if(checker.accept(world, sources, coordinate, descriptor))
-				return checker.isDescriptorApply(world, sources, coordinate, descriptor, time, tolerance);
-		}
+		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
+		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
+		
+		if(coordinate != null && lightSources != null)
+			for(IDaytimeChecker checker : this.daytimeCheckers) {
+				if(checker.accept(world, lightSources, coordinate, descriptor))
+					return checker.isDescriptorApply(world, lightSources, coordinate, descriptor, time, tolerance);
+			}
 		
 		return false;
 	}

@@ -18,13 +18,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	private static final String clientConfigCategory = "clientconfig";
 	private static final String clientConfigOpticsCategory = "clientconfig.optics";
 	
-	private ClientSettings clientSettings = new ClientSettings();
-	
 	private CelestialManager celestialManager = new CelestialManager(true);
-	
-	public ClientSettings getClientSettings() {
-		return this.clientSettings;
-	}
 	
 	@Override
 	public CelestialManager getClientCelestialManager() {
@@ -32,29 +26,18 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	}
 	
 	@Override
-	public void preInit(FMLPreInitializationEvent event) {		
-        this.setupConfigManager(event.getSuggestedConfigurationFile());
-        		
-		StellarAPIReference.registerHourProvider(new DefaultHourProvider(this.clientSettings));
+	public void preInit(FMLPreInitializationEvent event) {
+		super.preInit(event);
 	}
 
 	@Override
 	public void load(FMLInitializationEvent event) throws IOException {
 		super.load(event);
-		
-    	celestialManager.initializeClient(this.clientSettings);
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
-	}
-	
-	@Override
-	public void setupConfigManager(File file) {
-		super.setupConfigManager(file);
-		cfgManager.register(clientConfigCategory, this.clientSettings);
-		//cfgManager.register(clientConfigOpticsCategory, Optics.instance);
 	}
 	
 	@Override

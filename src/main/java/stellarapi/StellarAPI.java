@@ -14,15 +14,20 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
-import stellarapi.command.CommandLock;
+import net.minecraftforge.common.config.Configuration;
+import stellarapi.api.StellarAPIReference;
+import stellarapi.api.impl.AlarmWakeHandler;
+import stellarapi.api.impl.LightWakeHandler;
+import stellarapi.api.mc.SleepWakeManager;
 import stellarapi.command.FixedCommandTime;
 import stellarapi.compat.CompatManager;
+import stellarapi.config.ConfigManager;
 import stellarapi.sync.StellarNetworkEventHandler;
 import stellarapi.sync.StellarNetworkFMLEventHandler;
 import stellarapi.sync.StellarNetworkManager;
 
 @Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.config.StellarConfigGuiFactory")
-public class StellarAPI {
+public final class StellarAPI {
 	
 		public static final String modid = "StellarAPI";
 		public static final String version = "@VERSION@";
@@ -41,15 +46,20 @@ public class StellarAPI {
         private StellarFMLEventHook fmlEventHook = new StellarFMLEventHook();
         private StellarNetworkManager networkManager = new StellarNetworkManager();
         
+    	private Configuration config;
+    	private ConfigManager cfgManager;
+        
         public StellarNetworkManager getNetworkManager() {
         	return this.networkManager;
         }
+
+		public ConfigManager getCfgManager() {
+			return this.cfgManager;
+		}
         
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) { 
         	logger = event.getModLog();
-        	
-        	proxy.preInit(event);
         	
     		MinecraftForge.EVENT_BUS.register(this.eventHook);
     		FMLCommonHandler.instance().bus().register(this.tickHandler);
@@ -58,11 +68,26 @@ public class StellarAPI {
     		MinecraftForge.EVENT_BUS.register(new StellarNetworkEventHandler(this.networkManager));
     		FMLCommonHandler.instance().bus().register(new StellarNetworkFMLEventHandler(this.networkManager));
     		
+    		this.config = new Configuration(event.getSuggestedConfigurationFile());
+    		this.cfgManager = new ConfigManager(this.config);
+    		
+            cfgManager.register(serverConfigCategory, this.commonSettings);
+            cfgManager.register(serverConfigDimensionCategory, this.dimensionSettings);
+            cfgManager.register(serverConfigWakeCategory, StellarAPIReference.getSleepWakeManager());
+    		
+    		SleepWakeManager sleepWake = StellarAPIReference.getSleepWakeManager();
+    		sleepWake.register("wakeByBright", new LightWakeHandler());
+    		sleepWake.register("wakeByAlarm", new AlarmWakeHandler());
+    		
+        	proxy.preInit(event);
+    		
     		CompatManager.getInstance().onPreInit();
         }
         
         @EventHandler
         public void load(FMLInitializationEvent event) throws IOException {
+            cfgManager.syncFromFile();
+        	
         	proxy.load(event);
         	
     		CompatManager.getInstance().onInit();
@@ -77,7 +102,6 @@ public class StellarAPI {
         
         @EventHandler
         public void serverStarting(FMLServerStartingEvent event) {
-        	event.registerServerCommand(new CommandLock());
         	event.registerServerCommand(new FixedCommandTime());
         }
 }

@@ -18,7 +18,7 @@ public class StellarConfigScreen extends GuiConfig {
 	}
 	
 	private static List<IConfigElement> getConfigElement() {
-		Configuration config = StellarAPI.proxy.getConfig();
+		Configuration config = StellarAPI.instance.getCfgManager().getConfig();
 		
 		List<IConfigElement> retList = Lists.newArrayList();
 		for(String category : config.getCategoryNames())

@@ -20,19 +20,3 @@ public interface ICelestialLayer<T extends IConfigHandler> {
 	@SideOnly(Side.CLIENT)
 	public void registerRenderers();
 }
-
-/**
- * Data:
- *  - Saved in world
- *  - Loaded from configuration
- *  - Used for cache (Render/Effect)
- *  
- *  Client/Common
- *  Configuration/Decided
- *  Saved&Synced/Not Saved&Synced
- *  Consistent/Time.Dep/VP.Dep
- *  
- *  Render: ClientSettings, LayerClientSettings, RenderCache
- *  
- *  (Will discuss later)
- */

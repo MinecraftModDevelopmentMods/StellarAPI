@@ -45,28 +45,32 @@ public class ConfigManager {
 			config.save();
 	}
 	
-	  /**
-	   * load the configuration values from the configuration file
-	   */
-	  public void syncFromFile()
-	  {
-		  onSyncConfig(true, true);
-	  }
+	/**
+	 * load the configuration values from the configuration file
+	 */
+	public void syncFromFile()
+	{
+		onSyncConfig(true, true);
+	}
 
-	  /**
-	   * save the GUI-altered values to disk
-	   */
-	  public void syncFromGUI()
-	  {
-		  onSyncConfig(false, true);
-	  }
+	/**
+	 * save the GUI-altered values to disk
+	 */
+	public void syncFromGUI()
+	{
+		onSyncConfig(false, true);
+	}
 
-	  /**
-	   * save the variables (fields) to disk
-	   */
-	  public void syncFromFields()
-	  {
-		  onSyncConfig(false, false);
-	  }
+	/**
+	 * save the variables (fields) to disk
+	 */
+	public void syncFromFields()
+	{
+		onSyncConfig(false, false);
+	}
+
+	public Configuration getConfig() {
+		return this.config;
+	}
 
 }

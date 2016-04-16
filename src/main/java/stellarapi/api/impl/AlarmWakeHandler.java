@@ -1,50 +1,75 @@
 package stellarapi.api.impl;
 
+import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ISkyProvider;
+import stellarapi.api.CelestialPeriod;
+import stellarapi.api.StellarAPIReference;
+import stellarapi.api.mc.EnumDaytimeDescriptor;
 import stellarapi.api.mc.IWakeHandler;
+import stellarapi.util.math.Spmath;
 
+/**
+ * Example of wake handler,
+ * as player gets up on certain amount of time after midnight.
+ * Note that the day is checked as standard of primary light source.
+ * */
 public class AlarmWakeHandler implements IWakeHandler {
 
 	//Wake time from midnight
 	private int wakeTime;
 
-	public AlarmWakeHandler(int wakeTime) {
-		this.wakeTime = wakeTime;
+	@Override
+	public boolean accept(World world, CelestialLightSources lightSource, ICelestialCoordinate coordinate) {
+		return true;
 	}
 
 	@Override
-	public long getWakeTime(World world, ISkyProvider skyProvider, long sleepTime) {
-		double currentOffset = skyProvider.getDaytimeOffset(sleepTime);
-		double dayLength = skyProvider.getDayLength();
-		double modifiedWorldTime = this.wakeTime - (currentOffset - 0.25) * dayLength;
-    	while(modifiedWorldTime < sleepTime)
-    		modifiedWorldTime += dayLength;
-		return (long) modifiedWorldTime;
-	}
-
-	@Override
-	public boolean canSleep(World world, ISkyProvider skyProvider, long sleepTime) {    	
-    	return !world.isDaytime() && skyProvider.getDaytimeOffset(sleepTime) > 0.5;
-	}
-
-	@Override
-	public long getWakeTime(World world, CelestialLightSources lightSource, ICelestialCoordinate coordinate,
+	public long getWakeTime(World world, CelestialLightSources lightSources, ICelestialCoordinate coordinate,
 			long sleepTime) {
+		long nextMidnight = StellarAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
+				EnumDaytimeDescriptor.MIDNIGHT, sleepTime);
+		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod();
+		double currentOffset = period.getOffset(sleepTime, 0.0f);
+		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
+
+		if(currentOffset < midnightOffset)
+			return nextMidnight + this.wakeTime;
+		else return nextMidnight - (long)period.getPeriodLength() + this.wakeTime;
+	}
+	
+	@Override
+	public EnumStatus getSleepPossibility(World world, CelestialLightSources lightSources,
+			ICelestialCoordinate coordinate, long sleepTime) {
+		long nextMidnight = StellarAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
+				EnumDaytimeDescriptor.MIDNIGHT, sleepTime);
+		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod();
+		double currentOffset = period.getOffset(sleepTime, 0.0f);
+		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
+		double diff = Spmath.fmod(currentOffset - midnightOffset, 1.0);
+		
+		return (!world.isDaytime() && (diff < 0.25 || diff > 0.75))? EnumStatus.OK : EnumStatus.NOT_POSSIBLE_NOW;
+	}
+
+
+	@Override
+	public void setupConfig(Configuration config, String category) {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 
 	@Override
-	public boolean canSleep(World world, CelestialLightSources lightSource, ICelestialCoordinate coordinate,
-			long sleepTime) {
+	public void loadFromConfig(Configuration config, String category) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
+	@Override
+	public void saveToConfig(Configuration config, String category) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

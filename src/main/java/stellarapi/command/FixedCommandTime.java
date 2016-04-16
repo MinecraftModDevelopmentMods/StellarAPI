@@ -6,9 +6,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import stellarapi.api.CelestialLightSources;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ISkyProvider;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.mc.DaytimeChecker;
 import stellarapi.api.mc.EnumDaytimeDescriptor;
@@ -30,7 +27,7 @@ public class FixedCommandTime extends CommandTime {
                 }
                 else if (args[1].equals("night"))
                 {
-                    i = this.getModifiedTime(sender.getEntityWorld());
+                    i = this.getMidnight(sender.getEntityWorld());
                 }
                 else
                 {
@@ -81,26 +78,14 @@ public class FixedCommandTime extends CommandTime {
 		long defaultValue = 1000L;
 		
 		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
-		
 		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MORNING, defaultValue);
 	}
 	
 	public long getMidnight(World world) {
-		if(!StellarAPIReference.hasSkyProvider(world)) {
-			return (long) (timeOffset * 24000);
-		}/**=>Daytime descriptor?*/
+		long defaultValue = 13000L;
 		
-		long time = world.getWorldTime();
-    	ISkyProvider skyProvider = StellarAPIReference.getSkyProvider(world);
-    	double wakeDayOffset = timeOffset;
-		double currentDayOffset = skyProvider.getDaytimeOffset(time);
-		double dayLength = skyProvider.getDayLength();
-
-    	double modifiedWorldTime = time + (-wakeDayOffset - currentDayOffset) * dayLength;
-    	while(modifiedWorldTime < time)
-    		modifiedWorldTime += dayLength;
-    	
-    	return (long) modifiedWorldTime;
+		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
+		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MIDNIGHT, defaultValue);
 	}
 
 }

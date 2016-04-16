@@ -4,22 +4,29 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.StellarAPIReference;
 import stellarapi.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
 	
 	private boolean enabled;
-	//true for first, flase for last
+	//true for first, false for last
 	private boolean mode;
 	private List<WakeHandler> wakeHandlers = Lists.newArrayList();
 	
+	/**
+	 * Registers wake handler.
+	 * @param handler the wake handler to register
+	 * */
 	public void register(String name, IWakeHandler handler) {
-		wakeHandlers.add(new WakeHandler(name, handler));
+		wakeHandlers.add(0, new WakeHandler(name, handler));
 	}
 	
 	public boolean isEnabled() {
@@ -43,6 +50,10 @@ public class SleepWakeManager implements IConfigHandler {
 				+ "among these wake properties";
 		mode.setRequiresWorldRestart(true);
 		mode.setLanguageKey("config.property.server.wakemode");
+		
+		/*for() {
+			
+		}*/
 	}
 
 	@Override
@@ -54,38 +65,78 @@ public class SleepWakeManager implements IConfigHandler {
 	@Override
 	public void saveToConfig(Configuration config, String category) { }
 	
-	public long getWakeTime(World world, CelestialLightSources lightSource,
-			ICelestialCoordinate coordinate, long sleepTime) {
-		long wakeTime;
-		if(this.mode)
+	/**
+	 * Calculates time to wake.
+	 * @param world the world to wake up
+	 * @param defaultWakeTime the default wake time
+	 * */
+	public long getWakeTime(World world, long defaultWakeTime) {
+		
+		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
+		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
+				
+		if(coordinate != null && lightSources != null)
 		{
-			wakeTime=Integer.MAX_VALUE;
-			for(WakeHandler handler : wakeHandlers) {
-				if(handler.handler.accept(world, lightSource, coordinate))
-					wakeTime = Math.min(wakeTime, handler.handler.getWakeTime(world, lightSource, coordinate, sleepTime));
+			long wakeTime;
+			boolean accepted = false;
+
+			if(this.mode)
+			{
+				wakeTime=Integer.MAX_VALUE;
+				for(WakeHandler handler : wakeHandlers) {
+					if(handler.handler.accept(world, lightSources, coordinate))
+					{
+						wakeTime = Math.min(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
+						accepted = true;
+					}
+				}
+			} else {
+				wakeTime=Integer.MIN_VALUE;
+				for(WakeHandler handler : wakeHandlers) {
+					if(handler.handler.accept(world, lightSources, coordinate)) {
+						wakeTime = Math.max(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
+						accepted = true;
+					}
+				}
 			}
-		} else {
-			wakeTime=Integer.MIN_VALUE;
-			for(WakeHandler handler : wakeHandlers) {
-				if(handler.handler.accept(world, lightSource, coordinate))
-					wakeTime = Math.max(wakeTime, handler.handler.getWakeTime(world, lightSource, coordinate, sleepTime));
-			}
+			
+			if(accepted)
+				return wakeTime;
 		}
-		return wakeTime;
+		
+		return defaultWakeTime;
 	}
 	
-	public boolean canSkipTime(World world, CelestialLightSources lightSource,
-			ICelestialCoordinate coordinate, long sleepTime) {
-		boolean canSkip = true;
-		boolean wakeHandlerExist = false;
-		for(WakeHandler handler : wakeHandlers) {
-			if(handler.handler.accept(world, lightSource, coordinate)) {
-				wakeHandlerExist = true;
-				if(!handler.handler.canSleep(world, lightSource, coordinate, sleepTime))
-					canSkip = false;
+	/**
+	 * Checks if sleep is possible or not.
+	 * @param world the world to wake up
+	 * @param defaultWakeTime the default wake time
+	 * @return sleep possibility status, should be one of
+	 * {@code EntityPlayer.EnumStatus.OK} or
+	 * {@code EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW} or
+	 * {@code EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE}
+	 * */
+	public EntityPlayer.EnumStatus getSleepPossibility(World world, EntityPlayer.EnumStatus defaultStatus) {
+		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
+		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
+		
+		if(coordinate != null && lightSources != null)
+		{
+			EntityPlayer.EnumStatus status = EntityPlayer.EnumStatus.OK;
+			boolean accepted = false;
+
+			for(WakeHandler handler : this.wakeHandlers) {
+				if(status == EntityPlayer.EnumStatus.OK && handler.handler.accept(world, lightSources, coordinate)) {
+					status = handler.handler.getSleepPossibility(world, lightSources, coordinate, world.getWorldTime());
+					accepted = true;
+				}
 			}
+			
+			if(accepted)
+				return status;
 		}
-		return wakeHandlerExist && canSkip;
+		
+		return defaultStatus;
 	}
 	
 	private class WakeHandler {

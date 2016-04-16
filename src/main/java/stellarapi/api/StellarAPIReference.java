@@ -11,11 +11,12 @@ import stellarapi.api.mc.DaytimeChecker;
 import stellarapi.api.mc.SleepWakeManager;
 import stellarapi.api.perdimension.IPerWorldGetter;
 import stellarapi.api.perdimension.IntegratedPerWorldGetter;
+import stellarapi.api.perdimension.PerDimensionResourceManager;
 
-public class StellarAPIReference {
+public final class StellarAPIReference {
 	
 	private List<ISkyRendererType> rendererTypes = Lists.newArrayList();
-		
+	
 	private IntegratedPerWorldGetter<ICelestialCoordinate> coordinateGetter = new IntegratedPerWorldGetter();
 	private IntegratedPerWorldGetter<ISkyEffect> skyEffectGetter = new IntegratedPerWorldGetter();
 	private IntegratedPerWorldGetter<CelestialLightSources> lightSourcesGetter = new IntegratedPerWorldGetter();	
@@ -23,16 +24,19 @@ public class StellarAPIReference {
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
 	
+	private PerDimensionResourceManager resourceManager = new PerDimensionResourceManager();
+	
 	private EventBus stellarEventBus = new EventBus();
 	
 	private static StellarAPIReference INSTANCE = new StellarAPIReference();
 	
 	
-	/** Gets the daytime checker. */
+	/** Getter for the daytime checker. */
 	public static DaytimeChecker getDaytimeChecker() {
 		return INSTANCE.dayTimeChecker;
 	}
 	
+	/** Getter for sleep wake manager */
 	public static SleepWakeManager getSleepWakeManager() {
 		return INSTANCE.sleepWakeManager;
 	}
