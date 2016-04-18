@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
 import stellarapi.StellarEventHook;
-import stellarapi.api.feature.PerDimensionResourceData;
+import stellarapi.feature.perdimres.PerDimensionResourceData;
 
 public class MessageSync implements IMessage {
 

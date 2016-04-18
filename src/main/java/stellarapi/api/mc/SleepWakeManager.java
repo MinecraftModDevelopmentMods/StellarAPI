@@ -12,7 +12,7 @@ import net.minecraftforge.common.config.Property;
 import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.config.IConfigHandler;
+import stellarapi.lib.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
 	
@@ -25,8 +25,8 @@ public class SleepWakeManager implements IConfigHandler {
 	 * Registers wake handler.
 	 * @param handler the wake handler to register
 	 * */
-	public void register(String name, IWakeHandler handler) {
-		wakeHandlers.add(0, new WakeHandler(name, handler));
+	public void register(String name, IWakeHandler handler, boolean defaultEnabled) {
+		wakeHandlers.add(0, new WakeHandler(name, handler, defaultEnabled));
 	}
 	
 	public boolean isEnabled() {
@@ -40,26 +40,37 @@ public class SleepWakeManager implements IConfigHandler {
 		config.setCategoryRequiresWorldRestart(category, true);
 		
 		Property allEnabled = config.get(category, "Custom_Wake_Enabled", true);
-		allEnabled.comment = "Enable/Disable wake system provided by Stellar Sky";
+		allEnabled.comment = "Enable/Disable wake system provided by Stellar API";
 		allEnabled.setRequiresWorldRestart(true);
-		allEnabled.setLanguageKey("config.property.server.wakeenable");
+		allEnabled.setLanguageKey("config.property.wakeenable");
 		
 		Property mode = config.get(category, "Wake_Mode", "latest")
 				.setValidValues(new String[]{"earliest", "latest"});
 		mode.comment = "You can choose earliest or latest available wake time"
 				+ "among these wake properties";
 		mode.setRequiresWorldRestart(true);
-		mode.setLanguageKey("config.property.server.wakemode");
+		mode.setLanguageKey("config.property.wakemode");
 		
-		/*for() {
-			
-		}*/
+		for(WakeHandler entry : this.wakeHandlers) {
+			String cat2 = category + Configuration.CATEGORY_SPLITTER + entry.name.toLowerCase();
+			Property enabled = config.get(cat2, "Enabled", entry.enabled);
+			enabled.comment = "Enable this wake property.";
+			enabled.setRequiresWorldRestart(true);
+			enabled.setLanguageKey("config.property.enablewake");
+			entry.handler.setupConfig(config, cat2);
+		}
 	}
 
 	@Override
 	public void loadFromConfig(Configuration config, String category) {
 		this.enabled = config.getCategory(category).get("Custom_Wake_Enabled").getBoolean();
 		this.mode = config.getCategory(category).get("Wake_Mode").getString().equals("first");
+		
+		for(WakeHandler entry : this.wakeHandlers) {
+			String cat2 = category + Configuration.CATEGORY_SPLITTER + entry.name.toLowerCase();
+			entry.enabled = config.getCategory(cat2).get("Enabled").getBoolean();
+			entry.handler.loadFromConfig(config, cat2);
+		}
 	}
 
 	@Override
@@ -84,7 +95,7 @@ public class SleepWakeManager implements IConfigHandler {
 			{
 				wakeTime=Integer.MAX_VALUE;
 				for(WakeHandler handler : wakeHandlers) {
-					if(handler.handler.accept(world, lightSources, coordinate))
+					if(handler.enabled && handler.handler.accept(world, lightSources, coordinate))
 					{
 						wakeTime = Math.min(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
 						accepted = true;
@@ -93,7 +104,7 @@ public class SleepWakeManager implements IConfigHandler {
 			} else {
 				wakeTime=Integer.MIN_VALUE;
 				for(WakeHandler handler : wakeHandlers) {
-					if(handler.handler.accept(world, lightSources, coordinate)) {
+					if(handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
 						wakeTime = Math.max(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
 						accepted = true;
 					}
@@ -126,7 +137,7 @@ public class SleepWakeManager implements IConfigHandler {
 			boolean accepted = false;
 
 			for(WakeHandler handler : this.wakeHandlers) {
-				if(status == EntityPlayer.EnumStatus.OK && handler.handler.accept(world, lightSources, coordinate)) {
+				if(status == EntityPlayer.EnumStatus.OK && handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
 					status = handler.handler.getSleepPossibility(world, lightSources, coordinate, world.getWorldTime());
 					accepted = true;
 				}
@@ -140,11 +151,13 @@ public class SleepWakeManager implements IConfigHandler {
 	}
 	
 	private class WakeHandler {
-		public WakeHandler(String name, IWakeHandler handler) {
+		public WakeHandler(String name, IWakeHandler handler, boolean enabled) {
 			this.name = name;
 			this.handler = handler;
+			this.enabled = enabled;
 		}
 		protected String name;
 		protected IWakeHandler handler;
+		protected boolean enabled;
 	}
 }

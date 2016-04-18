@@ -2,6 +2,7 @@ package stellarapi.api;
 
 import javax.vecmath.Vector3d;
 
+import stellarapi.api.wavecolor.Wavelength;
 import stellarapi.util.math.SpCoord;
 
 /**
@@ -42,8 +43,9 @@ public interface ICelestialObject {
 	
 	/**
 	 * Gets current relative brightness to the maximum brightness.
+	 * @param wavelength the wavelength to get certain brightness on
 	 * */
-	public double getCurrentBrightness();
+	public double getCurrentBrightness(Wavelength wavelength);
 	
 	/** 
 	 * Gets current absolute position. <p>
@@ -54,5 +56,18 @@ public interface ICelestialObject {
 	
 	/** Gets current position for horizontal coordinate. */
 	public SpCoord getCurrentHorizontalPos();
+	
+	
+	/**
+	 * Gets standard visible magnitude of this object. <p>
+	 * Should be constant.
+	 * */
+	public double getStandardMagnitude();
+	
+	
+	/**
+	 * Gets type of this object.
+	 * */
+	public EnumCelestialObjectType getObjectType();
 
 }

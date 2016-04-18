@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import stellarapi.api.feature.PerDimensionResourceData;
+import stellarapi.feature.perdimres.PerDimensionResourceData;
 
 public class StellarNetworkManager {
 	

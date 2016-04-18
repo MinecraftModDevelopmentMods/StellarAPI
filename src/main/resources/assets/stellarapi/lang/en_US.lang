@@ -8,3 +8,22 @@ command.perdimres.set.fail=There is no available resource with ID %s.
 
 command.perdimres.remove.success=Successfully removed per-dimension resource on the world for ID %s.
 command.perdimres.remove.fail=There was no per-dimension resource on this world with ID %s.
+
+
+config.category.wake=Wake Settings
+config.category.wake.tooltip=Configuration for Waking System.
+
+config.property.wakeenable=Custom Wake Enabled
+config.property.wakeenable.tooltip=Enable/Disable wake system provided by Stellar API
+
+config.property.wakemode=Wake Mode
+config.property.wakemode.tooltip=You can choose earliest or latest available wake time among these wake properties.
+
+config.property.enablewake=Wake Property Enabled
+config.property.enablewake.tooltip=Enable this wake property.
+
+config.property.waketime=Wake time from midnight
+config.property.waketime.tooltip=Wake-up time from midnight, in tick.
+
+config.property.wakeangle=Sun height for wake
+config.property.wakeangle.tooltip=Solar azimuth(height) angle to wake up (in degrees). (Sun can be replaced by primary celestial light source)

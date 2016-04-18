@@ -4,11 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
-import stellarapi.config.IConfigHandler;
+import stellarapi.lib.config.IConfigHandler;
 
 /**
  * Determine player's sleep availability and wake time.<p>
  * Note that wake handler which is registered later will have higher priority.<p>
+ * Also, each wake handler will be registered to wake configuration,
+ * so it would be configurable using Stellar API config.
  * */
 public interface IWakeHandler extends IConfigHandler {
 	

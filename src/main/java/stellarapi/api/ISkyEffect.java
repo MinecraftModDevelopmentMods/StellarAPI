@@ -1,7 +1,11 @@
 package stellarapi.api;
 
+import stellarapi.api.wavecolor.Wavelength;
 import stellarapi.util.math.SpCoord;
 
+/**
+ * Interface which represents the sky effect.
+ * */
 public interface ISkyEffect {
 	
 	/**
@@ -23,6 +27,18 @@ public interface ISkyEffect {
 	public float calculateAirmass(SpCoord pos);
 	
 	/**
+	 * Gets extinction rate for certain wavelength.
+	 * @param wavelength the wavelength
+	 * */
+	public float getExtinctionRate(Wavelength wavelength);
+	
+	/**
+	 * Seeing for certain wavelength.
+	 * @param wavelength the wavelength
+	 * */
+	public double getSeeing(Wavelength wl);
+	
+	/**
 	 * Gets light absorption factor. <p>
 	 * Affects the ground brightness by absorbing lights from celestial light source,
 	 *  and does not affect the brightness of sky.
@@ -33,15 +49,17 @@ public interface ISkyEffect {
 	/**
 	 * Gets light dispersion factor. <p>
 	 * Affects the brightness of sky, and does not affect the ground brightness.
+	 * @param wavelength the wavelength
 	 * @param partialTicks the partial tick
 	 * */
-	public float getDispersionFactor(float partialTicks);
+	public float getDispersionFactor(Wavelength wavelength, float partialTicks);
 	
 	/**
 	 * Gets light pollution factor. <p> 
 	 * Affects effect of ground light source to the brightness of sky. (This is called 'light pollution')
+	 * @param wavelength the wavelength
 	 * @param partialTicks the partial tick
 	 * */
-	public float getLightPollutionFactor(float partialTicks);
+	public float getLightPollutionFactor(Wavelength wavelength, float partialTicks);
 
 }

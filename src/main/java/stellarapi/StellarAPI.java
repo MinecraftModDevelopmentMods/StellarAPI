@@ -16,14 +16,14 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.feature.PerDimensionResourceRegistry;
-import stellarapi.api.impl.AlarmWakeHandler;
-import stellarapi.api.impl.DefaultDaytimeChecker;
-import stellarapi.api.impl.SunHeightWakeHandler;
 import stellarapi.api.mc.SleepWakeManager;
-import stellarapi.command.FixedCommandTime;
-import stellarapi.compat.CompatManager;
-import stellarapi.config.ConfigManager;
+import stellarapi.feature.command.FixedCommandTime;
+import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
+import stellarapi.impl.AlarmWakeHandler;
+import stellarapi.impl.DefaultDaytimeChecker;
+import stellarapi.impl.SunHeightWakeHandler;
+import stellarapi.lib.compat.CompatManager;
+import stellarapi.lib.config.ConfigManager;
 import stellarapi.network.StellarNetworkManager;
 
 @Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.config.StellarConfigGuiFactory")
@@ -68,17 +68,17 @@ public final class StellarAPI {
     		FMLCommonHandler.instance().bus().register(this.fmlEventHook);
     		FMLCommonHandler.instance().bus().register(this.networkManager);
     		
-    		
-    		StellarAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
-    		
+    		    		
     		this.config = new Configuration(event.getSuggestedConfigurationFile());
     		this.cfgManager = new ConfigManager(this.config);
+    		
+    		StellarAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
     		
             cfgManager.register(wakeCategory, StellarAPIReference.getSleepWakeManager());
     		
     		SleepWakeManager sleepWake = StellarAPIReference.getSleepWakeManager();
-    		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler());
-    		sleepWake.register("wakeByAlarm", new AlarmWakeHandler());
+    		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
+    		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
     		
     		StellarAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
     		
