@@ -1,29 +1,29 @@
-package stellarapi.lib.config.property;
+package stellarapi.api.lib.config.property;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property.Type;
 
-public class ConfigPropertyDouble extends ConfigProperty {
+public class ConfigPropertyString extends ConfigProperty {
 	
-	private double defaultValue;
-	private double currentValue;
+	private String defaultValue;
+	private String currentValue;
 	
-	public ConfigPropertyDouble(String configKey, String dataKey, double defaultValue) {
+	public ConfigPropertyString(String configKey, String dataKey, String defaultValue) {
 		super(configKey, dataKey);
 		this.currentValue = this.defaultValue = defaultValue;
 	}
 	
-	public double getDouble() {
+	public String getString() {
 		return this.currentValue;
 	}
 	
-	public void setDouble(double value) {
+	public void setString(String value) {
 		this.currentValue = value;
 	}
 	
 	@Override
 	protected String getDefaultValue() {
-		return Double.toString(this.defaultValue);
+		return this.defaultValue;
 	}
 	
 	@Override
@@ -33,25 +33,25 @@ public class ConfigPropertyDouble extends ConfigProperty {
 	
 	@Override
 	public void setAsProperty(ConfigProperty property) {
-		if(property instanceof ConfigPropertyDouble)
-			this.currentValue = ((ConfigPropertyDouble) property).currentValue;
+		if(property instanceof ConfigPropertyString)
+			this.currentValue = ((ConfigPropertyString) property).currentValue;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey(this.dataKey))
-			this.currentValue = compound.getDouble(this.dataKey);
+			this.currentValue = compound.getString(this.dataKey);
 		else this.currentValue = this.defaultValue;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
-		compound.setDouble(this.dataKey, this.currentValue);
+		compound.setString(this.dataKey, this.currentValue);
 	}
 
 	@Override
 	public void loadFromConfig() {
-		this.currentValue = property.getDouble(this.defaultValue);
+		this.currentValue = property.getString();
 	}
 	
 	@Override
@@ -61,6 +61,6 @@ public class ConfigPropertyDouble extends ConfigProperty {
 
 	@Override
 	protected Type getType() {
-		return Type.DOUBLE;
+		return Type.STRING;
 	}
 }

@@ -1,4 +1,4 @@
-package stellarapi.lib.config;
+package stellarapi.feature.config;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.StellarAPI;
 
-public class StellarConfigScreen extends GuiConfig {
+public class StellarAPIConfigScreen extends GuiConfig {
 
-	public StellarConfigScreen(GuiScreen parentScreen) {
+	public StellarAPIConfigScreen(GuiScreen parentScreen) {
 		super(parentScreen, getConfigElement(), StellarAPI.modid, false, false, "Stellar Sky");
 	}
 	

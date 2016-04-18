@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
-import stellarapi.api.math.SpCoord;
+import stellarapi.api.lib.math.SpCoord;
 
 /**
  * Container for celestial collections. <p>

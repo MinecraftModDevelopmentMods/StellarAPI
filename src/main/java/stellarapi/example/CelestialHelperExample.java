@@ -3,7 +3,7 @@ package stellarapi.example;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialObject;
-import stellarapi.api.math.Spmath;
+import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.wavecolor.EnumRGBA;
 import stellarapi.api.wavecolor.Wavelength;
 

@@ -1,29 +1,29 @@
-package stellarapi.lib.config.property;
+package stellarapi.api.lib.config.property;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property.Type;
 
-public class ConfigPropertyBoolean extends ConfigProperty {
+public class ConfigPropertyDouble extends ConfigProperty {
 	
-	private boolean defaultValue;
-	private boolean currentValue;
+	private double defaultValue;
+	private double currentValue;
 	
-	public ConfigPropertyBoolean(String configKey, String dataKey, boolean defaultValue) {
+	public ConfigPropertyDouble(String configKey, String dataKey, double defaultValue) {
 		super(configKey, dataKey);
 		this.currentValue = this.defaultValue = defaultValue;
 	}
 	
-	public boolean getBoolean() {
+	public double getDouble() {
 		return this.currentValue;
 	}
 	
-	public void setBoolean(boolean value) {
+	public void setDouble(double value) {
 		this.currentValue = value;
 	}
 	
 	@Override
 	protected String getDefaultValue() {
-		return Boolean.toString(this.defaultValue);
+		return Double.toString(this.defaultValue);
 	}
 	
 	@Override
@@ -33,25 +33,25 @@ public class ConfigPropertyBoolean extends ConfigProperty {
 	
 	@Override
 	public void setAsProperty(ConfigProperty property) {
-		if(property instanceof ConfigPropertyBoolean)
-			this.currentValue = ((ConfigPropertyBoolean) property).currentValue;
+		if(property instanceof ConfigPropertyDouble)
+			this.currentValue = ((ConfigPropertyDouble) property).currentValue;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey(this.dataKey))
-			this.currentValue = compound.getBoolean(this.dataKey);
+			this.currentValue = compound.getDouble(this.dataKey);
 		else this.currentValue = this.defaultValue;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
-		compound.setBoolean(this.dataKey, this.currentValue);
+		compound.setDouble(this.dataKey, this.currentValue);
 	}
 
 	@Override
 	public void loadFromConfig() {
-		this.currentValue = property.getBoolean(this.defaultValue);
+		this.currentValue = property.getDouble(this.defaultValue);
 	}
 	
 	@Override
@@ -61,6 +61,6 @@ public class ConfigPropertyBoolean extends ConfigProperty {
 
 	@Override
 	protected Type getType() {
-		return Type.BOOLEAN;
+		return Type.DOUBLE;
 	}
 }

@@ -11,7 +11,7 @@ import stellarapi.api.StellarAPIReference;
 import stellarapi.api.celestials.CelestialLightSources;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IWakeHandler;
-import stellarapi.api.math.Spmath;
+import stellarapi.api.lib.math.Spmath;
 
 /**
  * Example of wake handler,
@@ -58,6 +58,9 @@ public class AlarmWakeHandler implements IWakeHandler {
 
 	@Override
 	public void setupConfig(Configuration config, String category) {
+		config.setCategoryLanguageKey(category, "config.category.alarm");
+		config.setCategoryComment(category, "Alarm type wake settings");
+		
 		Property pWakeTime = config.get(category, "Wake_Time_from_midnight", 6000);
 		pWakeTime.comment = "Wake-up time from midnight, in tick.";
 		pWakeTime.setRequiresWorldRestart(true);

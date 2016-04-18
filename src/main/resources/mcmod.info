@@ -1,5 +1,5 @@
 [{
-  "modid": "stellarapi",
+  "modid": "StellarAPI",
   "name": "Stellar API",
   "description": "API for mods related with sky and celestial sphere.",
   "version": "${version}",

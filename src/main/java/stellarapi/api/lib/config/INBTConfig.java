@@ -1,4 +1,4 @@
-package stellarapi.lib.config;
+package stellarapi.api.lib.config;
 
 public interface INBTConfig extends IConfigHandler, INBTSerializable {
 	

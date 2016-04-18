@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.celestials.CelestialLightSources;
-import stellarapi.lib.config.IConfigHandler;
+import stellarapi.api.lib.config.IConfigHandler;
 
 /**
  * Determine player's sleep availability and wake time.<p>

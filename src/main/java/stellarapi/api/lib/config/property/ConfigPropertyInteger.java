@@ -1,29 +1,29 @@
-package stellarapi.lib.config.property;
+package stellarapi.api.lib.config.property;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property.Type;
 
-public class ConfigPropertyString extends ConfigProperty {
+public class ConfigPropertyInteger extends ConfigProperty {
 	
-	private String defaultValue;
-	private String currentValue;
+	private int defaultValue;
+	private int currentValue;
 	
-	public ConfigPropertyString(String configKey, String dataKey, String defaultValue) {
+	public ConfigPropertyInteger(String configKey, String dataKey, int defaultValue) {
 		super(configKey, dataKey);
 		this.currentValue = this.defaultValue = defaultValue;
 	}
 	
-	public String getString() {
+	public int getInt() {
 		return this.currentValue;
 	}
 	
-	public void setString(String value) {
+	public void setInt(int value) {
 		this.currentValue = value;
 	}
 	
 	@Override
 	protected String getDefaultValue() {
-		return this.defaultValue;
+		return Integer.toString(this.defaultValue);
 	}
 	
 	@Override
@@ -33,25 +33,25 @@ public class ConfigPropertyString extends ConfigProperty {
 	
 	@Override
 	public void setAsProperty(ConfigProperty property) {
-		if(property instanceof ConfigPropertyString)
-			this.currentValue = ((ConfigPropertyString) property).currentValue;
+		if(property instanceof ConfigPropertyInteger)
+			this.currentValue = ((ConfigPropertyInteger) property).currentValue;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		if(compound.hasKey(this.dataKey))
-			this.currentValue = compound.getString(this.dataKey);
+			this.currentValue = compound.getInteger(this.dataKey);
 		else this.currentValue = this.defaultValue;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
-		compound.setString(this.dataKey, this.currentValue);
+		compound.setInteger(this.dataKey, this.currentValue);
 	}
 
 	@Override
 	public void loadFromConfig() {
-		this.currentValue = property.getString();
+		this.currentValue = property.getInt(this.defaultValue);
 	}
 	
 	@Override
@@ -61,6 +61,6 @@ public class ConfigPropertyString extends ConfigProperty {
 
 	@Override
 	protected Type getType() {
-		return Type.STRING;
+		return Type.INTEGER;
 	}
 }

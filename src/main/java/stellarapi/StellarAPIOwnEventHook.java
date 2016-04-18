@@ -15,8 +15,13 @@ public class StellarAPIOwnEventHook {
 		{
 			EntityPlayer player = (EntityPlayer) event.getEntity();
 			ItemStack usingItem = player.getItemInUse();
-			if(usingItem != null && usingItem.getItem() instanceof IViewScope)
-				event.setScope((IViewScope) usingItem.getItem());
+			Object[] params = event.getAdditionalParams();
+			if(params.length < 1 || !(params[0] instanceof ItemStack))
+				return;
+			ItemStack theItem = (ItemStack) params[0];
+			
+			if(usingItem == null && theItem != null && theItem.getItem() instanceof IViewScope)
+				event.setScope((IViewScope) theItem.getItem());
 		}
 	}
 

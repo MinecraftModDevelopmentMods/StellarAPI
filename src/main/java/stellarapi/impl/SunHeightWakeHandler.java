@@ -45,6 +45,9 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	
 	@Override
 	public void setupConfig(Configuration config, String category) {
+		config.setCategoryLanguageKey(category, "config.category.sunheight");
+		config.setCategoryComment(category, "Sun height type wake settings");
+
 		Property wakeAngle = config.get(category, "Sun_Height_for_Wake", 10.0);
 		wakeAngle.comment = "Solar azimuth(height) angle to wake up. (in degrees)";
 		wakeAngle.setRequiresWorldRestart(true);

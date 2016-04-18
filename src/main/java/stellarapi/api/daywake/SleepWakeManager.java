@@ -12,7 +12,7 @@ import net.minecraftforge.common.config.Property;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.celestials.CelestialLightSources;
-import stellarapi.lib.config.IConfigHandler;
+import stellarapi.api.lib.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
 	

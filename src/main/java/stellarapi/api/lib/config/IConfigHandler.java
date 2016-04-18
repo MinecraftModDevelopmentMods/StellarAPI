@@ -1,4 +1,4 @@
-package stellarapi.lib.config;
+package stellarapi.api.lib.config;
 
 import net.minecraftforge.common.config.Configuration;
 

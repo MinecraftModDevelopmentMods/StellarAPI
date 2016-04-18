@@ -2,6 +2,7 @@ package stellarapi.api;
 
 import cpw.mods.fml.common.eventhandler.EventBus;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
@@ -72,12 +73,13 @@ public final class StellarAPIReference {
 	
 	/**
 	 * Updates the scope for the entity.
+	 * @param additionalParams additional parameters 
 	 * */
-	public static void updateScope(Entity entity) {
+	public static void updateScope(Entity entity, Object... additionalParams) {
 		if(!PerEntityManager.hasEntityManager(entity))
 			PerEntityManager.registerEntityManager(entity);
 		
-		PerEntityManager.getEntityManager(entity).resetScope();
+		PerEntityManager.getEntityManager(entity).resetScope(additionalParams);
 	}
 	
 	

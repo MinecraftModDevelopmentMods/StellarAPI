@@ -30,8 +30,8 @@ public class PerEntityManager implements IExtendedEntityProperties {
 		this.entity = entity;
 	}
 
-	public void resetScope() {
-		ResetScopeEvent scopeEvent = new ResetScopeEvent(this.entity, new NakedScope());
+	public void resetScope(Object... additionalParams) {
+		ResetScopeEvent scopeEvent = new ResetScopeEvent(this.entity, new NakedScope(), additionalParams);
 		StellarAPIReference.getEventBus().post(scopeEvent);
 		this.scope = scopeEvent.getScope();
 	}

@@ -13,10 +13,15 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.daywake.SleepWakeManager;
+import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.example.ItemTelescopeExample;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
@@ -24,9 +29,8 @@ import stellarapi.impl.AlarmWakeHandler;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
-import stellarapi.lib.config.ConfigManager;
 
-@Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.config.StellarConfigGuiFactory")
+@Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
 	
 		public static final String modid = "StellarAPI";
@@ -68,7 +72,7 @@ public final class StellarAPI {
     		FMLCommonHandler.instance().bus().register(this.fmlEventHook);
     		FMLCommonHandler.instance().bus().register(this.networkManager);
     		
-    		    		
+    		
     		this.config = new Configuration(event.getSuggestedConfigurationFile());
     		this.cfgManager = new ConfigManager(this.config);
     		
@@ -82,8 +86,14 @@ public final class StellarAPI {
     		
     		StellarAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
     		
+    		StellarAPIReference.getEventBus().register(new StellarAPIOwnEventHook());
+    		
         	proxy.preInit(event);
     		
+        	Item telescope = new ItemTelescopeExample().setUnlocalizedName("stellarapi.deftelescope")
+        			.setCreativeTab(CreativeTabs.tabTools).setMaxStackSize(1);
+        	GameRegistry.registerItem(telescope, "defaulttelescope");
+        	
     		CompatManager.getInstance().onPreInit();
         }
         

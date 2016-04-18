@@ -7,7 +7,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import stellarapi.api.math.Spmath;
+import stellarapi.api.lib.math.Spmath;
 
 public class CommonProxy implements IProxy {
 	

@@ -1,6 +1,6 @@
 package stellarapi.api;
 
-import stellarapi.api.math.SpCoord;
+import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.wavecolor.Wavelength;
 
 /**

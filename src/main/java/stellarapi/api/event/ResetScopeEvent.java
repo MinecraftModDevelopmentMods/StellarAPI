@@ -10,9 +10,13 @@ public class ResetScopeEvent extends PerEntityEvent {
 
 	private IViewScope scope;
 	
-	public ResetScopeEvent(Entity entity, IViewScope defScope) {
+	/**Additional parameters, like items which is changed*/
+	private Object[] params;
+	
+	public ResetScopeEvent(Entity entity, IViewScope defScope, Object... additionalParams) {
 		super(entity);
 		this.scope = defScope;
+		this.params = additionalParams;
 	}
 	
 	public IViewScope getScope() {
@@ -21,6 +25,10 @@ public class ResetScopeEvent extends PerEntityEvent {
 	
 	public void setScope(IViewScope scope) {
 		this.scope = scope;
+	}
+	
+	public Object[] getAdditionalParams() {
+		return this.params;
 	}
 
 }

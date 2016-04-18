@@ -1,10 +1,10 @@
-package stellarapi.lib.config;
+package stellarapi.api.lib.config;
 
 import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.lib.config.property.ConfigProperty;
+import stellarapi.api.lib.config.property.ConfigProperty;
 
 public abstract class SimpleNBTConfig extends SimpleConfigHandler implements INBTConfig {
 

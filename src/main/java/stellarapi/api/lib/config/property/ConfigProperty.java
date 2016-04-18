@@ -1,4 +1,4 @@
-package stellarapi.lib.config.property;
+package stellarapi.api.lib.config.property;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;

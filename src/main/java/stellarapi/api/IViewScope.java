@@ -4,11 +4,14 @@ import stellarapi.api.wavecolor.Wavelength;
 
 /**
  * View scope for the entity.
- * To make an item work like telescope, make the item implement this interface.
+ * To make an item work like telescope, see {@link stellarapi.example.ItemTelescopeExample}.
  * */
 public interface IViewScope {
 
-	/**Light Gathering Power of this scope, compared to naked eye.*/
+	/**
+	 * Light Gathering Power of this scope, compared to naked eye.
+	 * Relative brightness can be seen will be proportional to LGP/MP^2.
+	 * */
 	public double getLGP();
 
 	/**Resolution of this scope on specific wavelength in degrees.*/

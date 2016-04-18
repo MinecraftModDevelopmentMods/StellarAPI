@@ -1,4 +1,4 @@
-package stellarapi.api.math;
+package stellarapi.api.lib.math;
 
 import javax.vecmath.Matrix3d;
 import javax.vecmath.Vector3d;

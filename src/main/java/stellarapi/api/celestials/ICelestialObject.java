@@ -3,7 +3,7 @@ package stellarapi.api.celestials;
 import javax.vecmath.Vector3d;
 
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.math.SpCoord;
+import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.wavecolor.Wavelength;
 
 /**
