@@ -21,7 +21,7 @@ import stellarapi.api.event.SortCelestialsEvent;
  * */
 public class PerWorldManager extends WorldSavedData {
 	
-	private static final String ID = "stellarperworldmanager";
+	private static final String ID = "stellarapiperworldmanager";
 	
 	private World world;
 	

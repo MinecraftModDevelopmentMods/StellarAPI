@@ -1,4 +1,4 @@
-package stellarapi.api.mc;
+package stellarapi.api.daywake;
 
 /**
  * Daytime descriptor to note the time for day. <p>

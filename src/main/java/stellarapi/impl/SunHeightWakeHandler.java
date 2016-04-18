@@ -8,7 +8,7 @@ import net.minecraftforge.common.config.Property;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.celestials.CelestialLightSources;
 import stellarapi.api.celestials.ICelestialObject;
-import stellarapi.api.mc.IWakeHandler;
+import stellarapi.api.daywake.IWakeHandler;
 
 /**
  * Example of wake handler,

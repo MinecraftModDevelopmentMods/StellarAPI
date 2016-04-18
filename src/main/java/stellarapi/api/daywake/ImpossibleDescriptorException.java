@@ -1,4 +1,4 @@
-package stellarapi.api.mc;
+package stellarapi.api.daywake;
 
 public class ImpossibleDescriptorException extends RuntimeException {
 

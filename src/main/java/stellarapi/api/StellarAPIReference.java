@@ -1,18 +1,14 @@
 package stellarapi.api;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import cpw.mods.fml.common.eventhandler.EventBus;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IRenderHandler;
 import stellarapi.StellarAPI;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialLightSources;
-import stellarapi.api.mc.DaytimeChecker;
-import stellarapi.api.mc.SleepWakeManager;
+import stellarapi.api.daywake.DaytimeChecker;
+import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
 
@@ -74,6 +70,16 @@ public final class StellarAPIReference {
 		PerWorldManager.getPerWorldManager(world).resetSkyEffect();
 	}
 	
+	/**
+	 * Resets the scope for the entity.
+	 * */
+	public static void resetScope(Entity entity) {
+		if(!PerEntityManager.hasEntityManager(entity))
+			PerEntityManager.registerEntityManager(entity);
+		
+		PerEntityManager.getEntityManager(entity).resetScope();
+	}
+	
 	
 	/**
 	 * Gets the event bus for Stellar API.
@@ -111,12 +117,21 @@ public final class StellarAPIReference {
 	}
 	
 	/**
-	 * Gets celestial collection manager for certian world.
+	 * Gets celestial collection manager for certain world.
 	 * @param world the world
 	 * @return the light sources for the world if it exists, or <code>null</code> otherwise
 	 * */
 	public static CelestialCollectionManager getCollectionManager(World world) {
 		return PerWorldManager.getPerWorldManager(world).getCollectionManager();
+	}
+	
+	/**
+	 * Gets scope for certain entity.
+	 * */
+	public static IViewScope getScope(Entity entity) {
+		if(!PerEntityManager.hasEntityManager(entity))
+			PerEntityManager.registerEntityManager(entity);
+		return PerEntityManager.getEntityManager(entity).getScope();
 	}
 	
 	

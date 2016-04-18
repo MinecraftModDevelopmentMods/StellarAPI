@@ -7,8 +7,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.mc.DaytimeChecker;
-import stellarapi.api.mc.EnumDaytimeDescriptor;
+import stellarapi.api.daywake.DaytimeChecker;
+import stellarapi.api.daywake.EnumDaytimeDescriptor;
 
 public class FixedCommandTime extends CommandTime {
 	

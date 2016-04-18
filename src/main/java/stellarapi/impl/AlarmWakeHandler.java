@@ -9,9 +9,9 @@ import stellarapi.api.CelestialPeriod;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.celestials.CelestialLightSources;
+import stellarapi.api.daywake.EnumDaytimeDescriptor;
+import stellarapi.api.daywake.IWakeHandler;
 import stellarapi.api.math.Spmath;
-import stellarapi.api.mc.EnumDaytimeDescriptor;
-import stellarapi.api.mc.IWakeHandler;
 
 /**
  * Example of wake handler,

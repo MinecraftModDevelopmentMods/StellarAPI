@@ -1,4 +1,4 @@
-package stellarapi.api.mc;
+package stellarapi.api.daywake;
 
 import java.util.List;
 

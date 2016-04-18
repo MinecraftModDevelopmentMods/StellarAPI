@@ -1,4 +1,4 @@
-package stellarapi.api.mc;
+package stellarapi.api.daywake;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

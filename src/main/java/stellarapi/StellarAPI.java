@@ -16,7 +16,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.mc.SleepWakeManager;
+import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;

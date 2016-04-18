@@ -6,8 +6,8 @@ import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.celestials.CelestialLightSources;
-import stellarapi.api.mc.EnumDaytimeDescriptor;
-import stellarapi.api.mc.IDaytimeChecker;
+import stellarapi.api.daywake.EnumDaytimeDescriptor;
+import stellarapi.api.daywake.IDaytimeChecker;
 
 /**
  * Default implementation for daytime checker when there is one main light source,
