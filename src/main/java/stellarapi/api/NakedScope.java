@@ -18,6 +18,11 @@ public class NakedScope implements IViewScope {
 	public double getMP() {
 		return 1.0;
 	}
+	
+	@Override
+	public boolean forceChange() {
+		return false;
+	}
 
 	@Override
 	public boolean isFOVCoverSky() {

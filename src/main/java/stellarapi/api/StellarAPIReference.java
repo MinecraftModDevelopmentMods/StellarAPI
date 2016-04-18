@@ -71,9 +71,9 @@ public final class StellarAPIReference {
 	}
 	
 	/**
-	 * Resets the scope for the entity.
+	 * Updates the scope for the entity.
 	 * */
-	public static void resetScope(Entity entity) {
+	public static void updateScope(Entity entity) {
 		if(!PerEntityManager.hasEntityManager(entity))
 			PerEntityManager.registerEntityManager(entity);
 		

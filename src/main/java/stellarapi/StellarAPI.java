@@ -43,7 +43,7 @@ public final class StellarAPI {
         
     	private static final String wakeCategory = "wake";
         
-        private StellarAPIEventHook eventHook = new StellarAPIEventHook();
+        private StellarAPIForgeEventHook eventHook = new StellarAPIForgeEventHook();
         private StellarAPITickHandler tickHandler = new StellarAPITickHandler();
         private StellarAPIFMLEventHook fmlEventHook = new StellarAPIFMLEventHook();
         private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
