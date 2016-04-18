@@ -1,4 +1,4 @@
-package stellarapi.network;
+package stellarapi.feature.network;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
-import stellarapi.StellarEventHook;
+import stellarapi.StellarAPIEventHook;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 
 public class MessageSync implements IMessage {

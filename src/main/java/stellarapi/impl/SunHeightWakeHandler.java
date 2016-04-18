@@ -5,9 +5,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ICelestialObject;
+import stellarapi.api.celestials.CelestialLightSources;
+import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.mc.IWakeHandler;
 
 /**

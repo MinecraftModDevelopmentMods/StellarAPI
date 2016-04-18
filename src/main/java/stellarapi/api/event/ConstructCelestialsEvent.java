@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCollection;
-import stellarapi.api.ICelestialObject;
+import stellarapi.api.celestials.ICelestialCollection;
+import stellarapi.api.celestials.ICelestialObject;
 
 /**
  * Fired to construct the set of celestial collections. <p>

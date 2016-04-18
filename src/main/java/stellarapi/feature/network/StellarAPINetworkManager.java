@@ -1,4 +1,4 @@
-package stellarapi.network;
+package stellarapi.feature.network;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -10,12 +10,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 
-public class StellarNetworkManager {
+public class StellarAPINetworkManager {
 	
 	private SimpleNetworkWrapper wrapper;
 	protected String id = "stellarskychannel";
 	
-	public StellarNetworkManager() {
+	public StellarAPINetworkManager() {
 		this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(this.id);
 		
 		wrapper.registerMessage(MessageSync.MessageSyncCommonHandler.class,

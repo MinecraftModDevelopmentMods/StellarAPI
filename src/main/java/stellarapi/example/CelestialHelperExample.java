@@ -1,11 +1,11 @@
 package stellarapi.example;
 
 import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ICelestialObject;
 import stellarapi.api.ISkyEffect;
+import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.math.Spmath;
 import stellarapi.api.wavecolor.EnumRGBA;
 import stellarapi.api.wavecolor.Wavelength;
-import stellarapi.util.math.Spmath;
 
 /**
  * Helper for WorldProvider. <p>

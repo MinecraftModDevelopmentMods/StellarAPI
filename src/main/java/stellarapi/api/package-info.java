@@ -1,5 +1,5 @@
 /**
- * Main api section for stellar api
+ * Main api section for stellar api.
  * */
 @API(apiVersion = "@VERSION@", owner = "StellarAPI", provides = "StellarAPI")
 package stellarapi.api;

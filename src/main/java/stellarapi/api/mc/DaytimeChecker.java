@@ -5,9 +5,9 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.world.World;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.celestials.CelestialLightSources;
 
 public class DaytimeChecker {
 	

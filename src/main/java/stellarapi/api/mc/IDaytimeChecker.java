@@ -1,8 +1,8 @@
 package stellarapi.api.mc;
 
 import net.minecraft.world.World;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.celestials.CelestialLightSources;
 
 /**
  * Daytime checker which checks relation with world time in tick and daytime descriptor. <p>

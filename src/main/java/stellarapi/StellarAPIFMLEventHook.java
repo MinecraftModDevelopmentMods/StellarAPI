@@ -3,7 +3,7 @@ package stellarapi;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class StellarFMLEventHook {
+public class StellarAPIFMLEventHook {
 	@SubscribeEvent
 	public void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event)
 	{

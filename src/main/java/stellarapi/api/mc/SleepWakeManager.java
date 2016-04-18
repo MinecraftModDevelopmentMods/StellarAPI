@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.celestials.CelestialLightSources;
 import stellarapi.lib.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {

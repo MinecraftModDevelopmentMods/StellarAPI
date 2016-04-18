@@ -13,11 +13,11 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
 import stellarapi.api.StellarAPIReference;
 
-public class StellarTickHandler {
+public class StellarAPITickHandler {
 	
 	private Field sleep;
 			
-	public StellarTickHandler() {
+	public StellarAPITickHandler() {
 		sleep = getField(WorldServer.class, "allPlayersSleeping", "field_73068_P");
 	}
 	

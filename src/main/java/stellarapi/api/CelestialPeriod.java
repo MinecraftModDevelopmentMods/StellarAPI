@@ -1,6 +1,6 @@
 package stellarapi.api;
 
-import stellarapi.util.math.Spmath;
+import stellarapi.api.math.Spmath;
 
 public class CelestialPeriod {
 	

@@ -7,12 +7,12 @@ import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.PerWorldManager;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.celestials.CelestialLightSources;
 
-public class StellarEventHook {
+public class StellarAPIEventHook {
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldLoad(WorldEvent.Load event) {

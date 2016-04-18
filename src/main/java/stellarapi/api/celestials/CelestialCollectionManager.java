@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.api.celestials;
 
 import java.util.List;
 import java.util.Set;
@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
-import stellarapi.util.math.SpCoord;
+import stellarapi.api.math.SpCoord;
 
 /**
  * Container for celestial collections. <p>
@@ -19,7 +19,7 @@ public final class CelestialCollectionManager {
 	
 	private List<ICelestialCollection> celestialCollections;
 	
-	protected CelestialCollectionManager(List<ICelestialCollection> collections) {
+	public CelestialCollectionManager(List<ICelestialCollection> collections) {
 		this.celestialCollections = collections;
 	}
 	

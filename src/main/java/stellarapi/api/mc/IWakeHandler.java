@@ -2,8 +2,8 @@ package stellarapi.api.mc;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.celestials.CelestialLightSources;
 import stellarapi.lib.config.IConfigHandler;
 
 /**

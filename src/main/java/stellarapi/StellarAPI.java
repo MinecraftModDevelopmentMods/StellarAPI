@@ -18,13 +18,13 @@ import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.mc.SleepWakeManager;
 import stellarapi.feature.command.FixedCommandTime;
+import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 import stellarapi.impl.AlarmWakeHandler;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.lib.config.ConfigManager;
-import stellarapi.network.StellarNetworkManager;
 
 @Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.config.StellarConfigGuiFactory")
 public final class StellarAPI {
@@ -43,15 +43,15 @@ public final class StellarAPI {
         
     	private static final String wakeCategory = "wake";
         
-        private StellarEventHook eventHook = new StellarEventHook();
-        private StellarTickHandler tickHandler = new StellarTickHandler();
-        private StellarFMLEventHook fmlEventHook = new StellarFMLEventHook();
-        private StellarNetworkManager networkManager = new StellarNetworkManager();
+        private StellarAPIEventHook eventHook = new StellarAPIEventHook();
+        private StellarAPITickHandler tickHandler = new StellarAPITickHandler();
+        private StellarAPIFMLEventHook fmlEventHook = new StellarAPIFMLEventHook();
+        private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
         
     	private Configuration config;
     	private ConfigManager cfgManager;
         
-        public StellarNetworkManager getNetworkManager() {
+        public StellarAPINetworkManager getNetworkManager() {
         	return this.networkManager;
         }
 

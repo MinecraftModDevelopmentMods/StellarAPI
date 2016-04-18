@@ -3,9 +3,9 @@ package stellarapi.impl;
 import javax.vecmath.Vector3d;
 
 import net.minecraft.world.World;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.celestials.CelestialLightSources;
 import stellarapi.api.mc.EnumDaytimeDescriptor;
 import stellarapi.api.mc.IDaytimeChecker;
 

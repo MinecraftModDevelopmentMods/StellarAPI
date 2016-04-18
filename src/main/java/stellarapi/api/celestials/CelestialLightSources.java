@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.api.celestials;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;

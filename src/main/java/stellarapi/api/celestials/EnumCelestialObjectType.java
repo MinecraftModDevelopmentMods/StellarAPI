@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.api.celestials;
 
 public enum EnumCelestialObjectType {
 	/**

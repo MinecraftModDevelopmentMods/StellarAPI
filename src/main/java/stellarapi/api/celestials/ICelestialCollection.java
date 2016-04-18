@@ -1,8 +1,8 @@
-package stellarapi.api;
+package stellarapi.api.celestials;
 
 import java.util.Set;
 
-import stellarapi.util.math.SpCoord;
+import stellarapi.api.math.SpCoord;
 
 /**
  * Interface representing certain celestial collection, i.e. celestial layer.

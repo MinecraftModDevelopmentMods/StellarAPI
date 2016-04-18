@@ -5,13 +5,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.CelestialLightSources;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.celestials.CelestialLightSources;
+import stellarapi.api.math.Spmath;
 import stellarapi.api.mc.EnumDaytimeDescriptor;
 import stellarapi.api.mc.IWakeHandler;
-import stellarapi.util.math.Spmath;
 
 /**
  * Example of wake handler,

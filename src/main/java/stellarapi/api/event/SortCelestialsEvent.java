@@ -7,8 +7,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCollection;
-import stellarapi.api.ICelestialObject;
+import stellarapi.api.celestials.ICelestialCollection;
+import stellarapi.api.celestials.ICelestialObject;
 
 /**
  * Fired to define the {@link Ordering} of the light sources,

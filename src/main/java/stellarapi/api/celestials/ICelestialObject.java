@@ -1,9 +1,10 @@
-package stellarapi.api;
+package stellarapi.api.celestials;
 
 import javax.vecmath.Vector3d;
 
+import stellarapi.api.CelestialPeriod;
+import stellarapi.api.math.SpCoord;
 import stellarapi.api.wavecolor.Wavelength;
-import stellarapi.util.math.SpCoord;
 
 /**
  * Celestial Object interface. <p> 

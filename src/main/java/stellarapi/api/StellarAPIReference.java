@@ -9,11 +9,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IRenderHandler;
 import stellarapi.StellarAPI;
+import stellarapi.api.celestials.CelestialCollectionManager;
+import stellarapi.api.celestials.CelestialLightSources;
 import stellarapi.api.mc.DaytimeChecker;
 import stellarapi.api.mc.SleepWakeManager;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
 
+/**
+ * Central reference for Stellar API.
+ * */
 public final class StellarAPIReference {
 		
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
