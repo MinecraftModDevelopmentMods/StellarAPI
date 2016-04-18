@@ -22,8 +22,14 @@ config.property.wakemode.tooltip=You can choose earliest or latest available wak
 config.property.enablewake=Wake Property Enabled
 config.property.enablewake.tooltip=Enable this wake property.
 
+config.category.alarm=Wake by Alarm
+config.category.alarm.tooltip=Alarm type wake settings.
+
 config.property.waketime=Wake time from midnight
 config.property.waketime.tooltip=Wake-up time from midnight, in tick.
+
+config.category.alarm=Wake by Sun height
+config.category.alarm.tooltip=Sun height type wake settings, which makes player get up when sun reaches certain angle.
 
 config.property.wakeangle=Sun height for wake
 config.property.wakeangle.tooltip=Solar azimuth(height) angle to wake up (in degrees). (Sun can be replaced by primary celestial light source)
