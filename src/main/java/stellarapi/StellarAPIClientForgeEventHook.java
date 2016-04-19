@@ -13,9 +13,11 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import stellarapi.api.IViewScope;
-import stellarapi.api.NakedScope;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.optics.FilterHelper;
+import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.NakedFilter;
 
 public class StellarAPIClientForgeEventHook {
 	
@@ -46,12 +48,17 @@ public class StellarAPIClientForgeEventHook {
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
 		IViewScope scope = StellarAPIReference.getScope(event.entity);
-		float multiplier = (float)(scope.getLGP() / (scope.getMP() * scope.getMP()));
-		event.red *= multiplier;
-		event.green *= multiplier;
-		event.blue *= multiplier;
+		IOpticalFilter filter = StellarAPIReference.getFilter(event.entity);
 		
-		if(multiplier != 1.0) {
+		double multiplier = scope.getLGP() / (scope.getMP() * scope.getMP());
+		
+		double[] value = FilterHelper.getFilteredRGBBounded(filter, new double[] {
+				event.red * multiplier, event.green * multiplier, event.blue * multiplier});
+		event.red = (float) value[0];
+		event.green = (float) value[1];
+		event.blue = (float) value[2];
+		
+		if(multiplier != 1.0 || !(filter instanceof NakedFilter)) {			
 			DynamicTexture texture;
 			try {
 				texture = (DynamicTexture) lightMapField.get(event.renderer);
@@ -60,23 +67,23 @@ public class StellarAPIClientForgeEventHook {
 				{
 					int data = texture.getTextureData()[i];
 					int red = data & 0x000000ff;
-					int green = (data & 0x0000ff00) >> 8;
-				int blue = (data & 0x00ff0000) >> 16;
+					int green = ((data & 0x0000ff00) >> 8);
+					int blue = ((data & 0x00ff0000) >> 16);
+					
+					double[] modified = FilterHelper.getFilteredRGBBounded(filter, new double[] {
+							red / 255.0 * multiplier, green / 255.0 * multiplier, blue / 255.0 * multiplier});
 
-				red *= multiplier;
-				green *= multiplier;
-				blue *= multiplier;
-				red = Math.min(0xff, red);
-				green = Math.min(0xff, green);
-				blue = Math.min(0xff, blue);
+					red = Math.min(0xff, (int)(modified[0]*0xff));
+					green = Math.min(0xff, (int)(modified[1]*0xff));
+					blue = Math.min(0xff, (int)(modified[2]*0xff));
 
-				texture.getTextureData()[i] = 0xff << 24 | red << 16 | green << 8 | blue;
+					texture.getTextureData()[i] = 0xff << 24 | red << 16 | green << 8 | blue;
 				}
 
 				texture.updateDynamicTexture();
-				
+
 				lightMapUpdatedField.set(event.renderer, true);
-				
+
 			} catch (Exception exc) {
 				Throwables.propagate(exc);
 			}

@@ -8,9 +8,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import stellarapi.api.IViewScope;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.wavecolor.Wavelength;
+import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.Wavelength;
 
 /**
  * Example for telescope item.
@@ -22,15 +22,17 @@ public class ItemTelescopeExample extends Item implements IViewScope {
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_)
     {
 		p_77659_3_.setItemInUse(p_77659_1_, Integer.MAX_VALUE);
-        
+		StellarAPIReference.updateScope(p_77659_3_);
+
         return p_77659_1_;
     }
-	
-	@Override
-    public void onPlayerStoppedUsing(ItemStack p_77615_1_, World p_77615_2_, EntityPlayer p_77615_3_, int p_77615_4_) {
-		
-	}
 
+	@Override
+	public void onPlayerStoppedUsing(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_, int p_77659_4_)
+    {
+		p_77659_3_.clearItemInUse();
+		StellarAPIReference.updateScope(p_77659_3_);
+    }
 
 	@Override
 	public double getLGP() {

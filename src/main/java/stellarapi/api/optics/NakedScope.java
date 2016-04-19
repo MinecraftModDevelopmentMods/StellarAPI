@@ -1,6 +1,4 @@
-package stellarapi.api;
-
-import stellarapi.api.wavecolor.Wavelength;
+package stellarapi.api.optics;
 
 public class NakedScope implements IViewScope {
 

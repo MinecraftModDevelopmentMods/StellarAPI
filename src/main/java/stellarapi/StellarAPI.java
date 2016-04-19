@@ -21,6 +21,7 @@ import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.example.ItemFilteredTelescopeExample;
 import stellarapi.example.ItemTelescopeExample;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
@@ -90,9 +91,17 @@ public final class StellarAPI {
     		
         	proxy.preInit(event);
     		
-        	Item telescope = new ItemTelescopeExample().setUnlocalizedName("stellarapi.deftelescope")
-        			.setCreativeTab(CreativeTabs.tabTools).setMaxStackSize(1);
+        	Item telescope = new ItemTelescopeExample()
+        			.setUnlocalizedName("stellarapi.deftelescope")
+        			.setCreativeTab(CreativeTabs.tabTools).setMaxStackSize(1)
+        			.setTextureName("stellarapi:deftelescope");
         	GameRegistry.registerItem(telescope, "defaulttelescope");
+        	
+        	Item filteredTelescope = new ItemFilteredTelescopeExample()
+        			.setUnlocalizedName("stellarapi.deffilteredtelescope")
+        			.setCreativeTab(CreativeTabs.tabTools).setMaxStackSize(1)
+        			.setTextureName("stellarapi:deffilteredtelescope");
+        	GameRegistry.registerItem(filteredTelescope, "defaultfilteredtelescope");
         	
     		CompatManager.getInstance().onPreInit();
         }

@@ -2,7 +2,6 @@ package stellarapi.api;
 
 import cpw.mods.fml.common.eventhandler.EventBus;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
@@ -10,6 +9,8 @@ import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialLightSources;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
+import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
 
@@ -73,13 +74,23 @@ public final class StellarAPIReference {
 	
 	/**
 	 * Updates the scope for the entity.
-	 * @param additionalParams additional parameters 
+	 * @param additionalParams additional parameters like changed itemstack.
 	 * */
 	public static void updateScope(Entity entity, Object... additionalParams) {
 		if(!PerEntityManager.hasEntityManager(entity))
 			PerEntityManager.registerEntityManager(entity);
 		
-		PerEntityManager.getEntityManager(entity).resetScope(additionalParams);
+		PerEntityManager.getEntityManager(entity).updateScope(additionalParams);
+	}
+	
+	/**
+	 * Updates the filter for the entity.
+	 * @param additionalParams additional parameters like changed itemstack.
+	 * */
+	public static void updateFilter(Entity entity, Object... additionalParams) {
+		if(!PerEntityManager.hasEntityManager(entity))
+			PerEntityManager.registerEntityManager(entity);
+		PerEntityManager.getEntityManager(entity).updateFilter(additionalParams);
 	}
 	
 	
@@ -134,6 +145,15 @@ public final class StellarAPIReference {
 		if(!PerEntityManager.hasEntityManager(entity))
 			PerEntityManager.registerEntityManager(entity);
 		return PerEntityManager.getEntityManager(entity).getScope();
+	}
+	
+	/**
+	 * Gets filter for certain entity.
+	 * */
+	public static IOpticalFilter getFilter(Entity entity) {
+		if(!PerEntityManager.hasEntityManager(entity))
+			PerEntityManager.registerEntityManager(entity);
+		return PerEntityManager.getEntityManager(entity).getFilter();
 	}
 	
 	

@@ -1,19 +1,19 @@
 package stellarapi.api.event;
 
 import net.minecraft.entity.Entity;
-import stellarapi.api.IViewScope;
+import stellarapi.api.optics.IViewScope;
 
 /**
  * Fired to reset the scope.
  * */
-public class ResetScopeEvent extends PerEntityEvent {
+public class UpdateScopeEvent extends PerEntityEvent {
 
 	private IViewScope scope;
 	
-	/**Additional parameters, like items which is changed*/
+	/** Additional parameters, like items which is changed or started using */
 	private Object[] params;
 	
-	public ResetScopeEvent(Entity entity, IViewScope defScope, Object... additionalParams) {
+	public UpdateScopeEvent(Entity entity, IViewScope defScope, Object... additionalParams) {
 		super(entity);
 		this.scope = defScope;
 		this.params = additionalParams;

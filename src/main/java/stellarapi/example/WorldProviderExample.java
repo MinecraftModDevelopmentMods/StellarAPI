@@ -13,7 +13,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
-import stellarapi.api.wavecolor.EnumRGBA;
+import stellarapi.api.optics.EnumRGBA;
 
 /**
  * Example of WorldProvider with celestial helper. <p>

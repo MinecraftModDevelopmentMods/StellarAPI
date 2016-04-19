@@ -33,3 +33,7 @@ config.category.alarm.tooltip=Sun height type wake settings, which makes player 
 
 config.property.wakeangle=Sun height for wake
 config.property.wakeangle.tooltip=Solar azimuth(height) angle to wake up (in degrees). (Sun can be replaced by primary celestial light source)
+
+
+item.stellarapi.deftelescope.name=Default Telescope
+item.stellarapi.deffilteredtelescope.name=Default Filtered Telescope

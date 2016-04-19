@@ -4,8 +4,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
-import stellarapi.api.event.ResetScopeEvent;
+import stellarapi.api.event.UpdateFilterEvent;
+import stellarapi.api.event.UpdateScopeEvent;
+import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.NakedFilter;
+import stellarapi.api.optics.NakedScope;
 
+/**
+ * Per entity manager to contain the per-entity objects.
+ * */
 public class PerEntityManager implements IExtendedEntityProperties {
 	
 	private static final String ID = "stellarapiperplayermanager";
@@ -13,6 +21,7 @@ public class PerEntityManager implements IExtendedEntityProperties {
 	private Entity entity;
 
 	private IViewScope scope = null;
+	private IOpticalFilter filter = null;
 	
 	public static void registerEntityManager(Entity entity) {
 		entity.registerExtendedProperties(ID, new PerEntityManager(entity));
@@ -30,16 +39,28 @@ public class PerEntityManager implements IExtendedEntityProperties {
 		this.entity = entity;
 	}
 
-	public void resetScope(Object... additionalParams) {
-		ResetScopeEvent scopeEvent = new ResetScopeEvent(this.entity, new NakedScope(), additionalParams);
+	public void updateScope(Object... additionalParams) {
+		UpdateScopeEvent scopeEvent = new UpdateScopeEvent(this.entity, new NakedScope(), additionalParams);
 		StellarAPIReference.getEventBus().post(scopeEvent);
 		this.scope = scopeEvent.getScope();
 	}
 	
+	public void updateFilter(Object... additionalParams) {
+		UpdateFilterEvent filterEvent = new UpdateFilterEvent(this.entity, new NakedFilter(), additionalParams);
+		StellarAPIReference.getEventBus().post(filterEvent);
+		this.filter = filterEvent.getFilter();
+	}
+	
 	public IViewScope getScope() {
 		if(this.scope == null)
-			this.resetScope();
+			this.updateScope();
 		return this.scope;
+	}
+	
+	public IOpticalFilter getFilter() {
+		if(this.filter == null)
+			this.updateFilter();
+		return this.filter;
 	}
 	
 	

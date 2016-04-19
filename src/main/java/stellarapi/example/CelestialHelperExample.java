@@ -4,8 +4,8 @@ import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.Spmath;
-import stellarapi.api.wavecolor.EnumRGBA;
-import stellarapi.api.wavecolor.Wavelength;
+import stellarapi.api.optics.EnumRGBA;
+import stellarapi.api.optics.Wavelength;
 
 /**
  * Helper for WorldProvider. <p>

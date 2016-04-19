@@ -2,35 +2,21 @@ package stellarapi;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import stellarapi.api.IViewScope;
 import stellarapi.api.PerWorldManager;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IViewScope;
 
 public class StellarAPIForgeEventHook {
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldLoad(WorldEvent.Load event) {
 		PerWorldManager.initiatePerWorldManager(event.world);
-	}
-	
-	@SubscribeEvent
-	public void playerUseItemEvent(PlayerUseItemEvent.Start event) {
-		if(event.item.getItem() instanceof IViewScope)
-			StellarAPIReference.updateScope(event.entity, event.item);
-	}
-	
-	@SubscribeEvent
-	public void playerUseItemEvent(PlayerUseItemEvent.Stop event) {
-		if(event.item.getItem() instanceof IViewScope)
-			StellarAPIReference.updateScope(event.entity, event.item);
 	}
 	
 	@SubscribeEvent

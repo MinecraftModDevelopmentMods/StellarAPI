@@ -1,4 +1,4 @@
-package stellarapi.api.wavecolor;
+package stellarapi.api.optics;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;

@@ -4,7 +4,7 @@ import javax.vecmath.Vector3d;
 
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.wavecolor.Wavelength;
+import stellarapi.api.optics.Wavelength;
 
 /**
  * Celestial Object interface. <p> 

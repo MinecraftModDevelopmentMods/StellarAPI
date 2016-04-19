@@ -1,7 +1,7 @@
 package stellarapi.api;
 
 import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.wavecolor.Wavelength;
+import stellarapi.api.optics.Wavelength;
 
 /**
  * Interface which represents the sky effect.

@@ -9,9 +9,13 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.helper.PlayerItemAccessHelper;
+import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IViewScope;
 
 public class StellarAPITickHandler {
 	
@@ -23,6 +27,23 @@ public class StellarAPITickHandler {
 	
 	public static Field getField(Class<?> clazz, String... fieldNames) {
 		return ReflectionHelper.findField(clazz, ObfuscationReflectionHelper.remapFieldNames(clazz.getName(), fieldNames));
+	}
+	
+	@SubscribeEvent
+	public void tickStart(TickEvent.PlayerTickEvent e) {
+		if(e.phase == Phase.START) {
+			ItemStack itemstack = e.player.getCurrentEquippedItem();
+			ItemStack itemInUse = PlayerItemAccessHelper.getUsingItem(e.player);
+						
+            if (itemstack != itemInUse) {
+    			e.player.clearItemInUse();
+
+            	if(itemInUse != null && itemInUse.getItem() instanceof IViewScope)
+        			StellarAPIReference.updateScope(e.player);
+            	if(itemInUse != null && itemInUse.getItem() instanceof IOpticalFilter)
+        			StellarAPIReference.updateFilter(e.player);
+            }
+		}
 	}
 		
 	@SubscribeEvent
