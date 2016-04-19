@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import stellarapi.api.celestials.CelestialCollectionManager;
-import stellarapi.api.celestials.CelestialLightSources;
+import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.event.ConstructCelestialsEvent;
@@ -26,7 +26,7 @@ public class PerWorldManager extends WorldSavedData {
 	private World world;
 	
 	private CelestialCollectionManager collectionManager = null;
-	private CelestialLightSources lightSources = null;
+	private CelestialEffectors lightSources = null;
 	private ICelestialCoordinate coordinate;
 	private ISkyEffect skyEffect;
 	
@@ -70,7 +70,7 @@ public class PerWorldManager extends WorldSavedData {
 		StellarAPIReference.getEventBus().post(sort);
 		
 		this.collectionManager = new CelestialCollectionManager(sort.getSortedCollections());
-		this.lightSources = new CelestialLightSources(sort.getSortedLightSources());
+		this.lightSources = new CelestialEffectors(sort.getSortedLightSources());
 	}
 	
 	public void resetCoordinate() {
@@ -89,7 +89,7 @@ public class PerWorldManager extends WorldSavedData {
 		return this.collectionManager;
 	}
 	
-	public CelestialLightSources getCelestialLightSources() {
+	public CelestialEffectors getCelestialLightSources() {
 		return this.lightSources;
 	}
 	

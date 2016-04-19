@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.world.World;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.celestials.CelestialLightSources;
+import stellarapi.api.celestials.CelestialEffectors;
 
 public class DaytimeChecker {
 	
@@ -33,7 +33,7 @@ public class DaytimeChecker {
 	public boolean isDescriptorApply(World world,
 			EnumDaytimeDescriptor descriptor, long time, int tolerance) {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
+		CelestialEffectors lightSources = StellarAPIReference.getLightSources(world);
 		
 		if(coordinate != null && lightSources != null)
 			for(IDaytimeChecker checker : this.daytimeCheckers) {
@@ -53,7 +53,7 @@ public class DaytimeChecker {
 	public long timeForCertainDescriptor(World world,
 			EnumDaytimeDescriptor descriptor, long defaultValue) {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
+		CelestialEffectors lightSources = StellarAPIReference.getLightSources(world);
 		
 		if(coordinate != null && lightSources != null)		
 			for(IDaytimeChecker checker : this.daytimeCheckers) {

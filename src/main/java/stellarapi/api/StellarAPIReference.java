@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
 import stellarapi.api.celestials.CelestialCollectionManager;
-import stellarapi.api.celestials.CelestialLightSources;
+import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.optics.IOpticalFilter;
@@ -125,7 +125,7 @@ public final class StellarAPIReference {
 	 * @param world the world
 	 * @return the light sources for the world if it exists, or <code>null</code> otherwise
 	 * */
-	public static CelestialLightSources getLightSources(World world) {
+	public static CelestialEffectors getLightSources(World world) {
 		return PerWorldManager.getPerWorldManager(world).getCelestialLightSources();
 	}
 	

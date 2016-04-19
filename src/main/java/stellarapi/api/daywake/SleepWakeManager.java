@@ -11,7 +11,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.celestials.CelestialLightSources;
+import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.lib.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
@@ -84,7 +84,7 @@ public class SleepWakeManager implements IConfigHandler {
 	public long getWakeTime(World world, long defaultWakeTime) {
 		
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
+		CelestialEffectors lightSources = StellarAPIReference.getLightSources(world);
 		
 		if(coordinate != null && lightSources != null)
 		{
@@ -129,7 +129,7 @@ public class SleepWakeManager implements IConfigHandler {
 	 * */
 	public EntityPlayer.EnumStatus getSleepPossibility(World world, EntityPlayer.EnumStatus defaultStatus) {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		CelestialLightSources lightSources = StellarAPIReference.getLightSources(world);
+		CelestialEffectors lightSources = StellarAPIReference.getLightSources(world);
 		
 		if(coordinate != null && lightSources != null)
 		{

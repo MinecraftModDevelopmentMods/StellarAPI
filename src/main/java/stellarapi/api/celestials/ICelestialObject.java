@@ -15,6 +15,18 @@ import stellarapi.api.optics.Wavelength;
 public interface ICelestialObject {
 	
 	/**
+	 * Absolute period for the effector. <p>
+	 * This is the period that the absolute position of this effector returns to original position. <p>
+	 * Normally starts from the rising position(ascending node).
+	 * @return
+	 * <ul>
+	 * <li>absolute period object for this effector if it exists
+	 * <li><b><code>null</code></b> if this effector is stopped or have random movements.
+	 * </ul>
+	 * */
+	public CelestialPeriod getAbsolutePeriod();
+	
+	/**
 	 * Horizontal period for the effector. <p>
 	 * This is the period that the horizontal position of this effector returns to original position. <p>
 	 * Normally starts from the lowest position.
