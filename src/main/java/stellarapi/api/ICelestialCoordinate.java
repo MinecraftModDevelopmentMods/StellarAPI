@@ -1,7 +1,7 @@
 
 package stellarapi.api;
 
-import javax.vecmath.Matrix3f;
+import javax.vecmath.Matrix3d;
 import javax.vecmath.Vector3d;
 
 public interface ICelestialCoordinate {
@@ -10,7 +10,7 @@ public interface ICelestialCoordinate {
 	 * Gets projection which projects absolute position to ground position. <p>
 	 * Note that one can construct reverse projection by getting transpose of this matrix.
 	 * */
-	public Matrix3f getProjectionToGround();
+	public Matrix3d getProjectionToGround();
 	
 	/**
 	 * Gets height angle when the object is on highest position during the horizontal period. <p>

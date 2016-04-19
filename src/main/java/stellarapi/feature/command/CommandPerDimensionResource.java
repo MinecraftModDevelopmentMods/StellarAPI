@@ -18,6 +18,12 @@ public class CommandPerDimensionResource extends CommandBase {
 	public String getCommandName() {
 		return "perdimres";
 	}
+	
+	@Override
+    public int getRequiredPermissionLevel()
+    {
+        return 2;
+    }
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {

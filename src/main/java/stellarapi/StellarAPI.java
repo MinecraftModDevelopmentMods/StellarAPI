@@ -23,6 +23,7 @@ import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
 import stellarapi.example.ItemFilteredTelescopeExample;
 import stellarapi.example.ItemTelescopeExample;
+import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
@@ -124,6 +125,7 @@ public final class StellarAPI {
         
         @EventHandler
         public void serverStarting(FMLServerStartingEvent event) {
+        	event.registerServerCommand(new CommandPerDimensionResource());
         	event.registerServerCommand(new FixedCommandTime());
         }
 }
