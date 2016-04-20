@@ -51,7 +51,7 @@ public final class CelestialCollectionManager {
 			if(!collectionChecker.apply(collection))
 				continue;
 			
-			Set<ICelestialObject> objectSet = collection.getObjectInRange(pos, radius);
+			Set<? extends ICelestialObject> objectSet = collection.getObjectInRange(pos, radius);
 			ICelestialObject foundObject = null;
 			
 			for(ICelestialObject object : objectSet)
@@ -86,7 +86,7 @@ public final class CelestialCollectionManager {
 			if(!collectionChecker.apply(collection))
 				continue;
 			
-			Set<ICelestialObject> objectSet = collection.getObjectInRange(pos, radius);
+			Set<? extends ICelestialObject> objectSet = collection.getObjectInRange(pos, radius);
 			ICelestialObject foundObject = null;
 			
 			for(ICelestialObject object : objectSet)
@@ -125,7 +125,7 @@ public final class CelestialCollectionManager {
 		
 		for(ICelestialCollection collection : this.celestialCollections) {
 			if(checker.apply(collection)) {
-				Set<ICelestialObject> objectSet = collection.getObjectInRange(pos, radius);
+				Set<? extends ICelestialObject> objectSet = collection.getObjectInRange(pos, radius);
 				foundSet.addAll(objectSet);
 			}
 		}
