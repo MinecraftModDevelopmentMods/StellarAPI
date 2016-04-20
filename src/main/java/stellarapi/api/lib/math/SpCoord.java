@@ -18,13 +18,28 @@ public class SpCoord {
 	public SpCoord() {
 		this(0.0, 0.0);
 	}
+	
+	/**
+	 * Distance to certain SpCoord, note that here not cached version of trigonometric methods are used.
+	 * @param coord the coordinate
+	 * @return the distance between two coordinates in degrees
+	 * */
+	public double distanceTo(SpCoord coord) {
+		return Spmath.Degrees(Math.acos(Math.sin(this.y) * Math.sin(coord.y)
+				+ Math.cos(this.y) * Math.cos(coord.y) * Math.sin(coord.x - this.x)));
+	}
 
-	/**Gives Vector with this SpCoord*/
+	/**
+	 * Gives Vector with this SpCoord.
+	 * */
 	public Vector3d getVec(){
 		return new Vector3d(Spmath.cosd(y)*Spmath.cosd(x), Spmath.cosd(y)*Spmath.sind(x), Spmath.sind(y));
 	}
 	
-	/**Set this SpCoord with vector.*/
+	/**
+	 * Set this SpCoord with vector.
+	 * @param vec the vector
+	 * */
 	public void setWithVec(Vector3d vec){
 		Vector3d temp = new Vector3d();
 		vec.normalize(temp);
