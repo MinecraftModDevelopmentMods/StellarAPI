@@ -35,6 +35,7 @@ public class PerWorldManager extends WorldSavedData {
 	private HashMap<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
 	private ICelestialCoordinate coordinate;
 	private ISkyEffect skyEffect;
+	private Map<String, Object> perWorldData = Maps.newHashMap();
 	
 	public static void initiatePerWorldManager(World world) {
 		world.perWorldStorage.setData(ID, new PerWorldManager(world));
@@ -107,6 +108,31 @@ public class PerWorldManager extends WorldSavedData {
 	
 	public ISkyEffect getSkyEffect() {
 		return this.skyEffect;
+	}
+	
+	/**
+	 * Stores the per-world data.
+	 * @param id the id
+	 * @param data the data
+	 * */
+	public <T> void storePerWorldData(String id, T data) {
+		perWorldData.put(id, data);
+	}
+	
+	/**
+	 * Gets the per-world data.
+	 * @param id the id
+	 * */
+	public <T> T getPerWorldData(String id) {
+		return (T) perWorldData.get(id);
+	}
+	
+	/**
+	 * Removes the per-world data.
+	 * @param id the id
+	 * */
+	public void removePerWorldData(String id) {
+		perWorldData.remove(id);
 	}
 
 	@Override
