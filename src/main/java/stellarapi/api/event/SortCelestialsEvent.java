@@ -1,12 +1,15 @@
 package stellarapi.api.event;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import net.minecraft.world.World;
+import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 
@@ -18,29 +21,26 @@ import stellarapi.api.celestials.ICelestialObject;
  * */
 public class SortCelestialsEvent extends PerWorldEvent {
 
-	private Ordering<ICelestialObject> orderingLightSources;
+	private Map<IEffectorType, Ordering<ICelestialObject>> orderingEffectors;
 	private Ordering<ICelestialCollection> orderingCollections;
 	
-	private ImmutableList<ICelestialObject> lightSources;
+	private Map<IEffectorType, ImmutableList<ICelestialObject>> effectorSources;
 	private ImmutableList<ICelestialCollection> collections;
 	
-	public SortCelestialsEvent(World world, Ordering<ICelestialObject> defaultOrderingLS,
+	public SortCelestialsEvent(World world,
 			Ordering<ICelestialCollection> defaultOrderingCC,
-			List<ICelestialObject> lightSources,
-			List<ICelestialCollection> collections) {
+			List<ICelestialCollection> collections,
+			Map<IEffectorType, List<ICelestialObject>> mapEffectors) {
 		super(world);
-		this.orderingLightSources = defaultOrderingLS;
 		this.orderingCollections = defaultOrderingCC;
-		this.lightSources = ImmutableList.copyOf(lightSources);
 		this.collections = ImmutableList.copyOf(collections);
-	}
-	
-	public void setLightSourceOrdering(Ordering<ICelestialObject> ordering) {
-		this.orderingLightSources = ordering;
-	}
-	
-	public Ordering<ICelestialObject> getLightSourceOrdering() {
-		return this.orderingLightSources;
+		
+		this.orderingEffectors = Maps.newHashMap();
+		this.effectorSources = Maps.newHashMap();
+		for(Map.Entry<IEffectorType, ImmutableList<ICelestialObject>> entry : effectorSources.entrySet()) {
+			effectorSources.put(entry.getKey(), ImmutableList.copyOf(entry.getValue()));
+			orderingEffectors.put(entry.getKey(), entry.getKey().getOrderingFor(entry.getValue()));
+		}
 	}
 	
 	public void setCollectionsOrdering(Ordering<ICelestialCollection> ordering) {
@@ -51,19 +51,27 @@ public class SortCelestialsEvent extends PerWorldEvent {
 		return this.orderingCollections;
 	}
 	
-	public ImmutableList<ICelestialObject> getLightSources() {
-		return this.lightSources;
+	public void setEffectorOrdering(IEffectorType type, Ordering<ICelestialObject> ordering) {
+		orderingEffectors.put(type, ordering);
+	}
+	
+	public Ordering<ICelestialObject> getEffectorOrdering(IEffectorType type) {
+		return orderingEffectors.get(type);
 	}
 	
 	public ImmutableList<ICelestialCollection> getCollections() {
 		return this.collections;
 	}
 	
-	public ImmutableList<ICelestialObject> getSortedLightSources() {
-		return orderingLightSources.immutableSortedCopy(this.lightSources);
+	public ImmutableList<ICelestialObject> getEffectors(IEffectorType type) {
+		return effectorSources.get(type);
 	}
 	
 	public ImmutableList<ICelestialCollection> getSortedCollections() {
 		return orderingCollections.immutableSortedCopy(this.collections);
+	}
+	
+	public ImmutableList<ICelestialObject> getSortedEffectors(IEffectorType type) {
+		return orderingEffectors.get(type).immutableSortedCopy(effectorSources.get(type));
 	}
 }

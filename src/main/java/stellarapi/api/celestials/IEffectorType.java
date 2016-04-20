@@ -1,0 +1,67 @@
+package stellarapi.api.celestials;
+
+import java.util.Comparator;
+import java.util.List;
+
+import com.google.common.collect.Ordering;
+
+public interface IEffectorType {
+	/**
+	 * Celestial light source, notably Sun.
+	 * */
+	public static IEffectorType Light = new IEffectorType() {
+		@Override
+		public Ordering<ICelestialObject> getOrderingFor(List<ICelestialObject> objects) {
+			return Ordering.from(
+					new Comparator<ICelestialObject>() {
+						@Override
+						public int compare(ICelestialObject obj1, ICelestialObject obj2) {
+							return Double.compare(obj1.getStandardMagnitude(), obj2.getStandardMagnitude());
+						}
+					});
+		}
+		
+		public double effectPriority() {
+			return 100.0;
+		}
+		
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+	};
+	
+	/**
+	 * Celestial objects giving tidal effects, notably Moon.
+	 * */
+	public static IEffectorType Tide = new IEffectorType() {
+		@Override
+		public Ordering<ICelestialObject> getOrderingFor(List<ICelestialObject> objects) {
+			return Ordering.explicit(objects);
+		}
+		
+		public double effectPriority() {
+			return 10.0;
+		}
+		
+		@Override
+		public int hashCode() {
+			return 1;
+		}
+	};
+	
+	/**
+	 * Gets Default ordering for this effector type with certain object list.
+	 * @param objects the celestial effector object list.
+	 * */
+	public Ordering<ICelestialObject> getOrderingFor(List<ICelestialObject> objects);
+	
+	/**
+	 * Gets effector priority.
+	 * The bigger this method returns, the prior this effect will be.
+	 * */
+	public double effectPriority();
+	
+	@Override
+	public int hashCode();
+}

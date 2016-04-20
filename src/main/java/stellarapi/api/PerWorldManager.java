@@ -1,7 +1,12 @@
 package stellarapi.api;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,6 +16,7 @@ import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
 import stellarapi.api.event.ResetCoordinateEvent;
 import stellarapi.api.event.ResetSkyEffectEvent;
@@ -26,7 +32,7 @@ public class PerWorldManager extends WorldSavedData {
 	private World world;
 	
 	private CelestialCollectionManager collectionManager = null;
-	private CelestialEffectors lightSources = null;
+	private HashMap<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
 	private ICelestialCoordinate coordinate;
 	private ISkyEffect skyEffect;
 	
@@ -51,26 +57,24 @@ public class PerWorldManager extends WorldSavedData {
 					return Integer.compare(-col1.searchOrder(), -col2.searchOrder());
 				}
 			});
-	
-	private static final Ordering<ICelestialObject> lightSourceOrdering = Ordering.from(
-			new Comparator<ICelestialObject>() {
-				@Override
-				public int compare(ICelestialObject obj1, ICelestialObject obj2) {
-					return Double.compare(obj1.getStandardMagnitude(), obj2.getStandardMagnitude());
-				}
-			});
-	
+		
 	public void constructCollections() {
 		ConstructCelestialsEvent construct = new ConstructCelestialsEvent(this.world);
 		StellarAPIReference.getEventBus().post(construct);
 		
+		ImmutableSet<IEffectorType> effectorTypes = construct.getEffectorTypes();
+		Map<IEffectorType, List<ICelestialObject>> effectors= Maps.newHashMap();
+		for(IEffectorType type : effectorTypes)
+			effectors.put(type, construct.getEffectors(type));
+		
 		SortCelestialsEvent sort = new SortCelestialsEvent(this.world,
-				lightSourceOrdering, collectionOrdering,
-				construct.getLightSources(), construct.getCollections());
+				collectionOrdering, construct.getCollections(), effectors);
 		StellarAPIReference.getEventBus().post(sort);
 		
 		this.collectionManager = new CelestialCollectionManager(sort.getSortedCollections());
-		this.lightSources = new CelestialEffectors(sort.getSortedLightSources());
+		
+		for(IEffectorType type : effectorTypes)
+			effectorMap.put(type, new CelestialEffectors(sort.getSortedEffectors(type)));
 	}
 	
 	public void resetCoordinate() {
@@ -89,8 +93,12 @@ public class PerWorldManager extends WorldSavedData {
 		return this.collectionManager;
 	}
 	
-	public CelestialEffectors getCelestialLightSources() {
-		return this.lightSources;
+	public CelestialEffectors getCelestialEffectors(IEffectorType type) {
+		return effectorMap.get(type);
+	}
+	
+	public ImmutableSet<IEffectorType> getEffectorTypeSet() {
+		return ImmutableSet.copyOf(effectorMap.keySet());
 	}
 	
 	public ICelestialCoordinate getCoordinate() {

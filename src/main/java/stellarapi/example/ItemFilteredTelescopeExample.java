@@ -68,22 +68,30 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScope, IO
 	};
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_)
-    {
-		p_77659_3_.setItemInUse(p_77659_1_, Integer.MAX_VALUE);
-		
-		StellarAPIReference.updateScope(p_77659_3_);
-		StellarAPIReference.updateFilter(p_77659_3_);
-		
-        return p_77659_1_;
-    }
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+		this.onUse(stack, player);
+		return stack;
+	}
 	
 	@Override
-	public void onPlayerStoppedUsing(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_, int p_77659_4_)
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+		this.onUse(stack, player);
+    	return true;
+    }
+	
+	public void onUse(ItemStack stack, EntityPlayer player) {
+		player.setItemInUse(stack, Integer.MAX_VALUE);
+		
+		StellarAPIReference.updateScope(player);
+		StellarAPIReference.updateFilter(player);
+	}
+	
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int p_77659_4_)
     {
-		p_77659_3_.clearItemInUse();
-		StellarAPIReference.updateScope(p_77659_3_);
-		StellarAPIReference.updateFilter(p_77659_3_);
+		player.clearItemInUse();
+		StellarAPIReference.updateScope(player);
+		StellarAPIReference.updateFilter(player);
     }
 
 

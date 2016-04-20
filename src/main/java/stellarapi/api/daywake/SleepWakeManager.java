@@ -12,6 +12,7 @@ import net.minecraftforge.common.config.Property;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.celestials.CelestialEffectors;
+import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.lib.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
@@ -84,7 +85,7 @@ public class SleepWakeManager implements IConfigHandler {
 	public long getWakeTime(World world, long defaultWakeTime) {
 		
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		CelestialEffectors lightSources = StellarAPIReference.getLightSources(world);
+		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 		
 		if(coordinate != null && lightSources != null)
 		{
@@ -121,7 +122,7 @@ public class SleepWakeManager implements IConfigHandler {
 	/**
 	 * Checks if sleep is possible or not.
 	 * @param world the world to wake up
-	 * @param defaultWakeTime the default wake time
+	 * @param defaultStatus the default status
 	 * @return sleep possibility status, should be one of
 	 * {@code EntityPlayer.EnumStatus.OK} or
 	 * {@code EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW} or
@@ -129,7 +130,7 @@ public class SleepWakeManager implements IConfigHandler {
 	 * */
 	public EntityPlayer.EnumStatus getSleepPossibility(World world, EntityPlayer.EnumStatus defaultStatus) {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		CelestialEffectors lightSources = StellarAPIReference.getLightSources(world);
+		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 		
 		if(coordinate != null && lightSources != null)
 		{

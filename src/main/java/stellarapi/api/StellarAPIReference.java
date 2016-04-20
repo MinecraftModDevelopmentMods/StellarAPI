@@ -1,5 +1,7 @@
 package stellarapi.api;
 
+import com.google.common.collect.ImmutableSet;
+
 import cpw.mods.fml.common.eventhandler.EventBus;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -7,6 +9,7 @@ import net.minecraft.world.World;
 import stellarapi.StellarAPI;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
+import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.optics.IOpticalFilter;
@@ -121,12 +124,23 @@ public final class StellarAPIReference {
 	}
 	
 	/**
-	 * Gets celestial light sources for certain world.
+	 * Gets set of types of celestial effectors for certain world. <p>
 	 * @param world the world
-	 * @return the light sources for the world if it exists, or <code>null</code> otherwise
+	 * @return the immutable set with effect types on the world
 	 * */
-	public static CelestialEffectors getLightSources(World world) {
-		return PerWorldManager.getPerWorldManager(world).getCelestialLightSources();
+	public static ImmutableSet<IEffectorType> getEffectTypeSet(World world) {
+		return PerWorldManager.getPerWorldManager(world).getEffectorTypeSet();
+	}
+	
+	/**
+	 * Gets celestial effectors for certain world. <p>
+	 * There are light sources(or Sun), tidal effectors(or Moon), and so on.
+	 * @param world the world
+	 * @param type the celestial effector type
+	 * @return the celestial effectors for the world if it exists, or <code>null</code> otherwise
+	 * */
+	public static CelestialEffectors getEffectors(World world, IEffectorType type) {
+		return PerWorldManager.getPerWorldManager(world).getCelestialEffectors(type);
 	}
 	
 	/**
