@@ -1,6 +1,6 @@
 package stellarapi.api.celestials;
 
-import java.util.Set;
+import com.google.common.collect.ImmutableSet;
 
 import stellarapi.api.lib.math.SpCoord;
 
@@ -17,14 +17,14 @@ public interface ICelestialCollection {
 	/**
 	 * Gets the set of celestial objects.
 	 * */
-	public Set<ICelestialObject> getObjects();
+	public ImmutableSet<ICelestialObject> getObjects();
 
 	/**
 	 * Gets the set of celestial objects in certain range.
 	 * @param pos the horizontal spherical position of the center of the range
 	 * @param radius the angular radius of the range in degrees
 	 * */
-	public Set<ICelestialObject> getObjectInRange(SpCoord pos, double radius);
+	public ImmutableSet<ICelestialObject> getObjectInRange(SpCoord pos, double radius);
 	
 	/**
 	 * Gets the nearer celestial object to certain position from two objects.
