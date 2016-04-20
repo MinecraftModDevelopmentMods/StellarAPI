@@ -30,14 +30,13 @@ public interface ICelestialObject {
 	 * Horizontal period for the effector. <p>
 	 * This is the period that the horizontal position of this effector returns to original position. <p>
 	 * Normally starts from the lowest position.
-	 * @param coordinatePeriod the period of the reference of the coordinate
 	 * @return
 	 * <ul>
 	 * <li>horizontal period object for this effector if it exists
 	 * <li><b><code>null</code></b> if this effector is stopped or have random movements.
 	 * </ul>
 	 * */
-	public CelestialPeriod getHorizontalPeriod(CelestialPeriod coordinatePeriod);
+	public CelestialPeriod getHorizontalPeriod();
 	
 	/**
 	 * Phase period for this effector.

@@ -29,7 +29,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 			long sleepTime) {
 		ICelestialObject sun = lightSource.getPrimarySource();
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);
-		return sun.getHorizontalPeriod(coordinate.getPeriod()).getTimeForOffset(sleepTime, offset);
+		return sun.getHorizontalPeriod().getTimeForOffset(sleepTime, offset);
 	}
 
 	@Override

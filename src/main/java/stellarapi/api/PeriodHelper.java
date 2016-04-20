@@ -19,7 +19,7 @@ public class PeriodHelper {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 
 		if(coordinate != null)
-			return effectors == null? null : effectors.getPrimarySource().getHorizontalPeriod(coordinate.getPeriod());
+			return effectors == null? null : effectors.getPrimarySource().getHorizontalPeriod();
 		else return null;
 	}
 	
