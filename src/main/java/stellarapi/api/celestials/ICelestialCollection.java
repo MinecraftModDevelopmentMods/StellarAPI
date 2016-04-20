@@ -17,14 +17,14 @@ public interface ICelestialCollection {
 	/**
 	 * Gets the set of celestial objects.
 	 * */
-	public ImmutableSet<ICelestialObject> getObjects();
+	public ImmutableSet<? extends ICelestialObject> getObjects();
 
 	/**
 	 * Gets the set of celestial objects in certain range.
 	 * @param pos the horizontal spherical position of the center of the range
 	 * @param radius the angular radius of the range in degrees
 	 * */
-	public ImmutableSet<ICelestialObject> getObjectInRange(SpCoord pos, double radius);
+	public ImmutableSet<? extends ICelestialObject> getObjectInRange(SpCoord pos, double radius);
 	
 	/**
 	 * Gets the nearer celestial object to certain position from two objects.
