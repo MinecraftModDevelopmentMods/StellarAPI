@@ -13,6 +13,11 @@ public interface ICelestialCoordinate {
 	public Matrix3d getProjectionToGround();
 	
 	/**
+	 * Period of the coordinate.
+	 * */
+	public CelestialPeriod getPeriod();
+	
+	/**
 	 * Gets height angle when the object is on highest position during the horizontal period. <p>
 	 * Useful for checking highest time. <p>
 	 * (It is offset 0.5 in horizontal period in most case)

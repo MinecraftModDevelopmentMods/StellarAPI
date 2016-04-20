@@ -47,7 +47,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 	@Override
 	public boolean isDescriptorApply(World world, CelestialEffectors sources, ICelestialCoordinate coordinate,
 			EnumDaytimeDescriptor descriptor, long time, int tolerance) {
-		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod();
+		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod(coordinate.getPeriod());
 		double currentOffset = period.getOffset(time, 0.0f);
 		double toleranceOffset = tolerance / period.getPeriodLength();
 		
@@ -91,7 +91,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 	@Override
 	public long timeForCertainDescriptor(World world, CelestialEffectors sources, ICelestialCoordinate coordinate,
 			EnumDaytimeDescriptor descriptor, long currentTime) {
-		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod();
+		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod(coordinate.getPeriod());
 		
 		Vector3d pos = sources.getPrimarySource().getCurrentAbsolutePos();
 		

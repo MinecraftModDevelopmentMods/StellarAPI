@@ -33,7 +33,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 			long sleepTime) {
 		long nextMidnight = StellarAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
 				EnumDaytimeDescriptor.MIDNIGHT, sleepTime);
-		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod();
+		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod(coordinate.getPeriod());
 		double currentOffset = period.getOffset(sleepTime, 0.0f);
 		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
 
@@ -47,7 +47,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 			ICelestialCoordinate coordinate, long sleepTime) {
 		long nextMidnight = StellarAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
 				EnumDaytimeDescriptor.MIDNIGHT, sleepTime);
-		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod();
+		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod(coordinate.getPeriod());
 		double currentOffset = period.getOffset(sleepTime, 0.0f);
 		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
 		double diff = Spmath.fmod(currentOffset - midnightOffset, 1.0);
