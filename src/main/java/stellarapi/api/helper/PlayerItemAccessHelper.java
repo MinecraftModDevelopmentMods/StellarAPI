@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 public class PlayerItemAccessHelper {
 	
 	private static final Field itemUseField = ReflectionHelper.findField(EntityPlayer.class,
-			ObfuscationReflectionHelper.remapFieldNames(EntityPlayer.class.getName(), "itemInUse", "field_71072_f"));
+			ObfuscationReflectionHelper.remapFieldNames(EntityPlayer.class.getName(), "itemInUse", "field_71074_e"));
 	
 	public static ItemStack getUsingItem(EntityPlayer player) {
 		try {
