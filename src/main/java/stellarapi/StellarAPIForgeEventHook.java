@@ -2,15 +2,15 @@ package stellarapi;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import stellarapi.api.PerWorldManager;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
 
 public class StellarAPIForgeEventHook {
 	
@@ -31,5 +31,8 @@ public class StellarAPIForgeEventHook {
 			event.result = StellarAPIReference.getSleepWakeManager()
 					.getSleepPossibility(worldObj, event.result);
 		}
+		
+		if(event.result == EnumStatus.OK)
+	        event.entityPlayer.worldObj.updateAllPlayersSleepingFlag();
 	}
 }
