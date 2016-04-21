@@ -64,7 +64,7 @@ public class CelestialHelperExample {
 	 * @param partialTicks the partial tick
 	 * */
 	public float getSunlightFactor(EnumRGBA color, float partialTicks) {
-		return 2.0f*this.getSunHeightFactor(partialTicks)+0.5f
+		return Math.max(Math.min(2.0f*this.getSunHeightFactor(partialTicks)+0.5f, 1.0f), 0.0f)
 				* (float)sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color)) * this.relativeMultiplierSun;
 	}
 	

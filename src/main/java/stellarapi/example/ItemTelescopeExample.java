@@ -50,7 +50,7 @@ public class ItemTelescopeExample extends Item implements IViewScope {
 
 	@Override
 	public double getResolution(Wavelength wl) {
-		return 0.03;
+		return 0.1;
 	}
 
 	@Override
