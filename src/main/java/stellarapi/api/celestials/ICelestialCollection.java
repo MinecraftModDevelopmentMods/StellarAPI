@@ -16,11 +16,15 @@ public interface ICelestialCollection {
 	
 	/**
 	 * Gets the set of celestial objects.
+	 * @return the set of celestial objects contained in the collection,
+	 *   or empty set if it is not available. (Especially when the set is too big)
 	 * */
 	public ImmutableSet<? extends ICelestialObject> getObjects();
 
 	/**
-	 * Gets the set of celestial objects in certain range.
+	 * Gets the set of celestial objects in certain range. <p>
+	 * More recommended to use this version, since there can be objects without positions. <p>
+	 * Note that resulted objects can be temporal, i.e. it doesn't get updated anymore.
 	 * @param pos the horizontal spherical position of the center of the range
 	 * @param radius the angular radius of the range in degrees
 	 * */

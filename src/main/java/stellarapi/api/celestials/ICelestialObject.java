@@ -33,7 +33,8 @@ public interface ICelestialObject {
 	 * @return
 	 * <ul>
 	 * <li>horizontal period object for this effector if it exists
-	 * <li><b><code>null</code></b> if this effector is stopped or have random movements.
+	 * <li><b><code>null</code></b> if this effector is stopped in horizontal coordinate
+	 *  or have sufficiently fast random movements.
 	 * </ul>
 	 * */
 	public CelestialPeriod getHorizontalPeriod();

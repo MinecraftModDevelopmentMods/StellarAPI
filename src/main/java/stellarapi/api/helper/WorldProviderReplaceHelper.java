@@ -30,7 +30,7 @@ public class WorldProviderReplaceHelper {
 	 * @param world the world
 	 * @param provider the world provider to replace original provider
 	 * */
-	public void patchWorldProviderWith(World world, WorldProvider provider) {
+	public static void patchWorldProviderWith(World world, WorldProvider provider) {
 		try {
 			providerField.set(world, provider);
 		} catch (Exception exc) {
