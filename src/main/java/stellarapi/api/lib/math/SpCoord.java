@@ -41,8 +41,8 @@ public class SpCoord {
 	 * @param vec the vector
 	 * */
 	public void setWithVec(Vector3d vec){
-		Vector3d temp = new Vector3d();
-		vec.normalize(temp);
+		Vector3d temp = new Vector3d(vec);
+		temp.normalize();
 		x = Spmath.Degrees(Spmath.atan2(temp.y, temp.x));
 		y = Spmath.Degrees(Spmath.asin(temp.z));
 	}
