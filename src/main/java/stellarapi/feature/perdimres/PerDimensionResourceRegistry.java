@@ -3,6 +3,7 @@ package stellarapi.feature.perdimres;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -19,7 +20,7 @@ public class PerDimensionResourceRegistry implements IPerDimensionResourceHandle
 		return INSTANCE;
 	}
 	
-	private Set<String> resourceIds;
+	private Set<String> resourceIds = Sets.newHashSet();
 	
 	public void registerResourceId(String id)
 	{

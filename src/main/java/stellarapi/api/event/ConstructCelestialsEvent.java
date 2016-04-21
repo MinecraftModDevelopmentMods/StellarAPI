@@ -34,7 +34,7 @@ public class ConstructCelestialsEvent extends PerWorldEvent {
 	}
 	
 	/**
-	 * Getter for light sources. Register the effectors here.
+	 * Getter for light sources. Register the effectors here. (The objects should not be temporal)
 	 * */
 	public List<ICelestialObject> getEffectors(IEffectorType type) {
 		if(!effectorMap.containsKey(type))

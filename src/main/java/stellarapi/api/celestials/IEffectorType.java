@@ -32,7 +32,8 @@ public interface IEffectorType {
 	};
 	
 	/**
-	 * Celestial objects giving tidal effects, notably Moon.
+	 * Celestial objects giving tidal effects, notably Moon. <p>
+	 * Note that tide does got affected by phase(on brightness), but not in same tendency.
 	 * */
 	public static IEffectorType Tide = new IEffectorType() {
 		@Override
