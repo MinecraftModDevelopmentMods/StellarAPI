@@ -34,11 +34,21 @@ public interface ICelestialCoordinate {
 	public double getLowestHeightAngle(Vector3d absPos);
 	
 	/**
+	 * The initial offset of certain absolute position on the horizontal period. <p>
+	 * Helper method for getting horizontal period of a celestial object. <p>
+	 * Should be available right after coordinate is registered.
+	 * @param absPos the absolute position of the object
+	 * @param heightAngle the height angle in degrees
+	 * @return the initial offset for the initial absolute position
+	 * */
+	public double calculateInitialOffset(Vector3d initialAbsPos);
+	
+	/**
 	 * The least offset on the horizontal period, that is needed till object reaches certain height angle. <p>
 	 * Will be in range [0, 0.5) in most case.
 	 * @param absPos the absolute position of the object
 	 * @param heightAngle the height angle in degrees
-	 * @return the offset if it exists, or <code>NaN</code> if the object cannot reach certain height angle.
+	 * @return the offset if it exists, or <code>NaN</code> if the object cannot reach certain height angle
 	 * */
 	public double offsetTillObjectReach(Vector3d absPos, double heightAngle);
 
