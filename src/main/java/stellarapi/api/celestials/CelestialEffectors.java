@@ -15,7 +15,7 @@ public final class CelestialEffectors {
 	private ImmutableList<ICelestialObject> objects;
 	
 	public CelestialEffectors(List<ICelestialObject> effectors) {
-		ImmutableList.copyOf(effectors);
+		this.objects = ImmutableList.copyOf(effectors);
 	}
 	
 	public ICelestialObject getPrimarySource() {
