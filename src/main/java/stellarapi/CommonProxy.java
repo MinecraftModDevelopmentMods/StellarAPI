@@ -16,7 +16,7 @@ public class CommonProxy implements IProxy {
 		StellarAPI.logger.info("Initializing Math class...");
 		//Initializing Spmath
 		Spmath.Initialize();
-		StellarAPI.logger.info("[StellarAPI]: "+"Math Class Initialized!");
+		StellarAPI.logger.info("Math Class Initialized!");
 	}
 
 	@Override

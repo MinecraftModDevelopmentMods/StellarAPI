@@ -64,7 +64,7 @@ public class PerWorldManager extends WorldSavedData {
 		StellarAPIReference.getEventBus().post(construct);
 		
 		ImmutableSet<IEffectorType> effectorTypes = construct.getEffectorTypes();
-		Map<IEffectorType, List<ICelestialObject>> effectors= Maps.newHashMap();
+		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
 		for(IEffectorType type : effectorTypes)
 			effectors.put(type, construct.getEffectors(type));
 		
