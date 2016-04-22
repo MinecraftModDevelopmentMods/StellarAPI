@@ -136,7 +136,7 @@ public class WorldProviderExample extends WorldProvider {
         if (f3 >= f4 - f2 && f3 <= f4 + f2)
         {
             float f5 = (f3 - f4) / f2 * 0.5F + 0.5F;
-            float f6 = 1.0F - (1.0F - MathHelper.sin(f5 * (float)Math.PI)) * 0.99F;
+            float f6 = 1.0f - 3.0f * Math.abs(f3);
             f6 *= f6;
             this.colorsSunriseSunset[0] = f5 * 0.3F + 0.7F;
             this.colorsSunriseSunset[1] = f5 * f5 * 0.7F + 0.2F;
