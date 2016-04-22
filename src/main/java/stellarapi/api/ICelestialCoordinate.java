@@ -38,10 +38,11 @@ public interface ICelestialCoordinate {
 	 * Helper method for getting horizontal period of a celestial object. <p>
 	 * Should be available right after coordinate is registered.
 	 * @param absPos the absolute position of the object
+	 * @param periodLength the length of the period, exist for the case which time 0 on sky is different from tick 0.
 	 * @param heightAngle the height angle in degrees
 	 * @return the initial offset for the initial absolute position
 	 * */
-	public double calculateInitialOffset(Vector3d initialAbsPos);
+	public double calculateInitialOffset(Vector3d initialAbsPos, double periodLength);
 	
 	/**
 	 * The least offset on the horizontal period, that is needed till object reaches certain height angle. <p>

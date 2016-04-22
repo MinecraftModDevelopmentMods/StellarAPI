@@ -23,19 +23,19 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 		switch(descriptor) {
 		case MORNING:
 		case AFTERNOON:
-			return Double.isNaN(coordinate.offsetTillObjectReach(pos,
-					(Math.min(coordinate.getHighestHeightAngle(pos), 0.0) +
-							Math.min(coordinate.getLowestHeightAngle(pos), 0.0))));
+			return !Double.isNaN(coordinate.offsetTillObjectReach(pos,
+					(Math.max(coordinate.getHighestHeightAngle(pos), 0.0) +
+							Math.max(coordinate.getLowestHeightAngle(pos), 0.0)) / 2.0));
 			
 		case EARLY_MORNING:
 		case EVENING:
-			return Double.isNaN(coordinate.offsetTillObjectReach(pos,
+			return !Double.isNaN(coordinate.offsetTillObjectReach(pos,
 					(Math.min(coordinate.getHighestHeightAngle(pos), 0.0) +
-							Math.min(coordinate.getLowestHeightAngle(pos), 0.0))));
+							Math.min(coordinate.getLowestHeightAngle(pos), 0.0)) / 2.0));
 			
 		case DAWN:
 		case DUSK:
-			return Double.isNaN(coordinate.offsetTillObjectReach(pos, 0.0));
+			return !Double.isNaN(coordinate.offsetTillObjectReach(pos, 0.0));
 		
 		default:
 			break;
