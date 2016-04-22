@@ -155,7 +155,7 @@ public class Spmath {
 		return (atan2[yi * ATAN2_DIM + xi] * (1-part) * (1-part2)
 				+ atan2[yi * ATAN2_DIM + xi + 1] * part * (1-part2)
 				+ atan2[(yi + 1) * ATAN2_DIM + xi] * (1-part) * part2
-				+ atan2[(yi + 1) * ATAN2_DIM + xi + 1] * (1-part) * part2
+				+ atan2[(yi + 1) * ATAN2_DIM + xi + 1] * part * part2
 				+ add) * mul;
 	}
 	
