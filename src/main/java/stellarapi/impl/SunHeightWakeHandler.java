@@ -39,7 +39,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);
 		if(Double.isNaN(offset))
 			return EnumStatus.NOT_POSSIBLE_HERE;
-		return world.provider.isDaytime()? EnumStatus.OK : EnumStatus.NOT_POSSIBLE_NOW;
+		return world.provider.isDaytime()? EnumStatus.NOT_POSSIBLE_NOW : EnumStatus.OK;
 	}
 
 	
