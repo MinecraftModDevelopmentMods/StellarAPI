@@ -25,6 +25,8 @@ public class StellarAPIForgeEventHook {
 			return;
 		}
 
+		// TODO solve problems here
+		
 		if(event.result == null || event.result == EnumStatus.OK || event.result == EnumStatus.NOT_POSSIBLE_NOW) {
 			World worldObj = event.entityPlayer.worldObj;
 			

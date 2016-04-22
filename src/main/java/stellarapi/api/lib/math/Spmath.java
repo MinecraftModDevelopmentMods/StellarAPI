@@ -150,9 +150,12 @@ public class Spmath {
 		int xi = (int) (e * invDiv);
 		int yi = (int) (d * invDiv);
 		double part = e * invDiv - xi;
+		double part2 = d * invDiv - yi;
 
-		return (atan2[yi * ATAN2_DIM + xi] * (1-part)
-				+ atan2[yi * ATAN2_DIM + xi + 1] * part
+		return (atan2[yi * ATAN2_DIM + xi] * (1-part) * (1-part2)
+				+ atan2[yi * ATAN2_DIM + xi + 1] * part * (1-part2)
+				+ atan2[(yi + 1) * ATAN2_DIM + xi] * (1-part) * part2
+				+ atan2[(yi + 1) * ATAN2_DIM + xi + 1] * (1-part) * part2
 				+ add) * mul;
 	}
 	
