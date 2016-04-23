@@ -35,14 +35,18 @@ public class Wavelength {
 	public static final Wavelength V = new Wavelength(551, 88);
 	
 	/**
+	 * Wavelength for red color.
+	 * */
+	public static final Wavelength red = new Wavelength(658, 90);
+	
+	/**
 	 * Wavelength for R filter.
-	 * Common wavelength for red color. (Does not have big importance as filter)
 	 * */
 	public static final Wavelength R = new Wavelength(658, 138);
 	
 	public static final ImmutableMap<EnumRGBA, Wavelength> colorWaveMap = Maps.immutableEnumMap(
 			ImmutableMap.<EnumRGBA, Wavelength>of(
-					EnumRGBA.Red, R, EnumRGBA.Green, V,
+					EnumRGBA.Red, red, EnumRGBA.Green, V,
 					EnumRGBA.Blue, B, EnumRGBA.Alpha, visible));
 	
 	/**
@@ -61,7 +65,7 @@ public class Wavelength {
 	}
 	
 	public double getLength() {
-		return this.length;
+		return this.length; 
 	}
 	
 	public double getWidth() {

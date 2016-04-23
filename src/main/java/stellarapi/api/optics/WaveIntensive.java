@@ -11,6 +11,7 @@ import stellarapi.api.lib.math.Spmath;
  * Utility class for covering wavelengths using IDW method. <p>
  * Note that this estimation method only applies to intensive properties,
  *  i.e. which are not proportional to filter's bandwidth.
+ * Also this method has high possibility to give strange value, so be careful with that part.
  * */
 public class WaveIntensive implements IWaveEstimation {
 	private Map<Wavelength, Double> waveMap;

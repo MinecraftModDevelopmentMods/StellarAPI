@@ -9,8 +9,9 @@ import stellarapi.api.lib.math.Spmath;
 
 /**
  * Utility class for covering wavelengths. <p>
- * Note that this estimation method only applies to extensive properties,
- *  i.e. which are proportional to filter's bandwidth.
+ * This estimation method only applies to extensive properties,
+ *  i.e. which are proportional to filter's bandwidth. <p>
+ * Also this method has high possibility to give strange value, so be careful with that part.
  * */
 public class WaveExtensive implements IWaveEstimation {
 	private Map<Wavelength, Double> waveMap;

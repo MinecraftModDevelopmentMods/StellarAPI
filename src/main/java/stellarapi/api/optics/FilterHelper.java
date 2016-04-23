@@ -19,7 +19,7 @@ public class FilterHelper {
 		} else {
 			double[] result = new double[] {0, 0, 0};
 			WaveExtensive interpolation = new WaveExtensive(
-					ImmutableMap.of(Wavelength.R, rgb[0],
+					ImmutableMap.of(Wavelength.red, rgb[0],
 							Wavelength.V, rgb[1],
 							Wavelength.B, rgb[2]));
 			
@@ -66,7 +66,7 @@ public class FilterHelper {
 			double scale = 0.0;
 			
 			WaveExtensive interpolation = new WaveExtensive(
-					ImmutableMap.of(Wavelength.R, rgb[0],
+					ImmutableMap.of(Wavelength.red, rgb[0],
 							Wavelength.V, rgb[1],
 							Wavelength.B, rgb[2]));
 			
@@ -100,7 +100,7 @@ public class FilterHelper {
 	public static double[] getFilteredRGB(IOpticalFilter filter, IWaveEstimation brinfo) {
 		if(filter.isRGB()) {
 			return new double[] {
-				brinfo.apply(Wavelength.R) * filter.getFilterList().get(0).getFilterEfficiency(),
+				brinfo.apply(Wavelength.red) * filter.getFilterList().get(0).getFilterEfficiency(),
 				brinfo.apply(Wavelength.V) * filter.getFilterList().get(1).getFilterEfficiency(),
 				brinfo.apply(Wavelength.B) * filter.getFilterList().get(2).getFilterEfficiency()
 			};
