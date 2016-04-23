@@ -27,8 +27,9 @@ public interface ISkyEffect {
 	public float calculateAirmass(SpCoord pos);
 	
 	/**
-	 * Gets extinction rate for certain wavelength.
+	 * Gets extinction rate for certain wavelength. <p>
 	 * @param wavelength the wavelength
+	 * @return extinction rate in magnitude, which can be multiplied with airmass to calculate effect.
 	 * */
 	public float getExtinctionRate(Wavelength wavelength);
 	
