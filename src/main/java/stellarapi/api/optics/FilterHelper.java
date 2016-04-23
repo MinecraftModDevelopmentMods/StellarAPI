@@ -2,6 +2,9 @@ package stellarapi.api.optics;
 
 import com.google.common.collect.ImmutableMap;
 
+/**
+ * Helper methods for getting filtered RGB value. Use these with care.
+ * */
 public class FilterHelper {
 	
 	/**
