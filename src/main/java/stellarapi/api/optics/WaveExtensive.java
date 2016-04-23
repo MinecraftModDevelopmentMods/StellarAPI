@@ -28,9 +28,8 @@ public class WaveExtensive {
 			if(entry.getKey().getLength() == wavelength.getLength())
 				return entry.getValue() * width / entry.getKey().getWidth();
 			
-			double weight = Spmath.quad(entry.getKey().getWidth() / (entry.getKey().getLength() - wavelength.getLength()))
-					/ entry.getKey().getWidth();
-			res += entry.getValue() * weight;
+			double weight = Spmath.quad(entry.getKey().getWidth() / (entry.getKey().getLength() - wavelength.getLength()));
+			res += entry.getValue() / entry.getKey().getWidth() * weight;
 			weightedSum += weight;
 		}
 		
