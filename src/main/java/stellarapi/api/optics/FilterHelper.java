@@ -97,7 +97,7 @@ public class FilterHelper {
 	 * @param filter the optical filter
 	 * @param brinfo the brightness information on certain wavelength
 	 * */
-	public static double[] getFilteredRGB(IOpticalFilter filter, WaveExtensive brinfo) {
+	public static double[] getFilteredRGB(IOpticalFilter filter, IWaveEstimation brinfo) {
 		if(filter.isRGB()) {
 			return new double[] {
 				brinfo.apply(Wavelength.R) * filter.getFilterList().get(0).getFilterEfficiency(),
@@ -123,7 +123,7 @@ public class FilterHelper {
 	 * @param filter the optical filter
 	 * @param brinfo the brightness information on certain wavelength
 	 * */
-	public static double[] getFilteredRGBBounded(IOpticalFilter filter, WaveExtensive brinfo) {
+	public static double[] getFilteredRGBBounded(IOpticalFilter filter, IWaveEstimation brinfo) {
 		if(filter.isRGB()) {
 			double scale = 0.0;
 			double result[] = new double[3];

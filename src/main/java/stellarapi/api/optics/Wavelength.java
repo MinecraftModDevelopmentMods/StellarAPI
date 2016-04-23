@@ -72,7 +72,7 @@ public class Wavelength {
 	public int hashCode() {
 		long bits = Double.doubleToLongBits(this.length);
 	    long bits2 = Double.doubleToLongBits(this.bandwidth);
-	    return (int)(bits ^ bits2);
+	    return (int)((bits ^ bits2)>>32);
 	}
 	
 	@Override
