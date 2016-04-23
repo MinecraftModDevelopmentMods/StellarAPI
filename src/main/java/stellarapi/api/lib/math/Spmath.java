@@ -189,7 +189,15 @@ public class Spmath {
 		return tanf(Radians(d));
 	}
 	
-	public static double magToLum(double Mag){
+	/*public static double magToLum(double Mag){
 		return Math.pow(10.0, (-26.74) - Mag/2.5);
+	}*/
+
+	public static double sqr(double d) {
+		return d*d;
+	}
+	
+	public static double quad(double d) {
+		return d*d*d*d;
 	}
 }

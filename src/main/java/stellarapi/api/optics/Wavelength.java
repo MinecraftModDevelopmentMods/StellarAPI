@@ -1,5 +1,7 @@
 package stellarapi.api.optics;
 
+import java.util.Map;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
@@ -79,39 +81,5 @@ public class Wavelength {
 			return ((Wavelength) obj).length == this.length 
 			&& ((Wavelength) obj).bandwidth == this.bandwidth;
 		else return false;
-	}
-	
-	/**
-	 * Utility class for covering wavelengths. <p>
-	 * Note that this interpolation method does not apply to the properties
-	 *  which are proportional to filter's bandwidth. In those case, scaling is needed.
-	 * */
-	public static class WaveInterpolation {
-		private Wavelength[] waves;
-		private double[] weights;
-		
-		public WaveInterpolation(Wavelength[] wavelengths, double[] weights) {
-			if(wavelengths.length != weights.length)
-				throw new IllegalArgumentException(
-						"Two parameters must have same size!");
-			
-			this.waves = wavelengths;
-			this.weights = weights;
-		}
-		
-		public double getInterpolated(Wavelength wavelength) {
-			double res = 0.0;
-			double weightedSum = 0.0;
-			for(int i = 0; i < waves.length; i++) {
-				if(waves[i].length == wavelength.length)
-					return weights[i];
-				
-				double weight = waves[i].bandwidth / (waves[i].length - wavelength.length);
-				res += weights[i] * weight;
-				weightedSum += weight;
-			}
-			
-			return res / weightedSum;
-		}
 	}
 }
