@@ -17,7 +17,6 @@ public class StellarAPIOwnEventHook {
 		if(event.getEntity() instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.getEntity();
-			ItemStack usingItem = player.getItemInUse();
 			Object[] params = event.getAdditionalParams();
 			
 			ItemStack itemToCheck;
