@@ -53,7 +53,7 @@ public class StellarAPITickHandler {
 			ItemStack itemstack = e.player.getCurrentEquippedItem();
 			ItemStack itemInUse = PlayerItemAccessHelper.getUsingItem(e.player);
 			
-            if (itemstack != null && itemInUse != null && !itemstack.isItemEqual(itemInUse))
+            if (itemstack != null && itemInUse != null && itemstack.isItemEqual(itemInUse))
             	PlayerItemAccessHelper.setUsingItem(e.player, itemstack);
 		}
 	}
