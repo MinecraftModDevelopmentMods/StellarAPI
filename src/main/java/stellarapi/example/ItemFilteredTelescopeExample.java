@@ -80,7 +80,7 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScope, IO
     }
 	
 	public void onUse(ItemStack stack, EntityPlayer player) {
-		player.setItemInUse(stack, Integer.MAX_VALUE);
+		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
 		
 		StellarAPIReference.updateScope(player);
 		StellarAPIReference.updateFilter(player);
@@ -93,6 +93,11 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScope, IO
 		StellarAPIReference.updateScope(player);
 		StellarAPIReference.updateFilter(player);
     }
+	
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return Integer.MAX_VALUE;
+	}
 
 
 	@Override

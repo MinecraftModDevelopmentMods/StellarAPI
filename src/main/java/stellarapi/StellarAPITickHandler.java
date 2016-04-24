@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -29,20 +30,31 @@ public class StellarAPITickHandler {
 		return ReflectionHelper.findField(clazz, ObfuscationReflectionHelper.remapFieldNames(clazz.getName(), fieldNames));
 	}
 	
-	@SubscribeEvent
-	public void tickStart(TickEvent.PlayerTickEvent e) {
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void tickStartFirst(TickEvent.PlayerTickEvent e) {
 		if(e.phase == Phase.START) {
 			ItemStack itemstack = e.player.getCurrentEquippedItem();
 			ItemStack itemInUse = PlayerItemAccessHelper.getUsingItem(e.player);
-						
-            if (itemstack != itemInUse) {
+			
+            if (itemInUse != null && (itemstack == null || !itemstack.isItemEqual(itemInUse))) {
     			e.player.clearItemInUse();
 
-            	if(itemInUse != null && itemInUse.getItem() instanceof IViewScope)
+            	if(itemInUse.getItem() instanceof IViewScope)
         			StellarAPIReference.updateScope(e.player);
-            	if(itemInUse != null && itemInUse.getItem() instanceof IOpticalFilter)
+            	if(itemInUse.getItem() instanceof IOpticalFilter)
         			StellarAPIReference.updateFilter(e.player);
             }
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void tickStartLast(TickEvent.PlayerTickEvent e) {
+		if(e.phase == Phase.START) {
+			ItemStack itemstack = e.player.getCurrentEquippedItem();
+			ItemStack itemInUse = PlayerItemAccessHelper.getUsingItem(e.player);
+			
+            if (itemstack != null && itemInUse != null && !itemstack.isItemEqual(itemInUse))
+            	PlayerItemAccessHelper.setUsingItem(e.player, itemstack);
 		}
 	}
 		

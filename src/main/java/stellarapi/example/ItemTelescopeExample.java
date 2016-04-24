@@ -31,7 +31,7 @@ public class ItemTelescopeExample extends Item implements IViewScope {
     }
 	
 	public void onUse(ItemStack stack, EntityPlayer player) {
-		player.setItemInUse(stack, Integer.MAX_VALUE);
+		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
 		
 		StellarAPIReference.updateScope(player);
 	}
@@ -42,6 +42,11 @@ public class ItemTelescopeExample extends Item implements IViewScope {
 		p_77659_3_.clearItemInUse();
 		StellarAPIReference.updateScope(p_77659_3_);
     }
+	
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return Integer.MAX_VALUE;
+	}
 
 	@Override
 	public double getLGP() {
