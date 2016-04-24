@@ -34,7 +34,8 @@ public class PlayerItemAccessHelper {
 	
 	/**
 	 * Sets using item of the player.
-	 * Used to fix problems with updated using items.
+	 * Used to fix problems with updated using items. <p>
+	 * DO NOT use this method externally.
 	 * */
 	@Deprecated
 	public static void setUsingItem(EntityPlayer player, ItemStack stack) {

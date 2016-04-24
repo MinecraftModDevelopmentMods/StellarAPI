@@ -21,11 +21,11 @@ import stellarapi.api.celestials.ICelestialObject;
  * */
 public class SortCelestialsEvent extends PerWorldEvent {
 
-	private Map<IEffectorType, Ordering<ICelestialObject>> orderingEffectors;
+	private final Map<IEffectorType, Ordering<ICelestialObject>> orderingEffectors;
 	private Ordering<ICelestialCollection> orderingCollections;
 	
-	private Map<IEffectorType, ImmutableList<ICelestialObject>> effectorSources;
-	private ImmutableList<ICelestialCollection> collections;
+	private final Map<IEffectorType, ImmutableList<ICelestialObject>> effectorSources;
+	private final ImmutableList<ICelestialCollection> collections;
 	
 	public SortCelestialsEvent(World world,
 			Ordering<ICelestialCollection> defaultOrderingCC,

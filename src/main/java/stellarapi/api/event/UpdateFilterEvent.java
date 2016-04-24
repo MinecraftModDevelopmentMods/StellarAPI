@@ -12,7 +12,7 @@ public class UpdateFilterEvent extends PerEntityEvent {
 	private IOpticalFilter filter;
 	
 	/** Additional parameters, like items which is changed or started using */
-	private Object[] params;
+	private final Object[] params;
 	
 	public UpdateFilterEvent(Entity entity, IOpticalFilter defFilter, Object... additionalParams) {
 		super(entity);

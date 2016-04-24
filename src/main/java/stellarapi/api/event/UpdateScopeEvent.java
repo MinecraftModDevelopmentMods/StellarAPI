@@ -11,7 +11,7 @@ public class UpdateScopeEvent extends PerEntityEvent {
 	private IViewScope scope;
 	
 	/** Additional parameters, like items which is changed or started using */
-	private Object[] params;
+	private final Object[] params;
 	
 	public UpdateScopeEvent(Entity entity, IViewScope defScope, Object... additionalParams) {
 		super(entity);

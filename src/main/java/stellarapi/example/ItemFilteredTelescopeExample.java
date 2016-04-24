@@ -1,24 +1,22 @@
 package stellarapi.example;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.interact.IOpticalFilterItem;
+import stellarapi.api.interact.IViewScopeItem;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
-import stellarapi.api.optics.IWaveFilter;
 import stellarapi.api.optics.RGBFilter;
 import stellarapi.api.optics.Wavelength;
 
 /**
  * Example for filtered telescope item.
- * Note that the item should have max stack size 1.
  * */
-public class ItemFilteredTelescopeExample extends Item implements IViewScope, IOpticalFilter {
+public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem, IOpticalFilterItem {
 	
 	private IViewScope scope = new IViewScope() {
 		
@@ -99,40 +97,20 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScope, IO
 		return Integer.MAX_VALUE;
 	}
 
-
 	@Override
-	public double getLGP() {
-		return scope.getLGP();
+	public IOpticalFilter getFilter(EntityPlayer player, ItemStack item) {
+		return this.filter;
 	}
 
 	@Override
-	public double getResolution(Wavelength wl) {
-		return scope.getResolution(wl);
+	public IViewScope getScope(EntityPlayer player, ItemStack item) {
+		return this.scope;
 	}
 
 	@Override
-	public double getMP() {
-		return scope.getMP();
+	public boolean isSame(ItemStack instance, ItemStack another) {
+		return instance == another;
 	}
 
-	@Override
-	public boolean forceChange() {
-		return scope.forceChange();
-	}
-
-	@Override
-	public boolean isFOVCoverSky() {
-		return scope.isFOVCoverSky();
-	}
-
-	@Override
-	public boolean isRGB() {
-		return filter.isRGB();
-	}
-
-	@Override
-	public ImmutableList<? extends IWaveFilter> getFilterList() {
-		return filter.getFilterList();
-	}
 
 }

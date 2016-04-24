@@ -1,22 +1,17 @@
 package stellarapi.example;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.interact.IViewScopeItem;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.Wavelength;
 
 /**
- * Example for telescope item.
- * Note that the item should have max stack size 1.
+ * Example for telescope item which gets activated any time the player press the right click to use the item.
  * */
-public class ItemTelescopeExample extends Item implements IViewScope {
+public class ItemTelescopeExample extends Item implements IViewScopeItem {
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
@@ -32,16 +27,7 @@ public class ItemTelescopeExample extends Item implements IViewScope {
 	
 	public void onUse(ItemStack stack, EntityPlayer player) {
 		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-		
-		StellarAPIReference.updateScope(player);
 	}
-
-	@Override
-	public void onPlayerStoppedUsing(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_, int p_77659_4_)
-    {
-		p_77659_3_.clearItemInUse();
-		StellarAPIReference.updateScope(p_77659_3_);
-    }
 	
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
@@ -49,28 +35,38 @@ public class ItemTelescopeExample extends Item implements IViewScope {
 	}
 
 	@Override
-	public double getLGP() {
-		return 200.0;
+	public IViewScope getScope(EntityPlayer player, ItemStack item) {
+		return new IViewScope() {
+			@Override
+			public double getLGP() {
+				return 200.0;
+			}
+
+			@Override
+			public double getResolution(Wavelength wl) {
+				return 0.1;
+			}
+
+			@Override
+			public double getMP() {
+				return 10.0;
+			}
+
+			@Override
+			public boolean forceChange() {
+				return true;
+			}
+
+			@Override
+			public boolean isFOVCoverSky() {
+				return true;
+			}
+		};
 	}
 
 	@Override
-	public double getResolution(Wavelength wl) {
-		return 0.1;
-	}
-
-	@Override
-	public double getMP() {
-		return 10.0;
-	}
-
-	@Override
-	public boolean forceChange() {
-		return true;
-	}
-
-	@Override
-	public boolean isFOVCoverSky() {
-		return true;
+	public boolean isSame(ItemStack instance, ItemStack another) {
+		return instance == another;
 	}
 
 }

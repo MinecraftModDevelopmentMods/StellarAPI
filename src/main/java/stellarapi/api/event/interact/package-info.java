@@ -1,8 +1,7 @@
 /**
- * Event section of Stellar API.
+ * Block/Item Interaction subsection of the Event section of Stellar API.
  * */
-// TODO Add @Cancelable to appropriate events
 @API(apiVersion = "@VERSION@", owner = "StellarAPI", provides = "StellarAPI")
-package stellarapi.api.event;
+package stellarapi.api.event.interact;
 
 import cpw.mods.fml.common.API;
