@@ -24,8 +24,8 @@ public class AlarmWakeHandler implements IWakeHandler {
 	private int wakeTime;
 
 	@Override
-	public boolean accept(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate) {
-		return true;
+	public boolean accept(World world, CelestialEffectors lightSources, ICelestialCoordinate coordinate) {
+		return lightSources != null;
 	}
 
 	@Override

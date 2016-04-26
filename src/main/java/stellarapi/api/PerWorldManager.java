@@ -33,8 +33,14 @@ public class PerWorldManager extends WorldSavedData {
 	
 	private CelestialCollectionManager collectionManager = null;
 	private HashMap<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
+	private boolean isCelestialsEstablished = false;
+	
 	private ICelestialCoordinate coordinate;
+	private boolean isCoordinateEstablished = false;
+	
 	private ISkyEffect skyEffect;
+	private boolean isSkyEffectEstablished = false;
+	
 	private Map<String, Object> perWorldData = Maps.newHashMap();
 	
 	public static void initiatePerWorldManager(World world) {
@@ -61,7 +67,8 @@ public class PerWorldManager extends WorldSavedData {
 		
 	public void constructCollections() {
 		ConstructCelestialsEvent construct = new ConstructCelestialsEvent(this.world);
-		StellarAPIReference.getEventBus().post(construct);
+		if(StellarAPIReference.getEventBus().post(construct))
+			return;
 		
 		ImmutableSet<IEffectorType> effectorTypes = construct.getEffectorTypes();
 		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
@@ -76,37 +83,51 @@ public class PerWorldManager extends WorldSavedData {
 		
 		for(IEffectorType type : effectorTypes)
 			effectorMap.put(type, new CelestialEffectors(sort.getSortedEffectors(type)));
+		
+		this.isCelestialsEstablished = true;
 	}
 	
 	public void resetCoordinate() {
 		ResetCoordinateEvent coord = new ResetCoordinateEvent(this.world);
 		StellarAPIReference.getEventBus().post(coord);
 		this.coordinate = coord.getCoordinate();
+		this.isCoordinateEstablished = true;
 	}
 	
 	public void resetSkyEffect() {
 		ResetSkyEffectEvent sky = new ResetSkyEffectEvent(this.world);
 		StellarAPIReference.getEventBus().post(sky);
 		this.skyEffect = sky.getSkyEffect();
+		this.isSkyEffectEstablished = true;
 	}
 	
 	public CelestialCollectionManager getCollectionManager() {
+		if(!this.isCelestialsEstablished)
+			this.constructCollections();
 		return this.collectionManager;
 	}
 	
 	public CelestialEffectors getCelestialEffectors(IEffectorType type) {
+		if(!this.isCelestialsEstablished)
+			this.constructCollections();
 		return effectorMap.get(type);
 	}
 	
 	public ImmutableSet<IEffectorType> getEffectorTypeSet() {
+		if(!this.isCelestialsEstablished)
+			this.constructCollections();
 		return ImmutableSet.copyOf(effectorMap.keySet());
 	}
 	
 	public ICelestialCoordinate getCoordinate() {
+		if(this.isCoordinateEstablished)
+			this.resetCoordinate();
 		return this.coordinate;
 	}
 	
 	public ISkyEffect getSkyEffect() {
+		if(!this.isSkyEffectEstablished)
+			this.resetSkyEffect();
 		return this.skyEffect;
 	}
 	

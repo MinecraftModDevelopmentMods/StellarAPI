@@ -1,8 +1,8 @@
 
 package stellarapi.api;
 
-import javax.vecmath.Matrix3d;
-import javax.vecmath.Vector3d;
+import stellarapi.api.lib.math.Matrix3;
+import stellarapi.api.lib.math.Vector3;
 
 public interface ICelestialCoordinate {
 	
@@ -10,7 +10,7 @@ public interface ICelestialCoordinate {
 	 * Gets projection which projects absolute position to ground position. <p>
 	 * Note that one can construct reverse projection by getting transpose of this matrix.
 	 * */
-	public Matrix3d getProjectionToGround();
+	public Matrix3 getProjectionToGround();
 	
 	/**
 	 * Period of the coordinate.
@@ -23,7 +23,7 @@ public interface ICelestialCoordinate {
 	 * (It is offset 0.5 in horizontal period in most case)
 	 * @param absPos the absolute position of the object
 	 * */
-	public double getHighestHeightAngle(Vector3d absPos);
+	public double getHighestHeightAngle(Vector3 absPos);
 	
 	/**
 	 * Gets height angle when the object is on lowest position during the horizontal period. <p>
@@ -31,7 +31,7 @@ public interface ICelestialCoordinate {
 	 * (It is offset 0.0 in horizontal period in most case)
 	 * @param absPos the absolute position of the object
 	 * */
-	public double getLowestHeightAngle(Vector3d absPos);
+	public double getLowestHeightAngle(Vector3 absPos);
 	
 	/**
 	 * The initial offset of certain absolute position on the horizontal period. <p>
@@ -42,7 +42,7 @@ public interface ICelestialCoordinate {
 	 * @param heightAngle the height angle in degrees
 	 * @return the initial offset for the initial absolute position
 	 * */
-	public double calculateInitialOffset(Vector3d initialAbsPos, double periodLength);
+	public double calculateInitialOffset(Vector3 initialAbsPos, double periodLength);
 	
 	/**
 	 * The least offset on the horizontal period, that is needed till object reaches certain height angle. <p>
@@ -51,6 +51,6 @@ public interface ICelestialCoordinate {
 	 * @param heightAngle the height angle in degrees
 	 * @return the offset if it exists, or <code>NaN</code> if the object cannot reach certain height angle
 	 * */
-	public double offsetTillObjectReach(Vector3d absPos, double heightAngle);
+	public double offsetTillObjectReach(Vector3 absPos, double heightAngle);
 
 }

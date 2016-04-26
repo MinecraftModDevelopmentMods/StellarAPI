@@ -87,34 +87,31 @@ public class SleepWakeManager implements IConfigHandler {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 		
-		if(coordinate != null && lightSources != null)
-		{
-			long wakeTime;
-			boolean accepted = false;
+		long wakeTime;
+		boolean accepted = false;
 
-			if(this.mode)
-			{
-				wakeTime=Integer.MAX_VALUE;
-				for(WakeHandler handler : wakeHandlers) {
-					if(handler.enabled && handler.handler.accept(world, lightSources, coordinate))
-					{
-						wakeTime = Math.min(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
-						accepted = true;
-					}
-				}
-			} else {
-				wakeTime=Integer.MIN_VALUE;
-				for(WakeHandler handler : wakeHandlers) {
-					if(handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
-						wakeTime = Math.max(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
-						accepted = true;
-					}
+		if(this.mode)
+		{
+			wakeTime=Integer.MAX_VALUE;
+			for(WakeHandler handler : wakeHandlers) {
+				if(handler.enabled && handler.handler.accept(world, lightSources, coordinate))
+				{
+					wakeTime = Math.min(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
+					accepted = true;
 				}
 			}
-			
-			if(accepted)
-				return wakeTime;
+		} else {
+			wakeTime=Integer.MIN_VALUE;
+			for(WakeHandler handler : wakeHandlers) {
+				if(handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
+					wakeTime = Math.max(wakeTime, handler.handler.getWakeTime(world, lightSources, coordinate, world.getWorldTime()));
+					accepted = true;
+				}
+			}
 		}
+
+		if(accepted)
+			return wakeTime;
 		
 		return defaultWakeTime;
 	}
@@ -132,21 +129,18 @@ public class SleepWakeManager implements IConfigHandler {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 		
-		if(coordinate != null && lightSources != null)
-		{
-			EntityPlayer.EnumStatus status = EntityPlayer.EnumStatus.OK;
-			boolean accepted = false;
+		EntityPlayer.EnumStatus status = EntityPlayer.EnumStatus.OK;
+		boolean accepted = false;
 
-			for(WakeHandler handler : this.wakeHandlers) {
-				if(status == EntityPlayer.EnumStatus.OK && handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
-					status = handler.handler.getSleepPossibility(world, lightSources, coordinate, world.getWorldTime());
-					accepted = true;
-				}
+		for(WakeHandler handler : this.wakeHandlers) {
+			if(status == EntityPlayer.EnumStatus.OK && handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
+				status = handler.handler.getSleepPossibility(world, lightSources, coordinate, world.getWorldTime());
+				accepted = true;
 			}
-			
-			if(accepted)
-				return status;
 		}
+
+		if(accepted)
+			return status;
 		
 		return defaultStatus;
 	}

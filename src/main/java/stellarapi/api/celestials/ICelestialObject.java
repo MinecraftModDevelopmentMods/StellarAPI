@@ -1,9 +1,8 @@
 package stellarapi.api.celestials;
 
-import javax.vecmath.Vector3d;
-
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
+import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
 /**
@@ -66,7 +65,7 @@ public interface ICelestialObject {
 	 * Note that the center is still on the ground, <p>
 	 * and this position is per dimension.
 	 * */
-	public Vector3d getCurrentAbsolutePos();
+	public Vector3 getCurrentAbsolutePos();
 	
 	/** Gets current position for horizontal coordinate. */
 	public SpCoord getCurrentHorizontalPos();

@@ -26,7 +26,6 @@ public class DaytimeChecker {
 	 * Checks if certain descriptor applies in certain tolerance.
 	 * @param world the world
 	 * @param sources the celestial light sources
-	 * @param coordinate the coordinate
 	 * @param descriptor the daytime descriptor
 	 * @param time the time, should be in the same day or the next/previous day from now
 	 * @param tolerance the time tolerance in tick
@@ -37,13 +36,12 @@ public class DaytimeChecker {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 		
-		if(coordinate != null && lightSources != null)
-			for(IDaytimeChecker checker : this.daytimeCheckers) {
-				if(checker.accept(world, lightSources, coordinate, descriptor))
-					return checker.isDescriptorApply(world, lightSources, coordinate, descriptor, time, tolerance);
-			}
+		for(IDaytimeChecker checker : this.daytimeCheckers) {
+			if(checker.accept(world, lightSources, coordinate, descriptor))
+				return checker.isDescriptorApply(world, lightSources, coordinate, descriptor, time, tolerance);
+		}
 		
-		return false;
+		return defaultApply;
 	}
 	
 	/**
@@ -52,15 +50,13 @@ public class DaytimeChecker {
 	 * @param descriptor the daytime descriptor
 	 * @param defaultValue the value to return when no daytime checkers is detected or stellar settings is invalid to check daytime settings
 	 * */
-	public long timeForCertainDescriptor(World world,
-			EnumDaytimeDescriptor descriptor, long defaultValue) {
+	public long timeForCertainDescriptor(World world, EnumDaytimeDescriptor descriptor, long defaultValue) {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 		
-		if(coordinate != null && lightSources != null)		
-			for(IDaytimeChecker checker : this.daytimeCheckers) {
-				if(checker.accept(world, lightSources, coordinate, descriptor))
-					return checker.timeForCertainDescriptor(world, lightSources, coordinate, descriptor, world.getWorldTime());
+		for(IDaytimeChecker checker : this.daytimeCheckers) {
+			if(checker.accept(world, lightSources, coordinate, descriptor))
+				return checker.timeForCertainDescriptor(world, lightSources, coordinate, descriptor, world.getWorldTime());
 		}
 		
 		return defaultValue;

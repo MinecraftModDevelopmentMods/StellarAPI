@@ -16,8 +16,8 @@ public interface IDaytimeChecker {
 	 * Should return false when {@link #timeForCertainDescriptor(World, CelestialEffectors, ICelestialCoordinate, EnumDaytimeDescriptor, long)}}
 	 * can't give right value.
 	 * @param world the world
-	 * @param sources the celestial light sources (only dependent to the world)
-	 * @param coordinate the coordinate (only dependent to the world)
+	 * @param sources the celestial light sources, can be null (only dependent to the world)
+	 * @param coordinate the coordinate, can be null (only dependent to the world)
 	 * @param descriptor the daytime descriptor
 	 * */
 	public boolean accept(World world,

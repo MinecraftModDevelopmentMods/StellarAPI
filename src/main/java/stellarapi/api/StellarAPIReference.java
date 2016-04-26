@@ -146,7 +146,7 @@ public final class StellarAPIReference {
 	/**
 	 * Gets celestial collection manager for certain world.
 	 * @param world the world
-	 * @return the light sources for the world if it exists, or <code>null</code> otherwise
+	 * @return the celestial collection manager for the world, or <code>null</code> if it is not established yet.
 	 * */
 	public static CelestialCollectionManager getCollectionManager(World world) {
 		return PerWorldManager.getPerWorldManager(world).getCollectionManager();

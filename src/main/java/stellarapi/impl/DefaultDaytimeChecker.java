@@ -1,13 +1,12 @@
 package stellarapi.impl;
 
-import javax.vecmath.Vector3d;
-
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IDaytimeChecker;
+import stellarapi.api.lib.math.Vector3;
 
 /**
  * Default implementation for daytime checker when there is one main light source,
@@ -18,7 +17,10 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 	@Override
 	public boolean accept(World world, CelestialEffectors sources, ICelestialCoordinate coordinate,
 			EnumDaytimeDescriptor descriptor) {
-		Vector3d pos = sources.getPrimarySource().getCurrentAbsolutePos();
+		if(sources == null || coordinate == null)
+			return false;
+		
+		Vector3 pos = sources.getPrimarySource().getCurrentAbsolutePos();
 
 		switch(descriptor) {
 		case MORNING:
@@ -51,7 +53,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 		double currentOffset = period.getOffset(time, 0.0f);
 		double toleranceOffset = tolerance / period.getPeriodLength();
 		
-		Vector3d pos = sources.getPrimarySource().getCurrentAbsolutePos();
+		Vector3 pos = sources.getPrimarySource().getCurrentAbsolutePos();
 		
 		double riseOffset = coordinate.offsetTillObjectReach(pos,
 				(Math.max(coordinate.getHighestHeightAngle(pos), 0.0) +
@@ -93,7 +95,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 			EnumDaytimeDescriptor descriptor, long currentTime) {
 		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod();
 		
-		Vector3d pos = sources.getPrimarySource().getCurrentAbsolutePos();
+		Vector3 pos = sources.getPrimarySource().getCurrentAbsolutePos();
 		
 		double riseOffset = coordinate.offsetTillObjectReach(pos,
 				(Math.max(coordinate.getHighestHeightAngle(pos), 0.0) +

@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import cpw.mods.fml.common.eventhandler.Cancelable;
 import net.minecraft.world.World;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
@@ -16,8 +17,12 @@ import stellarapi.api.celestials.IEffectorType;
  * Fired to construct the set of celestial collections. <p>
  * Celestial collections and light sources should be registered here. <p>
  * Note that both should be registered every time when this event is called,
- *  and any modification/wrapper should be applied in this event.
+ *  and any modification/wrapper should be applied in this event. <p>
+ *  
+ * This event is <code>@Cancelable</code>,
+ * and canceling this event will force the celestial set not to be constructed now.
  * */
+@Cancelable
 public class ConstructCelestialsEvent extends PerWorldEvent {
 	private final List<ICelestialCollection> collections = Lists.newArrayList();
 	private final Map<IEffectorType, List<ICelestialObject>> effectorMap = Maps.newHashMap();

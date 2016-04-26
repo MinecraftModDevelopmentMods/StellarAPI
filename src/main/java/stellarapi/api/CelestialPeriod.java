@@ -15,7 +15,9 @@ public class CelestialPeriod {
 	}
 	
 	/**
-	 * Name of this period.
+	 * Name of this period. <p>
+	 * Conventionally, each word consisting the name starts with capitals, and all other words are small letters. <p>
+	 * For example, normal day is 'Day', normal lunar month is 'Lunar Month', and normal year is 'Year'.
 	 * */
 	public String getPeriodName() {
 		return this.periodName;

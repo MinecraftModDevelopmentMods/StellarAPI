@@ -20,7 +20,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	
 	@Override
 	public boolean accept(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate) {
-		return true;
+		return lightSource != null && coordinate != null;
 	}
 	
 	

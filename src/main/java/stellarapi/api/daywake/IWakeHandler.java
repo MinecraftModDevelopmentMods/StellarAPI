@@ -16,12 +16,13 @@ public interface IWakeHandler extends IConfigHandler {
 	
 	/**
 	 * Checks if this wake handler will accept certain case or not.
+	 * Note that both the light source and the coordinate can be null.
 	 * @param world the world to control wake and sleep
 	 * @param lightSource the light sources for the world (only dependent to the world)
 	 * @param coordinate the celestial coordinate for the world (only dependent to the world)
 	 * @return accept or not
 	 * */
-	public boolean accept(World world, CelestialEffectors lightSource,
+	public boolean accept(World world, CelestialEffectors lightSources,
 			ICelestialCoordinate coordinate);
 	
 	/**

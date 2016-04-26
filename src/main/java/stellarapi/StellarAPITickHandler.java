@@ -40,7 +40,7 @@ public class StellarAPITickHandler {
             	CheckSameOpticalItemEvent checkEvent = new CheckSameOpticalItemEvent(e.player, itemstack, itemInUse);
             	boolean flag = StellarAPIReference.getEventBus().post(checkEvent);
             	
-            	if(flag || !checkEvent.isSame()) {            		
+            	if(flag || !checkEvent.isSame()) {
             		ApplyOpticalItemEvent applyEvent = new ApplyOpticalItemEvent(e.player, itemInUse);
             		StellarAPIReference.getEventBus().post(applyEvent);
             		

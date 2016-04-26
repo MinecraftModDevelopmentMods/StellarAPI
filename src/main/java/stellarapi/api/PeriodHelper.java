@@ -16,11 +16,7 @@ public class PeriodHelper {
 	 * */
 	public static CelestialPeriod getDayPeriod(World world) {
 		CelestialEffectors effectors = StellarAPIReference.getEffectors(world, IEffectorType.Light);
-		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-
-		if(coordinate != null)
-			return effectors == null? null : effectors.getPrimarySource().getHorizontalPeriod();
-		else return null;
+		return effectors == null? null : effectors.getPrimarySource().getHorizontalPeriod();
 	}
 	
 	/**

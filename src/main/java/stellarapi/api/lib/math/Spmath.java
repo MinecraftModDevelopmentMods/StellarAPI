@@ -8,6 +8,7 @@ import net.minecraft.util.MathHelper;
 public class Spmath {
 		
 	public static final float PI=(float)Math.PI;
+	public static final double epsilon = 1.0e-12;
 	
 	public static final int signi = 60000;
 	
