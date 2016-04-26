@@ -4,7 +4,7 @@ import java.awt.Color;
 
 /**
  * Filter for specific wavelength.
- * To make an item work like filtered telescope, see {@link stellarapi.example.ItemFilteredTelescopeExample}.
+ * To make an item work like filtered telescope, see {@link stellarapi.example.item.ItemFilteredTelescopeExample}.
  * */
 public interface IWaveFilter {
 	
