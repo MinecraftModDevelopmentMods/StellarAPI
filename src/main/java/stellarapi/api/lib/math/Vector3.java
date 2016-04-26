@@ -111,6 +111,14 @@ public class Vector3 {
 		return ret;
 	}
 	
+	public Vector3 setCross(Vector3 par1, Vector3 par2) {
+		this.value[0] = par1.value[1]*par2.value[2] - par1.value[2]*par2.value[1];
+		this.value[1] = par1.value[2]*par2.value[0] - par1.value[0]*par2.value[2];
+		this.value[2] = par1.value[0]*par2.value[1] - par1.value[1]*par2.value[0];
+		
+		return this;
+	}
+	
 	public double size2() {
 		double ret = 0.0;
 		for(int i = 0; i < DIM; i++)

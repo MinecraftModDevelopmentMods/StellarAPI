@@ -23,11 +23,32 @@ public class Matrix3 {
 			for(int j = 0; j < DIM; j++)
 				value[i][j] = ref.value[i][j];
 	}
+	
+	public Matrix3(double... val) {
+		for(int i = 0; i < DIM; i++)
+			for(int j = 0; j < DIM; j++)
+				value[i][j] = val[i*DIM+j];
+	}
 
 	public Matrix3 set(Matrix3 val) {
 		for(int i = 0; i < DIM; i++)
 			for(int j = 0; j < DIM; j++)
 				value[i][j] = val.value[i][j];
+		
+		return this;
+	}
+	
+	public Matrix3 set(double... val) {
+		for(int i = 0; i < DIM; i++)
+			for(int j = 0; j < DIM; j++)
+				value[i][j] = val[i*DIM+j];
+		return this;
+	}
+	
+	public Matrix3 setIdentity() {
+		for(int i = 0; i < DIM; i++)
+			for(int j = 0; j < DIM; j++)
+				value[i][j] = (i == j)? 1.0 : 0.0;
 		
 		return this;
 	}
@@ -84,6 +105,40 @@ public class Matrix3 {
 		for(int i = 0; i < DIM; i++)
 			for(int j = 0; j < DIM; j++)
 				value[i][j] *= scale;
+		return this;
+	}
+	
+	public Matrix3 preMult(Matrix3 par1) {
+		double cache[] = new double[DIM*DIM];
+		
+		for(int i = 0; i < DIM; i++)
+			for(int j = 0; j < DIM; j++)
+			{
+				cache[i*DIM+j] = 0.0;
+				
+				for(int k = 0; k < DIM; k++)
+					cache[i*DIM+j] += par1.value[i][k] * value[k][j];
+			}
+		
+		this.set(cache);
+		
+		return this;
+	}
+	
+	public Matrix3 postMult(Matrix3 par2) {
+		double cache[] = new double[DIM*DIM];
+		
+		for(int i = 0; i < DIM; i++)
+			for(int j = 0; j < DIM; j++)
+			{
+				cache[i*DIM+j] = 0.0;
+				
+				for(int k = 0; k < DIM; k++)
+					cache[i*DIM+j] += value[i][k] * par2.value[k][j];
+			}
+		
+		this.set(cache);
+		
 		return this;
 	}
 	
@@ -156,5 +211,20 @@ public class Matrix3 {
 	
 	public Matrix3 setAsRotation(Vector3 axis, double angle) {
 		return this.setAsRotation(axis.getX(), axis.getY(), axis.getZ(), angle);
+	}
+	
+	@Override
+	public String toString()
+	{
+		String p = "(";
+		for(double[] ite  : this.value)
+		{
+			for(double ite2 : ite) {
+				p += String.valueOf(ite2);
+				p += ",";
+			}
+			p+="\n";
+		}
+		return p + ")";
 	}
 }
