@@ -17,12 +17,30 @@ public class Matrix3 {
 			for(int j = 0; j < DIM; j++)
 				value[i][j] = 0.0;
 	}
+	
+	public Matrix3(Matrix3 ref) {
+		for(int i = 0; i < DIM; i++)
+			for(int j = 0; j < DIM; j++)
+				value[i][j] = ref.value[i][j];
+	}
 
 	public Matrix3 set(Matrix3 val) {
 		for(int i = 0; i < DIM; i++)
 			for(int j = 0; j < DIM; j++)
 				value[i][j] = val.value[i][j];
 		
+		return this;
+	}
+	
+	public Matrix3 setRow(int N, Vector3 val) {
+		for(int j = 0; j < DIM; j++)
+			value[N][j] = val.getCoord(j);
+		return this;
+	}
+	
+	public Matrix3 setColumn(int N, Vector3 val) {
+		for(int i = 0; i < DIM; i++)
+			value[i][N] = val.getCoord(i);
 		return this;
 	}
 
