@@ -24,6 +24,11 @@ public class Vector3 {
 			value[i] = coords[i];
 	}
 
+	public Vector3(Vector3 vec) {
+		for(int i = 0; i < DIM; i++)
+			value[i] = vec.value[i];
+	}
+
 	public Vector3 set(Vector3 val) {
 		for(int i = 0; i < DIM; i++)
 			value[i] = val.value[i];

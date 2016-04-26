@@ -1,8 +1,5 @@
 package stellarapi.api.lib.math;
 
-import javax.vecmath.Matrix3d;
-import javax.vecmath.Vector3d;
-
 import net.minecraft.util.MathHelper;
 
 public class Spmath {
