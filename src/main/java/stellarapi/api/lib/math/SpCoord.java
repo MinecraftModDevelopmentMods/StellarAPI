@@ -1,11 +1,16 @@
 package stellarapi.api.lib.math;
 
-//Right Ascension(RA) and Declination(Dec)
-//-Azimuth and Height
+/**
+ * Represents certain spherical coordinates. <p>
+ * When used on Horizontal Coordinate System,
+ * <li>-Azimuth is counterclockwise angle from north on horizontal plane.</li>
+ *  (Note that original azimuth is clockwise)
+ * <li>Height is angle upon the ground(horizon).</li>
+ * */
 public class SpCoord {
-	/**RA or -Azimuth*/
+	/**Right Ascension or -Azimuth*/
 	public double x;
-	/**Dec or Height*/
+	/**Declination or Height*/
 	public double y;
 	
 	public SpCoord(double a, double b){
@@ -27,7 +32,7 @@ public class SpCoord {
 	}
 
 	/**
-	 * Gives Vector with this SpCoord.
+	 * Gives new instance of a vector with this SpCoord.
 	 * */
 	public Vector3 getVec(){
 		return new Vector3(Spmath.cosd(y)*Spmath.cosd(x), Spmath.cosd(y)*Spmath.sind(x), Spmath.sind(y));
@@ -36,11 +41,14 @@ public class SpCoord {
 	/**
 	 * Set this SpCoord with vector.
 	 * @param vec the vector
+	 * @return <code>this</code>
 	 * */
-	public void setWithVec(Vector3 vec){
+	public SpCoord setWithVec(Vector3 vec){
 		Vector3 temp = new Vector3(vec);
 		temp.normalize();
-		x = Spmath.Degrees(Spmath.atan2(temp.getY(), temp.getX()));
-		y = Spmath.Degrees(Spmath.asin(temp.getZ()));
+		this.x = Spmath.Degrees(Spmath.atan2(temp.getY(), temp.getX()));
+		this.y = Spmath.Degrees(Spmath.asin(temp.getZ()));
+		
+		return this;
 	}
 }

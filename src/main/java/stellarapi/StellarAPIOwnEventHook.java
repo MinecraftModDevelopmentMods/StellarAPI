@@ -58,10 +58,6 @@ public class StellarAPIOwnEventHook {
 		return "Overworld".equals(world.provider.getDimensionName());
 	}
 	
-	private boolean isHellWorld(World world) {
-		return "Nether".equals(world.provider.getDimensionName());
-	}
-	
 	private boolean isEndWorld(World world) {
 		return "The End".equals(world.provider.getDimensionName());
 	}

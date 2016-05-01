@@ -3,7 +3,7 @@ package stellarapi.api.lib.config.property;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property.Type;
 
-public class ConfigPropertyDouble extends ConfigProperty {
+public class ConfigPropertyDouble extends ConfigPropertySingle {
 	
 	private double defaultValue;
 	private double currentValue;
@@ -19,6 +19,14 @@ public class ConfigPropertyDouble extends ConfigProperty {
 	
 	public void setDouble(double value) {
 		this.currentValue = value;
+	}
+	
+	public void setMaxValue(double maxValue) {
+		property.setMaxValue(maxValue);
+	}
+	
+	public void setMinValue(double minValue) {
+		property.setMinValue(minValue);
 	}
 	
 	@Override

@@ -41,8 +41,7 @@ public class DefaultMoon implements ICelestialObject {
 
 	@Override
 	public Vector3 getCurrentAbsolutePos() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Vector3(0.0, 0.0, -1.0);
 	}
 
 	@Override
@@ -59,8 +58,7 @@ public class DefaultMoon implements ICelestialObject {
 
 	@Override
 	public EnumCelestialObjectType getObjectType() {
-		// TODO Auto-generated method stub
-		return null;
+		return EnumCelestialObjectType.Planet;
 	}
 
 }

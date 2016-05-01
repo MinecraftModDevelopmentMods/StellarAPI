@@ -46,7 +46,7 @@ public class CelestialHelperExample {
 	 * @param partialTicks the partial tick
 	 * */
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
-		return (float) sun.getHorizontalPeriod().getOffset(worldTime, partialTicks);
+		return (float) Spmath.fmod(sun.getHorizontalPeriod().getOffset(worldTime, partialTicks) + 0.5, 1.0);
 	}
 	
 	/**

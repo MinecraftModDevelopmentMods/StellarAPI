@@ -10,19 +10,13 @@ public abstract class ConfigProperty {
 	protected String dataKey;
 	
 	private String comment;
-		
+	
 	public ConfigProperty(String configKey, String dataKey) {
 		this.configKey = configKey;
 		this.dataKey = dataKey;
 	}
 	
-	public void setupConfiguration(Configuration config, String category) {
-		this.property = config.get(category, this.configKey, this.getDefaultValue(), null, this.getType());
-	}
-	
-	protected abstract Property.Type getType();
-	
-	protected abstract String getDefaultValue();
+	public abstract void setupConfiguration(Configuration config, String category);
 	
 	public String getConfigName() {
 		return this.configKey;
@@ -42,10 +36,6 @@ public abstract class ConfigProperty {
 	
 	public void setComment(String comment) {
 		property.comment = comment;
-	}
-	
-	public void setValidValues(String[] validValues) {
-		property.setValidValues(validValues);
 	}
 	
 	public abstract void setAsDefault();

@@ -3,7 +3,7 @@ package stellarapi.api.lib.config.property;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property.Type;
 
-public class ConfigPropertyBoolean extends ConfigProperty {
+public class ConfigPropertyBoolean extends ConfigPropertySingle {
 	
 	private boolean defaultValue;
 	private boolean currentValue;

@@ -11,8 +11,7 @@ public class DefaultCelestialCollection implements ICelestialCollection {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Vanilla";
 	}
 
 	@Override
@@ -35,7 +34,6 @@ public class DefaultCelestialCollection implements ICelestialCollection {
 
 	@Override
 	public int searchOrder() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -1,9 +1,11 @@
 package stellarapi.api.lib.config.property;
 
+import java.util.regex.Pattern;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property.Type;
 
-public class ConfigPropertyString extends ConfigProperty {
+public class ConfigPropertyString extends ConfigPropertySingle {
 	
 	private String defaultValue;
 	private String currentValue;
@@ -24,6 +26,10 @@ public class ConfigPropertyString extends ConfigProperty {
 	@Override
 	protected String getDefaultValue() {
 		return this.defaultValue;
+	}
+	
+	public void setValidationPattern(Pattern validationPattern) {
+		property.setValidationPattern(validationPattern);
 	}
 	
 	@Override
