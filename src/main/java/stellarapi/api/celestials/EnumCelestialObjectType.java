@@ -14,6 +14,12 @@ public enum EnumCelestialObjectType {
 	Planet,
 	
 	/**
+	 * Celestial object which cannot emit light and revolves around a planet,
+	 *  but form spherical shape.
+	 * */
+	Satellite,
+	
+	/**
 	 * Small celestial object which is neither {@linkplain #Star star}
 	 * nor {@linkplain #Planet planet}.
 	 * */

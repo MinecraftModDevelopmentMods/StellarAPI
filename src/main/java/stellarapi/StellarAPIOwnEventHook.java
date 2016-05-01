@@ -4,6 +4,11 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.event.ConstructCelestialsEvent;
+import stellarapi.api.event.ResetCoordinateEvent;
+import stellarapi.api.event.ResetSkyEffectEvent;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
@@ -11,10 +16,51 @@ import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
 import stellarapi.api.helper.PlayerItemAccessHelper;
 import stellarapi.api.interact.IOpticalFilterItem;
 import stellarapi.api.interact.IViewScopeItem;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
 
 public class StellarAPIOwnEventHook {
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void onConstructCelestials(ConstructCelestialsEvent event) {
+		if(event.getCollections().isEmpty()) {
+			if(this.isOverworld(event.getWorld())) {
+				
+			}
+		}
+		
+		if(event.getEffectors(IEffectorType.Light).isEmpty()) {
+			
+		}
+		
+		if(event.getEffectors(IEffectorType.Tide).isEmpty()) {
+			
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void onResetCoordinate(ResetCoordinateEvent event) {
+		if(event.getCoordinate() == null) {
+			if(this.isOverworld(event.getWorld())) {
+				
+			}
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void onResetEffect(ResetSkyEffectEvent event) {
+		if(event.getSkyEffect() == null) {
+			if(this.isOverworld(event.getWorld())) {
+				
+			}
+		}
+	}
+	
+	private boolean isOverworld(World world) {
+		return "Overworld".equals(world.provider.getDimensionName());
+	}
+	
+	private boolean isEndWorld(World world) {
+		return "The End".equals(world.provider.getDimensionName());
+	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onUpdateScope(UpdateScopeEvent event) {

@@ -1,7 +1,5 @@
 package stellarapi.api.lib.config;
 
-import java.util.Map;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.lib.config.property.ConfigProperty;
