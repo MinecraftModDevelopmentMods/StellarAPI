@@ -14,7 +14,7 @@ import stellarapi.StellarAPI;
 public class StellarAPIConfigScreen extends GuiConfig {
 
 	public StellarAPIConfigScreen(GuiScreen parentScreen) {
-		super(parentScreen, getConfigElement(), StellarAPI.modid, false, false, "Stellar Sky");
+		super(parentScreen, getConfigElement(), StellarAPI.modid, false, false, "Stellar API");
 	}
 	
 	private static List<IConfigElement> getConfigElement() {
