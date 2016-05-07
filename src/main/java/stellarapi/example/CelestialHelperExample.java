@@ -1,5 +1,6 @@
 package stellarapi.example;
 
+import net.minecraft.util.MathHelper;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialObject;
@@ -64,8 +65,18 @@ public class CelestialHelperExample {
 	 * @param partialTicks the partial tick
 	 * */
 	public float getSunlightFactor(EnumRGBA color, float partialTicks) {
-		return Math.max(Math.min(2.0f*this.getSunHeightFactor(partialTicks)+0.5f, 1.0f), 0.0f)
+		return MathHelper.clamp_float(2.0f*this.getSunHeightFactor(partialTicks)+0.5f, 0.0f, 1.0f)
 				* (float)sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color)) * this.relativeMultiplierSun;
+	}
+	
+	/**
+	 * Gets current sunlight factor which affects rendering of the sky.
+	 * @param color the color to get sunlight factor
+	 * @param partialTicks the partial tick
+	 * */
+	public float getSunlightRenderBrightnessFactor(float partialTicks) {
+		return MathHelper.clamp_float(2.0f*this.getSunHeightFactor(partialTicks)+0.2f, 0.0f, 1.0f)
+				* (float)sun.getCurrentBrightness(Wavelength.colorWaveMap.get(EnumRGBA.Alpha)) * this.relativeMultiplierSun;
 	}
 	
 	/**
@@ -115,6 +126,10 @@ public class CelestialHelperExample {
 	 * */
 	public float getCurrentMoonPhaseFactor() {
 		return (float) moon.getCurrentPhase() * this.relativeMultiplierMoon;
+	}
+
+	public float minimumSkyRenderBrightness() {
+		return sky.minimumSkyRenderBrightness();
 	}
 
 }

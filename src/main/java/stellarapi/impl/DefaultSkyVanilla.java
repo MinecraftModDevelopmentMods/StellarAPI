@@ -50,4 +50,9 @@ public class DefaultSkyVanilla implements ISkyEffect {
 		return 0.0f;
 	}
 
+	@Override
+	public float minimumSkyRenderBrightness() {
+		return 0.2f;
+	}
+
 }
