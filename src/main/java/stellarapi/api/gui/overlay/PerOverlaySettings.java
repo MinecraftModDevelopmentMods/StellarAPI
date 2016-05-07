@@ -1,13 +1,13 @@
 package stellarapi.api.gui.overlay;
 
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.gui.overlay.pos.EnumHorizontalPos;
-import stellarapi.api.gui.overlay.pos.EnumVerticalPos;
+import stellarapi.api.gui.pos.EnumHorizontalPos;
+import stellarapi.api.gui.pos.EnumVerticalPos;
 import stellarapi.api.lib.config.SimpleConfigHandler;
 import stellarapi.api.lib.config.property.ConfigPropertyString;
 
 public class PerOverlaySettings extends SimpleConfigHandler {
-	
+
 	private EnumHorizontalPos horizontal;
 	private EnumVerticalPos vertical;
 	

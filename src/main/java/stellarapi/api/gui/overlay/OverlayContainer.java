@@ -8,19 +8,18 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import stellarapi.api.gui.overlay.pos.ElementPos;
-import stellarapi.api.gui.overlay.pos.EnumHorizontalPos;
-import stellarapi.api.gui.overlay.pos.EnumVerticalPos;
+import stellarapi.api.gui.pos.ElementPos;
+import stellarapi.api.gui.pos.EnumHorizontalPos;
+import stellarapi.api.gui.pos.EnumVerticalPos;
 import stellarapi.api.lib.config.ConfigManager;
-import stellarapi.feature.gui.overlay.OverlayPosCfgType;
 
 public class OverlayContainer {
 	
 	private int width;
 	private int height;
-	private double scale;
 	
-	private ConfigManager guiConfig;
+	private String langKey;
+	
 	private EnumOverlayMode currentMode = EnumOverlayMode.OVERLAY;
 	private List<Delegate> elementList = Lists.newArrayList();
 	
@@ -30,12 +29,16 @@ public class OverlayContainer {
 		final Element element;
 		final Settings settings;
 		final IRawHandler<Element> handler;
+		final ConfigManager notified;
 		
-		private Delegate(IGuiOverlayType<Element, Settings> type) {
+		private Delegate(IGuiOverlayType<Element, Settings> type, ConfigManager config) {
 			this.type = type;
 			this.element = type.generateElement();
 			this.settings = type.generateSettings();
 			this.handler = type.generateRawHandler();
+			this.notified = config;
+			
+			notified.register(type.getName(), this.settings);
 			settings.initializeSetttings(type.defaultHorizontalPos(), type.defaultVerticalPos());
 		}
 		
@@ -95,17 +98,12 @@ public class OverlayContainer {
 		}
 	}
 	
-	public OverlayContainer(ConfigManager guiConfig) {
-		this.guiConfig = guiConfig;
-		
-		this.register(new OverlayPosCfgType());
-		
-		for(Delegate delegate : this.elementList)
-			guiConfig.register(delegate.type.getName(), delegate.settings);
+	public OverlayContainer(String langKey) {
+		this.langKey = langKey;
 	}
 	
-	public <E extends IGuiOverlay<S>, S extends PerOverlaySettings> void register(IGuiOverlayType<E, S> type) {
-		elementList.add(new Delegate<E, S>(type));
+	public <E extends IGuiOverlay<S>, S extends PerOverlaySettings> void inject(IGuiOverlayType<E, S> type, ConfigManager config) {
+		elementList.add(new Delegate<E, S>(type, config));
 	}
 	
 	public void initialize(Minecraft mc) {
@@ -129,9 +127,10 @@ public class OverlayContainer {
 	}
 	
 	public void mouseClicked(int mouseX, int mouseY, int eventButton) {
-		boolean changed = false;
 		for(Delegate delegate : this.elementList)
 		{
+			boolean changed = false;
+
 			ElementPos pos = delegate.pos;
 			IGuiOverlay element = delegate.element;
 			int width = element.getWidth();
@@ -145,16 +144,17 @@ public class OverlayContainer {
 			
 			if(delegate.handler != null)
 				changed = delegate.handler.mouseClicked(mouseX, mouseY, eventButton) || changed;
+			
+			if(changed)
+				delegate.notified.syncFromFields();
 		}
-		
-		if(changed)
-			guiConfig.syncFromFields();
 	}
 	
 	public void mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
-		boolean changed = false;
 		for(Delegate delegate : this.elementList)
 		{
+			boolean changed = false;
+
 			ElementPos pos = delegate.pos;
 			IGuiOverlay element = delegate.element;
 			int width = element.getWidth();
@@ -168,25 +168,26 @@ public class OverlayContainer {
 			
 			if(delegate.handler != null)
 				changed = delegate.handler.mouseMovedOrUp(mouseX, mouseY, eventButton) || changed;
+			
+			if(changed)
+				delegate.notified.syncFromFields();
 		}
-		
-		if(changed)
-			guiConfig.syncFromFields();
 	}
 	
 	public void keyTyped(char eventChar, int eventKey) {
-		boolean changed = false;
 		
 		for(Delegate delegate : this.elementList)
 		{
+			boolean changed = false;
+			
 			changed = delegate.element.keyTyped(eventChar, eventKey) || changed;
 			
 			if(delegate.handler != null)
 				changed = delegate.handler.keyTyped(eventChar, eventKey) || changed;
+			
+			if(changed)
+				delegate.notified.syncFromFields();
 		}
-		
-		if(changed)
-			guiConfig.syncFromFields();
 	}
 	
 	public void render(int mouseX, int mouseY, float partialTicks) {
@@ -237,5 +238,9 @@ public class OverlayContainer {
 	
 	public int getHeight() {
 		return this.height;
+	}
+	
+	public String getLangKey() {
+		return this.langKey;
 	}
 }

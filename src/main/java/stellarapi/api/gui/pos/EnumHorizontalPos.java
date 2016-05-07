@@ -1,4 +1,4 @@
-package stellarapi.api.gui.overlay.pos;
+package stellarapi.api.gui.pos;
 
 /**
  * Enumeration for horizontal position.

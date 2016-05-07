@@ -7,8 +7,8 @@ import net.minecraft.client.gui.Gui;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
 import stellarapi.api.gui.overlay.IRawHandler;
 import stellarapi.api.gui.overlay.OverlayContainer;
-import stellarapi.api.gui.overlay.pos.EnumHorizontalPos;
-import stellarapi.api.gui.overlay.pos.EnumVerticalPos;
+import stellarapi.api.gui.pos.EnumHorizontalPos;
+import stellarapi.api.gui.pos.EnumVerticalPos;
 
 public class OverlayPosHandler implements IRawHandler<OverlayPosCfg> {
 	

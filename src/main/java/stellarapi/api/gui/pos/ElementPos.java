@@ -1,4 +1,4 @@
-package stellarapi.api.gui.overlay.pos;
+package stellarapi.api.gui.pos;
 
 public class ElementPos {
 

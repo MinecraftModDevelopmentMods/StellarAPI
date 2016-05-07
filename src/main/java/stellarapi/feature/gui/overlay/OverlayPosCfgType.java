@@ -3,8 +3,8 @@ package stellarapi.feature.gui.overlay;
 import stellarapi.api.gui.overlay.IGuiOverlayType;
 import stellarapi.api.gui.overlay.IRawHandler;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
-import stellarapi.api.gui.overlay.pos.EnumHorizontalPos;
-import stellarapi.api.gui.overlay.pos.EnumVerticalPos;
+import stellarapi.api.gui.pos.EnumHorizontalPos;
+import stellarapi.api.gui.pos.EnumVerticalPos;
 
 public class OverlayPosCfgType implements IGuiOverlayType<OverlayPosCfg, PerOverlaySettings> {
 	

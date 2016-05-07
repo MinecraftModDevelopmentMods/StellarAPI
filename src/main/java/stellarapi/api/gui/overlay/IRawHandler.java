@@ -3,7 +3,7 @@ package stellarapi.api.gui.overlay;
 import net.minecraft.client.Minecraft;
 
 /**
- * Raw handler to control the overlay.
+ * Raw handler to control the overlay with the container.
  * */
 public interface IRawHandler<Element extends IGuiOverlay> {
 	

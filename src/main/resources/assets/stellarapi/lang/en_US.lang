@@ -10,6 +10,10 @@ command.perdimres.remove.success=Successfully removed per-dimension resource on 
 command.perdimres.remove.fail=There was no per-dimension resource on this world with ID %s.
 
 
+key.stellarapi=Stellar API Keys
+key.stellarapi.focusgui.description=Focus on the Overlay
+
+
 config.category.wake=Wake Settings
 config.category.wake.tooltip=Configuration for Waking System.
 

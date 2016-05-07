@@ -13,11 +13,13 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.optics.FilterHelper;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
+import stellarapi.feature.gui.overlay.OverlayHandler;
 
 public class StellarAPIClientForgeEventHook {
 	
@@ -35,6 +37,12 @@ public class StellarAPIClientForgeEventHook {
 		} catch(Exception exc) {
 			Throwables.propagate(exc);
 		}
+	}
+	
+	private OverlayHandler overlay;
+	
+	public StellarAPIClientForgeEventHook(OverlayHandler overlay) {
+		this.overlay = overlay;
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -88,5 +96,11 @@ public class StellarAPIClientForgeEventHook {
 				Throwables.propagate(exc);
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
+		if(event.type == RenderGameOverlayEvent.ElementType.ALL)
+			overlay.renderGameOverlay(event.resolution, event.mouseX, event.mouseY, event.partialTicks);
 	}
 }

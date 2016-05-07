@@ -9,6 +9,9 @@ import com.google.common.collect.Lists;
 
 import net.minecraftforge.common.config.Configuration;
 
+/**
+ * Configuration manager.
+ * */
 public class ConfigManager {
 	
 	private Configuration config;
@@ -25,7 +28,7 @@ public class ConfigManager {
 	public void onSyncConfig(boolean loadFromFile, boolean isLoadPhase) {
 		if(loadFromFile)
 			config.load();
-		
+
 		for(Pair<String, IConfigHandler> entry : handlerPairList) {
 			entry.getValue().setupConfig(config, entry.getKey());
 		}
