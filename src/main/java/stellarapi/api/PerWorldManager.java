@@ -89,14 +89,16 @@ public class PerWorldManager extends WorldSavedData {
 	
 	public void resetCoordinate() {
 		ResetCoordinateEvent coord = new ResetCoordinateEvent(this.world);
-		StellarAPIReference.getEventBus().post(coord);
+		if(StellarAPIReference.getEventBus().post(coord))
+			return;
 		this.coordinate = coord.getCoordinate();
 		this.isCoordinateEstablished = true;
 	}
 	
 	public void resetSkyEffect() {
 		ResetSkyEffectEvent sky = new ResetSkyEffectEvent(this.world);
-		StellarAPIReference.getEventBus().post(sky);
+		if(StellarAPIReference.getEventBus().post(sky))
+			return;
 		this.skyEffect = sky.getSkyEffect();
 		this.isSkyEffectEstablished = true;
 	}
@@ -120,7 +122,7 @@ public class PerWorldManager extends WorldSavedData {
 	}
 	
 	public ICelestialCoordinate getCoordinate() {
-		if(this.isCoordinateEstablished)
+		if(!this.isCoordinateEstablished)
 			this.resetCoordinate();
 		return this.coordinate;
 	}

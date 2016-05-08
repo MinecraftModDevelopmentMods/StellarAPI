@@ -58,7 +58,7 @@ public class PerOverlaySettings extends SimpleConfigHandler {
 		return horizontal;
 	}
 
-	void setHorizontal(EnumHorizontalPos horizontal) {
+	public void setHorizontal(EnumHorizontalPos horizontal) {
 		this.horizontal = horizontal;
 	}
 
@@ -66,7 +66,7 @@ public class PerOverlaySettings extends SimpleConfigHandler {
 		return vertical;
 	}
 
-	void setVertical(EnumVerticalPos vertical) {
+	public void setVertical(EnumVerticalPos vertical) {
 		this.vertical = vertical;
 	}
 

@@ -16,50 +16,42 @@ import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
 import stellarapi.api.helper.PlayerItemAccessHelper;
 import stellarapi.api.interact.IOpticalFilterItem;
 import stellarapi.api.interact.IViewScopeItem;
+import stellarapi.api.lib.math.Spmath;
+import stellarapi.impl.DefaultCollectionVanilla;
+import stellarapi.impl.DefaultCoordinateVanilla;
+import stellarapi.impl.DefaultSkyVanilla;
 
 public class StellarAPIOwnEventHook {
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onConstructCelestials(ConstructCelestialsEvent event) {
 		if(event.getCollections().isEmpty()) {
-			if(this.isOverworld(event.getWorld())) {
-				
+			if(this.isOverworld(event.getWorld()))
+			{
+				DefaultCollectionVanilla collection = new DefaultCollectionVanilla(event.getWorld());
+				event.getCollections().add(collection);
+				event.getEffectors(IEffectorType.Light).add(collection.sun);
+				event.getEffectors(IEffectorType.Tide).add(collection.moon);
 			}
-		}
-		
-		if(event.getEffectors(IEffectorType.Light).isEmpty()) {
-			
-		}
-		
-		if(event.getEffectors(IEffectorType.Tide).isEmpty()) {
-			
 		}
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onResetCoordinate(ResetCoordinateEvent event) {
-		if(event.getCoordinate() == null) {
-			if(this.isOverworld(event.getWorld())) {
-				
-			}
-		}
+		if(event.getCoordinate() == null)
+			event.setCoordinate(new DefaultCoordinateVanilla(event.getWorld()));
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onResetEffect(ResetSkyEffectEvent event) {
-		if(event.getSkyEffect() == null) {
-			if(this.isOverworld(event.getWorld())) {
-				
-			}
-		}
+		if(event.getSkyEffect() == null)
+			if(!event.getWorld().provider.hasNoSky)
+				event.setSkyEffect(new DefaultSkyVanilla());
 	}
 	
 	private boolean isOverworld(World world) {
-		return "Overworld".equals(world.provider.getDimensionName());
-	}
-	
-	private boolean isEndWorld(World world) {
-		return "The End".equals(world.provider.getDimensionName());
+		return "Overworld".equals(world.provider.getDimensionName()) && world.provider.isSurfaceWorld()
+				&& Spmath.fmod(world.getCelestialAngle(0.5f)*2, 1.0f) != 0.0f;
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

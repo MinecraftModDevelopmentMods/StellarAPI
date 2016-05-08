@@ -1,31 +1,32 @@
-package stellarapi.feature.gui.overlay;
+package stellarapi.feature.gui.overlay.configurator;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
-import stellarapi.api.gui.overlay.IGuiOverlay;
+import stellarapi.api.gui.overlay.IOverlay;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.lib.gui.button.GuiButtonColorable;
 
-public class OverlayPosCfg implements IGuiOverlay<PerOverlaySettings> {
-
+public class OverlayConfigurator implements IOverlay<PerOverlaySettings> {
 	private static final int WIDTH = 60;
 	private static final int HEIGHT = 20;
 	private static final int ANIMATION_DURATION = 10;
-	
+
 	private Minecraft mc;
 	EnumOverlayMode currentMode = EnumOverlayMode.OVERLAY;
-	
+
 	private GuiButtonColorable button;
 	private int animationTick = 0;
-	
+
 	boolean markForUpdate = false;
-	
+
 	@Override
 	public void initialize(Minecraft mc, PerOverlaySettings settings) {
 		this.mc = mc;
 		
 		this.button = new GuiButtonColorable(0, 0, 0, WIDTH, HEIGHT,
-				currentMode == EnumOverlayMode.POSITION? "Stop" : "Position");
+				I18n.format(currentMode == EnumOverlayMode.POSITION?
+						"gui.configurator.stop" : "gui.configurator.position"));
 	}
 
 	@Override
@@ -57,7 +58,8 @@ public class OverlayPosCfg implements IGuiOverlay<PerOverlaySettings> {
 		}
 		this.currentMode = mode;
 		
-		button.displayString = currentMode == EnumOverlayMode.POSITION? "Stop" : "Position";
+		button.displayString = I18n.format(currentMode == EnumOverlayMode.POSITION?
+				"gui.configurator.stop" : "gui.configurator.position");
 	}
 
 	@Override

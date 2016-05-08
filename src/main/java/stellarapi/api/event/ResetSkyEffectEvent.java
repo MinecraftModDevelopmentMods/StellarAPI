@@ -6,6 +6,9 @@ import stellarapi.api.ISkyEffect;
 
 /**
  * Fired to reset the sky effect.
+ * 
+ * This event is <code>@Cancelable</code>,
+ * and canceling this event will force the sky effect unavailable now.
  * */
 public class ResetSkyEffectEvent extends PerWorldEvent {
 

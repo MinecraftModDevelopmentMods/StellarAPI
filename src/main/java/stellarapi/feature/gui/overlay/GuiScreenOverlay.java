@@ -6,7 +6,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
-import stellarapi.api.gui.overlay.OverlayContainer;
 
 public class GuiScreenOverlay extends GuiScreen {
 	

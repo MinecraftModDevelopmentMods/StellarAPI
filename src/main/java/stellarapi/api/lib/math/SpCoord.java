@@ -8,7 +8,7 @@ package stellarapi.api.lib.math;
  * <li>Height is angle upon the ground(horizon).</li>
  * */
 public class SpCoord {
-	/**Right Ascension or -Azimuth*/
+	/**Right Ascension or 90-Azimuth*/
 	public double x;
 	/**Declination or Height*/
 	public double y;

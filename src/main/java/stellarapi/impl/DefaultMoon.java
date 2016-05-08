@@ -1,5 +1,7 @@
 package stellarapi.impl;
 
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.celestials.EnumCelestialObjectType;
 import stellarapi.api.celestials.ICelestialObject;
@@ -8,52 +10,54 @@ import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
 public class DefaultMoon implements ICelestialObject {
+	
+	private World world;
+	
+	public DefaultMoon(World world) {
+		this.world = world;
+	}
 
 	@Override
 	public CelestialPeriod getAbsolutePeriod() {
-		// TODO Auto-generated method stub
+		// Month is not absolute period in minecraft; It does not alter position of the moon.
 		return null;
 	}
 
 	@Override
 	public CelestialPeriod getHorizontalPeriod() {
-		// TODO Auto-generated method stub
-		return null;
+		return new CelestialPeriod("Lunar Day", 24000.0, 0.75);
 	}
 
 	@Override
 	public CelestialPeriod getPhasePeriod() {
-		// TODO Auto-generated method stub
-		return null;
+		return new CelestialPeriod("Lunar Month", 24000.0*8.0, 0.5);
 	}
 
 	@Override
 	public double getCurrentPhase() {
-		// TODO Auto-generated method stub
-		return 0;
+		return world.getCurrentMoonPhaseFactor();
 	}
 
 	@Override
 	public double getCurrentBrightness(Wavelength wavelength) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.getCurrentPhase();
 	}
 
 	@Override
 	public Vector3 getCurrentAbsolutePos() {
-		return new Vector3(0.0, 0.0, -1.0);
+		return new Vector3(-1.0, 0.0, 0.0);
 	}
 
 	@Override
 	public SpCoord getCurrentHorizontalPos() {
-		// TODO Auto-generated method stub
-		return null;
+		float celestialAngle = world.getCelestialAngle(0.0f);
+		return new SpCoord(celestialAngle < 0.5? 270.0 : 90.0, 90.0-360.0*Math.abs(celestialAngle-0.5));
 	}
 
 	@Override
 	public double getStandardMagnitude() {
-		// TODO Auto-generated method stub
-		return 0;
+		// For astronomical convention
+		return -12.74;
 	}
 
 	@Override

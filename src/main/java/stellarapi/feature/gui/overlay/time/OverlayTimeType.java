@@ -1,16 +1,16 @@
-package stellarapi.feature.gui.overlay;
+package stellarapi.feature.gui.overlay.time;
 
-import stellarapi.api.gui.overlay.IGuiOverlayType;
+import stellarapi.api.gui.overlay.IOverlayType;
 import stellarapi.api.gui.overlay.IRawHandler;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 
-public class OverlayPosCfgType implements IGuiOverlayType<OverlayPosCfg, PerOverlaySettings> {
+public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySettings> {
 	
 	@Override
-	public OverlayPosCfg generateElement() {
-		return new OverlayPosCfg();
+	public OverlayTime generateElement() {
+		return new OverlayTime();
 	}
 
 	@Override
@@ -22,6 +22,11 @@ public class OverlayPosCfgType implements IGuiOverlayType<OverlayPosCfg, PerOver
 	public String getName() {
 		return "Position";
 	}
+	
+	@Override
+	public String overlayType() {
+		return "Time";
+	}
 
 	@Override
 	public EnumHorizontalPos defaultHorizontalPos() {
@@ -30,18 +35,18 @@ public class OverlayPosCfgType implements IGuiOverlayType<OverlayPosCfg, PerOver
 
 	@Override
 	public EnumVerticalPos defaultVerticalPos() {
-		return EnumVerticalPos.CENTER;
+		return EnumVerticalPos.UP;
 	}
 
 	@Override
 	public boolean accepts(EnumHorizontalPos horizontal, EnumVerticalPos vertical) {
-		return horizontal == EnumHorizontalPos.RIGHT && vertical == EnumVerticalPos.CENTER;
+		return true;
 	}
 
-	
+
 	@Override
-	public IRawHandler<OverlayPosCfg> generateRawHandler() {
-		return new OverlayPosHandler();
+	public IRawHandler<OverlayTime> generateRawHandler() {
+		return null;
 	}
 
 }

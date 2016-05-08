@@ -1,16 +1,17 @@
 package stellarapi.api.gui.overlay;
 
 import net.minecraft.client.Minecraft;
+import stellarapi.feature.gui.overlay.OverlayManager;
 
 /**
  * Raw handler to control the overlay with the container.
  * */
-public interface IRawHandler<Element extends IGuiOverlay> {
+public interface IRawHandler<Element extends IOverlay> {
 	
 	/**
 	 * Initialize the raw handler.
 	 * */
-	public void initialize(Minecraft mc, OverlayContainer container, Element element);
+	public void initialize(Minecraft mc, IOverlayManager manager, Element element);
 	
 	/**
 	 * Return true to update settings.

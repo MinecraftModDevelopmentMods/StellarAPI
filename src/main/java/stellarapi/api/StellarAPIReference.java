@@ -106,18 +106,22 @@ public final class StellarAPIReference {
 	
 	
 	/**
-	 * Gets celestial coordinate for certain world.
+	 * Gets celestial coordinate for certain world. <p>
+	 * Note that it should always exist,
+	 * but the result can be <code>null</code> in the cases the initialization has delayed.
 	 * @param world the world
-	 * @return the coordinate for the world if it exists, or <code>null</code> otherwise
+	 * @return the coordinate for the world if it is available now, or <code>null</code> otherwise
 	 * */
 	public static ICelestialCoordinate getCoordinate(World world) {
 		return PerWorldManager.getPerWorldManager(world).getCoordinate();
 	}
 	
 	/**
-	 * Gets sky effect for certain world.
+	 * Gets sky effect for certain world. <p>
+	 * Note that it should always exist for worlds with sky,
+	 * but the result can be <code>null</code> in the cases the initialization has delayed.
 	 * @param world the world
-	 * @return the sky effect for the world if it exists, or <code>null</code> otherwise
+	 * @return the sky effect for the world if it is available now, or <code>null</code> otherwise
 	 * */
 	public static ISkyEffect getSkyEffect(World world) {
 		return PerWorldManager.getPerWorldManager(world).getSkyEffect();

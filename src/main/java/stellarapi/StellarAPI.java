@@ -1,5 +1,6 @@
 package stellarapi;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.logging.log4j.Logger;
@@ -47,6 +48,10 @@ public final class StellarAPI {
         
         public static Logger logger;
         
+		public static Configuration getConfiguration(File configDir, String subName) {
+			return new Configuration(new File(new File(configDir, "stellarapi"), subName));
+		}
+        
     	private static final String wakeCategory = "wake";
         
         private StellarAPIForgeEventHook eventHook = new StellarAPIForgeEventHook();
@@ -75,7 +80,7 @@ public final class StellarAPI {
     		FMLCommonHandler.instance().bus().register(this.networkManager);
     		
     		
-    		this.config = new Configuration(event.getSuggestedConfigurationFile());
+    		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
     		this.cfgManager = new ConfigManager(this.config);
     		
     		StellarAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());

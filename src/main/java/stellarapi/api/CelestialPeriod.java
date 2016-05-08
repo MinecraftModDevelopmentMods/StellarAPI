@@ -8,6 +8,12 @@ public class CelestialPeriod {
 	private double periodLength;
 	private double zeroTimeOffset;
 	
+	/**
+	 * Construct certain celestial period.
+	 * @param periodName {@link #getPeriodName()}
+	 * @param periodLength {@link #getPeriodLength()}
+	 * @param zeroTimeOffset {@link #getZerotimeOffset()}
+	 * */
 	public CelestialPeriod(String periodName, double periodLength, double zeroTimeOffset) {
 		this.periodName = periodName;
 		this.periodLength = periodLength;
@@ -30,6 +36,9 @@ public class CelestialPeriod {
 		return this.periodLength;
 	}
 	
+	/**
+	 * The offset on the tick #0.
+	 * */
 	public double getZerotimeOffset() {
 		return this.zeroTimeOffset;
 	}

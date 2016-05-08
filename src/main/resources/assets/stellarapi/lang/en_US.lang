@@ -14,6 +14,12 @@ key.stellarapi=Stellar API Keys
 key.stellarapi.focusgui.description=Focus on the Overlay
 
 
+gui.overlay.main=Main
+
+gui.configurator.stop=Stop
+gui.configurator.position=Position
+
+
 config.category.wake=Wake Settings
 config.category.wake.tooltip=Configuration for Waking System.
 

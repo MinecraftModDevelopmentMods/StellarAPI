@@ -7,7 +7,7 @@ import stellarapi.api.gui.pos.EnumVerticalPos;
  * Certain overlay type.
  * Note that the Right Center part is already reserved by the position handling overlay.
  * */
-public interface IGuiOverlayType<Element extends IGuiOverlay<Settings>, Settings extends PerOverlaySettings> {
+public interface IOverlayType<Element extends IOverlay<Settings>, Settings extends PerOverlaySettings> {
 	
 	/** Generate the Overlay element. */
 	public Element generateElement();
@@ -15,8 +15,11 @@ public interface IGuiOverlayType<Element extends IGuiOverlay<Settings>, Settings
 	/** Generate the Overlay settings. */
 	public Settings generateSettings();
 	
-	/** Gets the name of certain overlay element. */
+	/** Gets the name of certain overlay element, which will be the category name in the configuration. */
 	public String getName();
+	
+	/** Gets the type name of the overlay. Will be used to distinguish overlays. */
+	public String overlayType();
 	
 	/** Default Horizontal Position. */
 	public EnumHorizontalPos defaultHorizontalPos();
