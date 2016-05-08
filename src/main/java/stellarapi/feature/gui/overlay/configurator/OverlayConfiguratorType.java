@@ -48,5 +48,10 @@ public class OverlayConfiguratorType implements IOverlayType<OverlayConfigurator
 	public IRawHandler<OverlayConfigurator> generateRawHandler() {
 		return new OverlayConfiguratorHandler();
 	}
+	
+	@Override
+	public boolean isUniversal() {
+		return true;
+	}
 
 }

@@ -49,4 +49,9 @@ public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySett
 		return null;
 	}
 
+	@Override
+	public boolean isUniversal() {
+		return false;
+	}
+
 }
