@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.gui.ScaledResolution;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
-import stellarapi.api.gui.overlay.IOverlay;
+import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.overlay.IRawOverlayElement;
 import stellarapi.api.gui.pos.ElementPos;
 
@@ -46,7 +46,7 @@ public class OverlayContainer {
 			boolean changed = false;
 
 			ElementPos pos = delegate.getPosition();
-			IOverlay element = delegate.getElement();
+			IOverlayElement element = delegate.getElement();
 			int width = element.getWidth();
 			int height = element.getHeight();
 			int scaledMouseX = pos.getHorizontalPos().translateInto(mouseX, this.width, width);
@@ -69,7 +69,7 @@ public class OverlayContainer {
 			boolean changed = false;
 
 			ElementPos pos = delegate.getPosition();
-			IOverlay element = delegate.getElement();
+			IOverlayElement element = delegate.getElement();
 			int width = element.getWidth();
 			int height = element.getHeight();
 			int scaledMouseX = pos.getHorizontalPos().translateInto(mouseX, this.width, width);
@@ -104,7 +104,7 @@ public class OverlayContainer {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
 			ElementPos pos = delegate.getPosition();
-			IOverlay element = delegate.getElement();
+			IOverlayElement element = delegate.getElement();
 			int width = element.getWidth();
 			int height = element.getHeight();
 			float animationOffsetX = element.animationOffsetX(partialTicks);

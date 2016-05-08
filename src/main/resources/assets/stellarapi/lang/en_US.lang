@@ -15,9 +15,25 @@ key.stellarapi.focusgui.description=Focus on the Overlay
 
 
 gui.overlay.main=Main
+gui.overlay.stellarapi=Stellar API
 
-gui.configurator.stop=Stop
-gui.configurator.position=Position
+gui.configurator.stop=Positioning
+gui.configurator.position=Overlay
+
+gui.time.display=<Currently>
+
+gui.time.midnight=MIDNIGHT
+gui.time.midday=MIDDAY
+gui.time.early_morning=EARLY MORNING
+gui.time.morning=MORNING
+gui.time.dawn=DAWN
+gui.time.afternoon=AFTERNOON
+gui.time.evening=EVENING
+gui.time.dawn=DAWN
+gui.time.dusk=DUSK
+
+gui.time.day=DAY
+gui.time.night=NIGHT
 
 
 config.category.wake=Wake Settings

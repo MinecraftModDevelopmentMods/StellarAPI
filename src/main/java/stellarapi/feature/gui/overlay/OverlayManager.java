@@ -11,18 +11,19 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.client.Minecraft;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
-import stellarapi.api.gui.overlay.IOverlay;
-import stellarapi.api.gui.overlay.IRawOverlayElement;
+import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.overlay.IOverlayInjectable;
 import stellarapi.api.gui.overlay.IOverlayManager;
-import stellarapi.api.gui.overlay.IRawOverlaySet;
 import stellarapi.api.gui.overlay.IOverlaySetType;
 import stellarapi.api.gui.overlay.IOverlayType;
+import stellarapi.api.gui.overlay.IRawOverlayElement;
+import stellarapi.api.gui.overlay.IRawOverlaySet;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.feature.gui.overlay.configurator.OverlayConfiguratorType;
 
 public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 	private Map<String, OverlayElementDelegate> elementMap = Maps.newHashMap();
@@ -40,7 +41,7 @@ public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 	}
 
 	@Override
-	public <E extends IOverlay<S>, S extends PerOverlaySettings> void injectOverlay(
+	public <E extends IOverlayElement<S>, S extends PerOverlaySettings> void injectOverlay(
 			String id, String modid, IOverlayType<E, S> type, S settings, ConfigManager notified) {
 		OverlayElementDelegate delegate = new OverlayElementDelegate<E, S>(type, settings, notified, this, id, modid);
 		elementMap.put(id, delegate);
@@ -52,7 +53,13 @@ public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 		
 		for(OverlaySetDelegate setDelegate : displaySets) {
 			for(Map.Entry<String, OverlayElementDelegate> entry : elementMap.entrySet()) {
-				if(setDelegate.getType().acceptOverlayByDefault(entry.getValue())
+				if((entry.getValue().getType().isUniversal())
+						&& setDelegate.canSetPos(entry.getKey(), entry.getValue().getPosition()))
+						setDelegate.addToDisplay(entry.getKey(), entry.getValue().getPosition());
+			}
+			
+			for(Map.Entry<String, OverlayElementDelegate> entry : elementMap.entrySet()) {
+				if((setDelegate.getType().acceptOverlayByDefault(entry.getValue()))
 						&& setDelegate.canSetPos(entry.getKey(), entry.getValue().getPosition()))
 						setDelegate.addToDisplay(entry.getKey(), entry.getValue().getPosition());
 			}

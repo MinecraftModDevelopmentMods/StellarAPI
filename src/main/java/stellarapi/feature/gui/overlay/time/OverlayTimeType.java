@@ -40,7 +40,7 @@ public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySett
 
 	@Override
 	public boolean accepts(EnumHorizontalPos horizontal, EnumVerticalPos vertical) {
-		return true;
+		return vertical != EnumVerticalPos.DOWN;
 	}
 
 

@@ -13,6 +13,7 @@ import stellarapi.api.gui.overlay.OverlayRegistry;
 import stellarapi.api.lib.config.ConfigManager;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.feature.gui.overlay.OverlaySetMain;
+import stellarapi.feature.gui.overlay.OverlaySetStellarAPI;
 import stellarapi.feature.gui.overlay.configurator.OverlayConfiguratorType;
 import stellarapi.feature.gui.overlay.time.OverlayTimeType;
 
@@ -33,6 +34,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 				event.getModConfigurationDirectory(), "GuiConfig.cfg"));
 		
 		OverlayRegistry.registerOverlaySet("main", new OverlaySetMain());
+		OverlayRegistry.registerOverlaySet("stellarapi", new OverlaySetStellarAPI());
 		OverlayRegistry.registerOverlay("position", new OverlayConfiguratorType(), guiConfig);
 		OverlayRegistry.registerOverlay("time", new OverlayTimeType(), guiConfig);
 	}

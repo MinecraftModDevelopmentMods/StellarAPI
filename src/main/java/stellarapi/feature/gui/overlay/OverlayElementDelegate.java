@@ -3,7 +3,7 @@ package stellarapi.feature.gui.overlay;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import stellarapi.api.gui.overlay.IOverlay;
+import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.overlay.IOverlayType;
 import stellarapi.api.gui.overlay.IRawOverlayElement;
 import stellarapi.api.gui.overlay.IRawHandler;
@@ -13,7 +13,7 @@ import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 import stellarapi.api.lib.config.ConfigManager;
 
-public class OverlayElementDelegate<Element extends IOverlay<Settings>, Settings extends PerOverlaySettings> 
+public class OverlayElementDelegate<Element extends IOverlayElement<Settings>, Settings extends PerOverlaySettings> 
 implements IRawOverlayElement {
 
 	private OverlayManager manager;

@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 /**
  * The main gui overlay.
  * */
-public interface IOverlay<Settings extends PerOverlaySettings> {
+public interface IOverlayElement<Settings extends PerOverlaySettings> {
 	
 	public void initialize(Minecraft mc, Settings settings);
 	

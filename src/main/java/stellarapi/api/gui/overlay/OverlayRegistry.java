@@ -30,7 +30,7 @@ public class OverlayRegistry {
 	 * @param type the type of the overlay
 	 * @param config the configuration instance to save the settings
 	 * */
-	public static <E extends IOverlay<S>, S extends PerOverlaySettings> void registerOverlay(
+	public static <E extends IOverlayElement<S>, S extends PerOverlaySettings> void registerOverlay(
 			String id, IOverlayType<E, S> type, ConfigManager config) {
 		String modid = Loader.instance().activeModContainer().getModId();
 		INSTANCE.mapOverlay.put(id, INSTANCE.new RegistryDelegate(type, config, modid));
@@ -48,7 +48,7 @@ public class OverlayRegistry {
 		}
 	}
 	
-	private class RegistryDelegate<E extends IOverlay<S>, S extends PerOverlaySettings> {
+	private class RegistryDelegate<E extends IOverlayElement<S>, S extends PerOverlaySettings> {
 		
 		private final IOverlayType<E, S> type;
 		private final S settings;

@@ -9,6 +9,6 @@ import stellarapi.feature.gui.overlay.OverlaySetDelegate;
  * */
 public interface IOverlayInjectable {
 	public void injectOverlaySet(IOverlaySetType type);
-	public <E extends IOverlay<S>, S extends PerOverlaySettings> void injectOverlay(
+	public <E extends IOverlayElement<S>, S extends PerOverlaySettings> void injectOverlay(
 			String id, String modid, IOverlayType<E, S> type, S settings, ConfigManager notified);
 }

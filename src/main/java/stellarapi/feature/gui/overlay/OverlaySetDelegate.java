@@ -40,7 +40,7 @@ public class OverlaySetDelegate implements IRawOverlaySet {
 	}
 
 	boolean canSetPos(String elementId, ElementPos pos) {
-		return !displayedIdMap.containsKey(pos) || displayedIdMap.get(pos) != elementId;
+		return !displayedIdMap.containsKey(pos) || displayedIdMap.get(pos) == elementId;
 	}
 
 	void addToDisplay(String elementId, ElementPos position) {

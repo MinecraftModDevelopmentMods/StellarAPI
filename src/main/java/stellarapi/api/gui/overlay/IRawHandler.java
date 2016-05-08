@@ -6,7 +6,7 @@ import stellarapi.feature.gui.overlay.OverlayManager;
 /**
  * Raw handler to control the overlay with the container.
  * */
-public interface IRawHandler<Element extends IOverlay> {
+public interface IRawHandler<Element extends IOverlayElement> {
 	
 	/**
 	 * Initialize the raw handler.

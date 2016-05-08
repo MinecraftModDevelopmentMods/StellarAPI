@@ -1,24 +1,33 @@
 package stellarapi.feature.gui.overlay.time;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.Vec3;
+import stellarapi.api.CelestialPeriod;
+import stellarapi.api.PeriodHelper;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
-import stellarapi.api.gui.overlay.IOverlay;
+import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
 
-public class OverlayTime implements IOverlay<PerOverlaySettings> {
-	private static final int WIDTH = 60;
-	private static final int HEIGHT = 20;
+public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
+	private static final int WIDTH = 100;
+	private static final int HEIGHT = 10;
 	private static final int ANIMATION_DURATION = 10;
 
 	private Minecraft mc;
 	EnumOverlayMode currentMode = EnumOverlayMode.OVERLAY;
 
-	private int animationTick = 0;
+	private List<EnumDaytimeDescriptor> descriptors = Lists.newArrayList();
+	private boolean isDay = true;
+	private int icolor;
 
 	boolean markForUpdate = false;
 
@@ -34,7 +43,7 @@ public class OverlayTime implements IOverlay<PerOverlaySettings> {
 
 	@Override
 	public int getHeight() {
-		return HEIGHT;
+		return HEIGHT * (descriptors.size()+3);
 	}
 
 	@Override
@@ -49,20 +58,36 @@ public class OverlayTime implements IOverlay<PerOverlaySettings> {
 
 	@Override
 	public void switchMode(EnumOverlayMode mode) {
-		if(currentMode.displayed() != mode.displayed()) {
-			if(mode.displayed())
-				animationTick = 0;
-			else animationTick = ANIMATION_DURATION;
-		}
 		this.currentMode = mode;
 	}
 
 	@Override
 	public void updateOverlay() {
-		if(this.animationTick > 0 && !currentMode.displayed())
-			this.animationTick--;
-		else if(this.animationTick < ANIMATION_DURATION && currentMode.displayed())
-			this.animationTick++;
+		if(mc.theWorld == null)
+			return;
+		
+		CelestialPeriod dayPeriod = PeriodHelper.getDayPeriod(mc.theWorld);
+		if(dayPeriod == null)
+			return;
+				
+		descriptors.clear();
+		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
+		
+		double dawn = dayPeriod.getOffset(checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DAWN, 23000L), 0.0f);
+		double dusk = dayPeriod.getOffset(checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DUSK, 13000L), 0.0f);
+
+		double current = dayPeriod.getOffset(mc.theWorld.getWorldTime(), 0.0f);
+		
+		this.isDay = current > dawn && current < dusk;
+		
+		float[] colors = mc.theWorld.provider.calcSunriseSunsetColors(mc.theWorld.getCelestialAngle(0.0f), 0.0f);
+		if(colors != null)
+			this.icolor = ((int)(colors[0] * 255.0)<<16)+((int)(colors[1] * 255.0)<<8)+(int)(colors[2] * 255.0);
+		else this.icolor = this.isDay? 0x77ff77 : 0xbb3333;
+		
+		for(EnumDaytimeDescriptor descriptor : EnumDaytimeDescriptor.values())
+			if(checker.isDescriptorApply(mc.theWorld, descriptor, mc.theWorld.getWorldTime(), (int)(dayPeriod.getPeriodLength() / 16), false))
+				descriptors.add(descriptor);
 	}
 
 	@Override
@@ -82,20 +107,18 @@ public class OverlayTime implements IOverlay<PerOverlaySettings> {
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		//partialTicks = currentMode.displayed()? partialTicks : -partialTicks;
-		//float alpha = (this.animationTick + partialTicks) / ANIMATION_DURATION;
-		//int ialpha = MathHelper.clamp_int((int)(alpha * 255), 0, 255);
-		
 		int yOffset = 0;
 
-		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
-		for(EnumDaytimeDescriptor descriptor : EnumDaytimeDescriptor.values())
-			if(checker.isDescriptorApply(mc.theWorld, descriptor, mc.theWorld.getWorldTime(), 3000, false))
-				this.drawString(mc.fontRenderer, descriptor.name(), 5, 10*(yOffset++)+5, 255, 0xffff77);
+		this.drawString(mc.fontRenderer, "display", WIDTH / 2, 10*(yOffset++)+5, 255, 0xffffff);
+		this.drawString(mc.fontRenderer, this.isDay? "day":"night", WIDTH / 2, 10*(yOffset++)+5, 255, this.isDay? 0xffff77 : 0x5555aa);
+		for(EnumDaytimeDescriptor descriptor : this.descriptors)
+			if(mc.theWorld != null)
+				this.drawString(mc.fontRenderer, descriptor.name(), WIDTH / 2, 10*(yOffset++)+5, 255, this.icolor);
 	}
 	
 	private void drawString(FontRenderer fontRenderer, String str, int x, int y, int alpha, int color) {
-		fontRenderer.drawString(str, x, y, color + (alpha<<24));
+		str = I18n.format("gui.time."+str.toLowerCase());
+		fontRenderer.drawStringWithShadow(str, x - fontRenderer.getStringWidth(str) / 2, y, color + (alpha<<24));
 	}
 
 }

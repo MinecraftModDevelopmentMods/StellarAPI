@@ -7,7 +7,7 @@ import stellarapi.api.gui.pos.EnumVerticalPos;
  * Certain overlay type.
  * Note that the Right Center part is already reserved by the position handling overlay.
  * */
-public interface IOverlayType<Element extends IOverlay<Settings>, Settings extends PerOverlaySettings> {
+public interface IOverlayType<Element extends IOverlayElement<Settings>, Settings extends PerOverlaySettings> {
 	
 	/** Generate the Overlay element. */
 	public Element generateElement();
@@ -31,5 +31,8 @@ public interface IOverlayType<Element extends IOverlay<Settings>, Settings exten
 	
 	/** Generate Raw Handler. Can be null. */
 	public IRawHandler<Element> generateRawHandler();
+
+	/** Gives true iff. the overlay should be added on all of the overlay sets. */
+	public boolean isUniversal();
 
 }

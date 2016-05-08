@@ -3,30 +3,35 @@ package stellarapi.feature.gui.overlay.configurator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
-import stellarapi.api.gui.overlay.IOverlay;
+import stellarapi.api.gui.overlay.IOverlayElement;
+import stellarapi.api.gui.overlay.IRawOverlaySet;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.lib.gui.button.GuiButtonColorable;
 
-public class OverlayConfigurator implements IOverlay<PerOverlaySettings> {
+public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> {
 	private static final int WIDTH = 60;
-	private static final int HEIGHT = 20;
+	private static final int HEIGHT = 40;
 	private static final int ANIMATION_DURATION = 10;
 
 	private Minecraft mc;
 	EnumOverlayMode currentMode = EnumOverlayMode.OVERLAY;
+	
+	IRawOverlaySet currentSet = null;
 
-	private GuiButtonColorable button;
+	private GuiButtonColorable button, btnOverlaySet;
 	private int animationTick = 0;
 
 	boolean markForUpdate = false;
-
+	boolean markForUpdateSet = false;
+	
 	@Override
 	public void initialize(Minecraft mc, PerOverlaySettings settings) {
 		this.mc = mc;
 		
-		this.button = new GuiButtonColorable(0, 0, 0, WIDTH, HEIGHT,
+		this.button = new GuiButtonColorable(0, 0, 0, WIDTH, HEIGHT/2,
 				I18n.format(currentMode == EnumOverlayMode.POSITION?
 						"gui.configurator.stop" : "gui.configurator.position"));
+		this.btnOverlaySet = new GuiButtonColorable(0, 0, HEIGHT/2, WIDTH, HEIGHT/2, "");
 	}
 
 	@Override
@@ -72,16 +77,22 @@ public class OverlayConfigurator implements IOverlay<PerOverlaySettings> {
 
 	@Override
 	public boolean mouseClicked(int mouseX, int mouseY, int eventButton) {
-		if(currentMode.displayed() && button.mousePressed(this.mc, mouseX, mouseY))
-			this.markForUpdate = true;
+		if(currentMode.displayed()) {
+			if(button.mousePressed(this.mc, mouseX, mouseY))
+				this.markForUpdate = true;
+			if(btnOverlaySet.mousePressed(this.mc, mouseX, mouseY))
+				this.markForUpdateSet = true;
+		}
 		
 		return false;
 	}
 
 	@Override
 	public boolean mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
-		if(currentMode.displayed())
+		if(currentMode.displayed()) {
 			button.mouseReleased(mouseX, mouseY);
+			btnOverlaySet.mouseReleased(mouseX, mouseY);
+		}
 		return false;
 	}
 
@@ -93,8 +104,13 @@ public class OverlayConfigurator implements IOverlay<PerOverlaySettings> {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		partialTicks = currentMode.displayed()? partialTicks : -partialTicks;
-		button.alpha = (this.animationTick + partialTicks) / ANIMATION_DURATION;
+		btnOverlaySet.alpha = button.alpha = (this.animationTick + partialTicks) / ANIMATION_DURATION;
+		
+		if(this.currentSet != null)
+			btnOverlaySet.displayString = I18n.format(currentSet.getType().getLanguageKey());
+		
 		button.drawButton(this.mc, mouseX, mouseY);
+		btnOverlaySet.drawButton(this.mc, mouseX, mouseY);
 	}
 
 }
