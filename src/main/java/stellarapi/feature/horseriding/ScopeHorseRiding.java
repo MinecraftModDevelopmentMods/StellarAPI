@@ -13,7 +13,7 @@ public class ScopeHorseRiding implements IViewScope {
 
 	@Override
 	public double getLGP() {
-		return previous.getLGP();
+		return previous.getLGP() * 0.7;
 	}
 
 	@Override

@@ -21,6 +21,8 @@ import stellarapi.api.perdimres.PerDimensionResourceManager;
  * Central reference for Stellar API.
  * */
 public final class StellarAPIReference {
+	
+	private static IReference reference;
 		
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
@@ -56,7 +58,7 @@ public final class StellarAPIReference {
 	 * It is necessary to call this method at least once per world with celestial settings.
 	 * */
 	public static void constructCelestials(World world) {
-		PerWorldManager.getPerWorldManager(world).constructCollections();
+		reference.getPerWorldReference(world).constructCollections();
 	}
 
 	/**
@@ -64,7 +66,7 @@ public final class StellarAPIReference {
 	 * It is necessary to call this method at least once per world with celestial settings.
 	 * */
 	public static void resetCoordinate(World world) {
-		PerWorldManager.getPerWorldManager(world).resetCoordinate();
+		reference.getPerWorldReference(world).resetCoordinate();
 	}
 	
 	/**
@@ -72,7 +74,7 @@ public final class StellarAPIReference {
 	 * It is necessary to call this method at least once per world with celestial settings.
 	 * */
 	public static void resetSkyEffect(World world) {
-		PerWorldManager.getPerWorldManager(world).resetSkyEffect();
+		reference.getPerWorldReference(world).resetSkyEffect();
 	}
 	
 	/**
@@ -80,10 +82,7 @@ public final class StellarAPIReference {
 	 * @param additionalParams additional parameters like changed itemstack.
 	 * */
 	public static void updateScope(Entity entity, Object... additionalParams) {
-		if(!PerEntityManager.hasEntityManager(entity))
-			PerEntityManager.registerEntityManager(entity);
-		
-		PerEntityManager.getEntityManager(entity).updateScope(additionalParams);
+		reference.getPerEntityReference(entity).updateScope(additionalParams);
 	}
 	
 	/**
@@ -91,9 +90,7 @@ public final class StellarAPIReference {
 	 * @param additionalParams additional parameters like changed itemstack.
 	 * */
 	public static void updateFilter(Entity entity, Object... additionalParams) {
-		if(!PerEntityManager.hasEntityManager(entity))
-			PerEntityManager.registerEntityManager(entity);
-		PerEntityManager.getEntityManager(entity).updateFilter(additionalParams);
+		reference.getPerEntityReference(entity).updateFilter(additionalParams);
 	}
 	
 	
@@ -113,7 +110,7 @@ public final class StellarAPIReference {
 	 * @return the coordinate for the world if it is available now, or <code>null</code> otherwise
 	 * */
 	public static ICelestialCoordinate getCoordinate(World world) {
-		return PerWorldManager.getPerWorldManager(world).getCoordinate();
+		return reference.getPerWorldReference(world).getCoordinate();
 	}
 	
 	/**
@@ -124,7 +121,7 @@ public final class StellarAPIReference {
 	 * @return the sky effect for the world if it is available now, or <code>null</code> otherwise
 	 * */
 	public static ISkyEffect getSkyEffect(World world) {
-		return PerWorldManager.getPerWorldManager(world).getSkyEffect();
+		return reference.getPerWorldReference(world).getSkyEffect();
 	}
 	
 	/**
@@ -133,7 +130,7 @@ public final class StellarAPIReference {
 	 * @return the immutable set with effect types on the world
 	 * */
 	public static ImmutableSet<IEffectorType> getEffectTypeSet(World world) {
-		return PerWorldManager.getPerWorldManager(world).getEffectorTypeSet();
+		return reference.getPerWorldReference(world).getEffectorTypeSet();
 	}
 	
 	/**
@@ -144,7 +141,7 @@ public final class StellarAPIReference {
 	 * @return the celestial effectors for the world if it exists, or <code>null</code> otherwise
 	 * */
 	public static CelestialEffectors getEffectors(World world, IEffectorType type) {
-		return PerWorldManager.getPerWorldManager(world).getCelestialEffectors(type);
+		return reference.getPerWorldReference(world).getCelestialEffectors(type);
 	}
 	
 	/**
@@ -153,25 +150,21 @@ public final class StellarAPIReference {
 	 * @return the celestial collection manager for the world, or <code>null</code> if it is not established yet.
 	 * */
 	public static CelestialCollectionManager getCollectionManager(World world) {
-		return PerWorldManager.getPerWorldManager(world).getCollectionManager();
+		return reference.getPerWorldReference(world).getCollectionManager();
 	}
 	
 	/**
 	 * Gets scope for certain entity.
 	 * */
 	public static IViewScope getScope(Entity entity) {
-		if(!PerEntityManager.hasEntityManager(entity))
-			PerEntityManager.registerEntityManager(entity);
-		return PerEntityManager.getEntityManager(entity).getScope();
+		return reference.getPerEntityReference(entity).getScope();
 	}
 	
 	/**
 	 * Gets filter for certain entity.
 	 * */
 	public static IOpticalFilter getFilter(Entity entity) {
-		if(!PerEntityManager.hasEntityManager(entity))
-			PerEntityManager.registerEntityManager(entity);
-		return PerEntityManager.getEntityManager(entity).getFilter();
+		return reference.getPerEntityReference(entity).getFilter();
 	}
 	
 	
@@ -186,5 +179,12 @@ public final class StellarAPIReference {
 		if(world != null)
 			return INSTANCE.resourceManager.getLocation(world, resourceId, defaultLocation);
 		else return defaultLocation;
+	}
+	
+	
+	/** For internal use */
+	@Deprecated
+	public static void setReference(IReference base) {
+		reference = base;
 	}
 }

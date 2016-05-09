@@ -13,11 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
-import stellarapi.api.PerEntityManager;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
 import stellarapi.api.helper.PlayerItemAccessHelper;
+import stellarapi.reference.PerEntityManager;
 
 public class StellarAPITickHandler {
 	

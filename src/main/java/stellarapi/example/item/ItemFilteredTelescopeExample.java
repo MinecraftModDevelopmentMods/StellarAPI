@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import stellarapi.api.StellarAPIReference;
 import stellarapi.api.interact.IOpticalFilterItem;
 import stellarapi.api.interact.IViewScopeItem;
 import stellarapi.api.optics.EnumRGBA;
@@ -58,9 +57,11 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem
 				return 0.9;
 			case Blue:
 				return 0.6;
-			default:
-				return 1.0;
+			case Alpha:
+				return 0.7;
 			}
+			
+			return 1.0;
 		}
 		
 	};

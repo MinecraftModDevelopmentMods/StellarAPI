@@ -2,7 +2,8 @@ package stellarapi.api.optics;
 
 /**
  * View scope for the entity.
- * To make an item work like telescope, see {@link stellarapi.example.item.ItemTelescopeExample}.
+ * To make an item work like telescope,
+ * see {@link stellarapi.example.item.ItemTelescopeExample ItemTelescopeExample}.
  * */
 public interface IViewScope {
 

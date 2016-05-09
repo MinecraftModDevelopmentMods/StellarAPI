@@ -8,10 +8,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import stellarapi.api.PerWorldManager;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.helper.PlayerItemAccessHelper;
+import stellarapi.reference.PerWorldManager;
 
 public class StellarAPIForgeEventHook {
 	

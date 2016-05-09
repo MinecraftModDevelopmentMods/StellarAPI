@@ -33,6 +33,7 @@ import stellarapi.impl.AlarmWakeHandler;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
+import stellarapi.reference.StellarAPIReferenceHandler;
 
 @Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
@@ -74,6 +75,8 @@ public final class StellarAPI {
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) { 
         	logger = event.getModLog();
+        	
+        	StellarAPIReference.setReference(new StellarAPIReferenceHandler());
         	
     		MinecraftForge.EVENT_BUS.register(this.eventHook);
     		FMLCommonHandler.instance().bus().register(this.tickHandler);

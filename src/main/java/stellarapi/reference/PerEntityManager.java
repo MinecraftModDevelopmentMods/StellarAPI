@@ -1,15 +1,15 @@
-package stellarapi.api;
+package stellarapi.reference;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import stellarapi.api.IPerEntityReference;
+import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
-import stellarapi.api.helper.PlayerItemAccessHelper;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
@@ -18,7 +18,7 @@ import stellarapi.api.optics.NakedScope;
 /**
  * Per entity manager to contain the per-entity objects.
  * */
-public class PerEntityManager implements IExtendedEntityProperties {
+public class PerEntityManager implements IExtendedEntityProperties, IPerEntityReference {
 	
 	private static final String ID = "stellarapiperplayermanager";
 	

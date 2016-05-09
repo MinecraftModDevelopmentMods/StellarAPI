@@ -1,19 +1,9 @@
 package stellarapi.api.optics;
 
-import com.google.common.collect.ImmutableList;
-
-/**
- * Filter settings for naked eye.
- * */
-public class NakedFilter extends RGBFilter {
+public class NakedFilter implements IOpticalFilter {
 
 	@Override
-	public boolean isRGB() {
-		return true;
-	}
-
-	@Override
-	public double getFilterEfficiency(EnumRGBA color) {
+	public double getFilterEfficiency(Wavelength wavelength) {
 		return 1.0;
 	}
 

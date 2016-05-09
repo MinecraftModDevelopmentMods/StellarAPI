@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.reference;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +12,10 @@ import com.google.common.collect.Ordering;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.IPerWorldReference;
+import stellarapi.api.ISkyEffect;
+import stellarapi.api.StellarAPIReference;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
@@ -25,7 +29,7 @@ import stellarapi.api.event.SortCelestialsEvent;
 /**
  * Per world manager to contain the per-world(dimension) objects.
  * */
-public class PerWorldManager extends WorldSavedData {
+public class PerWorldManager extends WorldSavedData implements IPerWorldReference {
 	
 	private static final String ID = "stellarapiperworldmanager";
 	
