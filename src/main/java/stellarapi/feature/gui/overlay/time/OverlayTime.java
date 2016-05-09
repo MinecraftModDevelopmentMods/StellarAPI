@@ -78,7 +78,7 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 
 		double current = dayPeriod.getOffset(mc.theWorld.getWorldTime(), 0.0f);
 		
-		this.isDay = current > dawn && current < dusk;
+		this.isDay = current > dawn - 1.0 / 32 && current < dusk + 1.0 / 32;
 		
 		float[] colors = mc.theWorld.provider.calcSunriseSunsetColors(mc.theWorld.getCelestialAngle(0.0f), 0.0f);
 		if(colors != null)

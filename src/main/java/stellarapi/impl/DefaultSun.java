@@ -1,5 +1,7 @@
 package stellarapi.impl;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.celestials.EnumCelestialObjectType;
@@ -62,6 +64,32 @@ public class DefaultSun implements ICelestialObject {
 	@Override
 	public EnumCelestialObjectType getObjectType() {
 		return EnumCelestialObjectType.Star;
+	}
+
+	
+	@Override
+	public String getName() {
+		return "Sun";
+	}
+
+	@Override
+	public ImmutableList<String> additionalNumericalProperties() {
+		return ImmutableList.of();
+	}
+
+	@Override
+	public double additionalNumericalProperty(String propertyName) {
+		return 0;
+	}
+
+	@Override
+	public ImmutableList<String> additionalGenericProperties() {
+		return ImmutableList.of();
+	}
+
+	@Override
+	public String additionalGenericProperty(String propertyName) {
+		return null;
 	}
 
 }
