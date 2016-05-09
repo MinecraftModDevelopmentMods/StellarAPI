@@ -19,7 +19,8 @@ public class EyeDetector implements IOpticalDetector {
 		return true;
 	}
 	
-	private static final double LOWER_LIMIT_FACTOR = 0.5;
+	/** Set to very low value, because our eyes are good enough! */
+	private static final double LOWER_LIMIT_FACTOR = 0.0001;
 
 	@Override
 	public double[] process(double multiplier, IOpticalFilter filter, double[] origin) {
