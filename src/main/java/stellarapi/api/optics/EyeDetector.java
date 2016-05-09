@@ -2,7 +2,7 @@ package stellarapi.api.optics;
 
 /**
  * Filter settings for naked eye.
- * Will apply upper/lower bound.
+ * Will apply upper/lower bound for R/G/B/A, and only upper bound for R/G/B.
  * Note that processing R/G/B has various limitations due to its bound,
  * So using R/G/B/A is recommended.
  * */
