@@ -79,18 +79,7 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem
 	
 	public void onUse(ItemStack stack, EntityPlayer player) {
 		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-		
-		StellarAPIReference.updateScope(player);
-		StellarAPIReference.updateFilter(player);
 	}
-	
-	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int p_77659_4_)
-    {
-		player.clearItemInUse();
-		StellarAPIReference.updateScope(player);
-		StellarAPIReference.updateFilter(player);
-    }
 	
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {

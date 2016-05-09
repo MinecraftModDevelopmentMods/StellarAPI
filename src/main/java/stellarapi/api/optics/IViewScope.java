@@ -18,7 +18,7 @@ public interface IViewScope {
 	/**Magnifying Power of this scope.*/
 	public double getMP();
 	
-	/** Determine if this scope forces change of view. */
+	/** Determine if this scope forces change of view, i.e. FOV effects from other sources will be ignored */
 	public boolean forceChange();
 	
 	/**<code>true</code> when FOV of this scope nearly covers the sky.*/

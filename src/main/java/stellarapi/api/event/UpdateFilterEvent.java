@@ -9,6 +9,9 @@ import stellarapi.api.optics.IViewScope;
  * */
 public class UpdateFilterEvent extends PerEntityEvent {
 
+	/** The current optical filter,
+	 * {@link stellarapi.api.optics.NakedFilter NakedFilter} by default.
+	 * Should not be null. */
 	private IOpticalFilter filter;
 	
 	/** Additional parameters, like items which is changed or started using */

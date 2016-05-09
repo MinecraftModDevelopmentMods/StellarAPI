@@ -8,6 +8,9 @@ import stellarapi.api.optics.IViewScope;
  * */
 public class UpdateScopeEvent extends PerEntityEvent {
 
+	/** The current view scope,
+	 * {@link stellarapi.api.optics.NakedScope NakedScope} by default.
+	 * Should not be null. */
 	private IViewScope scope;
 	
 	/** Additional parameters, like items which is changed or started using */

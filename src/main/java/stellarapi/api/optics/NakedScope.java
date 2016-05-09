@@ -1,5 +1,8 @@
 package stellarapi.api.optics;
 
+/**
+ * Scope settings for naked eye.
+ * */
 public class NakedScope implements IViewScope {
 
 	@Override

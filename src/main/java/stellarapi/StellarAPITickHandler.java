@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
+import stellarapi.api.PerEntityManager;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
@@ -53,6 +54,10 @@ public class StellarAPITickHandler {
             	} else if(itemstack != itemInUse)
             		PlayerItemAccessHelper.setUsingItem(e.player, itemstack);
             }
+            
+    		if(!PerEntityManager.hasEntityManager(e.player))
+    			PerEntityManager.registerEntityManager(e.player);
+            PerEntityManager.getEntityManager(e.player).updateRiding();
 		}
 	}
 		

@@ -12,7 +12,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
  * */
 @Cancelable
 public class CheckSameOpticalItemEvent extends PlayerEvent {
-	
+
 	private final ItemStack item1, item2;
 	private boolean isSame = false;
 

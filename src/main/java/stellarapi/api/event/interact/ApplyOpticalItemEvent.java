@@ -11,7 +11,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
  *  any optical instrument item should be listening for this event
  *  instead of calling {@link stellarapi.api.StellarAPIReference#updateScope(net.minecraft.entity.Entity, Object...) updating scope}
  *  or {@link stellarapi.api.StellarAPIReference#updateFilter(net.minecraft.entity.Entity, Object...) updating filter}. <p>
- *   (Note that item given by this event can be different from current held item of the player) <p>
+ *   (Note that item given by this event can be different from current held item of the player.
+ *   The item from this event is not null.) <p>
  * This event ensures that it's safe to get held item from
  *  {@link stellarapi.api.UpdateScopeEvent} or {@link stellarapi.api.UpdateFilterEvent}
  * */

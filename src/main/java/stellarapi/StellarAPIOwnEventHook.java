@@ -2,6 +2,7 @@ package stellarapi;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -11,11 +12,14 @@ import stellarapi.api.event.ResetCoordinateEvent;
 import stellarapi.api.event.ResetSkyEffectEvent;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
+import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
 import stellarapi.api.helper.PlayerItemAccessHelper;
 import stellarapi.api.interact.IOpticalFilterItem;
+import stellarapi.api.interact.IOpticalFilterSimulatorEntity;
 import stellarapi.api.interact.IViewScopeItem;
+import stellarapi.api.interact.IViewScopeSimulatorEntity;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.impl.DefaultCollectionVanilla;
 import stellarapi.impl.DefaultCoordinateVanilla;
@@ -54,6 +58,7 @@ public class StellarAPIOwnEventHook {
 				&& Spmath.fmod(world.getCelestialAngle(0.5f)*2, 1.0f) != 0.0f;
 	}
 	
+	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onUpdateScope(UpdateScopeEvent event) {
 		if(event.getEntity() instanceof EntityPlayer)
@@ -63,6 +68,8 @@ public class StellarAPIOwnEventHook {
 			
 			if(itemToCheck != null && itemToCheck.getItem() instanceof IViewScopeItem)
 				event.setScope(((IViewScopeItem) itemToCheck.getItem()).getScope(player, itemToCheck));
+			else if(player.ridingEntity instanceof IViewScopeSimulatorEntity)
+				event.setScope(((IViewScopeSimulatorEntity)player.ridingEntity).getScope(player));
 		}
 	}
 
@@ -75,6 +82,8 @@ public class StellarAPIOwnEventHook {
 			
 			if(itemToCheck != null && itemToCheck.getItem() instanceof IOpticalFilterItem)
 				event.setFilter(((IOpticalFilterItem)itemToCheck.getItem()).getFilter(player, itemToCheck));
+			else if(player.ridingEntity instanceof IOpticalFilterSimulatorEntity)
+				event.setFilter(((IOpticalFilterSimulatorEntity)player.ridingEntity).getFilter(player));
 		}
 	}
 	
@@ -82,14 +91,12 @@ public class StellarAPIOwnEventHook {
 	public void applyOpticalItem(ApplyOpticalItemEvent event) {
 		EntityPlayer player = event.getPlayer();
 		
-		if(event.getItem() != null) {
-			event.setIsViewScope(event.getItem().getItem() instanceof IViewScopeItem);
-			event.setIsOpticalFilter(event.getItem().getItem() instanceof IOpticalFilterItem);
-		}
+		event.setIsViewScope(event.getItem().getItem() instanceof IViewScopeItem);
+		event.setIsOpticalFilter(event.getItem().getItem() instanceof IOpticalFilterItem);
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void applyOpticalItem(CheckSameOpticalItemEvent event) {
+	public void checkSameOpticalItem(CheckSameOpticalItemEvent event) {
 		ItemStack first = event.getFirstItem();
 		ItemStack second = event.getSecondItem();
 
@@ -110,5 +117,11 @@ public class StellarAPIOwnEventHook {
 		if(second.getItem() instanceof IOpticalFilterItem && ((IOpticalFilterItem)second.getItem()).isSame(second, first))
 			event.markAsSame();
 	}
-
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void applyOpticalEntity(ApplyOpticalEntityEvent event) {
+		event.setIsViewScope(event.getRidingEntity() instanceof IViewScopeSimulatorEntity);
+		event.setIsOpticalFilter(event.getRidingEntity() instanceof IOpticalFilterSimulatorEntity);
+	}
+	
 }
