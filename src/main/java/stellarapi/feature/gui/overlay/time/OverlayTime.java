@@ -27,6 +27,7 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 
 	private List<EnumDaytimeDescriptor> descriptors = Lists.newArrayList();
 	private boolean isDay = true;
+	private boolean invalidDay = false;
 	private int icolor;
 
 	boolean markForUpdate = false;
@@ -67,14 +68,24 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 			return;
 		
 		CelestialPeriod dayPeriod = PeriodHelper.getDayPeriod(mc.theWorld);
-		if(dayPeriod == null)
+		if(dayPeriod == null) {
+			descriptors.clear();
+			this.invalidDay = true;
 			return;
+		}
 				
 		descriptors.clear();
 		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
+
+		long dawnTime = checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DAWN, -1L);
+		long duskTime = checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DUSK, -1L);
 		
-		double dawn = dayPeriod.getOffset(checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DAWN, 23000L), 0.0f);
-		double dusk = dayPeriod.getOffset(checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DUSK, 13000L), 0.0f);
+		if(dawnTime == -1 || duskTime == -1)
+			this.invalidDay = true;
+		else this.invalidDay = false;
+		
+		double dawn = dayPeriod.getOffset(dawnTime, 0.0f);
+		double dusk = dayPeriod.getOffset(duskTime, 0.0f);
 
 		double current = dayPeriod.getOffset(mc.theWorld.getWorldTime(), 0.0f);
 		
@@ -110,7 +121,7 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 		int yOffset = 0;
 
 		this.drawString(mc.fontRenderer, "display", WIDTH / 2, 10*(yOffset++)+5, 255, 0xffffff);
-		this.drawString(mc.fontRenderer, this.isDay? "day":"night", WIDTH / 2, 10*(yOffset++)+5, 255, this.isDay? 0xffff77 : 0x5555aa);
+		this.drawString(mc.fontRenderer, this.invalidDay? "invalid" : this.isDay? "day":"night", WIDTH / 2, 10*(yOffset++)+5, 255, this.invalidDay? 0x770000 : this.isDay? 0xffff77 : 0x5555aa);
 		for(EnumDaytimeDescriptor descriptor : this.descriptors)
 			if(mc.theWorld != null)
 				this.drawString(mc.fontRenderer, descriptor.name(), WIDTH / 2, 10*(yOffset++)+5, 255, this.icolor);

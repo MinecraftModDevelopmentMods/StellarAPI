@@ -1,13 +1,9 @@
 package stellarapi.lib.gui;
 
-public class PositionFixed implements IGuiPosition {
+public abstract class PositionSimple implements IGuiPosition {
 	
-	private IRectangleBound bound;
+	private RectangleBound bound;
 	
-	public PositionFixed(IRectangleBound bound) {
-		this.bound = bound;
-	}
-
 	@Override
 	public IRectangleBound getElementBound() {
 		return this.bound;
@@ -24,12 +20,14 @@ public class PositionFixed implements IGuiPosition {
 	}
 
 	@Override
-	public void initializeBounds() { }
+	public abstract void initializeBounds();
 
 	@Override
-	public void updateBounds() { }
+	public abstract void updateBounds();
 
 	@Override
-	public void updateAnimation(float partialTicks) { }
+	public void updateAnimation(float partialTicks) {
+		this.updateBounds();
+	}
 
 }

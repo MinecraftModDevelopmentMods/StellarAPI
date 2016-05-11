@@ -72,8 +72,7 @@ public class GuiHasFixedList implements IGuiElementType<IHasFixedListController>
 		int index = 0;
 		float currentPos = 0.0f;
 		
-		for(GuiElement element : this.list)
-		{
+		for(GuiElement element : this.list) {
 			element.initialize(positions.addChild(
 					controller.wrapFixedPosition(new FixedPosition(currentPos, sizelist.get(index)), this.position)));
 			currentPos += sizelist.get(index++);
@@ -124,9 +123,12 @@ public class GuiHasFixedList implements IGuiElementType<IHasFixedListController>
 		if(position.getClipBound().isEmpty())
 			return;
 
+		renderer.startRender();
 		String background = controller.setupRenderer(renderer);
 		if(background != null)
 			renderer.render(background, position.getElementBound(), position.getClipBound());
+		renderer.endRender();
+		
 		modifiable.getType().render(renderer);
 		for(GuiElement element : this.list)
 			element.getType().render(renderer);

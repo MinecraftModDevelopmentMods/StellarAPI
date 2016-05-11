@@ -7,10 +7,13 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.gui.overlay.OverlayRegistry;
 import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.feature.gui.loading.CombinedLoadingScreenRenderer;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.feature.gui.overlay.OverlaySetMain;
 import stellarapi.feature.gui.overlay.OverlaySetStellarAPI;
@@ -52,12 +55,15 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	}
 	
 	@Override
-	public World getDefWorld() {
+	public World getClientWorld() {
 		return Minecraft.getMinecraft().theWorld;
 	}
 	
 	@Override
-	public World getDefWorld(boolean isRemote) {
-		return isRemote? this.getDefWorld() : super.getDefWorld();
+	public ICombinedProgressUpdate getLoadingProgress() {
+		Minecraft mc = Minecraft.getMinecraft();
+		if(!(mc.loadingScreen instanceof CombinedLoadingScreenRenderer))
+			mc.loadingScreen = new CombinedLoadingScreenRenderer(mc);
+		return (CombinedLoadingScreenRenderer) mc.loadingScreen;
 	}
 }

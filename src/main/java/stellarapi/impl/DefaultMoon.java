@@ -68,7 +68,7 @@ public class DefaultMoon implements ICelestialObject {
 	}
 
 	
-	@Override
+	/*@Override
 	public String getName() {
 		return "Moon";
 	}
@@ -91,6 +91,6 @@ public class DefaultMoon implements ICelestialObject {
 	@Override
 	public String additionalGenericProperty(String propertyName) {
 		return null;
-	}
+	}*/
 
 }

@@ -5,8 +5,8 @@ import java.io.IOException;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.lib.math.Spmath;
 
 public class CommonProxy implements IProxy {
@@ -26,12 +26,12 @@ public class CommonProxy implements IProxy {
 	public void postInit(FMLPostInitializationEvent event) { }
 	
 	@Override
-	public World getDefWorld() {
-		return MinecraftServer.getServer().getEntityWorld();
+	public World getClientWorld() {
+		return null;
 	}
-	
+
 	@Override
-	public World getDefWorld(boolean isRemote) {
-		return MinecraftServer.getServer().getEntityWorld();
+	public ICombinedProgressUpdate getLoadingProgress() {
+		return null;
 	}
 }

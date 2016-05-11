@@ -67,7 +67,7 @@ public class DefaultSun implements ICelestialObject {
 	}
 
 	
-	@Override
+	/*@Override
 	public String getName() {
 		return "Sun";
 	}
@@ -90,6 +90,6 @@ public class DefaultSun implements ICelestialObject {
 	@Override
 	public String additionalGenericProperty(String propertyName) {
 		return null;
-	}
+	}*/
 
 }

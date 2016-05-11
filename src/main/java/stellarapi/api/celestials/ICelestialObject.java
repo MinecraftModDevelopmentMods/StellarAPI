@@ -20,7 +20,7 @@ public interface ICelestialObject {
 	 * Note that an object can have many names,
 	 * but a name should point at most one object.
 	 * */
-	public String getName();
+	//public String getName();
 	
 	/**
 	 * Absolute period for the effector. <p>
@@ -90,24 +90,24 @@ public interface ICelestialObject {
 	/**
 	 * Gives the list of additional numerical properties.
 	 * */
-	public ImmutableList<String> additionalNumericalProperties();
+	//public ImmutableList<String> additionalNumericalProperties();
 	
 	/**
 	 * Additional numerical properties.
 	 * @param propertyName the name of the property
 	 * */
-	public double additionalNumericalProperty(String propertyName);
+	//public double additionalNumericalProperty(String propertyName);
 	
 	/**
 	 * Gives the list of additional generic properties.
 	 * */
-	public ImmutableList<String> additionalGenericProperties();
+	//public ImmutableList<String> additionalGenericProperties();
 	
 	/**
 	 * Additional generic properties.
 	 * @param propertyName the name of the property
 	 * */
-	public String additionalGenericProperty(String propertyName);
+	//public String additionalGenericProperty(String propertyName);
 	
 	
 	/**

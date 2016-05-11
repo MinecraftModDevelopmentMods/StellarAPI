@@ -2,9 +2,10 @@ package stellarapi;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
@@ -15,6 +16,8 @@ import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
+import stellarapi.api.event.world.ClientWorldEvent;
+import stellarapi.api.event.world.ServerWorldEvent;
 import stellarapi.api.helper.PlayerItemAccessHelper;
 import stellarapi.api.interact.IOpticalFilterItem;
 import stellarapi.api.interact.IOpticalFilterSimulatorEntity;
@@ -24,6 +27,7 @@ import stellarapi.api.lib.math.Spmath;
 import stellarapi.impl.DefaultCollectionVanilla;
 import stellarapi.impl.DefaultCoordinateVanilla;
 import stellarapi.impl.DefaultSkyVanilla;
+import stellarapi.reference.PerWorldManager;
 
 public class StellarAPIOwnEventHook {
 	
@@ -124,4 +128,30 @@ public class StellarAPIOwnEventHook {
 		event.setIsOpticalFilter(event.getRidingEntity() instanceof IOpticalFilterSimulatorEntity);
 	}
 	
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onClientWorldLoad(ClientWorldEvent.Load event) {
+		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
+		progress.displayProgressMessage(I18n.format("progress.stellarapi.loading.main"));
+		progress.resetProgresAndWorkingMessage(I18n.format("progress.stellarapi.loading.worldhook"));
+		PerWorldManager.initiatePerWorldManager(event.getWorld());
+		progress.resetProgresAndWorkingMessage("");
+	}
+	
+	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.LOWEST)
+	public void onClientWorldLoaded(ClientWorldEvent.Loaded event) {
+		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
+		if(event.isCanceled()) {
+			progress.displayProgressMessage(I18n.format("progress.stellarapi.other.pending.main"));
+			progress.resetProgresAndWorkingMessage(I18n.format("progress.stellarapi.other.pending.text"));
+		} else progress.resetProgresAndWorkingMessage("");
+	}
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onServerLoad(ServerWorldEvent.Load event) {
+		PerWorldManager.initiatePerWorldManager(event.getWorld());
+	}
+	
+	@SubscribeEvent
+	public void onServerInitial(ServerWorldEvent.Initial event) { }
 }

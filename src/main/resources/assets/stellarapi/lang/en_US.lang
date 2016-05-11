@@ -10,6 +10,13 @@ command.perdimres.remove.success=Successfully removed per-dimension resource on 
 command.perdimres.remove.fail=There was no per-dimension resource on this world with ID %s.
 
 
+progress.stellarapi.loading.main=Stellar API
+progress.stellarapi.loading.worldhook=Injecting World Hook...
+
+progress.stellarapi.other.pending.main=Information (Stellar API)
+progress.stellarapi.other.pending.text=There could be unidentified mods pending loading process.
+
+
 key.stellarapi=Stellar API Keys
 key.stellarapi.focusgui.description=Focus on the Overlay
 
@@ -34,6 +41,7 @@ gui.time.dusk=DUSK
 
 gui.time.day=DAY
 gui.time.night=NIGHT
+gui.time.invalid=INVALID
 
 
 config.category.wake=Wake Settings

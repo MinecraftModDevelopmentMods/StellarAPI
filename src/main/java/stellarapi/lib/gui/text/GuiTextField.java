@@ -16,7 +16,7 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 	private ITextFieldController controller;
 	
 	private GuiTextInternal internal = new GuiTextInternal();
-	private GuiSimpleRenderElement background = new GuiSimpleRenderElement();
+	private GuiSimpleRenderElement background = null;
 	private float xOffset = 0.0f;
 	
 	@Override
@@ -24,7 +24,11 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 		this.position = positions.getPosition();
 		this.controller = controller;
 		internal.initialize(positions.addChild(new TextPosition()), new WrappedController(controller.getTextController()));
-		background.initialize(positions, controller.getBackground());
+
+		if(controller.getBackground() != null) {
+			this.background = new GuiSimpleRenderElement();
+			background.initialize(positions, controller.getBackground());
+		}
 	}
 
 	@Override
@@ -54,7 +58,8 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 
 	@Override
 	public void render(IRenderer renderer) {
-		background.render(renderer);
+		if(this.background != null)
+			background.render(renderer);
 		internal.render(renderer);
 	}
 
@@ -67,8 +72,8 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 			this.clip = new RectangleBound(position.getClipBound());
 			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
 					-controller.getSpacingX(), -controller.getSpacingY());
-			element.posX += xOffset;
 			clip.setAsIntersection(this.element);
+			element.posX -= xOffset;
 		}
 
 		@Override
@@ -92,8 +97,8 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 			clip.set(position.getClipBound());
 			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
 					-controller.getSpacingX(), -controller.getSpacingY());
-			element.posX += xOffset;
 			clip.setAsIntersection(this.element);
+			element.posX -= xOffset;
 		}
 
 		@Override
@@ -135,7 +140,7 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 
 		@Override
 		public String updateText(String text) {
-			return this.current = wrapped.updateText(text);
+			return wrapped.updateText(text);
 		}
 
 		@Override
@@ -164,8 +169,8 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 		}
 
 		@Override
-		public String setupRendererCursor(int cursorCounter) {
-			return wrapped.setupRendererCursor(cursorCounter);
+		public String setupRendererCursor(int cursorCounter, IRenderer renderer) {
+			return wrapped.setupRendererCursor(cursorCounter, renderer);
 		}
 
 		@Override
@@ -176,6 +181,20 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 		@Override
 		public void notifySelection(int cursor, int selection) {
 			wrapped.notifySelection(cursor, selection);
+			this.setupOffset(cursor, selection);
+		}
+
+		@Override
+		public boolean notifyText(String text, int cursor, int selection, boolean focused) {
+			if(!current.equals(text)) {
+				this.current = text;
+				this.setupOffset(cursor, selection);
+			}
+			return wrapped.notifyText(text, cursor, selection, focused);
+		}
+		
+		
+		private void setupOffset(int cursor, int selection) {
 			int totalLength = current.length();
 
 			IFontHelper font = wrapped.getFontHelper();

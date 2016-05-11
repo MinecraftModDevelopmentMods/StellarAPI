@@ -1,5 +1,6 @@
 package stellarapi.lib.gui;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -9,17 +10,24 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
+import stellarapi.StellarAPI;
 
 public class GuiRenderer implements IRenderer {
 	
 	private IRenderModel currentModel = null;
+	
 	private Tessellator tessellator;
 	private TextureManager textureManager;
+	
+	private float partialTicks;
+	
 	private boolean matrixPushedTillNextRender;
 	private List<IMatrixTransformation> transformation = Lists.newArrayList();
 	private List<IMatrixTransformation> innerTrans = Lists.newArrayList();
+	private float[] generalColor = new float[4], currentColor = new float[4];
+	
 	private RectangleBound temp = new RectangleBound(0,0,0,0), tempClip = new RectangleBound(0,0,0,0);
-		
+	
 	public GuiRenderer(Minecraft minecraft) {
 		this.tessellator = Tessellator.instance;
 		this.textureManager = minecraft.getTextureManager();
@@ -58,21 +66,38 @@ public class GuiRenderer implements IRenderer {
 
 	@Override
 	public void color(float red, float green, float blue, float alpha) {
-		GL11.glColor4f(red, green, blue, alpha);
+		if(this.matrixPushedTillNextRender) {
+			this.currentColor[0] *= red;
+			this.currentColor[1] *= green;
+			this.currentColor[2] *= blue;
+			this.currentColor[3] *= alpha;
+		}
+		else {
+			this.generalColor[0] *= red;
+			this.generalColor[1] *= green;
+			this.generalColor[2] *= blue;
+			this.generalColor[3] *= alpha;
+		}
 	}
 	
 	@Override
-	public void pushMatrixTillNextRender() {
+	public void pushSettingTillNextRender() {
 		if(this.matrixPushedTillNextRender)
 			return;
 		
 		this.matrixPushedTillNextRender = true;
+		System.arraycopy(this.generalColor, 0, this.currentColor, 0, currentColor.length);
 	}
 
 	@Override
 	public void render(String info, IRectangleBound totalBound, IRectangleBound clipBound) {
 		if(currentModel == null)
-			throw new IllegalStateException("The model haven't got binded!");
+			throw new IllegalStateException("The model doesn't have got bound!");
+		if(info == null) {
+			StellarAPI.logger.warn("Found invalid null argument as information on gui rendering."
+					+ "Replacing it with empty String.");
+			info = "";
+		}
 
 		float centerX = totalBound.getMainX(0.5f);
 		float centerY = totalBound.getMainY(0.5f);
@@ -92,18 +117,25 @@ public class GuiRenderer implements IRenderer {
 		tempClip.posX -= centerX;
 		tempClip.posY -= centerY;
 		
-		currentModel.renderModel(info, this.temp, this.tempClip, this.tessellator, this.textureManager);
+		if(!this.matrixPushedTillNextRender)
+			System.arraycopy(this.generalColor, 0, this.currentColor, 0, currentColor.length);
+		
+		currentModel.renderModel(info, this.temp, this.tempClip, this.tessellator, this.textureManager, this.currentColor);
 		GL11.glPopMatrix();
 		
 		if(this.matrixPushedTillNextRender)
 		{
 			innerTrans.clear();
+			System.arraycopy(this.generalColor, 0, this.currentColor, 0, currentColor.length);
 			this.matrixPushedTillNextRender = false;
 		}
 	}
 
 	@Override
-	public void startRender() { }
+	public void startRender() {
+		Arrays.fill(this.generalColor, 1.0f);
+		System.arraycopy(this.generalColor, 0, this.currentColor, 0, currentColor.length);
+	}
 
 	@Override
 	public void endRender() {
@@ -163,5 +195,20 @@ public class GuiRenderer implements IRenderer {
 		public void doTransform() {
 			GL11.glRotatef(angle, x, y, z);
 		}
+	}
+
+	@Override
+	public float getPartialTicks() {
+		return this.partialTicks;
+	}
+
+	@Override
+	public void preRender(float partialTicks) {
+		this.partialTicks = partialTicks;
+	}
+
+	@Override
+	public void postRender(float partialTicks) {
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }

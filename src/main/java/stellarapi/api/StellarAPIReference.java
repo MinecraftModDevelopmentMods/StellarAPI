@@ -12,6 +12,7 @@ import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
+import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
@@ -175,7 +176,7 @@ public final class StellarAPIReference {
 	 * @param defaultLocation the default resource location
 	 * */
 	public static ResourceLocation getLocation(String resourceId, ResourceLocation defaultLocation) {
-		World world = StellarAPI.proxy.getDefWorld();
+		World world = StellarAPI.proxy.getClientWorld();
 		if(world != null)
 			return INSTANCE.resourceManager.getLocation(world, resourceId, defaultLocation);
 		else return defaultLocation;

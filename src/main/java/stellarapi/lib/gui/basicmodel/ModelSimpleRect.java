@@ -15,35 +15,24 @@ public class ModelSimpleRect implements IRenderModel {
 		return instance;
 	}
 	
-	private float red, green, blue, alpha;
-
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			TextureManager textureManager) {
+			TextureManager textureManager, float[] color) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		float posX = clipBound.getLeftX();
 		float posY = clipBound.getUpY();
 		float width = clipBound.getWidth();
 		float height = clipBound.getHeight();
 		
+		GL11.glColor4f(color[0], color[1], color[2], color[3]);
+		
         tessellator.startDrawingQuads();
-        if(alpha != 1.0f)
-        	tessellator.setColorRGBA_F(red, green, blue, alpha);
         tessellator.addVertex((double)(posX), (double)(posY + height), 0.0);
         tessellator.addVertex((double)(posX + width), (double)(posY + height), 0.0);
         tessellator.addVertex((double)(posX + width), (double)(posY), 0.0);
         tessellator.addVertex((double)(posX), (double)(posY), 0.0);
         tessellator.draw();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		
-		this.red = this.green = this.blue = this.alpha = 1.0f;
-	}
-
-	public void setColor(float red, float green, float blue, float alpha) {
-		this.red = red;
-		this.green = green;
-		this.blue = blue;
-		this.alpha = alpha;
 	}
 
 }
