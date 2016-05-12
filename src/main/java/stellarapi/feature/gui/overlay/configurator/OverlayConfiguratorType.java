@@ -54,4 +54,9 @@ public class OverlayConfiguratorType implements IOverlayType<OverlayConfigurator
 		return true;
 	}
 
+	@Override
+	public boolean isOnMain() {
+		return true;
+	}
+
 }

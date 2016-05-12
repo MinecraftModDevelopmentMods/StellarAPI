@@ -58,10 +58,18 @@ public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 						setDelegate.addToDisplay(entry.getKey(), entry.getValue().getPosition());
 			}
 			
-			for(Map.Entry<String, OverlayElementDelegate> entry : elementMap.entrySet()) {
-				if((setDelegate.getType().acceptOverlayByDefault(entry.getValue()))
-						&& setDelegate.canSetPos(entry.getKey(), entry.getValue().getPosition()))
+			if(!setDelegate.getType().isMain()) {
+				for(Map.Entry<String, OverlayElementDelegate> entry : elementMap.entrySet()) {
+					if((setDelegate.getType().acceptOverlayByDefault(entry.getValue()))
+							&& setDelegate.canSetPos(entry.getKey(), entry.getValue().getPosition()))
 						setDelegate.addToDisplay(entry.getKey(), entry.getValue().getPosition());
+				}
+			} else {
+				for(Map.Entry<String, OverlayElementDelegate> entry : elementMap.entrySet()) {
+					if(entry.getValue().visibleOnMain()
+							&& setDelegate.canSetPos(entry.getKey(), entry.getValue().getPosition()))
+						setDelegate.addToDisplay(entry.getKey(), entry.getValue().getPosition());
+				}
 			}
 		}
 	}

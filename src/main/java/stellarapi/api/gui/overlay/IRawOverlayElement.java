@@ -13,6 +13,9 @@ public interface IRawOverlayElement {
 
 	public boolean acceptPos(EnumHorizontalPos horizontal, EnumVerticalPos vertical);
 	public void setPos(EnumHorizontalPos horizontal, EnumVerticalPos vertical);
+	
+	@Deprecated
+	public void setVisibleOnMain(boolean visibleOnMain);
 
 	public String getId();
 

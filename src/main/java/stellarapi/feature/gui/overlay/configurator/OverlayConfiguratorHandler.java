@@ -37,7 +37,7 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 		
 		this.overlays = manager.getDisplayedSets();
 		for(IRawOverlaySet set : this.overlays)
-			if(set.getType() instanceof OverlaySetMain)
+			if(set.getType().isMain())
 				this.mainOverlay = set;
 	}
 
@@ -125,8 +125,8 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 			int elementWidth = currentSelected.getWidth();
 			int elementHeight = currentSelected.getHeight();
 			
-			if(this.eventButton == 0 && !horizontal.inRange(mouseX, currentWidth, elementWidth)
-					|| !vertical.inRange(mouseY, currentHeight, elementHeight)) {
+			if(this.eventButton == 0 && (!horizontal.inRange(mouseX, currentWidth, elementWidth)
+					|| !vertical.inRange(mouseY, currentHeight, elementHeight))) {
 				this.horizontal = EnumHorizontalPos.getNearest(mouseX, currentWidth, elementWidth);
 				this.vertical = EnumVerticalPos.getNearest(mouseY, currentHeight, elementHeight);
 			}

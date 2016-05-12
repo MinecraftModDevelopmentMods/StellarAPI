@@ -62,7 +62,7 @@ public class OverlayRegistry {
 			this.modid = modid;
 			
 			config.register(type.getName(), this.settings);
-			settings.initializeSetttings(type.defaultHorizontalPos(), type.defaultVerticalPos());
+			settings.initializeSetttings(type.defaultHorizontalPos(), type.defaultVerticalPos(), type.isOnMain());
 		}
 
 		public void inject(String id, IOverlayInjectable injectable) {

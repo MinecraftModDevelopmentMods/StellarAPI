@@ -11,4 +11,10 @@ public interface IOverlaySetType {
 	 * */
 	public boolean acceptOverlayByDefault(IRawOverlayElement overlay);
 
+	/**
+	 * Return <code>true</code> only for main overlay. <p>
+	 * Currently, there should be only one main overlay.
+	 * */
+	public boolean isMain();
+
 }

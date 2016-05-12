@@ -64,6 +64,15 @@ implements IRawOverlayElement {
 		notified.syncFromFields();
 	}
 	
+	boolean visibleOnMain() {
+		return settings.isVisibleOnMain();
+	}
+	
+	@Override
+	public void setVisibleOnMain(boolean visibleOnMain) {
+		settings.setVisibleOnMain(visibleOnMain);
+	}
+	
 
 	@Override
 	public boolean equals(Object obj) {

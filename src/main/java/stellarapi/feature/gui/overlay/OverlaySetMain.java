@@ -12,6 +12,11 @@ public class OverlaySetMain implements IOverlaySetType {
 
 	@Override
 	public boolean acceptOverlayByDefault(IRawOverlayElement overlay) {
+		return false;
+	}
+
+	@Override
+	public boolean isMain() {
 		return true;
 	}
 

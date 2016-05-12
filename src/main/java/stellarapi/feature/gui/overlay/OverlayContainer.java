@@ -42,9 +42,9 @@ public class OverlayContainer {
 	}
 
 	public void mouseClicked(int mouseX, int mouseY, int eventButton) {
-		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
-			boolean changed = false;
+		boolean changedUniversal = false;
 
+		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
 			ElementPos pos = delegate.getPosition();
 			IOverlayElement element = delegate.getElement();
 			int width = element.getWidth();
@@ -54,20 +54,22 @@ public class OverlayContainer {
 			scaledMouseX -= element.animationOffsetX(0.0f);
 			scaledMouseY -= element.animationOffsetY(0.0f);
 			
-			changed = element.mouseClicked(scaledMouseX, scaledMouseY, eventButton) || changed;
+			if(element.mouseClicked(scaledMouseX, scaledMouseY, eventButton))
+				delegate.notifyChange();
 			
 			if(delegate.getHandler() != null)
-				changed = delegate.getHandler().mouseClicked(mouseX, mouseY, eventButton) || changed;
-			
-			if(changed)
-				delegate.notifyChange();
+				changedUniversal = delegate.getHandler().mouseClicked(mouseX, mouseY, eventButton) || changedUniversal;
 		}
+
+		if(changedUniversal)
+			for(OverlayElementDelegate delegate : this.currentlyDisplayedList)
+				delegate.notifyChange();
 	}
 
 	public void mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
+		boolean changedUniversal = false;
+		
 		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
-			boolean changed = false;
-
 			ElementPos pos = delegate.getPosition();
 			IOverlayElement element = delegate.getElement();
 			int width = element.getWidth();
@@ -77,28 +79,32 @@ public class OverlayContainer {
 			scaledMouseX -= element.animationOffsetX(0.0f);
 			scaledMouseY -= element.animationOffsetY(0.0f);
 			
-			changed = element.mouseMovedOrUp(scaledMouseX, scaledMouseY, eventButton) || changed;
+			if(element.mouseMovedOrUp(scaledMouseX, scaledMouseY, eventButton))
+				delegate.notifyChange();
 			
 			if(delegate.getHandler() != null)
-				changed = delegate.getHandler().mouseMovedOrUp(mouseX, mouseY, eventButton) || changed;
-			
-			if(changed)
-				delegate.notifyChange();
+				changedUniversal = delegate.getHandler().mouseMovedOrUp(mouseX, mouseY, eventButton) || changedUniversal;
 		}
+		
+		if(changedUniversal)
+			for(OverlayElementDelegate delegate : this.currentlyDisplayedList)
+				delegate.notifyChange();
 	}
 
 	public void keyTyped(char eventChar, int eventKey) {
+		boolean changedUniversal = false;
+
 		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
-			boolean changed = false;
-			
-			changed = delegate.getElement().keyTyped(eventChar, eventKey) || changed;
+			if(delegate.getElement().keyTyped(eventChar, eventKey))
+				delegate.notifyChange();
 			
 			if(delegate.getHandler() != null)
-				changed = delegate.getHandler().keyTyped(eventChar, eventKey) || changed;
-			
-			if(changed)
-				delegate.notifyChange();
+				changedUniversal = delegate.getHandler().keyTyped(eventChar, eventKey) || changedUniversal;
 		}
+		
+		if(changedUniversal)
+			for(OverlayElementDelegate delegate : this.currentlyDisplayedList)
+				delegate.notifyChange();
 	}
 
 	public void render(int mouseX, int mouseY, float partialTicks) {

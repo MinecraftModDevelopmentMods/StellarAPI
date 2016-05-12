@@ -23,6 +23,7 @@ import stellarapi.feature.gui.overlay.time.OverlayTimeType;
 public class ClientProxy extends CommonProxy implements IProxy {
 		
 	private OverlayHandler overlay;
+	private ConfigManager guiConfig;
 	
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -33,7 +34,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		MinecraftForge.EVENT_BUS.register(new StellarAPIClientForgeEventHook(this.overlay));
 		FMLCommonHandler.instance().bus().register(new StellarAPIClientFMLEventHook(this.overlay));
 		
-		ConfigManager guiConfig = new ConfigManager(StellarAPI.getConfiguration(
+		this.guiConfig = new ConfigManager(StellarAPI.getConfiguration(
 				event.getModConfigurationDirectory(), "GuiConfig.cfg"));
 		
 		OverlayRegistry.registerOverlaySet("main", new OverlaySetMain());
@@ -45,12 +46,12 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	@Override
 	public void load(FMLInitializationEvent event) throws IOException {
 		super.load(event);
+		guiConfig.syncFromFile();
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
-		
+		super.postInit(event);		
 		overlay.initialize(Minecraft.getMinecraft());
 	}
 	

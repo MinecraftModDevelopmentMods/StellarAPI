@@ -16,4 +16,9 @@ public class OverlaySetStellarAPI implements IOverlaySetType {
 		return overlay.getModId().equals(StellarAPI.modid);
 	}
 
+	@Override
+	public boolean isMain() {
+		return false;
+	}
+
 }

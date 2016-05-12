@@ -20,7 +20,7 @@ public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySett
 
 	@Override
 	public String getName() {
-		return "Position";
+		return "Time";
 	}
 	
 	@Override
@@ -52,6 +52,11 @@ public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySett
 	@Override
 	public boolean isUniversal() {
 		return false;
+	}
+
+	@Override
+	public boolean isOnMain() {
+		return true;
 	}
 
 }
