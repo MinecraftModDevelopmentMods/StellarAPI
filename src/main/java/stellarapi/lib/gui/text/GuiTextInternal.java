@@ -181,8 +181,6 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 
 			controller.setupRendererFocused(renderer);
 
-			controller.setupText(this.text, renderer);
-			
 			int first = this.cursorPosition < this.selectionEnd? this.cursorPosition : this.selectionEnd;
 			int second = this.cursorPosition < this.selectionEnd? this.selectionEnd : this.cursorPosition;
 			
@@ -194,8 +192,10 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 				tempBound.posY += (tempBound.height - helper.getStringHeight())/2;
 				tempBound.height = helper.getStringHeight();
 
-				if(!tempClipBound.isEmpty())
+				if(!tempClipBound.isEmpty()) {
+					controller.setupText(this.text, renderer);
 					renderer.render(this.text, this.tempBound, clipBound);
+				}
 			} else {
 				if(first > 0) {
 					String pre = text.substring(0, first);
@@ -207,8 +207,10 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 					tempClipBound.set(clipBound);
 					tempClipBound.setAsIntersection(this.tempBound);
 
-					if(!tempClipBound.isEmpty())
+					if(!tempClipBound.isEmpty()) {
+						controller.setupText(this.text, renderer);
 						renderer.render(pre, this.tempBound, this.tempClipBound);
+					}
 				}
 
 				if(second < text.length()) {
@@ -223,8 +225,10 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 					tempClipBound.set(clipBound);
 					tempClipBound.setAsIntersection(this.tempBound);
 
-					if(!tempClipBound.isEmpty())
+					if(!tempClipBound.isEmpty()) {
+						controller.setupText(this.text, renderer);
 						renderer.render(post, this.tempBound, this.tempClipBound);
+					}
 				}
 
 				String pre = text.substring(0, first);

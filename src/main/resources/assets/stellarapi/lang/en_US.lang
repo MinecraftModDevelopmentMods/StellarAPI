@@ -13,7 +13,8 @@ command.perdimres.remove.fail=There was no per-dimension resource on this world 
 progress.stellarapi.loading.main=Stellar API
 progress.stellarapi.loading.worldhook=Injecting World Hook...
 
-progress.stellarapi.other.pending.main=Information (Stellar API)
+progress.stellarapi.pending.main=Check cycle %d (Stellar API)
+progress.stellarapi.pending.text=Checking for load state (cycle %d)
 progress.stellarapi.other.pending.text=There could be unidentified mods pending loading process.
 
 

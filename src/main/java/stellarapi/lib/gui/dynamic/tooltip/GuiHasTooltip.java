@@ -17,6 +17,8 @@ import stellarapi.lib.gui.RectangleBound;
  *  */
 public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 	
+	private static final float mouseSize = 10.0f;
+	
 	private IGuiPosition position;
 	private GuiElement wrapped;
 	private ITooltipController controller;
@@ -28,7 +30,7 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 	private RectangleBound temporalClip = new RectangleBound(0,0,0,0);
 	private RectangleBound temporalClip2 = new RectangleBound(0,0,0,0);
 	
-	public GuiHasTooltip(GuiElement wrapped) {
+	public void setWrappedGui(GuiElement wrapped) {
 		this.wrapped = wrapped;
 	}
 
@@ -74,6 +76,8 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 			IRectangleBound tooltipBound = position.getAdditionalBound("tooltip");
 			if(tooltipBound == null)
 				tooltipBound = position.getClipBound();
+			float tooltipX = this.mouseX;
+			float tooltipY = this.mouseY;
 			
 			List<String> tooltip = controller.getRenderContext(this.info);
 			
@@ -92,44 +96,49 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 			
 			boolean hasClip = controller.hasClip();
 			
-			if(tooltipBound.getRatioX(mouseX) > 0.5f)
-				mouseX -= width;
-			if(tooltipBound.getRatioY(mouseY) > 0.5f)
-				mouseY -= height;
+			if(tooltipBound.getRatioX(tooltipX) > 0.5f)
+				tooltipX -= width;
+			if(tooltipBound.getRatioY(tooltipY) > 0.5f)
+				tooltipY -= height;
 			if(hasClip) {
-				if(mouseX < tooltipBound.getLeftX())
-					mouseX = tooltipBound.getLeftX();
-				else if(mouseX + width > tooltipBound.getRightX())
-					mouseX = tooltipBound.getRightX() - width;
-				if(mouseY < tooltipBound.getUpY())
-					mouseY = tooltipBound.getUpY();
-				else if(mouseY + height > tooltipBound.getDownY())
-					mouseY = tooltipBound.getDownY() - height;
+				if(tooltipX < tooltipBound.getLeftX())
+					tooltipX = tooltipBound.getLeftX();
+				else if(tooltipX + width > tooltipBound.getRightX())
+					tooltipX = tooltipBound.getRightX() - width;
+				if(tooltipY < tooltipBound.getUpY())
+					tooltipY = tooltipBound.getUpY();
+				else if(tooltipY + height > tooltipBound.getDownY())
+					tooltipY = tooltipBound.getDownY() - height;
 			}
 			
-			temporal.set(mouseX, mouseY, width, height);
+			if(Math.abs(tooltipX - this.mouseX) < mouseSize)
+				tooltipX = tooltipX < this.mouseX? this.mouseX - mouseSize : this.mouseX + mouseSize;
+			
+			temporal.set(tooltipX, tooltipY, width, height);
 			temporalClip.set(this.temporal);
 			if(hasClip)
 				temporalClip.setAsIntersection(position.getClipBound());
-			
+
 			renderer.startRender();
-			
+
 			String background = controller.setupBackground(this.info, renderer);
 			renderer.render(background, this.temporal, this.temporalClip);
 			
-			mouseX += spacingX;
-			mouseY += spacingY;
+			tooltipX += spacingX;
+			tooltipY += spacingY;
 			width -= 2 * spacingX;
 			
 			for(String context : tooltip) {
-				temporal.set(mouseX, mouseY, mouseX + width, mouseY + helper.getStringHeight());
+				temporal.set(tooltipX, tooltipY, width, helper.getStringHeight());
 				temporalClip2.set(this.temporalClip);
 				temporalClip2.setAsIntersection(this.temporal);
 
-				String finalInfo = controller.setupTooltip(context, renderer);
-				renderer.render(finalInfo, this.temporal, this.temporalClip);
+				controller.setupTooltip(context, renderer);
+				renderer.render(context, this.temporal, this.temporalClip2);
+
+				tooltipY += helper.getStringHeight();
 			}
-			
+
 			renderer.endRender();
 		}
 	}

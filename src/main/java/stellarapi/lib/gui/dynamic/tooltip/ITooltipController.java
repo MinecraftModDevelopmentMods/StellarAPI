@@ -20,7 +20,7 @@ public interface ITooltipController extends IElementController {
 	public List<String> getRenderContext(String info);
 	
 	/**Setup for each line*/
-	public String setupTooltip(String context, IRenderer renderer);
+	public void setupTooltip(String context, IRenderer renderer);
 
 	public float getSpacingX();
 	public float getSpacingY();

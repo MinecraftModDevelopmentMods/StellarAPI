@@ -138,11 +138,17 @@ public class StellarAPIOwnEventHook {
 		progress.resetProgresAndWorkingMessage("");
 	}
 	
+	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
+	public void onClientWorldLoadedPre(ClientWorldEvent.Loaded event) {
+		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
+		progress.displayProgressMessage(I18n.format("progress.stellarapi.pending.main", event.getAttemptNumber()));
+		progress.resetProgresAndWorkingMessage(I18n.format("progress.stellarapi.pending.text", event.getAttemptNumber()));
+	}
+	
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.LOWEST)
-	public void onClientWorldLoaded(ClientWorldEvent.Loaded event) {
+	public void onClientWorldLoadedPost(ClientWorldEvent.Loaded event) {
 		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
 		if(event.isCanceled()) {
-			progress.displayProgressMessage(I18n.format("progress.stellarapi.other.pending.main"));
 			progress.resetProgresAndWorkingMessage(I18n.format("progress.stellarapi.other.pending.text"));
 		} else progress.resetProgresAndWorkingMessage("");
 	}

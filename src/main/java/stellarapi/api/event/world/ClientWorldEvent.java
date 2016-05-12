@@ -41,8 +41,19 @@ public class ClientWorldEvent extends PerWorldEvent {
 	 * */
 	@Cancelable
 	public static class Loaded extends ClientWorldEvent {
+		private int attempt;
+		
 		public Loaded(World world, ICombinedProgressUpdate loading) {
 			super(world, loading);
+		}
+		
+		public Loaded(World world, ICombinedProgressUpdate loading, int attempt) {
+			super(world, loading);
+			this.attempt = attempt;
+		}
+		
+		public int getAttemptNumber() {
+			return this.attempt;
 		}
 	}
 	

@@ -16,7 +16,7 @@ public class StellarAPIClientFMLEventHook {
 	private KeyBinding focusGuiKey = new KeyBinding("key.stellarapi.focusgui.description", Keyboard.KEY_U, "key.stellarapi");
 	
 	private OverlayHandler overlay;
-	private int previous = 0;
+	private int attempt = 1;
 	
 	public StellarAPIClientFMLEventHook(OverlayHandler overlay) {
 		ClientRegistry.registerKeyBinding(this.focusGuiKey);
@@ -29,11 +29,12 @@ public class StellarAPIClientFMLEventHook {
 		if(event.phase == TickEvent.Phase.START) {
 			if(checking) {
 				Minecraft mc = Minecraft.getMinecraft();
-				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld, StellarAPI.proxy.getLoadingProgress());
+				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld, StellarAPI.proxy.getLoadingProgress(), this.attempt);
 				if(!StellarAPIReference.getEventBus().post(loaded)) {
 					Minecraft.getMinecraft().displayGuiScreen(null);
 					checking = false;
-				}
+					this.attempt = 1;
+				} else this.attempt++;
 			}
 			overlay.updateOverlay();
 		}
