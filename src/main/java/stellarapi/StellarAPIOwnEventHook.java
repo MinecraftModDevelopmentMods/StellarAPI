@@ -59,7 +59,7 @@ public class StellarAPIOwnEventHook {
 	
 	private boolean isOverworld(World world) {
 		return "Overworld".equals(world.provider.getDimensionName()) && world.provider.isSurfaceWorld()
-				&& Spmath.fmod(world.getCelestialAngle(0.5f)*2, 1.0f) != 0.0f;
+				&& (world.getCelestialAngle(0.5f)*2)%1.0f != 0.0f;
 	}
 	
 	
