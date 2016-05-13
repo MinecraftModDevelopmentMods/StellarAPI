@@ -104,8 +104,8 @@ public class StellarAPIClientForgeEventHook {
 	}
 	
 	@SubscribeEvent
-	public void renderGameOverlay(RenderGameOverlayEvent.Pre event) {
-		if(event.type == RenderGameOverlayEvent.ElementType.ALL)
+	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
+		if(event.type == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
 			overlay.renderGameOverlay(event.resolution, event.mouseX, event.mouseY, event.partialTicks);
 	}
 	
