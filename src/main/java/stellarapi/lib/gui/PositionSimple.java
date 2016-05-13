@@ -18,12 +18,19 @@ public abstract class PositionSimple implements IGuiPosition {
 	public IRectangleBound getAdditionalBound(String boundName) {
 		return null;
 	}
+	
+	public abstract RectangleBound getBound();
+	public abstract void updateBound(RectangleBound bound);
 
 	@Override
-	public abstract void initializeBounds();
+	public void initializeBounds() {
+		this.bound = this.getBound();
+	}
 
 	@Override
-	public abstract void updateBounds();
+	public void updateBounds() {
+		this.updateBound(this.bound);
+	}
 
 	@Override
 	public void updateAnimation(float partialTicks) {

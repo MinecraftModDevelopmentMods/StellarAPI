@@ -107,7 +107,7 @@ public class OverlayContainer {
 				delegate.notifyChange();
 	}
 
-	public void render(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {		
 		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
 			ElementPos pos = delegate.getPosition();
 			IOverlayElement element = delegate.getElement();

@@ -46,7 +46,7 @@ public class DefaultCoordinateVanilla implements ICelestialCoordinate {
 	public double calculateInitialOffset(Vector3 initialAbsPos, double periodLength) {
 		SpCoord coord = new SpCoord().setWithVec(initialAbsPos);
 		
-		return Spmath.fmod(0.25-coord.x/360.0, 1.0);
+		return (0.25-coord.x/360.0)%1.0;
 	}
 
 	@Override

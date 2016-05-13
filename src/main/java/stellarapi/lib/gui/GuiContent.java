@@ -12,18 +12,12 @@ public class GuiContent {
 	public GuiContent(IRenderer renderer, GuiElement element, IGuiPosition position) {
 		this.renderer = renderer;
 		this.element = element;
-		this.position = position;
-	}
-	
-	/**
-	 * Initialize(Or re-initialize) the elements.
-	 * */
-	public void initialize() {
-		this.positions = new GuiPositionHierarchy(this.position);
+		this.positions = new GuiPositionHierarchy(position);
 		
 		element.initialize(this.positions);
 		positions.initializeBounds();
 	}
+
 	
 	/**Update every tick*/
 	public void updateTick() {

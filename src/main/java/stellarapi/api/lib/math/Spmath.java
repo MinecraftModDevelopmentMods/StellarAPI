@@ -30,16 +30,6 @@ public class Spmath {
 		return x;
 	}
 	
-	//fmod
-	public static final double fmod(double a, double b){
-		return a-Math.floor(a/b)*b;
-	}
-	
-	//fmod
-	public static final float fmod(float a, float b){
-		return a-(float)Math.floor(a/b)*b;
-	}
-	
 	//Degrees to Radians
 	public static final double Radians(double d){
 		return d*Math.PI/180.0;

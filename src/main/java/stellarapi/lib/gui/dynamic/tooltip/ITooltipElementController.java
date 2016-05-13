@@ -7,6 +7,6 @@ public interface ITooltipElementController extends IElementController {
 	public boolean canDisplayTooltip();
 	public int getTooltipDisplayWaitTime();
 	
-	public String getTooltipInfo(float ratioX, float ratioY);
+	public StringFormat getTooltipInfo(float ratioX, float ratioY);
 
 }

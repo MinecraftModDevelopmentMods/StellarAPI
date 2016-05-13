@@ -24,7 +24,7 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 	private ITooltipController controller;
 	
 	private float mouseX, mouseY;
-	private String info = "";
+	private StringFormat info = null;
 	
 	private RectangleBound temporal = new RectangleBound(0,0,0,0);
 	private RectangleBound temporalClip = new RectangleBound(0,0,0,0);
@@ -63,7 +63,7 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 
 	@Override
 	public void checkMousePosition(float mouseX, float mouseY) {
-		info = "";
+		this.info = null;
 		wrapped.getType().checkMousePosition(mouseX, mouseY);
 	}
 
@@ -71,7 +71,7 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 	public void render(IRenderer renderer) {
 		wrapped.getType().render(renderer);
 		
-		if(!info.isEmpty()) {
+		if(this.info != null) {
 			IFontHelper helper = controller.getFontHelper();
 			IRectangleBound tooltipBound = position.getAdditionalBound("tooltip");
 			if(tooltipBound == null)
@@ -143,7 +143,7 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 		}
 	}
 	
-	protected void notifyRenderTooltip(float mouseX, float mouseY, String info) {
+	protected void notifyRenderTooltip(float mouseX, float mouseY, StringFormat info) {
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
 		this.info = info;
@@ -166,8 +166,8 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 						return 800;
 					}
 					@Override
-					public String getTooltipInfo(float ratioX, float ratioY) {
-						return info;
+					public StringFormat getTooltipInfo(float ratioX, float ratioY) {
+						return new StringFormat(info);
 					}
 		});
 	}

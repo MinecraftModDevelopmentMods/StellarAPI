@@ -14,10 +14,10 @@ public interface ITooltipController extends IElementController {
 	public IFontHelper getFontHelper();
 	
 	/**Must have background*/
-	public String setupBackground(String info, IRenderer renderer);
+	public String setupBackground(StringFormat info, IRenderer renderer);
 	
 	/**Context for each line*/
-	public List<String> getRenderContext(String info);
+	public List<String> getRenderContext(StringFormat info);
 	
 	/**Setup for each line*/
 	public void setupTooltip(String context, IRenderer renderer);
