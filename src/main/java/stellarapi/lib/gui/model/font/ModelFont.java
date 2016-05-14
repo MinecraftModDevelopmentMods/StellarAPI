@@ -1,4 +1,4 @@
-package stellarapi.lib.gui.basicmodel;
+package stellarapi.lib.gui.model.font;
 
 import java.nio.FloatBuffer;
 
@@ -19,14 +19,24 @@ public class ModelFont implements IRenderModel, IFontHelper {
 	private final Matrix4f matrix;
 	
 	private WrappedFontRenderer font;
-	private boolean shaded;
+	private float multRed = 1.0f, multGreen = 1.0f, multBlue = 1.0f, multAlpha = 1.0f;
 	private boolean centered;
 	
-	public ModelFont(boolean shaded, boolean centered) {
+	public ModelFont(boolean centered) {
 		this.font = new WrappedFontRenderer();
-		this.shaded = shaded;
 		this.centered = centered;
 		this.matrix = new Matrix4f();
+	}
+
+	public void setStyle(TextStyle newStyle) {
+		font.setStyle(newStyle);
+	}
+
+	public void setColor(float red, float green, float blue, float alpha) {
+		this.multRed = red;
+		this.multGreen = green;
+		this.multBlue = blue;
+		this.multAlpha = alpha;
 	}
 
 	@Override
@@ -60,8 +70,9 @@ public class ModelFont implements IRenderModel, IFontHelper {
 				(int)widthX,
 				(int)heightY);
 
-		font.setColorRGBA(color[0], color[1], color[2], color[3]);
-		if(!this.shaded)
+		font.setColorRGBA(color[0]*this.multRed, color[1]*this.multGreen,
+				color[2]*this.multBlue, color[3]*this.multAlpha);
+		if(!font.getStyle().isShaded())
 			font.drawString(info, (int)(clipBound.getLeftX()+offset), (int)yPos, 0xffffffff);
 		else font.drawStringWithShadow(info, (int)(clipBound.getLeftX()+offset), (int)yPos, 0xffffffff);
 		

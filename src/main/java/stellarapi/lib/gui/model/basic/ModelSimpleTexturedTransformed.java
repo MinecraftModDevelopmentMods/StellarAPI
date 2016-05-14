@@ -1,4 +1,4 @@
-package stellarapi.lib.gui.basicmodel;
+package stellarapi.lib.gui.model.basic;
 
 import org.lwjgl.opengl.GL11;
 
@@ -8,12 +8,20 @@ import net.minecraft.util.ResourceLocation;
 import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderModel;
 
-public class ModelSimpleTextured implements IRenderModel {
+/**
+ * Simple textured model which is reflected horizontally.
+ * */
+public class ModelSimpleTexturedTransformed implements IRenderModel {
 	
 	private ResourceLocation location;
-	
-	public ModelSimpleTextured(ResourceLocation location) {
+	private SimpleBoundTransformer transformer = new SimpleBoundTransformer();
+
+	public ModelSimpleTexturedTransformed(ResourceLocation location) {
 		this.location = location;
+	}
+	
+	public void setTransformer(SimpleBoundTransformer newTransformer) {
+		transformer.reset(newTransformer);
 	}
 
 	@Override
@@ -24,10 +32,15 @@ public class ModelSimpleTextured implements IRenderModel {
 		float rightX = clipBound.getRightX();
 		float downY = clipBound.getDownY();
 		
-		float minU = totalBound.getRatioX(leftX);
-		float minV = totalBound.getRatioY(upY);
-		float maxU = totalBound.getRatioX(rightX);
-		float maxV = totalBound.getRatioY(downY);
+		transformer.setBound(totalBound.getRatioX(leftX),
+				totalBound.getRatioY(upY),
+				totalBound.getRatioX(rightX),
+				totalBound.getRatioY(downY));
+		
+		float minU = transformer.transformLeft();
+		float minV = transformer.transformUp();
+		float maxU = transformer.transformRight();
+		float maxV = transformer.transformDown();
 		
 		GL11.glColor4f(color[0], color[1], color[2], color[3]);
 		

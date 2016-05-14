@@ -83,17 +83,14 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 			List<String> context = controller.getLineContext(this.info);
 			List<String> toRender = Lists.newArrayList();
 			List<IFontHelper> renderHelpers = Lists.newArrayList();
-			int cnt;
 			
-			cnt = 0;
 			for(String lineContext : context) {
-				toRender.set(cnt, controller.toRenderableText(lineContext));
-				renderHelpers.set(cnt, controller.lineSpecificFont(lineContext));
-				cnt++;
+				toRender.add(controller.toRenderableText(lineContext));
+				renderHelpers.add(controller.lineSpecificFont(lineContext));
 			}
 
 			float width = 0.0f, height = 0.0f;
-			cnt = 0;
+			int cnt = 0;
 			for(String renderLine : toRender) {
 				width = Math.max(renderHelpers.get(cnt).getStringWidth(renderLine), width);
 				height += renderHelpers.get(cnt).getStringHeight();

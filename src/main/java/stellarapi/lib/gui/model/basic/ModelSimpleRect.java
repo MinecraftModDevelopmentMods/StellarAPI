@@ -1,4 +1,4 @@
-package stellarapi.lib.gui.basicmodel;
+package stellarapi.lib.gui.model.basic;
 
 import org.lwjgl.opengl.GL11;
 
