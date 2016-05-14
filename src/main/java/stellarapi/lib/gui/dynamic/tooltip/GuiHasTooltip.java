@@ -2,6 +2,8 @@ package stellarapi.lib.gui.dynamic.tooltip;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import stellarapi.lib.gui.GuiElement;
 import stellarapi.lib.gui.GuiPositionHierarchy;
 import stellarapi.lib.gui.IFontHelper;
@@ -72,19 +74,30 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 		wrapped.getType().render(renderer);
 		
 		if(this.info != null) {
-			IFontHelper helper = controller.getFontHelper();
 			IRectangleBound tooltipBound = position.getAdditionalBound("tooltip");
 			if(tooltipBound == null)
 				tooltipBound = position.getClipBound();
 			float tooltipX = this.mouseX;
 			float tooltipY = this.mouseY;
 			
-			List<String> tooltip = controller.getRenderContext(this.info);
+			List<String> context = controller.getLineContext(this.info);
+			List<String> toRender = Lists.newArrayList();
+			List<IFontHelper> renderHelpers = Lists.newArrayList();
+			int cnt;
 			
+			cnt = 0;
+			for(String lineContext : context) {
+				toRender.set(cnt, controller.toRenderableText(lineContext));
+				renderHelpers.set(cnt, controller.lineSpecificFont(lineContext));
+				cnt++;
+			}
+
 			float width = 0.0f, height = 0.0f;
-			for(String context : tooltip) {
-				width = Math.max(helper.getStringWidth(context), width);
-				height += helper.getStringHeight();
+			cnt = 0;
+			for(String renderLine : toRender) {
+				width = Math.max(renderHelpers.get(cnt).getStringWidth(renderLine), width);
+				height += renderHelpers.get(cnt).getStringHeight();
+				cnt++;
 			}
 			
 			float spacingX = controller.getSpacingX();
@@ -128,15 +141,18 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 			tooltipY += spacingY;
 			width -= 2 * spacingX;
 			
-			for(String context : tooltip) {
-				temporal.set(tooltipX, tooltipY, width, helper.getStringHeight());
+			cnt = 0;
+			for(String renderLine : toRender) {
+				height = renderHelpers.get(cnt).getStringHeight();
+				temporal.set(tooltipX, tooltipY, width, height);
 				temporalClip2.set(this.temporalClip);
 				temporalClip2.setAsIntersection(this.temporal);
 
-				controller.setupTooltip(context, renderer);
-				renderer.render(context, this.temporal, this.temporalClip2);
+				controller.setupTooltip(context.get(cnt), renderer);
+				renderer.render(renderLine, this.temporal, this.temporalClip2);
 
-				tooltipY += helper.getStringHeight();
+				tooltipY += height;
+				cnt++;
 			}
 
 			renderer.endRender();
