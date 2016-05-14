@@ -17,6 +17,7 @@ public class OverlayContainer {
 
 	private EnumOverlayMode currentMode = EnumOverlayMode.OVERLAY;
 	private ImmutableList<OverlayElementDelegate> currentlyDisplayedList;
+	private boolean pauseGame;
 	
 	public void resetDisplayList(Iterable<OverlayElementDelegate> iterable) {
 		this.currentlyDisplayedList = ImmutableList.copyOf(iterable);
@@ -32,13 +33,20 @@ public class OverlayContainer {
 	}
 
 	public void switchMode(EnumOverlayMode mode) {
+		this.currentMode = mode;
+		if(!mode.displayed())
+			this.pauseGame = false;
+		
 		for(OverlayElementDelegate delegate : this.currentlyDisplayedList)
 			delegate.getElement().switchMode(mode);
 	}
 
 	public void updateOverlay() {
-		for(OverlayElementDelegate delegate : this.currentlyDisplayedList)
+		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
 			delegate.getElement().updateOverlay();
+			if(delegate.getHandler() != null)
+				delegate.getHandler().updateHandler();
+		}
 	}
 
 	public void mouseClicked(int mouseX, int mouseY, int eventButton) {
@@ -140,5 +148,14 @@ public class OverlayContainer {
 
 	public int getHeight() {
 		return this.height;
+	}
+
+	public boolean isGamePaused() {
+		return this.pauseGame;
+	}
+	
+	public void setGamePaused(boolean pause) {
+		if(currentMode.displayed())
+			this.pauseGame = pause;
 	}
 }

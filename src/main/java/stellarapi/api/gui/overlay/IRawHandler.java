@@ -13,6 +13,9 @@ public interface IRawHandler<Element extends IOverlayElement> {
 	 * */
 	public void initialize(Minecraft mc, IOverlayManager manager, Element element);
 	
+	/** Update on every tick. */
+	public void updateHandler();
+	
 	/**
 	 * Return true to update settings.
 	 * Checked after element.

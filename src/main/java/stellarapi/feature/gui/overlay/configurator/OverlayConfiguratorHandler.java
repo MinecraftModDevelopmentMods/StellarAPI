@@ -40,6 +40,12 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 			if(set.getType().isMain())
 				this.mainOverlay = set;
 	}
+	
+	@Override
+	public void updateHandler() {
+		element.currentSet = manager.getCurrentDisplayedSet();
+		element.gamePaused = manager.isGamePaused();
+	}
 
 	@Override
 	public boolean mouseClicked(int mouseX, int mouseY, int eventButton) {
@@ -52,8 +58,11 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 			IRawOverlaySet set = overlays.get((index+1)%overlays.size());
 			set.setDisplayed();
 			element.markForUpdateSet = false;
-			
-			element.currentSet = set;
+		}
+		
+		if(element.markForUpdatePause) {
+			manager.setGamePaused(!manager.isGamePaused());
+			element.markForUpdatePause = false;
 		}
 		
 		if(element.currentMode != EnumOverlayMode.POSITION)

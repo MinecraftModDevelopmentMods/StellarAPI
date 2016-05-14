@@ -27,6 +27,8 @@ gui.overlay.stellarapi=Stellar API
 
 gui.configurator.stop=Positioning
 gui.configurator.position=Overlay
+gui.configurator.paused=Paused
+gui.configurator.playing=Playing
 
 gui.time.display=<Currently>
 

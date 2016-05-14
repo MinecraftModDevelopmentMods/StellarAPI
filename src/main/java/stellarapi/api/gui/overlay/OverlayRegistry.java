@@ -17,6 +17,7 @@ public class OverlayRegistry {
 	
 	/**
 	 * Registers certain overlay set.
+	 * One can override pre-existing overlay with using same id.
 	 * @param id the id of the overlay set
 	 * @param overlaySet the type of the overlay set
 	 * */
@@ -26,6 +27,7 @@ public class OverlayRegistry {
 	
 	/**
 	 * Registers certain overlay.
+	 * One can override pre-existing overlay with using same id.
 	 * @param id the id of the overlay
 	 * @param type the type of the overlay
 	 * @param config the configuration instance to save the settings

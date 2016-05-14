@@ -145,4 +145,14 @@ public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 	public void switchMode(EnumOverlayMode enumOverlayMode) {
 		container.switchMode(enumOverlayMode);
 	}
+
+	@Override
+	public boolean isGamePaused() {
+		return container.isGamePaused();
+	}
+
+	@Override
+	public void setGamePaused(boolean pause) {
+		container.setGamePaused(pause);
+	}
 }
