@@ -38,7 +38,7 @@ import stellarapi.reference.StellarAPIReferenceHandler;
 
 @Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
-	
+
 		public static final String modid = "StellarAPI";
 		public static final String version = "@VERSION@";
 
