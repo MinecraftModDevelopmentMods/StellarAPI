@@ -8,21 +8,22 @@ import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderer;
 import stellarapi.lib.gui.RectangleBound;
 
-public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingController> {
+public class GuiSpacingButton implements IGuiElementType<ISpacingButtonController> {
 
-	private IGuiPosition position;
-	private ISimpleSpacingController controller;
+	private IGuiPosition position, subPosition;
+	private ISpacingButtonController controller;
 	private GuiElement subElement;
+	private boolean isClicking, mouseOver;
 	
-	public GuiSimpleSpacingElement(GuiElement subElement) {
+	public GuiSpacingButton(GuiElement subElement) {
 		this.subElement = subElement;
 	}
 	
 	@Override
-	public void initialize(GuiPositionHierarchy positions, ISimpleSpacingController controller) {
+	public void initialize(GuiPositionHierarchy positions, ISpacingButtonController controller) {
 		this.position = positions.getPosition();
 		this.controller = controller;
-		subElement.initialize(positions.addChild(new SpacedPosition()));
+		subElement.initialize(positions.addChild(this.subPosition = new SpacedPosition()));
 	}
 
 	@Override
@@ -33,11 +34,29 @@ public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingCo
 	@Override
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		subElement.getType().mouseClicked(mouseX, mouseY, eventButton);
+		IRectangleBound bound = position.getClipBound();
+		IRectangleBound subBound = subPosition.getClipBound();
+
+        if(controller.canClick(eventButton))
+    		if(bound.isInBound(mouseX, mouseY) && (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY)))
+    		{
+    			this.isClicking = true;
+    			controller.onClicked(eventButton);
+    		}
 	}
 
 	@Override
 	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
 		subElement.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+		IRectangleBound bound = position.getClipBound();
+		IRectangleBound subBound = subPosition.getClipBound();
+
+        if(controller.canClick(eventButton))
+    		if(bound.isInBound(mouseX, mouseY) && (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY)))
+    		{
+    			this.isClicking = false;
+    			controller.onClickEnded(eventButton);
+    		}
 	}
 
 	@Override
@@ -48,6 +67,12 @@ public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingCo
 	@Override
 	public void checkMousePosition(float mouseX, float mouseY) {
 		subElement.getType().checkMousePosition(mouseX, mouseY);
+		IRectangleBound clipBound = position.getClipBound();
+		IRectangleBound subBound = subPosition.getClipBound();
+
+		boolean newHover = clipBound.isInBound(mouseX, mouseY) && (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY));
+		controller.updateHovering(newHover);
+		this.mouseOver = newHover;
 	}
 	
 	@Override
@@ -56,11 +81,19 @@ public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingCo
 		if(clipBound.isEmpty())
 			return;
 		
+		IRectangleBound elementBound = position.getElementBound();
+		
 		renderer.startRender();
-		String model = controller.setupSpacingRenderer(renderer);
-		if(model != null)
-			renderer.render(model, position.getElementBound(), clipBound);
+		controller.setupRenderer(this.mouseOver, renderer);
+		String main = controller.setupMain(this.mouseOver, renderer);
+		if(main != null)
+			renderer.render(main, elementBound, clipBound);
+
+		String overlay = controller.setupOverlay(this.mouseOver, renderer);
+		if(overlay != null)
+			renderer.render(overlay, elementBound, clipBound);
 		renderer.endRender();
+		
 		subElement.getType().render(renderer);
 	}
 
@@ -86,8 +119,8 @@ public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingCo
 		public void initializeBounds() {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
+					-controller.getSpacingRight(), -controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 
@@ -95,8 +128,8 @@ public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingCo
 		public void updateBounds() {
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
+					-controller.getSpacingRight(), -controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 

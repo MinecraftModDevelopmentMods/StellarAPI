@@ -8,13 +8,13 @@ import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderer;
 import stellarapi.lib.gui.RectangleBound;
 
-public class GuiSpacingElement implements IGuiElementType<ISpacingController> {
+public class GuiSpacing implements IGuiElementType<ISpacingController> {
 
 	private IGuiPosition position;
 	private ISpacingController controller;
 	private GuiElement subElement;
 	
-	public GuiSpacingElement(GuiElement subElement) {
+	public GuiSpacing(GuiElement subElement) {
 		this.subElement = subElement;
 	}
 	

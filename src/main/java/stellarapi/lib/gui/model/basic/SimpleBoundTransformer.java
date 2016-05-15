@@ -4,6 +4,7 @@ public class SimpleBoundTransformer {
 	
 	private int[] index = {0, 1, 2, 3};
 	private float[] cached = new float[4];
+	private boolean isRotated = false;
 	
 	public SimpleBoundTransformer setReflectedX() {
 		int temp = index[3];
@@ -26,6 +27,7 @@ public class SimpleBoundTransformer {
 		index[3] = index[2];
 		index[2] = index[1];
 		index[1] = temp;
+		this.isRotated = !this.isRotated;
 		return this;
 	}
 	
@@ -54,10 +56,16 @@ public class SimpleBoundTransformer {
 
 	public void reset(SimpleBoundTransformer newTransformer) {
 		System.arraycopy(newTransformer.index, 0, this.index, 0, index.length);
+		this.isRotated = newTransformer.isRotated;
 	}
 	
 	public void reset() {
 		for(int i = 0; i < index.length; i++)
 			index[i] = i;
+		this.isRotated = false;
+	}
+
+	public boolean isRotated() {
+		return this.isRotated;
 	}
 }

@@ -32,10 +32,17 @@ public class ModelSimpleTexturedTransformed implements IRenderModel {
 		float rightX = clipBound.getRightX();
 		float downY = clipBound.getDownY();
 		
-		transformer.setBound(totalBound.getRatioX(leftX),
-				totalBound.getRatioY(upY),
-				totalBound.getRatioX(rightX),
-				totalBound.getRatioY(downY));
+		if(transformer.isRotated()) {
+			transformer.setBound(totalBound.getRatioY(downY),
+					totalBound.getRatioX(leftX),
+					totalBound.getRatioY(upY),
+					totalBound.getRatioX(rightX));
+		} else {
+			transformer.setBound(totalBound.getRatioX(leftX),
+					totalBound.getRatioY(upY),
+					totalBound.getRatioX(rightX),
+					totalBound.getRatioY(downY));
+		}
 		
 		float minU = transformer.transformLeft();
 		float minV = transformer.transformUp();
@@ -46,10 +53,17 @@ public class ModelSimpleTexturedTransformed implements IRenderModel {
 		
 		textureManager.bindTexture(this.location);
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(leftX), (double)(downY), 0.0, minU, maxV);
-        tessellator.addVertexWithUV((double)(rightX), (double)(downY), 0.0, maxU, maxV);
-        tessellator.addVertexWithUV((double)(rightX), (double)(upY), 0.0, maxU, minV);
-        tessellator.addVertexWithUV((double)(leftX), (double)(upY), 0.0, minU, minV);
+		if(transformer.isRotated()) {
+			tessellator.addVertexWithUV((double)(leftX), (double)(downY), 0.0, minV, maxU);
+			tessellator.addVertexWithUV((double)(rightX), (double)(downY), 0.0, minV, minU);
+			tessellator.addVertexWithUV((double)(rightX), (double)(upY), 0.0, maxV, minU);
+			tessellator.addVertexWithUV((double)(leftX), (double)(upY), 0.0, maxV, maxU);
+		} else {
+			tessellator.addVertexWithUV((double)(leftX), (double)(downY), 0.0, minU, maxV);
+			tessellator.addVertexWithUV((double)(rightX), (double)(downY), 0.0, maxU, maxV);
+			tessellator.addVertexWithUV((double)(rightX), (double)(upY), 0.0, maxU, minV);
+			tessellator.addVertexWithUV((double)(leftX), (double)(upY), 0.0, minU, minV);
+		}
         tessellator.draw();
 	}
 
