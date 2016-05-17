@@ -71,7 +71,7 @@ public class CelestialPeriod {
 	 * @return time in tick for the offset
 	 * */
 	public long getTimeForOffset(long timeFrom, double offset) {
-		return timeFrom + (long)Math.floor(
+		return timeFrom + (long)Math.floor(this.periodLength + 
 				((offset - this.zeroTimeOffset)*this.periodLength - timeFrom)%this.periodLength);
 	}
 	
