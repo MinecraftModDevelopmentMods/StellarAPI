@@ -1,5 +1,6 @@
 package stellarapi.api.event;
 
+import cpw.mods.fml.common.eventhandler.Cancelable;
 import net.minecraft.world.World;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
@@ -10,6 +11,7 @@ import stellarapi.api.ISkyEffect;
  * This event is <code>@Cancelable</code>,
  * and canceling this event will force the sky effect unavailable now.
  * */
+@Cancelable
 public class ResetSkyEffectEvent extends PerWorldEvent {
 
 	private ISkyEffect skyEffect = null;
