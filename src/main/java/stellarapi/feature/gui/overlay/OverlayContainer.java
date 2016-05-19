@@ -140,6 +140,9 @@ public class OverlayContainer {
 			if(delegate.getHandler() != null)
 				delegate.getHandler().render(mouseX, mouseY, partialTicks);
 		}
+		
+		//Refreshes color for next elements to be rendered correctly.
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	public int getWidth() {
