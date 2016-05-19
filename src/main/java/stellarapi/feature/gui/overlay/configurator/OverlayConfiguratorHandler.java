@@ -81,6 +81,12 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 		
 		return false;
 	}
+	
+	@Override
+	public boolean mouseClickMove(int mouseX, int mouseY, int eventButton, long timeSinceLastClick) {
+		// TODO Implement dragging here
+		return false;
+	}
 
 	@Override
 	public boolean mouseReleased(int mouseX, int mouseY, int eventButton) {

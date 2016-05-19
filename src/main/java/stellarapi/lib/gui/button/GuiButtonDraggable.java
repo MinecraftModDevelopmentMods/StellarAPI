@@ -51,9 +51,22 @@ public class GuiButtonDraggable implements IGuiElementType<IButtonDraggableContr
     		}
         }
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		IRectangleBound elementBound = position.getElementBound();
+
+		if(controller.canClick(eventButton) && this.isClicking) {
+			IRectangleBound draggableBound = position.getAdditionalBound("dragOffset");
+			float currentX = draggableBound.getRatioX(mouseX - this.clickRatioX * elementBound.getWidth());
+			float currentY = draggableBound.getRatioY(mouseY - this.clickRatioY * elementBound.getHeight());
+
+			controller.onDragging(currentX, currentY);
+		}
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
         if(controller.canClick(eventButton) && this.isClicking)
     	{
         	this.isClicking = false;
@@ -70,17 +83,7 @@ public class GuiButtonDraggable implements IGuiElementType<IButtonDraggableContr
 	public void keyTyped(char eventChar, int eventKey) { }
 	
 	@Override
-	public void checkMousePosition(float mouseX, float mouseY) {
-		IRectangleBound elementBound = position.getElementBound();
-
-		if(this.isClicking) {
-			IRectangleBound draggableBound = position.getAdditionalBound("dragOffset");
-			float currentX = draggableBound.getRatioX(mouseX - this.clickRatioX * elementBound.getWidth());
-			float currentY = draggableBound.getRatioY(mouseY - this.clickRatioY * elementBound.getHeight());
-
-			controller.onDragging(currentX, currentY);
-		}
-		
+	public void checkMousePosition(float mouseX, float mouseY) {		
 		IRectangleBound clipBound = position.getClipBound();
 		this.mouseOver = clipBound.isInBound(mouseX, mouseY);
 	}

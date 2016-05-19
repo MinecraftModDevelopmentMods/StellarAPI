@@ -23,6 +23,9 @@ public interface IOverlayElement<Settings extends PerOverlaySettings> {
 	public boolean mouseClicked(int mouseX, int mouseY, int eventButton);
 	
 	/**Return true to update settings*/
+	public boolean mouseClickMove(int scaledMouseX, int scaledMouseY, int eventButton, long timeSinceLastClick);
+	
+	/**Return true to update settings*/
 	public boolean mouseReleased(int mouseX, int mouseY, int eventButton);
 	
 	/**Return true to update settings*/

@@ -21,7 +21,7 @@ public class GuiEmptyElement implements IGuiElementType<ISimpleController> {
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) { }
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) { }
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) { }
 
 	@Override
 	public void keyTyped(char eventChar, int eventKey) { }
@@ -31,5 +31,8 @@ public class GuiEmptyElement implements IGuiElementType<ISimpleController> {
 	
 	@Override
 	public void render(IRenderer renderer) { }
+
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) { }
 
 }

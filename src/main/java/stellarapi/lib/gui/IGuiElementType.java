@@ -10,7 +10,8 @@ public interface IGuiElementType<C extends IElementController> {
 	public void updateElement();
 
 	public void mouseClicked(float mouseX, float mouseY, int eventButton);
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton);
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton);
 
 	public void keyTyped(char eventChar, int eventKey);
 	

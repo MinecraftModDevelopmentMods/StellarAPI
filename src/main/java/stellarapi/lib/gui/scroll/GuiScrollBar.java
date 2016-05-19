@@ -48,11 +48,17 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 		dragRegion.mouseClicked(mouseX, mouseY, eventButton);
 		drag.mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		dragRegion.mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+		drag.mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
-		dragRegion.mouseMovedOrUp(mouseX, mouseY, eventButton);
-		drag.mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		dragRegion.mouseReleased(mouseX, mouseY, eventButton);
+		drag.mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	@Override

@@ -29,10 +29,15 @@ public class GuiContent {
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		element.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
+	/**On mouse click move*/
+    public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+    	element.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+    }
 
 	/**On mouse moved or up*/
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
-		element.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		element.getType().mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	/**On key typed*/

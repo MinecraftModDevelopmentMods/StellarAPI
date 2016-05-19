@@ -37,9 +37,17 @@ public class GuiButtonDetectMouse implements IGuiElementType<IButtonDetectorCont
     			controller.onClicked(eventButton, elementBound.getRatioX(mouseX), elementBound.getRatioY(mouseY));
     		}
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		if(controller.canClick(eventButton) && this.isClicking) {
+			IRectangleBound elementBound = position.getElementBound();
+			controller.onClicking(elementBound.getRatioX(mouseX), elementBound.getRatioY(mouseY));
+		}
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
 		IRectangleBound bound = position.getClipBound();
         if(controller.canClick(eventButton) && this.isClicking)
     	{
@@ -57,11 +65,6 @@ public class GuiButtonDetectMouse implements IGuiElementType<IButtonDetectorCont
 	public void checkMousePosition(float mouseX, float mouseY) {
 		IRectangleBound clipBound = position.getClipBound();		
 		this.mouseOver = clipBound.isInBound(mouseX, mouseY);
-		
-		if(this.isClicking) {
-			IRectangleBound elementBound = position.getElementBound();
-			controller.onClicking(elementBound.getRatioX(mouseX), elementBound.getRatioY(mouseY));
-		}
 	}
 
 	@Override

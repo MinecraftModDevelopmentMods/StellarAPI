@@ -32,9 +32,12 @@ public class GuiButtonSimple implements IGuiElementType<IButtonController> {
     			controller.onClicked(eventButton);
     		}
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) { }
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
 		IRectangleBound bound = position.getClipBound();
         if(controller.canClick(eventButton) && this.isClicking)
     	{

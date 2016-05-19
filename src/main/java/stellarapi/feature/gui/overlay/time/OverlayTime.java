@@ -131,4 +131,10 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 		fontRenderer.drawStringWithShadow(str, x - fontRenderer.getStringWidth(str) / 2, y, color + (alpha<<24));
 	}
 
+
+	@Override
+	public boolean mouseClickMove(int scaledMouseX, int scaledMouseY, int eventButton, long timeSinceLastClick) {
+		return false;
+	}
+
 }

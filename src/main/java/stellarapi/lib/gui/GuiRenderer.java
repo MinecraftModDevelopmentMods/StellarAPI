@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import stellarapi.StellarAPI;
 
@@ -17,6 +18,7 @@ public class GuiRenderer implements IRenderer {
 	private IRenderModel currentModel = null;
 	
 	private Tessellator tessellator;
+	private WorldRenderer worldRenderer;
 	private TextureManager textureManager;
 	
 	private float partialTicks;
@@ -30,11 +32,13 @@ public class GuiRenderer implements IRenderer {
 	
 	public GuiRenderer(Minecraft minecraft) {
 		this.tessellator = Tessellator.getInstance();
+		this.worldRenderer = tessellator.getWorldRenderer();
 		this.textureManager = minecraft.getTextureManager();
 	}
 	
-	public GuiRenderer(Tessellator tessellator, TextureManager textureManager) {
+	public GuiRenderer(Tessellator tessellator, TextureManager textureManager, WorldRenderer worldRenderer) {
 		this.tessellator = tessellator;
+		this.worldRenderer = worldRenderer;
 		this.textureManager = textureManager;
 	}
 
@@ -120,7 +124,7 @@ public class GuiRenderer implements IRenderer {
 		if(!this.matrixPushedTillNextRender)
 			System.arraycopy(this.generalColor, 0, this.currentColor, 0, currentColor.length);
 		
-		currentModel.renderModel(info, this.temp, this.tempClip, this.tessellator, this.textureManager, this.currentColor);
+		currentModel.renderModel(info, this.temp, this.tempClip, this.tessellator, this.worldRenderer, this.textureManager, this.currentColor);
 		GL11.glPopMatrix();
 		
 		if(this.matrixPushedTillNextRender)

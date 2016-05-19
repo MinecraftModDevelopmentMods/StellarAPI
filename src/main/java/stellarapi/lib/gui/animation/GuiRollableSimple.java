@@ -70,10 +70,15 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		mover.mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		mover.mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
-		mover.mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		mover.mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	@Override

@@ -25,6 +25,12 @@ public interface IRawHandler<Element extends IOverlayElement> {
 	 * Return true to update settings.
 	 * Checked after element.
 	 * */
+	public boolean mouseClickMove(int mouseX, int mouseY, int eventButton, long timeSinceLastClick);
+	
+	/**
+	 * Return true to update settings.
+	 * Checked after element.
+	 * */
 	public boolean mouseReleased(int mouseX, int mouseY, int eventButton);
 	
 	/**

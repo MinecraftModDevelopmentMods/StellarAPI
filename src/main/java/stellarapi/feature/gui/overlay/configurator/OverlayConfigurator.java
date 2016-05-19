@@ -122,4 +122,10 @@ public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> 
 		btnGamePaused.drawButton(this.mc, mouseX, mouseY);
 	}
 
+
+	@Override
+	public boolean mouseClickMove(int scaledMouseX, int scaledMouseY, int eventButton, long timeSinceLastClick) {
+		return false;
+	}
+
 }

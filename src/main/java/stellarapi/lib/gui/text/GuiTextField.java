@@ -40,10 +40,15 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		internal.mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		internal.mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
-		internal.mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		internal.mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	@Override

@@ -44,10 +44,13 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
     			controller.onClicked(eventButton);
     		}
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) { }
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
-		subElement.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		subElement.getType().mouseReleased(mouseX, mouseY, eventButton);
 		IRectangleBound bound = position.getClipBound();
 		IRectangleBound subBound = subPosition.getClipBound();
 

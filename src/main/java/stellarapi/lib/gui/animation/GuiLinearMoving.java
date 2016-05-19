@@ -80,13 +80,22 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 		subElement.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		if(this.isAnimating && controller.disableControlOnAnimating())
 			return;
 
-		subElement.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+		subElement.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
+
+	@Override
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		if(this.isAnimating && controller.disableControlOnAnimating())
+			return;
+
+		subElement.getType().mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	@Override

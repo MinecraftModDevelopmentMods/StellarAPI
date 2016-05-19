@@ -52,11 +52,17 @@ public class GuiSimpleDividedList implements IGuiElementType<ISimpleListControll
 		for(GuiElement element : this.list)
 			element.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		for(GuiElement element : this.list)
+			element.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
 		for(GuiElement element : this.list)
-			element.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+			element.getType().mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	@Override

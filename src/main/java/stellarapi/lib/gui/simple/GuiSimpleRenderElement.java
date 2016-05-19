@@ -24,7 +24,7 @@ public class GuiSimpleRenderElement implements IGuiElementType<ISimpleRenderCont
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) { }
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) { }
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) { }
 
 	@Override
 	public void keyTyped(char eventChar, int eventKey) { }
@@ -43,5 +43,8 @@ public class GuiSimpleRenderElement implements IGuiElementType<ISimpleRenderCont
 		renderer.render(model, position.getElementBound(), clipBound);
 		renderer.endRender();
 	}
+
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) { }
 
 }

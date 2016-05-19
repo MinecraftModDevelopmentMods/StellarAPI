@@ -96,12 +96,19 @@ public class GuiHasFixedList implements IGuiElementType<IHasFixedListController>
 		for(GuiElement element : this.list)
 			element.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		modifiable.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+		for(GuiElement element : this.list)
+			element.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
-		modifiable.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		modifiable.getType().mouseReleased(mouseX, mouseY, eventButton);
 		for(GuiElement element : this.list)
-			element.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+			element.getType().mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	@Override

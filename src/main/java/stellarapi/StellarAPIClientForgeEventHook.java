@@ -51,11 +51,11 @@ public class StellarAPIClientForgeEventHook {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onUpdateFOV(FOVUpdateEvent event) {
+	public void onUpdateFOV(EntityViewRenderEvent.FOVModifier event) {
 		IViewScope scope = StellarAPIReference.getScope(event.entity);
 		if(scope.forceChange())
-			event.newfov = event.fov / (float)scope.getMP();
-		else event.newfov /= (float)scope.getMP();
+			event.setFOV(70.0F / (float)scope.getMP());
+		else event.setFOV(event.getFOV() / (float)scope.getMP());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)

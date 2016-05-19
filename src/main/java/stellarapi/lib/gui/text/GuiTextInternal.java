@@ -67,9 +67,19 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 			this.dragging = true;
 		}
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		if(this.dragging) {
+			float xPos = mouseX - position.getElementBound().getLeftX();
+
+			String trimmed = controller.getFontHelper().trimStringToWidth(this.text, xPos);
+			this.setSelectionPos(trimmed.length());
+		}
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
 		if(this.focused && eventButton == 0) {
 			float xPos = mouseX - position.getElementBound().getLeftX();
 
@@ -80,14 +90,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	}
 
 	@Override
-	public void checkMousePosition(float mouseX, float mouseY) {
-		if(this.dragging) {
-			float xPos = mouseX - position.getElementBound().getLeftX();
-
-			String trimmed = controller.getFontHelper().trimStringToWidth(this.text, xPos);
-			this.setSelectionPos(trimmed.length());
-		}
-	}
+	public void checkMousePosition(float mouseX, float mouseY) { }
 
 	@Override
 	public void keyTyped(char eventChar, int eventKey) {

@@ -41,10 +41,15 @@ public class GuiTooltipElementWrapper implements IGuiElementType<ITooltipElement
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		wrapped.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
+	
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		wrapped.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
 
 	@Override
-	public void mouseMovedOrUp(float mouseX, float mouseY, int eventButton) {
-		wrapped.getType().mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+		wrapped.getType().mouseReleased(mouseX, mouseY, eventButton);
 	}
 
 	@Override
