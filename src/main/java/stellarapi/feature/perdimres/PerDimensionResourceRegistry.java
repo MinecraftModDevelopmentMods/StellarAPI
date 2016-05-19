@@ -22,8 +22,11 @@ public class PerDimensionResourceRegistry implements IPerDimensionResourceHandle
 	
 	private Set<String> resourceIds = Sets.newHashSet();
 	
-	public void registerResourceId(String id)
-	{
+	public PerDimensionResourceRegistry() {
+		resourceIds.add("DEBUG_ONLY");
+	}
+	
+	public void registerResourceId(String id) {
 		resourceIds.add(id);
 	}
 	

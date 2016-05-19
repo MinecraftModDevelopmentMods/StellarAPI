@@ -1,5 +1,7 @@
 package stellarapi.api.celestials;
 
+import com.google.common.collect.ImmutableList;
+
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
@@ -12,6 +14,13 @@ import stellarapi.api.optics.Wavelength;
  * So this object is, indeed, per-dimensional.
  * */
 public interface ICelestialObject {
+	
+	/**
+	 * The name of the celestial object. <p>
+	 * Note that an object can have many names,
+	 * but a name should point at most one object.
+	 * */
+	//public String getName();
 	
 	/**
 	 * Absolute period for the effector. <p>
@@ -76,6 +85,29 @@ public interface ICelestialObject {
 	 * Should be constant.
 	 * */
 	public double getStandardMagnitude();
+	
+	
+	/**
+	 * Gives the list of additional numerical properties.
+	 * */
+	//public ImmutableList<String> additionalNumericalProperties();
+	
+	/**
+	 * Additional numerical properties.
+	 * @param propertyName the name of the property
+	 * */
+	//public double additionalNumericalProperty(String propertyName);
+	
+	/**
+	 * Gives the list of additional generic properties.
+	 * */
+	//public ImmutableList<String> additionalGenericProperties();
+	
+	/**
+	 * Additional generic properties.
+	 * @param propertyName the name of the property
+	 * */
+	//public String additionalGenericProperty(String propertyName);
 	
 	
 	/**

@@ -37,8 +37,14 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 		
 		this.overlays = manager.getDisplayedSets();
 		for(IRawOverlaySet set : this.overlays)
-			if(set.getType() instanceof OverlaySetMain)
+			if(set.getType().isMain())
 				this.mainOverlay = set;
+	}
+	
+	@Override
+	public void updateHandler() {
+		element.currentSet = manager.getCurrentDisplayedSet();
+		element.gamePaused = manager.isGamePaused();
 	}
 
 	@Override
@@ -52,8 +58,11 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 			IRawOverlaySet set = overlays.get((index+1)%overlays.size());
 			set.setDisplayed();
 			element.markForUpdateSet = false;
-			
-			element.currentSet = set;
+		}
+		
+		if(element.markForUpdatePause) {
+			manager.setGamePaused(!manager.isGamePaused());
+			element.markForUpdatePause = false;
 		}
 		
 		if(element.currentMode != EnumOverlayMode.POSITION)
@@ -125,8 +134,8 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 			int elementWidth = currentSelected.getWidth();
 			int elementHeight = currentSelected.getHeight();
 			
-			if(this.eventButton == 0 && !horizontal.inRange(mouseX, currentWidth, elementWidth)
-					|| !vertical.inRange(mouseY, currentHeight, elementHeight)) {
+			if(this.eventButton == 0 && (!horizontal.inRange(mouseX, currentWidth, elementWidth)
+					|| !vertical.inRange(mouseY, currentHeight, elementHeight))) {
 				this.horizontal = EnumHorizontalPos.getNearest(mouseX, currentWidth, elementWidth);
 				this.vertical = EnumVerticalPos.getNearest(mouseY, currentHeight, elementHeight);
 			}

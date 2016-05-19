@@ -9,12 +9,17 @@ import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiDownloadTerrain;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.optics.EyeDetector;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
@@ -100,7 +105,20 @@ public class StellarAPIClientForgeEventHook {
 	
 	@SubscribeEvent
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if(event.type == RenderGameOverlayEvent.ElementType.ALL)
+		if(event.type == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
 			overlay.renderGameOverlay(event.resolution, event.mouseX, event.mouseY, event.partialTicks);
+	}
+	
+	@SubscribeEvent
+	public void onClientWorldLoadFinish(GuiOpenEvent event) {
+		if(event.gui == null) {
+			Minecraft mc = Minecraft.getMinecraft();
+			if(mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
+				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld, StellarAPI.proxy.getLoadingProgress());
+				if(StellarAPIReference.getEventBus().post(loaded))
+					event.setCanceled(true);
+				StellarAPIClientFMLEventHook.startChecking();
+			}
+		}
 	}
 }

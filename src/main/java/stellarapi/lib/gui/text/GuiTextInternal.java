@@ -25,7 +25,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	private boolean focused, dragging;
 	private RectangleBound tempBound = new RectangleBound(0,0,0,0);
 	private RectangleBound tempClipBound = new RectangleBound(0,0,0,0);
-	
+
 	@Override
 	public void initialize(GuiPositionHierarchy positions, ITextInternalController controller) {
 		this.position = positions.getPosition();
@@ -37,8 +37,10 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	@Override
 	public void updateElement() {
 		this.cursorCounter++;
-		if(!this.focused)
-		{
+		if(controller.notifyText(this.text, this.cursorPosition, this.selectionEnd, this.focused))
+			this.focused = false;
+		
+		if(!this.focused || !controller.canModify()) {
 			String updated = controller.updateText(this.text);
 			if(!text.equals(updated)) {
 				int max = controller.maxStringLength();
@@ -61,7 +63,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 
 			String trimmed = controller.getFontHelper().trimStringToWidth(this.text, xPos);
 			this.setCursorPosition(trimmed.length());
-			
+
 			this.dragging = true;
 		}
 	}
@@ -76,7 +78,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 			this.dragging = false;
 		}
 	}
-	
+
 	@Override
 	public void checkMousePosition(float mouseX, float mouseY) {
 		if(this.dragging) {
@@ -97,29 +99,34 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 			case 1:
 				this.setCursorPositionEnd();
 				this.setSelectionPos(0);
+				break;
 			case 3:
 				GuiScreen.setClipboardString(this.getSelectedText());
+				break;
 			case 22:
 				if (controller.canModify())
 					this.writeText(GuiScreen.getClipboardString());
+				break;
 			case 24:
 				GuiScreen.setClipboardString(this.getSelectedText());
-
 				if (controller.canModify())
 					this.writeText("");
+				break;
 			default:
 				switch (eventKey)
 				{
 				case 14:
-					if (GuiScreen.isCtrlKeyDown())
+					if (GuiScreen.isCtrlKeyDown()) {
 						if (controller.canModify())
 							this.deleteWords(-1);
-					else if (controller.canModify())
+					} else if (controller.canModify())
 						this.deleteFromCursor(-1);
+					break;
 				case 199:
 					if (GuiScreen.isShiftKeyDown())
 						this.setSelectionPos(0);
 					else this.setCursorPositionZero();
+					break;
 				case 203:
 					if (GuiScreen.isShiftKeyDown())
 						if (GuiScreen.isCtrlKeyDown())
@@ -128,6 +135,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 					else if (GuiScreen.isCtrlKeyDown())
 						this.setCursorPosition(this.getNthWordFromCursor(-1));
 					else this.moveCursorBy(-1);
+					break;
 				case 205:
 					if (GuiScreen.isShiftKeyDown())
 						if (GuiScreen.isCtrlKeyDown())
@@ -136,16 +144,19 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 					else if (GuiScreen.isCtrlKeyDown())
 						this.setCursorPosition(this.getNthWordFromCursor(1));
 					else this.moveCursorBy(1);
+					break;
 				case 207:
 					if (GuiScreen.isShiftKeyDown())
 						this.setSelectionPos(this.text.length());
 					else this.setCursorPositionEnd();
+					break;
 				case 211:
-					if (GuiScreen.isCtrlKeyDown())
+					if (GuiScreen.isCtrlKeyDown()) {
 						if (controller.canModify())
 							this.deleteWords(1);
-					else if (controller.canModify())
+					} else if (controller.canModify())
 						this.deleteFromCursor(1);
+					break;
 				default:
 					if (ChatAllowedCharacters.isAllowedCharacter(eventChar))
 						if (controller.canModify())
@@ -159,109 +170,129 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	public void render(IRenderer renderer) {
 		IRectangleBound elementBound = position.getElementBound();
 		IRectangleBound clipBound = position.getClipBound();
-		
+
 		if(clipBound.isEmpty())
 			return;
 		
+		renderer.startRender();
+
 		if(this.focused) {
 			IFontHelper helper = controller.getFontHelper();
-			
+
 			controller.setupRendererFocused(renderer);
+
+			int first = this.cursorPosition < this.selectionEnd? this.cursorPosition : this.selectionEnd;
+			int second = this.cursorPosition < this.selectionEnd? this.selectionEnd : this.cursorPosition;
 			
-			controller.setupText(this.text, renderer);
-			if(this.cursorPosition <= this.selectionEnd) {
+			if(first == second) {
 				tempBound.set(elementBound);
 				tempBound.width = helper.getStringWidth(this.text);
 				tempClipBound.set(clipBound);
 				tempClipBound.setAsIntersection(this.tempBound);
-				
-				if(!tempClipBound.isEmpty())
+				tempBound.posY += (tempBound.height - helper.getStringHeight())/2;
+				tempBound.height = helper.getStringHeight();
+
+				if(!tempClipBound.isEmpty()) {
+					controller.setupText(this.text, renderer);
 					renderer.render(this.text, this.tempBound, clipBound);
+				}
 			} else {
-				if(this.cursorPosition > 0) {
-					String pre = text.substring(0, this.cursorPosition);
+				if(first > 0) {
+					String pre = text.substring(0, first);
 					tempBound.set(elementBound);
 					tempBound.width = helper.getStringWidth(pre);
+					tempBound.posY += (tempBound.height - helper.getStringHeight())/2;
+					tempBound.height = helper.getStringHeight();
+					
 					tempClipBound.set(clipBound);
 					tempClipBound.setAsIntersection(this.tempBound);
-					
-					if(!tempClipBound.isEmpty())
+
+					if(!tempClipBound.isEmpty()) {
+						controller.setupText(this.text, renderer);
 						renderer.render(pre, this.tempBound, this.tempClipBound);
+					}
 				}
-			
-				if(this.selectionEnd < text.length()) {
-					String pre = text.substring(0, this.selectionEnd);
-					String post = text.substring(this.selectionEnd);
+
+				if(second < text.length()) {
+					String pre = text.substring(0, second);
+					String post = text.substring(second);
 					tempBound.set(elementBound);
 					tempBound.posX += helper.getStringWidth(pre);
 					tempBound.width = helper.getStringWidth(post);
+					tempBound.posY += (tempBound.height - helper.getStringHeight())/2;
+					tempBound.height = helper.getStringHeight();
+					
 					tempClipBound.set(clipBound);
 					tempClipBound.setAsIntersection(this.tempBound);
-					
-					if(!tempClipBound.isEmpty())
+
+					if(!tempClipBound.isEmpty()) {
+						controller.setupText(this.text, renderer);
 						renderer.render(post, this.tempBound, this.tempClipBound);
+					}
 				}
-								
-				String pre = text.substring(0, this.cursorPosition);
-				String selection = text.substring(this.cursorPosition, this.selectionEnd);
-								
+
+				String pre = text.substring(0, first);
+				String selection = text.substring(first, second);
+
 				tempBound.set(elementBound);
 				tempBound.posX += helper.getStringWidth(pre);
 				tempBound.width = helper.getStringWidth(selection);
 				tempBound.posY += (tempBound.height - helper.getStringHeight())/2;
 				tempBound.height = helper.getStringHeight();
-				
+
 				tempClipBound.set(clipBound);
 				tempClipBound.setAsIntersection(this.tempBound);
-				
+
 				if(!tempClipBound.isEmpty()) {
 					controller.setupHighlightedText(selection, renderer);
 					renderer.render(selection, this.tempBound, this.tempClipBound);
-					
+
 					String overlay = controller.setupHighlightedOverlay(selection, renderer);
 					if(overlay != null)
 						renderer.render(overlay, this.tempBound, this.tempClipBound);
 				}
 			}
-			
+
 			String pre = text.substring(0, this.cursorPosition);
-			
+
 			float cursorSpacing = controller.getCursorSpacing();
 			tempBound.set(elementBound);
 			tempBound.posX += helper.getStringWidth(pre) - cursorSpacing;
 			tempBound.width = cursorSpacing * 2;
 			tempBound.posY += (tempBound.height - helper.getStringHeight())/2 - cursorSpacing;
 			tempBound.height = helper.getStringHeight() + 2 * cursorSpacing;
-			
+
 			tempClipBound.set(clipBound);
 			tempClipBound.setAsIntersection(this.tempBound);
-			
-			String cursor = controller.setupRendererCursor(this.cursorCounter);
-			
+
+			String cursor = controller.setupRendererCursor(this.cursorCounter, renderer);
+
 			renderer.render(cursor, this.tempBound, this.tempClipBound);
 		} else {
 			String replacement = controller.setupRendererUnfocused(this.text, renderer);
 			renderer.render(replacement, elementBound, clipBound);
 		}
+		
+		renderer.endRender();
 	}
 
 
-    public void setFocused(boolean focusToUpdate)
-    {
-        if (focusToUpdate && !this.focused)
-            this.cursorCounter = 0;
+	public void setFocused(boolean focusToUpdate)
+	{
+		if (focusToUpdate && !this.focused)
+			this.cursorCounter = 0;
 
-        this.focused = focusToUpdate;
-    }
+		this.focused = focusToUpdate;
+	}
 
-    /**
-     * Getter for the focused field
-     */
-    public boolean isFocused()
-    {
-        return this.focused;
-    }
-	
+	/**
+	 * Getter for the focused field
+	 */
+	public boolean isFocused()
+	{
+		return this.focused;
+	}
+
 	/**
 	 * returns the text between the cursor and selectionEnd
 	 */
@@ -383,7 +414,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	{
 		return this.getNthWordFromPos(N, this.getCursorPosition(), true);
 	}
-	
+
 	public int getNthWordFromPos(int N, int position, boolean flag) {
 
 		int k = position;
@@ -396,7 +427,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 			{
 				while (flag && k > 0 && text.charAt(k - 1) == 32)
 					--k;
-				
+
 				while (k > 0 && text.charAt(k - 1) != 32)
 					--k;
 			}
@@ -427,20 +458,8 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	 * sets the position of the cursor to the provided index
 	 */
 	public void setCursorPosition(int p_146190_1_)
-	{
-		this.cursorPosition = p_146190_1_;
-		int j = this.text.length();
-
-		if (this.cursorPosition < 0)
-		{
-			this.cursorPosition = 0;
-		}
-
-		if (this.cursorPosition > j)
-		{
-			this.cursorPosition = j;
-		}
-
+	{		
+		this.cursorPosition = MathHelper.clamp_int(p_146190_1_, 0, text.length());
 		this.setSelectionPos(this.cursorPosition);
 	}
 
@@ -482,9 +501,9 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	public void setSelectionPos(int selectionPos)
 	{
 		selectionPos = MathHelper.clamp_int(selectionPos, 0, text.length());
-
 		this.selectionEnd = selectionPos;
+
 		controller.notifySelection(this.cursorPosition, this.selectionEnd);
 	}
-	
+
 }

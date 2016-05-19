@@ -13,13 +13,22 @@ import stellarapi.feature.perdimres.PerDimensionResourceData;
 public class StellarAPINetworkManager {
 	
 	private SimpleNetworkWrapper wrapper;
-	protected String id = "stellarskychannel";
+	protected String id = "stellarapichannel";
 	
 	public StellarAPINetworkManager() {
 		this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(this.id);
 		
 		wrapper.registerMessage(MessageSync.MessageSyncCommonHandler.class,
 				MessageSync.class, 0, Side.CLIENT);
+	}
+	
+	public void onSyncToAll(World world) {
+		PerDimensionResourceData data = PerDimensionResourceData.getData(world);
+
+		NBTTagCompound compound = new NBTTagCompound();
+		data.writeToNBT(compound);
+		
+		wrapper.sendToDimension(new MessageSync(compound), world.provider.dimensionId);
 	}
 	
 	public void onSync(EntityPlayerMP player, World world) {

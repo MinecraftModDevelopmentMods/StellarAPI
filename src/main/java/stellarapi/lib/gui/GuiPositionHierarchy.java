@@ -23,6 +23,10 @@ public class GuiPositionHierarchy {
 		return createdChild;
 	}
 	
+	public void clearChild() {
+		childs.clear();
+	}
+	
 	public void initializeBounds() {
 		position.initializeBounds();
 		for(GuiPositionHierarchy child : childs)

@@ -50,7 +50,7 @@ public class CelestialPeriod {
 	 * @return the offset for this period on the time
 	 * */
 	public double getOffset(long worldTime, float partialTicks) {
-		return Spmath.fmod(this.zeroTimeOffset + (worldTime + partialTicks) / this.periodLength, 1.0);
+		return (this.zeroTimeOffset + (worldTime + partialTicks) / this.periodLength)% 1.0;
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class CelestialPeriod {
 	 * @return the biased offset for this period on the time
 	 * */
 	public double getBiasedOffset(long worldTime, float partialTicks, double bias) {
-		return Spmath.fmod(this.zeroTimeOffset + bias + (worldTime + partialTicks) / this.periodLength, 1.0);
+		return (this.zeroTimeOffset + bias + (worldTime + partialTicks) / this.periodLength) % 1.0;
 	}
 	
 	/**
@@ -71,9 +71,8 @@ public class CelestialPeriod {
 	 * @return time in tick for the offset
 	 * */
 	public long getTimeForOffset(long timeFrom, double offset) {
-		return timeFrom + (long)Math.floor(Spmath.fmod(
-				(offset - this.zeroTimeOffset)*this.periodLength - Spmath.fmod(timeFrom, this.periodLength),
-				this.periodLength));
+		return timeFrom + (long)Math.floor(this.periodLength + 
+				((offset - this.zeroTimeOffset)*this.periodLength - timeFrom)%this.periodLength);
 	}
 	
 	@Override

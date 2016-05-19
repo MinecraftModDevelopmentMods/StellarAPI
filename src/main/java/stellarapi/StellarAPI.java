@@ -13,6 +13,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,7 +38,7 @@ import stellarapi.reference.StellarAPIReferenceHandler;
 
 @Mod(modid=StellarAPI.modid, version=StellarAPI.version, guiFactory="stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
-	
+
 		public static final String modid = "StellarAPI";
 		public static final String version = "@VERSION@";
 
@@ -132,6 +133,11 @@ public final class StellarAPI {
         	proxy.postInit(event);
         	
     		CompatManager.getInstance().onPostInit();
+        }
+        
+        @EventHandler
+        public void serverAboutToStart(FMLServerAboutToStartEvent event) {
+        	;
         }
         
         @EventHandler

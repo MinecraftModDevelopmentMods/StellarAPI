@@ -43,7 +43,8 @@ public class CommandPerDimensionResource extends CommandBase {
 				data.getResourceMap().entrySet()) {
 				list = String.format("%s\n (%s -> %s)", list, entry.getKey(), entry.getValue());
 			}
-			list = list.substring(list.indexOf('\n'));
+			if(list.contains("\n"))
+				list = list.substring(list.indexOf('\n'));
 			
 			sender.addChatMessage(new ChatComponentTranslation("command.perdimres.list", list));
 		
@@ -51,7 +52,9 @@ public class CommandPerDimensionResource extends CommandBase {
 			String list = "";
 			for(String id : PerDimensionResourceRegistry.getInstance().getResourceIds())
 				list = String.format("%s, %s", list, id);
-			list = list.substring(list.indexOf(','));
+			
+			if(list.contains(","))
+				list = list.substring(list.indexOf(','));
 			
 			sender.addChatMessage(new ChatComponentTranslation("command.perdimres.available", list));
 		

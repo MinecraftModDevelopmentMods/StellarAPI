@@ -9,7 +9,10 @@ public interface IRenderer {
 	 * */
 	public void bindModel(IRenderModel model);
 
-	public void pushMatrixTillNextRender();
+	/**
+	 * Push settings till next render.
+	 * */
+	public void pushSettingTillNextRender();
 	public void translate(float posX, float posY);
 
 	/**
@@ -21,11 +24,33 @@ public interface IRenderer {
 	 * Scale around the center.
 	 * */
 	public void scale(float scaleX, float scaleY);
+	
+	/**
+	 * Multiplies color to current settings.
+	 * */
 	public void color(float red, float green, float blue, float alpha);
 
+	/**
+	 * Render with the settings.
+	 * */
 	public void render(String info, IRectangleBound totalBound, IRectangleBound clipBound);
 
 	public void startRender();
 	public void endRender();
+	
+	/**
+	 * Getter for the partial tick
+	 * */
+	public float getPartialTicks();
+
+	/**
+	 * Before rendering all the contents
+	 * */
+	public void preRender(float partialTicks);
+	
+	/**
+	 * After rendering all the contents
+	 * */
+	public void postRender(float partialTicks);
 
 }

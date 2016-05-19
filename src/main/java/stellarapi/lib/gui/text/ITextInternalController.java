@@ -13,6 +13,8 @@ public interface ITextInternalController extends IElementController {
 	public boolean canLoseFocus();
 	
 	public void notifySelection(int cursor, int selection);
+	/** Notifies certain text, return true to force unfocus */
+	public boolean notifyText(String text, int cursor, int selection, boolean focused);
 	public String updateText(String text);
 
 	public float getCursorSpacing();
@@ -21,7 +23,7 @@ public interface ITextInternalController extends IElementController {
 	public void setupText(String text, IRenderer renderer);	
 	public void setupHighlightedText(String selection, IRenderer renderer);
 	public String setupHighlightedOverlay(String selection, IRenderer renderer);
-	public String setupRendererCursor(int cursorCounter);
+	public String setupRendererCursor(int cursorCounter, IRenderer renderer);
 
 	public String setupRendererUnfocused(String text, IRenderer renderer);
 

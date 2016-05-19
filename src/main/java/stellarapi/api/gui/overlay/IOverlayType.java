@@ -34,5 +34,8 @@ public interface IOverlayType<Element extends IOverlayElement<Settings>, Setting
 
 	/** Gives true iff. the overlay should be added on all of the overlay sets. */
 	public boolean isUniversal();
+	
+	/** Gives true iff. the overlay should be added on main overlay if possible. */
+	public boolean isOnMain();
 
 }

@@ -1,4 +1,6 @@
-package stellarapi.lib.gui.basicmodel;
+package stellarapi.lib.gui.model.basic;
+
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -16,7 +18,7 @@ public class ModelSimpleTextured implements IRenderModel {
 
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			TextureManager textureManager) {
+			TextureManager textureManager, float[] color) {
 		float leftX = clipBound.getLeftX();
 		float upY = clipBound.getUpY();
 		float rightX = clipBound.getRightX();
@@ -26,6 +28,8 @@ public class ModelSimpleTextured implements IRenderModel {
 		float minV = totalBound.getRatioY(upY);
 		float maxU = totalBound.getRatioX(rightX);
 		float maxV = totalBound.getRatioY(downY);
+		
+		GL11.glColor4f(color[0], color[1], color[2], color[3]);
 		
 		textureManager.bindTexture(this.location);
         tessellator.startDrawingQuads();

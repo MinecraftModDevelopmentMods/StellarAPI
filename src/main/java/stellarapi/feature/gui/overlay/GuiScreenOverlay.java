@@ -8,10 +8,10 @@ import net.minecraft.client.settings.KeyBinding;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
 
 public class GuiScreenOverlay extends GuiScreen {
-	
+
 	private OverlayContainer container;
 	private KeyBinding focusGuiKey;
-	
+
 	public GuiScreenOverlay(OverlayContainer container, KeyBinding focusGuiKey) {
 		this.container = container;
 		this.focusGuiKey = focusGuiKey;
@@ -54,7 +54,7 @@ public class GuiScreenOverlay extends GuiScreen {
 	
 	@Override
     public boolean doesGuiPauseGame() {
-        return false;
+        return container.isGamePaused();
     }
 
 }

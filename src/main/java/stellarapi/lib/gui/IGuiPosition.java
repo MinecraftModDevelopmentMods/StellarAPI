@@ -2,9 +2,14 @@ package stellarapi.lib.gui;
 
 public interface IGuiPosition {
 	
-	public IRectangleBound getElementBound();
 	/**
-	 * Must be inside the element bound
+	 * Element bound.
+	 * */
+	public IRectangleBound getElementBound();
+	
+	/**
+	 * Clipping bound.
+	 * Must be inside the element bound, or the rendering will be screwed.
 	 * */
 	public IRectangleBound getClipBound();
 	

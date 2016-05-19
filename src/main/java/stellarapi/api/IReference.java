@@ -5,7 +5,8 @@ import net.minecraft.world.World;
 
 public interface IReference {
 
-	IPerWorldReference getPerWorldReference(World world);
-	IPerEntityReference getPerEntityReference(Entity entity);
+	public IPerWorldReference getPerWorldReference(World world);
+	public IPerEntityReference getPerEntityReference(Entity entity);
+	public IPerClientReference getPerClientReference();
 
 }

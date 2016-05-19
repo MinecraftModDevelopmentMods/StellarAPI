@@ -75,10 +75,13 @@ public class GuiSimpleDividedList implements IGuiElementType<ISimpleListControll
 	public void render(IRenderer renderer) {
 		if(position.getClipBound().isEmpty())
 			return;
-
+		
+		renderer.startRender();
 		String background = controller.setupRenderer(renderer);
 		if(background != null)
 			renderer.render(background, position.getElementBound(), position.getClipBound());
+		renderer.endRender();
+		
 		for(GuiElement element : this.list)
 			element.getType().render(renderer);
 	}

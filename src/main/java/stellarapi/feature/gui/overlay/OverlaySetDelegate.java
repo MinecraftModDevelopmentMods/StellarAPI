@@ -71,8 +71,9 @@ public class OverlaySetDelegate implements IRawOverlaySet {
 	@Override
 	public boolean addElement(IRawOverlayElement element) {
 		ElementPos pos = new ElementPos(element.getCurrentHorizontalPos(), element.getCurrentVerticalPos());
-		if(this.canSetPos(element.getId(), pos))
-		{
+		if(this.canSetPos(element.getId(), pos)) {
+			if(type.isMain())
+				element.setVisibleOnMain(true);
 			this.addToDisplay(element.getId(), pos);
 			return true;
 		} else return false;
@@ -82,6 +83,9 @@ public class OverlaySetDelegate implements IRawOverlaySet {
 	public void removeElement(IRawOverlayElement element) {
 		if(!this.doesContain(element))
 			return;
+		
+		if(type.isMain())
+			element.setVisibleOnMain(false);
 		
 		ElementPos pos = new ElementPos(element.getCurrentHorizontalPos(), element.getCurrentVerticalPos());
 		displayedIdMap.remove(pos);

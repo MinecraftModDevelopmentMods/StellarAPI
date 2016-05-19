@@ -1,4 +1,4 @@
-package stellarapi.lib.gui.simple;
+package stellarapi.lib.gui.spacing;
 
 import stellarapi.lib.gui.GuiElement;
 import stellarapi.lib.gui.GuiPositionHierarchy;
@@ -8,18 +8,18 @@ import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderer;
 import stellarapi.lib.gui.RectangleBound;
 
-public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingController> {
+public class GuiSpacing implements IGuiElementType<ISpacingController> {
 
 	private IGuiPosition position;
-	private ISimpleSpacingController controller;
+	private ISpacingController controller;
 	private GuiElement subElement;
 	
-	public GuiSimpleSpacingElement(GuiElement subElement) {
+	public GuiSpacing(GuiElement subElement) {
 		this.subElement = subElement;
 	}
 	
 	@Override
-	public void initialize(GuiPositionHierarchy positions, ISimpleSpacingController controller) {
+	public void initialize(GuiPositionHierarchy positions, ISpacingController controller) {
 		this.position = positions.getPosition();
 		this.controller = controller;
 		subElement.initialize(positions.addChild(new SpacedPosition()));
@@ -86,8 +86,8 @@ public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingCo
 		public void initializeBounds() {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
+					-controller.getSpacingRight(), -controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 
@@ -95,8 +95,8 @@ public class GuiSimpleSpacingElement implements IGuiElementType<ISimpleSpacingCo
 		public void updateBounds() {
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
+					-controller.getSpacingRight(), -controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 

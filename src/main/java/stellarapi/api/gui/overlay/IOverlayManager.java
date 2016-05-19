@@ -21,5 +21,11 @@ public interface IOverlayManager {
 	
 	/** Gets current width of the window */
 	public int getCurrentHeight();
+	
+	/** Check if the game is paused by one of the overlays. */
+	public boolean isGamePaused();
+	
+	/** Sets game as paused, only effective when overlay screen is opened. */
+	public void setGamePaused(boolean pause);
 
 }

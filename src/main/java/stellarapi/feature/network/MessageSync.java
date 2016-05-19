@@ -33,7 +33,7 @@ public class MessageSync implements IMessage {
 
 		@Override
 		public IMessage onMessage(MessageSync message, MessageContext ctx) {
-			PerDimensionResourceData data = PerDimensionResourceData.getData(StellarAPI.proxy.getDefWorld());
+			PerDimensionResourceData data = PerDimensionResourceData.getData(StellarAPI.proxy.getClientWorld());
 			data.readFromNBT(message.compoundInfo);
 			
 			return null;

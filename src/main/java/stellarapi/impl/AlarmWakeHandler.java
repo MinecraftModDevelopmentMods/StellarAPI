@@ -50,7 +50,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod();
 		double currentOffset = period.getOffset(sleepTime, 0.0f);
 		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
-		double diff = Spmath.fmod(currentOffset - midnightOffset, 1.0);
+		double diff = (currentOffset - midnightOffset) % 1.0;
 		
 		return (!world.isDaytime() && (diff < 0.25 || diff > 0.75))? EnumStatus.OK : EnumStatus.NOT_POSSIBLE_NOW;
 	}

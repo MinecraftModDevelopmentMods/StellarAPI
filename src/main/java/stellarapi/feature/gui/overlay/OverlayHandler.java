@@ -1,5 +1,7 @@
 package stellarapi.feature.gui.overlay;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
@@ -36,7 +38,10 @@ public class OverlayHandler {
 	}
 
 	public void renderGameOverlay(ScaledResolution resolution, int mouseX, int mouseY, float partialTicks) {
+		if(mc.currentScreen == null)
+			mouseX = mouseY = -100; // For limit
 		container.setResolution(resolution);
+		GL11.glEnable(GL11.GL_BLEND);
 		container.render(mouseX, mouseY, partialTicks);
 	}
 }

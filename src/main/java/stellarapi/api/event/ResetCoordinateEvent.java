@@ -1,5 +1,6 @@
 package stellarapi.api.event;
 
+import cpw.mods.fml.common.eventhandler.Cancelable;
 import net.minecraft.world.World;
 import stellarapi.api.ICelestialCoordinate;
 
@@ -9,6 +10,7 @@ import stellarapi.api.ICelestialCoordinate;
  * This event is <code>@Cancelable</code>,
  * and canceling this event will force the coordinate unavailable now.
  * */
+@Cancelable
 public class ResetCoordinateEvent extends PerWorldEvent {
 
 	private ICelestialCoordinate coordinate = null;
