@@ -26,8 +26,7 @@ public class GuiScreenOverlay extends GuiScreen {
 	
 	@Override
     public void initGui() {
-		ScaledResolution resolution = new ScaledResolution(
-				this.mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution resolution = new ScaledResolution(this.mc);
     	container.setResolution(resolution);
     }
 	
@@ -37,9 +36,14 @@ public class GuiScreenOverlay extends GuiScreen {
 	}
 	
 	@Override
-	public void mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
-		container.mouseMovedOrUp(mouseX, mouseY, eventButton);
+	public void mouseReleased(int mouseX, int mouseY, int eventButton) {
+		container.mouseReleased(mouseX, mouseY, eventButton);
 	}
+	
+	@Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+		container.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+    }
 	
 	@Override
 	public void keyTyped(char eventChar, int eventKey) {

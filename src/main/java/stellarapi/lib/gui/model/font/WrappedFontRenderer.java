@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
@@ -56,14 +55,14 @@ public class WrappedFontRenderer extends FontRenderer {
 	/**
 	 * Recommended method to draw string
 	 * */
-    public int drawString(String str, int posX, int posY) {
+    public int drawString(String str, float posX, float posY) {
     	if(!style.isShaded())
-    		return this.drawString(str, posX, posY, 0xffffffff);
+    		return this.drawString(str, posX, posY, 0xffffffff, false);
     	else return this.drawStringWithShadow(str, posX, posY, 0xffffffff);
     }
 	
 	@Override
-    public int drawString(String str, int posX, int posY, int color, boolean dropShadow) {
+    public int drawString(String str, float posX, float posY, int color, boolean dropShadow) {
 		return super.drawString(this.getStyleContext() + str, posX, posY, color, dropShadow);
 	}
 	

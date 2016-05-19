@@ -94,7 +94,7 @@ public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> 
 	}
 
 	@Override
-	public boolean mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
+	public boolean mouseReleased(int mouseX, int mouseY, int eventButton) {
 		if(currentMode.displayed()) {
 			button.mouseReleased(mouseX, mouseY);
 			btnOverlaySet.mouseReleased(mouseX, mouseY);

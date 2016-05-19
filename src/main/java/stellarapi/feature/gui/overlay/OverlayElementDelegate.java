@@ -1,12 +1,10 @@
 package stellarapi.feature.gui.overlay;
 
-import java.util.Map;
-
 import net.minecraft.client.Minecraft;
 import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.overlay.IOverlayType;
-import stellarapi.api.gui.overlay.IRawOverlayElement;
 import stellarapi.api.gui.overlay.IRawHandler;
+import stellarapi.api.gui.overlay.IRawOverlayElement;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;

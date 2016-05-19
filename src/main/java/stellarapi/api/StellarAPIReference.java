@@ -2,17 +2,16 @@ package stellarapi.api;
 
 import com.google.common.collect.ImmutableSet;
 
-import cpw.mods.fml.common.eventhandler.EventBus;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
 import stellarapi.StellarAPI;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
-import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;

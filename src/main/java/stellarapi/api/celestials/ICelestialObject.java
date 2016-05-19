@@ -1,7 +1,5 @@
 package stellarapi.api.celestials;
 
-import com.google.common.collect.ImmutableList;
-
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;

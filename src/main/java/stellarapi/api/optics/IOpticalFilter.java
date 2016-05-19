@@ -1,9 +1,5 @@
 package stellarapi.api.optics;
 
-import java.awt.Color;
-
-import com.google.common.collect.ImmutableList;
-
 /**
  * Optical filter for the entity.
  * To make an item work like filter,

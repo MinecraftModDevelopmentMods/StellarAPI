@@ -73,8 +73,13 @@ public class OverlayContainer {
 			for(OverlayElementDelegate delegate : this.currentlyDisplayedList)
 				delegate.notifyChange();
 	}
+	
+	public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+		// TODO Auto-generated method stub
+		
+	}
 
-	public void mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
+	public void mouseReleased(int mouseX, int mouseY, int eventButton) {
 		boolean changedUniversal = false;
 		
 		for(OverlayElementDelegate delegate : this.currentlyDisplayedList) {
@@ -87,11 +92,11 @@ public class OverlayContainer {
 			scaledMouseX -= element.animationOffsetX(0.0f);
 			scaledMouseY -= element.animationOffsetY(0.0f);
 			
-			if(element.mouseMovedOrUp(scaledMouseX, scaledMouseY, eventButton))
+			if(element.mouseReleased(scaledMouseX, scaledMouseY, eventButton))
 				delegate.notifyChange();
 			
 			if(delegate.getHandler() != null)
-				changedUniversal = delegate.getHandler().mouseMovedOrUp(mouseX, mouseY, eventButton) || changedUniversal;
+				changedUniversal = delegate.getHandler().mouseReleased(mouseX, mouseY, eventButton) || changedUniversal;
 		}
 		
 		if(changedUniversal)

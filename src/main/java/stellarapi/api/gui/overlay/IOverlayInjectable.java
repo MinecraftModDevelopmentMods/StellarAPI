@@ -1,8 +1,6 @@
 package stellarapi.api.gui.overlay;
 
 import stellarapi.api.lib.config.ConfigManager;
-import stellarapi.feature.gui.overlay.OverlayElementDelegate;
-import stellarapi.feature.gui.overlay.OverlaySetDelegate;
 
 /**
  * Used for internal logic related with registration.

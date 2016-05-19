@@ -7,8 +7,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;

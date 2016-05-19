@@ -2,8 +2,12 @@ package stellarapi.lib.gui.model.basic;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderModel;
 
@@ -17,22 +21,24 @@ public class ModelSimpleRect implements IRenderModel {
 	
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			TextureManager textureManager, float[] color) {
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+			WorldRenderer worldRenderer, TextureManager textureManager, float[] color) {
+		GlStateManager.disableTexture2D();
+		
 		float posX = clipBound.getLeftX();
 		float posY = clipBound.getUpY();
-		float width = clipBound.getWidth();
-		float height = clipBound.getHeight();
+		float posRight = clipBound.getRightX();
+		float posDown = clipBound.getDownY();
 		
-		GL11.glColor4f(color[0], color[1], color[2], color[3]);
+		GlStateManager.color(color[0], color[1], color[2], color[3]);
 		
-        tessellator.startDrawingQuads();
-        tessellator.addVertex((double)(posX), (double)(posY + height), 0.0);
-        tessellator.addVertex((double)(posX + width), (double)(posY + height), 0.0);
-        tessellator.addVertex((double)(posX + width), (double)(posY), 0.0);
-        tessellator.addVertex((double)(posX), (double)(posY), 0.0);
+		worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+		worldRenderer.pos((double)posX, (double)posDown, 0.0D).endVertex();
+		worldRenderer.pos((double)posRight, (double)posDown, 0.0D).endVertex();
+		worldRenderer.pos((double)posRight, (double)posY, 0.0D).endVertex();
+		worldRenderer.pos((double)posX, (double)posY, 0.0D).endVertex();
         tessellator.draw();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+        
+		GlStateManager.enableTexture2D();
 	}
 
 }

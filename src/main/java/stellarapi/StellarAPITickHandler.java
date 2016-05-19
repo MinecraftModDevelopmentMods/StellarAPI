@@ -3,16 +3,14 @@ package stellarapi;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
@@ -33,7 +31,7 @@ public class StellarAPITickHandler {
 	
 	@SubscribeEvent
 	public void tickStart(TickEvent.PlayerTickEvent e) {
-		if(e.phase == Phase.START) {
+		if(e.phase == TickEvent.Phase.START) {
 			ItemStack itemstack = e.player.getCurrentEquippedItem();
 			ItemStack itemInUse = PlayerItemAccessHelper.getUsingItem(e.player);
 			
@@ -63,7 +61,7 @@ public class StellarAPITickHandler {
 		
 	@SubscribeEvent
 	public void tickStart(TickEvent.WorldTickEvent e) {
-		if(e.phase == Phase.START){
+		if(e.phase == TickEvent.Phase.START){
 			if(e.world != null) {
 				if(StellarAPIReference.getSleepWakeManager().isEnabled()) {
 					WorldServer world = (WorldServer) e.world;
@@ -85,7 +83,7 @@ public class StellarAPITickHandler {
 	}
 
 	private void tryWakePlayers(WorldServer world) {		
-        if (world.getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
+        if (world.getGameRules().getBoolean("doDaylightCycle"))
         {
         	WorldInfo info = world.getWorldInfo();
         	long worldTime = info.getWorldTime();

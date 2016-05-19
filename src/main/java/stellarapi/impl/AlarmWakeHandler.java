@@ -11,7 +11,6 @@ import stellarapi.api.StellarAPIReference;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IWakeHandler;
-import stellarapi.api.lib.math.Spmath;
 
 /**
  * Example of wake handler,

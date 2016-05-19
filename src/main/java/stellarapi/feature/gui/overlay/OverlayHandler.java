@@ -1,5 +1,6 @@
 package stellarapi.feature.gui.overlay;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -37,9 +38,13 @@ public class OverlayHandler {
 		mc.displayGuiScreen(new GuiScreenOverlay(this.container, focusGuiKey));
 	}
 
-	public void renderGameOverlay(ScaledResolution resolution, int mouseX, int mouseY, float partialTicks) {
-		if(mc.currentScreen == null)
-			mouseX = mouseY = -100; // For limit
+	public void renderGameOverlay(ScaledResolution resolution, float partialTicks) {
+		int mouseX = -100, mouseY = -100;
+		if(mc.currentScreen != null) {
+			mouseX = Mouse.getEventX() * resolution.getScaledWidth() / mc.displayWidth;
+			mouseY = resolution.getScaledHeight() - Mouse.getEventY() * resolution.getScaledHeight() / mc.displayHeight - 1;
+		}
+		
 		container.setResolution(resolution);
 		GL11.glEnable(GL11.GL_BLEND);
 		container.render(mouseX, mouseY, partialTicks);

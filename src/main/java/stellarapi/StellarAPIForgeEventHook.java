@@ -1,7 +1,5 @@
 package stellarapi;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -9,13 +7,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
 import stellarapi.api.helper.PlayerItemAccessHelper;
 import stellarapi.reference.PerServerManager;
-import stellarapi.reference.PerWorldManager;
 
 public class StellarAPIForgeEventHook {
 	

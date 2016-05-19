@@ -1,9 +1,9 @@
 package stellarapi.api.event.interact;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 /**
  * Fired when it needs to check if certain item is same optical instrument with the other item. <p>

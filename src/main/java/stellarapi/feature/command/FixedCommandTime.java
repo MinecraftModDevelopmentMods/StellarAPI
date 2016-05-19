@@ -1,5 +1,7 @@
 package stellarapi.feature.command;
 
+import net.minecraft.command.CommandException;
+import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.CommandTime;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -13,38 +15,57 @@ import stellarapi.api.daywake.EnumDaytimeDescriptor;
 public class FixedCommandTime extends CommandTime {
 	
 	@Override
-    public void processCommand(ICommandSender sender, String[] args)
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length > 1)
+		if (args.length > 1)
         {
-            long i;
-
             if (args[0].equals("set"))
             {
+                long l;
+
                 if (args[1].equals("day"))
                 {
-                    i = this.getDay(sender.getEntityWorld());
+                    l = this.getDay(sender.getEntityWorld());
                 }
                 else if (args[1].equals("night"))
                 {
-                    i = this.getMidnight(sender.getEntityWorld());
+                    l = this.getMidnight(sender.getEntityWorld());
                 }
                 else
                 {
-                    i = parseIntWithMin(sender, args[1], 0);
+                    l = parseInt(args[1], 0);
                 }
 
-                this.setTime(sender, i);
-                func_152373_a(sender, this, "commands.time.set", new Object[] {Long.valueOf(i)});
+                this.setTime(sender, l);
+                notifyOperators(sender, this, "commands.time.set", new Object[] {Long.valueOf(l)});
                 return;
             }
 
             if (args[0].equals("add"))
             {
-                i = parseIntWithMin(sender, args[1], 0);
-                this.addTime(sender, i);
-                func_152373_a(sender, this, "commands.time.added", new Object[] {Long.valueOf(i)});
+                int k = parseInt(args[1], 0);
+                this.addTime(sender, k);
+                notifyOperators(sender, this, "commands.time.added", new Object[] {Integer.valueOf(k)});
                 return;
+            }
+
+            if (args[0].equals("query"))
+            {
+                if (args[1].equals("daytime"))
+                {
+                    int j = (int)(sender.getEntityWorld().getWorldTime() % 2147483647L);
+                    sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, j);
+                    notifyOperators(sender, this, "commands.time.query", new Object[] {Integer.valueOf(j)});
+                    return;
+                }
+
+                if (args[1].equals("gametime"))
+                {
+                    int i = (int)(sender.getEntityWorld().getTotalWorldTime() % 2147483647L);
+                    sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, i);
+                    notifyOperators(sender, this, "commands.time.query", new Object[] {Integer.valueOf(i)});
+                    return;
+                }
             }
         }
 
@@ -87,5 +108,4 @@ public class FixedCommandTime extends CommandTime {
 		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
 		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MIDNIGHT, defaultValue);
 	}
-
 }

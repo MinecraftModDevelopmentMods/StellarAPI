@@ -2,7 +2,6 @@ package stellarapi.api.event;
 
 import net.minecraft.entity.Entity;
 import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
 
 /**
  * Fired to reset the scope.

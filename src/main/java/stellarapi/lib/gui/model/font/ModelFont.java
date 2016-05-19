@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import stellarapi.lib.gui.IFontHelper;
 import stellarapi.lib.gui.IRectangleBound;
@@ -41,7 +42,7 @@ public class ModelFont implements IRenderModel, IFontHelper {
 
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			TextureManager textureManager, float[] color) {
+			WorldRenderer worldRenderer, TextureManager textureManager, float[] color) {
 		float offset = this.centered? (totalBound.getWidth() - font.getStringWidth(info))*0.5f : 0.0f;
 		
 		float left = clipBound.getLeftX() - totalBound.getLeftX() - offset;
@@ -53,7 +54,7 @@ public class ModelFont implements IRenderModel, IFontHelper {
 		info = font.trimStringToWidth(info, (int)(width - left - right), true);
 		
 		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution res = new ScaledResolution(mc);
 		
 		FloatBuffer params = BufferUtils.createFloatBuffer(16);
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, params);
@@ -72,9 +73,7 @@ public class ModelFont implements IRenderModel, IFontHelper {
 
 		font.setColorRGBA(color[0]*this.multRed, color[1]*this.multGreen,
 				color[2]*this.multBlue, color[3]*this.multAlpha);
-		if(!font.getStyle().isShaded())
-			font.drawString(info, (int)(clipBound.getLeftX()+offset), (int)yPos, 0xffffffff);
-		else font.drawStringWithShadow(info, (int)(clipBound.getLeftX()+offset), (int)yPos, 0xffffffff);
+		font.drawString(info, (int)(clipBound.getLeftX()+offset), (int)yPos);
 		
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 	}

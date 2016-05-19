@@ -1,8 +1,8 @@
 package stellarapi.api.event.world;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import stellarapi.api.event.PerWorldEvent;
 import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 

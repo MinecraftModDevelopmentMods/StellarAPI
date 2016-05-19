@@ -48,11 +48,11 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 	private Map<String, Object> perWorldData = Maps.newHashMap();
 	
 	public static void initiatePerWorldManager(World world) {
-		world.perWorldStorage.setData(ID, new PerWorldManager(world));
+		world.getPerWorldStorage().setData(ID, new PerWorldManager(world));
 	}
 	
 	public static PerWorldManager getPerWorldManager(World world) {
-		return (PerWorldManager) world.perWorldStorage.loadData(PerWorldManager.class, ID);
+		return (PerWorldManager) world.getPerWorldStorage().loadData(PerWorldManager.class, ID);
 	}
 	
 	private PerWorldManager(World world) {

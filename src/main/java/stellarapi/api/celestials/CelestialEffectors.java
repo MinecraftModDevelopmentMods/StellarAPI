@@ -2,7 +2,6 @@ package stellarapi.api.celestials;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Main effectors which influences major effects to the world. <p>

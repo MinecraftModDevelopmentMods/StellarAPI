@@ -1,7 +1,5 @@
 package stellarapi.api;
 
-import stellarapi.api.lib.math.Spmath;
-
 public class CelestialPeriod {
 	
 	private String periodName;

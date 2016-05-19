@@ -4,11 +4,10 @@ import java.lang.reflect.Field;
 
 import com.google.common.base.Throwables;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class PlayerItemAccessHelper {
 	

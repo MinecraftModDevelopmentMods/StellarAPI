@@ -1,7 +1,5 @@
 package stellarapi.api.optics;
 
-import com.google.common.collect.ImmutableList;
-
 /**
  * Helper for detectors, this should be used by the renderer.
  * */

@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderModel;
@@ -29,13 +30,13 @@ public class ModelSimpleCompound implements IRenderModel {
 
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			TextureManager textureManager, float[] color) {
+			WorldRenderer worldRenderer, TextureManager textureManager, float[] color) {
 		System.arraycopy(color, 0, cache, 0, cache.length);
 		if(colorMap.containsKey(info))
 			for(int i = 0; i < cache.length; i++)
 				cache[i] *= colorMap.get(info)[i];
 		
-		mapping.get(info).renderModel(info, totalBound, clipBound, tessellator, textureManager, this.cache);
+		mapping.get(info).renderModel(info, totalBound, clipBound, tessellator, worldRenderer, textureManager, this.cache);
 	}
 
 }

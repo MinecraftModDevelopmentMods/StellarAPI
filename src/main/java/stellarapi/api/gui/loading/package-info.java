@@ -4,4 +4,4 @@
 @API(apiVersion = "@VERSION@", owner = "StellarAPI", provides = "StellarAPI")
 package stellarapi.api.gui.loading;
 
-import cpw.mods.fml.common.API;
+import net.minecraftforge.fml.common.API;

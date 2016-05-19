@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.MathHelper;
 
@@ -22,18 +23,19 @@ public class GuiButtonColorable extends GuiButton {
     /**
      * Draws this button to the screen.
      */
+	@Override
     public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_)
     {
         if (this.visible)
         {
-            FontRenderer fontrenderer = p_146112_1_.fontRenderer;
+            FontRenderer fontrenderer = p_146112_1_.fontRendererObj;
             p_146112_1_.getTextureManager().bindTexture(buttonTextures);
-            GL11.glColor4f(red, green, blue, alpha);
-            this.field_146123_n = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
-            int k = this.getHoverState(this.field_146123_n);
-            GL11.glEnable(GL11.GL_BLEND);
-            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.color(red, green, blue, alpha);
+            this.hovered = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
+            int k = this.getHoverState(this.hovered);
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + k * 20, this.width / 2, this.height);
             this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + k * 20, this.width / 2, this.height);
             this.mouseDragged(p_146112_1_, p_146112_2_, p_146112_3_);
@@ -47,7 +49,7 @@ public class GuiButtonColorable extends GuiButton {
             {
                 l = 10526880;
             }
-            else if (this.field_146123_n)
+            else if (this.hovered)
             {
                 l = 16777120;
             }

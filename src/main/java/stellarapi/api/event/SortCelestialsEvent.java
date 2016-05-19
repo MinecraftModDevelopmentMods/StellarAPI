@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import net.minecraft.world.World;
-import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.IEffectorType;
 
 /**
  * Fired to define the {@link Ordering} of the light sources,

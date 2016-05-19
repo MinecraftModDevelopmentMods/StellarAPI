@@ -5,10 +5,10 @@ import java.lang.reflect.Modifier;
 
 import com.google.common.base.Throwables;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class WorldProviderReplaceHelper {
 	

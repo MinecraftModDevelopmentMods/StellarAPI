@@ -1,7 +1,5 @@
 package stellarapi.lib.gui;
 
-import java.util.List;
-
 public interface IFontHelper {
 
 	public float getStringWidth(String string);

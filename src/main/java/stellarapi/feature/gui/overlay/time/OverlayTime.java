@@ -7,7 +7,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.Vec3;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.PeriodHelper;
 import stellarapi.api.StellarAPIReference;
@@ -107,7 +106,7 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 	}
 
 	@Override
-	public boolean mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
+	public boolean mouseReleased(int mouseX, int mouseY, int eventButton) {
 		return false;
 	}
 
@@ -120,11 +119,11 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		int yOffset = 0;
 
-		this.drawString(mc.fontRenderer, "display", WIDTH / 2, 10*(yOffset++)+5, 255, 0xffffff);
-		this.drawString(mc.fontRenderer, this.invalidDay? "invalid" : this.isDay? "day":"night", WIDTH / 2, 10*(yOffset++)+5, 255, this.invalidDay? 0x770000 : this.isDay? 0xffff77 : 0x5555aa);
+		this.drawString(mc.fontRendererObj, "display", WIDTH / 2, 10*(yOffset++)+5, 255, 0xffffff);
+		this.drawString(mc.fontRendererObj, this.invalidDay? "invalid" : this.isDay? "day":"night", WIDTH / 2, 10*(yOffset++)+5, 255, this.invalidDay? 0x770000 : this.isDay? 0xffff77 : 0x5555aa);
 		for(EnumDaytimeDescriptor descriptor : this.descriptors)
 			if(mc.theWorld != null)
-				this.drawString(mc.fontRenderer, descriptor.name(), WIDTH / 2, 10*(yOffset++)+5, 255, this.icolor);
+				this.drawString(mc.fontRendererObj, descriptor.name(), WIDTH / 2, 10*(yOffset++)+5, 255, this.icolor);
 	}
 	
 	private void drawString(FontRenderer fontRenderer, String str, int x, int y, int alpha, int color) {

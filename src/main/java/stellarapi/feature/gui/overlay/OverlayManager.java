@@ -23,7 +23,6 @@ import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 import stellarapi.api.lib.config.ConfigManager;
-import stellarapi.feature.gui.overlay.configurator.OverlayConfiguratorType;
 
 public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 	private Map<String, OverlayElementDelegate> elementMap = Maps.newHashMap();

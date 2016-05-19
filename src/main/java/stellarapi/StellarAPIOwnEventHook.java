@@ -1,12 +1,12 @@
 package stellarapi;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
 import stellarapi.api.event.ResetCoordinateEvent;
@@ -23,7 +23,6 @@ import stellarapi.api.interact.IOpticalFilterItem;
 import stellarapi.api.interact.IOpticalFilterSimulatorEntity;
 import stellarapi.api.interact.IViewScopeItem;
 import stellarapi.api.interact.IViewScopeSimulatorEntity;
-import stellarapi.api.lib.math.Spmath;
 import stellarapi.impl.DefaultCollectionVanilla;
 import stellarapi.impl.DefaultCoordinateVanilla;
 import stellarapi.impl.DefaultSkyVanilla;
@@ -53,7 +52,7 @@ public class StellarAPIOwnEventHook {
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onResetEffect(ResetSkyEffectEvent event) {
 		if(event.getSkyEffect() == null)
-			if(!event.getWorld().provider.hasNoSky)
+			if(!event.getWorld().provider.getHasNoSky())
 				event.setSkyEffect(new DefaultSkyVanilla());
 	}
 	
@@ -132,25 +131,25 @@ public class StellarAPIOwnEventHook {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onClientWorldLoad(ClientWorldEvent.Load event) {
 		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
-		progress.displayProgressMessage(I18n.format("progress.stellarapi.loading.main"));
-		progress.resetProgresAndWorkingMessage(I18n.format("progress.stellarapi.loading.worldhook"));
+		progress.resetProgressAndMessage(I18n.format("progress.stellarapi.loading.main"));
+		progress.displayLoadingString(I18n.format("progress.stellarapi.loading.worldhook"));
 		PerWorldManager.initiatePerWorldManager(event.getWorld());
-		progress.resetProgresAndWorkingMessage("");
+		progress.displayLoadingString("");
 	}
 	
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
 	public void onClientWorldLoadedPre(ClientWorldEvent.Loaded event) {
 		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
-		progress.displayProgressMessage(I18n.format("progress.stellarapi.pending.main", event.getAttemptNumber()));
-		progress.resetProgresAndWorkingMessage(I18n.format("progress.stellarapi.pending.text", event.getAttemptNumber()));
+		progress.resetProgressAndMessage(I18n.format("progress.stellarapi.pending.main", event.getAttemptNumber()));
+		progress.displayLoadingString(I18n.format("progress.stellarapi.pending.text", event.getAttemptNumber()));
 	}
 	
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.LOWEST)
 	public void onClientWorldLoadedPost(ClientWorldEvent.Loaded event) {
 		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
 		if(event.isCanceled()) {
-			progress.resetProgresAndWorkingMessage(I18n.format("progress.stellarapi.other.pending.text"));
-		} else progress.resetProgresAndWorkingMessage("");
+			progress.displayLoadingString(I18n.format("progress.stellarapi.other.pending.text"));
+		} else progress.displayLoadingString("");
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

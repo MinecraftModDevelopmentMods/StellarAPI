@@ -2,14 +2,15 @@ package stellarapi;
 
 import java.io.IOException;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.IProgressUpdate;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.gui.overlay.OverlayRegistry;
 import stellarapi.api.lib.config.ConfigManager;
@@ -41,6 +42,11 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		OverlayRegistry.registerOverlaySet("stellarapi", new OverlaySetStellarAPI());
 		OverlayRegistry.registerOverlay("position", new OverlayConfiguratorType(), guiConfig);
 		OverlayRegistry.registerOverlay("stellarapi.time", new OverlayTimeType(), guiConfig);
+		
+	    ModelLoader.setCustomModelResourceLocation(StellarAPI.instance.telescope, 0,
+	    		new ModelResourceLocation("stellarapi:deftelescope", "inventory"));
+	    ModelLoader.setCustomModelResourceLocation(StellarAPI.instance.filteredTelescope, 0,
+	    		new ModelResourceLocation("stellarapi:deffilteredtelescope", "inventory"));
 	}
 
 	@Override
@@ -67,4 +73,10 @@ public class ClientProxy extends CommonProxy implements IProxy {
 			mc.loadingScreen = new CombinedLoadingScreenRenderer(mc);
 		return (CombinedLoadingScreenRenderer) mc.loadingScreen;
 	}
+	
+	@Override
+	public void registerTask(Runnable runnable) {
+		Minecraft.getMinecraft().addScheduledTask(runnable);
+	}
+
 }

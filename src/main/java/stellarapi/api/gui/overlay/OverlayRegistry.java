@@ -4,8 +4,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
+import net.minecraftforge.fml.common.Loader;
 import stellarapi.api.lib.config.ConfigManager;
 
 public class OverlayRegistry {

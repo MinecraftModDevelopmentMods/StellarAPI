@@ -66,7 +66,7 @@ public class ConfigPropertyDoubleList extends ConfigPropertyList {
 			NBTTagList list = compound.getTagList(this.dataKey, 6);
 			this.currentValues = new double[list.tagCount()];
 			for(int i = 0; i < list.tagCount(); i++)
-				this.currentValues[i] = list.func_150309_d(i);
+				this.currentValues[i] = list.getDoubleAt(i);
 		}
 		else this.currentValues = this.defaultValues;
 	}

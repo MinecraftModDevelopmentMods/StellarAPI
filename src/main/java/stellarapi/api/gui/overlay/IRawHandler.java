@@ -1,7 +1,6 @@
 package stellarapi.api.gui.overlay;
 
 import net.minecraft.client.Minecraft;
-import stellarapi.feature.gui.overlay.OverlayManager;
 
 /**
  * Raw handler to control the overlay with the container.
@@ -26,7 +25,7 @@ public interface IRawHandler<Element extends IOverlayElement> {
 	 * Return true to update settings.
 	 * Checked after element.
 	 * */
-	public boolean mouseMovedOrUp(int mouseX, int mouseY, int eventButton);
+	public boolean mouseReleased(int mouseX, int mouseY, int eventButton);
 	
 	/**
 	 * Return true to update settings.

@@ -29,7 +29,7 @@ public class GuiRenderer implements IRenderer {
 	private RectangleBound temp = new RectangleBound(0,0,0,0), tempClip = new RectangleBound(0,0,0,0);
 	
 	public GuiRenderer(Minecraft minecraft) {
-		this.tessellator = Tessellator.instance;
+		this.tessellator = Tessellator.getInstance();
 		this.textureManager = minecraft.getTextureManager();
 	}
 	

@@ -1,8 +1,5 @@
 package stellarapi.api.lib.config.property;
 
-import java.util.Arrays;
-
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 

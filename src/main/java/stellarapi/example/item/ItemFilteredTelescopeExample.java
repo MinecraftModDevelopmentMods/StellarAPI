@@ -3,6 +3,8 @@ package stellarapi.example.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import stellarapi.api.interact.IOpticalFilterItem;
 import stellarapi.api.interact.IViewScopeItem;
@@ -73,7 +75,7 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem
 	}
 	
 	@Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 		this.onUse(stack, player);
     	return true;
     }

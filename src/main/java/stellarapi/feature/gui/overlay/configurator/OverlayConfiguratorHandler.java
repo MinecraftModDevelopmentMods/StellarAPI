@@ -13,7 +13,6 @@ import stellarapi.api.gui.overlay.IRawOverlayElement;
 import stellarapi.api.gui.overlay.IRawOverlaySet;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
-import stellarapi.feature.gui.overlay.OverlaySetMain;
 
 public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurator> {
 	
@@ -84,7 +83,7 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 	}
 
 	@Override
-	public boolean mouseMovedOrUp(int mouseX, int mouseY, int eventButton) {
+	public boolean mouseReleased(int mouseX, int mouseY, int eventButton) {
 		if(element.currentMode != EnumOverlayMode.POSITION)
 			return false;
 		

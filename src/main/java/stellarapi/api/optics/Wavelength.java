@@ -1,7 +1,5 @@
 package stellarapi.api.optics;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 

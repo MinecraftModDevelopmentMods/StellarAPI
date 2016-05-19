@@ -1,8 +1,8 @@
 package stellarapi.feature.gui.overlay;
 
-import stellarapi.api.gui.overlay.IRawOverlayElement;
 import stellarapi.StellarAPI;
 import stellarapi.api.gui.overlay.IOverlaySetType;
+import stellarapi.api.gui.overlay.IRawOverlayElement;
 
 public class OverlaySetStellarAPI implements IOverlaySetType {
 

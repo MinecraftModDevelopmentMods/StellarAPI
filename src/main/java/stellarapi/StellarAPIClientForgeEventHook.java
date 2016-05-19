@@ -5,10 +5,6 @@ import java.lang.reflect.Modifier;
 
 import com.google.common.base.Throwables;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -18,6 +14,10 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.optics.EyeDetector;
@@ -106,7 +106,7 @@ public class StellarAPIClientForgeEventHook {
 	@SubscribeEvent
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(event.type == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
-			overlay.renderGameOverlay(event.resolution, event.mouseX, event.mouseY, event.partialTicks);
+			overlay.renderGameOverlay(event.resolution, event.partialTicks);
 	}
 	
 	@SubscribeEvent

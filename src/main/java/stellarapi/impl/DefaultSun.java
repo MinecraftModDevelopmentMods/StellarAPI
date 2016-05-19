@@ -1,7 +1,5 @@
 package stellarapi.impl;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.celestials.EnumCelestialObjectType;

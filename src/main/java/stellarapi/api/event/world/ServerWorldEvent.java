@@ -2,7 +2,6 @@ package stellarapi.api.event.world;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.WorldEvent;
 import stellarapi.api.event.PerWorldEvent;
 
 /**

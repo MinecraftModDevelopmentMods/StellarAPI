@@ -1,8 +1,8 @@
 package stellarapi.feature.horseriding;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
 

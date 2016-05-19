@@ -1,6 +1,5 @@
 package stellarapi.api.gui.overlay;
 
-import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 

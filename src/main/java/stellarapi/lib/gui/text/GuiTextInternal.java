@@ -309,7 +309,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	public void writeText(String input)
 	{
 		String s1 = "";
-		String s2 = ChatAllowedCharacters.filerAllowedCharacters(input);
+		String s2 = ChatAllowedCharacters.filterAllowedCharacters(input);
 		int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
 		int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
 		int k = controller.maxStringLength()- this.text.length() - (i - this.selectionEnd);
