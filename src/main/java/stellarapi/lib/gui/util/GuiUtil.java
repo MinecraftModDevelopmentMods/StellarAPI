@@ -1,9 +1,5 @@
 package stellarapi.lib.gui.util;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.renderer.Tessellator;
-
 public class GuiUtil {
 	
 	/*public static void drawTexturedRectSimple(int posX, int posY, int width, int height) {

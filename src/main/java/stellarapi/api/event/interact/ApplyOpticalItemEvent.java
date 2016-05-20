@@ -1,7 +1,9 @@
 package stellarapi.api.event.interact;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 /**
@@ -16,19 +18,15 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
  * This event ensures that it's safe to get held item from
  *  {@link stellarapi.api.UpdateScopeEvent} or {@link stellarapi.api.UpdateFilterEvent}
  * */
-public class ApplyOpticalItemEvent extends PlayerEvent {
+public class ApplyOpticalItemEvent extends LivingEvent {
 	
 	private final ItemStack item;
 	private boolean isViewScope = false;
 	private boolean isOpticalFilter = false;
 
-	public ApplyOpticalItemEvent(EntityPlayer player, ItemStack item) {
-		super(player);
+	public ApplyOpticalItemEvent(EntityLivingBase entity, ItemStack item) {
+		super(entity);
 		this.item = item;
-	}
-	
-	public EntityPlayer getPlayer() {
-		return this.entityPlayer;
 	}
 	
 	public ItemStack getItem() {

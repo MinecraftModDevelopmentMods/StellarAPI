@@ -1,6 +1,6 @@
 package stellarapi.api.lib.math;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class Spmath {
 		

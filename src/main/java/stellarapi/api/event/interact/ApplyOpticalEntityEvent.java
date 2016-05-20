@@ -2,7 +2,7 @@ package stellarapi.api.event.interact;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 
 /**
  * Fired when it needs to check if certain entity is optical simulator, as view scope or optical filter. <p>
@@ -11,21 +11,21 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
  *   The riding entity from this event is not null.) <p>
  * This event enables for vanilla entity to behave as optical simulator.
  * */
-public class ApplyOpticalEntityEvent extends PlayerEvent {
+public class ApplyOpticalEntityEvent extends EntityEvent {
 	private final Entity ridingEntity;
 	private boolean isViewScope = false;
 	private boolean isOpticalFilter = false;
 
-	public ApplyOpticalEntityEvent(EntityPlayer player, Entity ridingEntity) {
-		super(player);
-		this.ridingEntity = ridingEntity;
+	public ApplyOpticalEntityEvent(Entity simulated, Entity simulator) {
+		super(simulated);
+		this.ridingEntity = simulator;
 	}
 	
-	public EntityPlayer getPlayer() {
-		return this.entityPlayer;
+	public Entity getSimulatedEntity() {
+		return this.getEntity();
 	}
 	
-	public Entity getRidingEntity() {
+	public Entity getSimulatorEntity() {
 		return this.ridingEntity;
 	}
 	

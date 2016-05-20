@@ -2,7 +2,6 @@ package stellarapi;
 
 import java.io.IOException;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -38,6 +37,6 @@ public class CommonProxy implements IProxy {
 
 	@Override
 	public void registerTask(Runnable runnable) {
-		MinecraftServer.getServer().addScheduledTask(runnable);
+		//MinecraftServer.getServer().addScheduledTask(runnable);
 	}
 }

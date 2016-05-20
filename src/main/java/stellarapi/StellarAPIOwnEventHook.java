@@ -1,6 +1,7 @@
 package stellarapi;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IProgressUpdate;
@@ -15,10 +16,11 @@ import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
+import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
-import stellarapi.api.helper.PlayerItemAccessHelper;
+import stellarapi.api.helper.LivingItemAccessHelper;
 import stellarapi.api.interact.IOpticalFilterItem;
 import stellarapi.api.interact.IOpticalFilterSimulatorEntity;
 import stellarapi.api.interact.IViewScopeItem;
@@ -57,43 +59,41 @@ public class StellarAPIOwnEventHook {
 	}
 	
 	private boolean isOverworld(World world) {
-		return "Overworld".equals(world.provider.getDimensionName()) && world.provider.isSurfaceWorld()
+		return "Overworld".equals(world.provider.getDimensionType().getName()) && world.provider.isSurfaceWorld()
 				&& (world.getCelestialAngle(0.5f)*2)%1.0f != 0.0f;
 	}
 	
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onUpdateScope(UpdateScopeEvent event) {
-		if(event.getEntity() instanceof EntityPlayer)
+		if(event.getEntity() instanceof EntityLivingBase)
 		{
-			EntityPlayer player = (EntityPlayer) event.getEntity();
-			ItemStack itemToCheck = PlayerItemAccessHelper.getUsingItem(player);
+			EntityLivingBase player = (EntityLivingBase) event.getEntity();
+			ItemStack itemToCheck = LivingItemAccessHelper.getUsingItem(player);
 			
 			if(itemToCheck != null && itemToCheck.getItem() instanceof IViewScopeItem)
 				event.setScope(((IViewScopeItem) itemToCheck.getItem()).getScope(player, itemToCheck));
-			else if(player.ridingEntity instanceof IViewScopeSimulatorEntity)
-				event.setScope(((IViewScopeSimulatorEntity)player.ridingEntity).getScope(player));
+			else if(player.getRidingEntity() instanceof IViewScopeSimulatorEntity)
+				event.setScope(((IViewScopeSimulatorEntity)player.getRidingEntity()).getScope(player));
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onUpdateFilter(UpdateFilterEvent event) {
-		if(event.getEntity() instanceof EntityPlayer)
+		if(event.getEntity() instanceof EntityLivingBase)
 		{
-			EntityPlayer player = (EntityPlayer) event.getEntity();
-			ItemStack itemToCheck = PlayerItemAccessHelper.getUsingItem(player);
+			EntityLivingBase player = (EntityLivingBase) event.getEntity();
+			ItemStack itemToCheck = LivingItemAccessHelper.getUsingItem(player);
 			
 			if(itemToCheck != null && itemToCheck.getItem() instanceof IOpticalFilterItem)
 				event.setFilter(((IOpticalFilterItem)itemToCheck.getItem()).getFilter(player, itemToCheck));
-			else if(player.ridingEntity instanceof IOpticalFilterSimulatorEntity)
-				event.setFilter(((IOpticalFilterSimulatorEntity)player.ridingEntity).getFilter(player));
+			else if(player.getRidingEntity() instanceof IOpticalFilterSimulatorEntity)
+				event.setFilter(((IOpticalFilterSimulatorEntity)player.getRidingEntity()).getFilter(player));
 		}
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void applyOpticalItem(ApplyOpticalItemEvent event) {
-		EntityPlayer player = event.getPlayer();
-		
 		event.setIsViewScope(event.getItem().getItem() instanceof IViewScopeItem);
 		event.setIsOpticalFilter(event.getItem().getItem() instanceof IOpticalFilterItem);
 	}
@@ -122,9 +122,14 @@ public class StellarAPIOwnEventHook {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void applyOpticalEntity(ApplyOpticalEntityEvent event) {
-		event.setIsViewScope(event.getRidingEntity() instanceof IViewScopeSimulatorEntity);
-		event.setIsOpticalFilter(event.getRidingEntity() instanceof IOpticalFilterSimulatorEntity);
+	public void applyOpticalSimulatorEntity(ApplyOpticalEntityEvent event) {
+		event.setIsViewScope(event.getSimulatorEntity() instanceof IViewScopeSimulatorEntity);
+		event.setIsOpticalFilter(event.getSimulatorEntity() instanceof IOpticalFilterSimulatorEntity);
+	}
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void checkOpticalEntity(CheckEntityOpticalViewerEvent event) {
+		event.setIsOpticalEntity(event.getEntity() instanceof EntityPlayer);
 	}
 	
 	

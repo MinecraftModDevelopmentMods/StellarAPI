@@ -17,11 +17,10 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.IProgressUpdate;
-import net.minecraft.util.MinecraftError;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 
@@ -139,7 +138,7 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
     	try {
     	if (!FMLClientHandler.instance().handleLoadingScreen(scaledresolution)) {
     		Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            VertexBuffer worldrenderer = tessellator.getBuffer();
     		mc.getTextureManager().bindTexture(Gui.optionsBackground);
     		float f = 32.0F;
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
@@ -267,7 +266,7 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
             int l = scaledresolution.getScaledHeight();
 
 	    	Tessellator tessellator = Tessellator.getInstance();
-	    	WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+	    	VertexBuffer worldRenderer = tessellator.getBuffer();
 	    	
 	    	if (this.progress >= 0)
 	    	{

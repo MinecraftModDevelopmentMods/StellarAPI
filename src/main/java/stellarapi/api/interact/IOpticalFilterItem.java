@@ -1,5 +1,6 @@
 package stellarapi.api.interact;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import stellarapi.api.optics.IOpticalFilter;
@@ -13,10 +14,10 @@ import stellarapi.api.optics.IOpticalFilter;
 public interface IOpticalFilterItem {
 	/**
 	 * Gets the filter for this item.
-	 * @param player the player
+	 * @param viewer the viewer
 	 * @param item the item
 	 * */
-	public IOpticalFilter getFilter(EntityPlayer player, ItemStack item);
+	public IOpticalFilter getFilter(EntityLivingBase viewer, ItemStack item);
 	
 	/**
 	 * Checks if two items are same.

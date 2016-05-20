@@ -10,18 +10,13 @@ public class HorseRidingEventHandler {
 	
 	@SubscribeEvent
 	public void updateScopeForHorseRider(UpdateScopeEvent event) {
-		if(event.getEntity() instanceof EntityPlayer)
-		{
-			EntityPlayer player = (EntityPlayer) event.getEntity();
-			
-			if(player.ridingEntity instanceof EntityHorse)
-				event.setScope(new ScopeHorseRiding(event.getScope()));
-		}
+		if(event.getEntity().getRidingEntity() instanceof EntityHorse)
+			event.setScope(new ScopeHorseRiding(event.getScope()));
 	}
 	
 	@SubscribeEvent
 	public void applyOpticsOnHorse(ApplyOpticalEntityEvent event) {
-		if(event.getRidingEntity() instanceof EntityHorse)
+		if(event.getSimulatorEntity() instanceof EntityHorse)
 			event.setIsViewScope(true);
 	}
 	

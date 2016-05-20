@@ -1,5 +1,6 @@
 package stellarapi.api.interact;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import stellarapi.api.optics.IOpticalFilter;
 
@@ -11,8 +12,8 @@ public interface IOpticalFilterSimulatorEntity {
 
 	/**
 	 * Gets the filter for this entity.
-	 * @param player the player
+	 * @param simulated the simulated viewer
 	 * */
-	public IOpticalFilter getFilter(EntityPlayer player);
+	public IOpticalFilter getFilter(EntityLivingBase simulated);
 
 }

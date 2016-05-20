@@ -28,7 +28,7 @@ public class StellarAPINetworkManager {
 		NBTTagCompound compound = new NBTTagCompound();
 		data.writeToNBT(compound);
 		
-		wrapper.sendToDimension(new MessageSync(compound), world.provider.getDimensionId());
+		wrapper.sendToDimension(new MessageSync(compound), world.provider.getDimension());
 	}
 	
 	public void onSync(EntityPlayerMP player, World world) {

@@ -1,20 +1,17 @@
 package stellarapi.example;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldProviderEnd;
-import net.minecraft.world.WorldProviderHell;
-import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.border.WorldBorder;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
@@ -115,7 +112,7 @@ public class WorldProviderExample extends WorldProvider {
 	 */
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Vec3 getFogColor(float p_76562_1_, float p_76562_2_) {
+	public Vec3d getFogColor(float p_76562_1_, float p_76562_2_) {
 		float f3 = 0.7529412F;
 		float f4 = 0.84705883F;
 		float f5 = 1.0F;
@@ -126,12 +123,12 @@ public class WorldProviderExample extends WorldProvider {
 		f5 *= celestialHelper.getSunlightFactor(EnumRGBA.Blue, p_76562_2_)
 				* celestialHelper.getDispersionFactor(EnumRGBA.Blue, p_76562_2_) * 0.91F + 0.09F;
 
-		return new Vec3((double) f3, (double) f4, (double) f5);
+		return new Vec3d((double) f3, (double) f4, (double) f5);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Vec3 getSkyColor(Entity cameraEntity, float partialTicks) {
+	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
 		int i = MathHelper.floor_double(cameraEntity.posX);
 		int j = MathHelper.floor_double(cameraEntity.posY);
 		int k = MathHelper.floor_double(cameraEntity.posZ);
@@ -187,7 +184,7 @@ public class WorldProviderExample extends WorldProvider {
 			f6 = f6 * (1.0F - f9) + 1.0F * f9;
 		}
 
-		return new Vec3((double) f4, (double) f5, (double) f6);
+		return new Vec3d((double) f4, (double) f5, (double) f6);
 	}
 
 	public float getMixedBrightnessOn(double posX, double posY, double posZ, BlockPos pos) {
@@ -202,13 +199,14 @@ public class WorldProviderExample extends WorldProvider {
 	}
 
 	public float getMixedBrightnessOnBlock(BlockPos pos) {
-		return (((worldObj.getBlockState(pos).getBlock().getMixedBrightnessForBlock(this.worldObj, pos) & 0xff)) >> 4)
+		IBlockState state = worldObj.getBlockState(pos);
+		return (((state.getBlock().getPackedLightmapCoords(state, worldObj, pos) & 0xff)) >> 4)
 				* 0.005f;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Vec3 drawClouds(float partialTicks) {
+	public Vec3d getCloudColor(float partialTicks) {
 
 		float f3 = (float) (this.cloudColour >> 16 & 255L) / 255.0F;
 		float f4 = (float) (this.cloudColour >> 8 & 255L) / 255.0F;
@@ -241,7 +239,7 @@ public class WorldProviderExample extends WorldProvider {
 			f5 = f5 * f9 + f8 * (1.0F - f9);
 		}
 
-		return new Vec3((double) f3, (double) f4, (double) f5);
+		return new Vec3d((double) f3, (double) f4, (double) f5);
 	}
 
 	@Override
@@ -266,7 +264,7 @@ public class WorldProviderExample extends WorldProvider {
 	 * Returns a new chunk provider which generates chunks for this world
 	 */
 	@Override
-	public IChunkProvider createChunkGenerator() {
+	public IChunkGenerator createChunkGenerator() {
 		return parProvider.createChunkGenerator();
 	}
 
@@ -342,25 +340,13 @@ public class WorldProviderExample extends WorldProvider {
 	public boolean doesXZShowFog(int x, int z) {
 		return parProvider.doesXZShowFog(x, z);
 	}
-
-	/**
-	 * Returns the dimension's name, e.g. "The End", "Nether", or "Overworld".
-	 */
+	
 	@Override
-	public String getDimensionName() {
-		return parProvider.getDimensionName();
-	}
-
-	@Override
-	public String getInternalNameSuffix() {
-		return parProvider.getInternalNameSuffix();
-	}
-
-	@Override
-	public WorldChunkManager getWorldChunkManager() {
-		return parProvider.getWorldChunkManager();
-	}
-
+    public BiomeProvider getBiomeProvider()
+    {
+        return parProvider.getBiomeProvider();
+    }
+	
 	@Override
 	public boolean doesWaterVaporize() {
 		return parProvider.doesWaterVaporize();
@@ -375,14 +361,6 @@ public class WorldProviderExample extends WorldProvider {
 	public float[] getLightBrightnessTable() {
 		return parProvider.getLightBrightnessTable();
 	}
-
-	/**
-	 * Gets the dimension of the provider
-	 */
-	@Override
-	public int getDimensionId() {
-		return parProvider.getDimensionId();
-	}
 	
 	@Override
 	public WorldBorder getWorldBorder() {
@@ -390,8 +368,7 @@ public class WorldProviderExample extends WorldProvider {
 	}
 
 	/*
-	 * ======================================= Forge Start
-	 * =========================================
+	 * ======================================= Forge Start =========================================
 	 */
 	
 	/**
@@ -406,7 +383,11 @@ public class WorldProviderExample extends WorldProvider {
 	public void setDimension(int dim) {
 		parProvider.setDimension(dim);
 	}
-
+    public int getDimension()
+    {
+        return parProvider.getDimension();
+    }
+    
 	/**
 	 * Returns the sub-folder of the world folder that this WorldProvider saves
 	 * to. EXA: DIM1, DIM-1
@@ -525,8 +506,7 @@ public class WorldProviderExample extends WorldProvider {
 	}
 
 	/*
-	 * ======================================= Start Moved From World
-	 * =========================================
+	 * ======================================= Start Moved From World =========================================
 	 */
 
 	@Override
@@ -629,4 +609,56 @@ public class WorldProviderExample extends WorldProvider {
 		return parProvider.canDoRainSnowIce(chunk);
 	}
 
+    /**
+     * Called when a Player is added to the provider's world.
+     */
+	@Override
+    public void onPlayerAdded(EntityPlayerMP p_186061_1_)
+    {
+    	parProvider.onPlayerAdded(p_186061_1_);
+    }
+
+    /**
+     * Called when a Player is removed from the provider's world.
+     */
+	@Override
+    public void onPlayerRemoved(EntityPlayerMP p_186062_1_)
+    {
+    	parProvider.onPlayerRemoved(p_186062_1_);
+    }
+
+	@Override
+    public DimensionType getDimensionType() {
+    	return parProvider.getDimensionType();
+    }
+
+    /**
+     * Called when the world is performing a save. Only used to save the state of the Dragon Boss fight in
+     * WorldProviderEnd in Vanilla.
+     */
+	@Override
+    public void onWorldSave()
+    {
+    	parProvider.onWorldSave();
+    }
+
+    /**
+     * Called when the world is updating entities. Only used in WorldProviderEnd to update the DragonFightManager in
+     * Vanilla.
+     */
+	@Override
+    public void onWorldUpdateEntities()
+    {
+    	parProvider.onWorldUpdateEntities();
+    }
+
+    /**
+     * Called to determine if the chunk at the given chunk coordinates within the provider's world can be dropped. Used
+     * in WorldProviderSurface to prevent spawn chunks from being unloaded.
+     */
+	@Override
+    public boolean canDropChunk(int x, int z)
+    {
+        return parProvider.canDropChunk(x, z);
+    }
 }

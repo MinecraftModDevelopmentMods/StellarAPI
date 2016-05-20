@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import stellarapi.StellarAPI;
 
@@ -18,7 +18,7 @@ public class GuiRenderer implements IRenderer {
 	private IRenderModel currentModel = null;
 	
 	private Tessellator tessellator;
-	private WorldRenderer worldRenderer;
+	private VertexBuffer worldRenderer;
 	private TextureManager textureManager;
 	
 	private float partialTicks;
@@ -32,11 +32,11 @@ public class GuiRenderer implements IRenderer {
 	
 	public GuiRenderer(Minecraft minecraft) {
 		this.tessellator = Tessellator.getInstance();
-		this.worldRenderer = tessellator.getWorldRenderer();
+		this.worldRenderer = tessellator.getBuffer();
 		this.textureManager = minecraft.getTextureManager();
 	}
 	
-	public GuiRenderer(Tessellator tessellator, TextureManager textureManager, WorldRenderer worldRenderer) {
+	public GuiRenderer(Tessellator tessellator, TextureManager textureManager, VertexBuffer worldRenderer) {
 		this.tessellator = tessellator;
 		this.worldRenderer = worldRenderer;
 		this.textureManager = textureManager;

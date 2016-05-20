@@ -6,10 +6,11 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 
@@ -32,7 +33,7 @@ public class CommandPerDimensionResource extends CommandBase {
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length < 1)
 	        throw new WrongUsageException("command.perdimres.usage");
 		
@@ -47,7 +48,7 @@ public class CommandPerDimensionResource extends CommandBase {
 			if(list.contains("\n"))
 				list = list.substring(list.indexOf('\n'));
 			
-			sender.addChatMessage(new ChatComponentTranslation("command.perdimres.list", list));
+			sender.addChatMessage(new TextComponentTranslation("command.perdimres.list", list));
 		
 		} else if(args[0].equals("available")) {
 			String list = "";
@@ -57,7 +58,7 @@ public class CommandPerDimensionResource extends CommandBase {
 			if(list.contains(","))
 				list = list.substring(list.indexOf(','));
 			
-			sender.addChatMessage(new ChatComponentTranslation("command.perdimres.available", list));
+			sender.addChatMessage(new TextComponentTranslation("command.perdimres.available", list));
 		
 		} else if(args[0].equals("set")) {
 			if(args.length < 3)
@@ -67,9 +68,9 @@ public class CommandPerDimensionResource extends CommandBase {
 			
 			if(PerDimensionResourceRegistry.getInstance().getResourceIds().contains(resourceId)) {
 				data.addToResourceMap(resourceId, new ResourceLocation(resourceLocation));
-				addChatMessage(sender, new ChatComponentTranslation("command.perdimres.set.success", resourceId, resourceLocation), EnumChatFormatting.AQUA);
+				addChatMessage(sender, new TextComponentTranslation("command.perdimres.set.success", resourceId, resourceLocation), TextFormatting.AQUA);
 			}
-			else addChatMessage(sender, new ChatComponentTranslation("command.perdimres.set.fail", resourceId), EnumChatFormatting.RED);
+			else addChatMessage(sender, new TextComponentTranslation("command.perdimres.set.fail", resourceId), TextFormatting.RED);
 			
 		} else if(args[0].equals("remove")) {
 			if(args.length < 2)
@@ -77,13 +78,13 @@ public class CommandPerDimensionResource extends CommandBase {
 			String resourceId = args[1];
 			if(data.getResourceMap().containsKey(resourceId)) {
 				data.removeFromResourceMap(resourceId);
-				addChatMessage(sender, new ChatComponentTranslation("command.perdimres.remove.success", resourceId), EnumChatFormatting.AQUA);
+				addChatMessage(sender, new TextComponentTranslation("command.perdimres.remove.success", resourceId), TextFormatting.AQUA);
 			}
-			else addChatMessage(sender, new ChatComponentTranslation("command.perdimres.remove.fail", resourceId), EnumChatFormatting.RED);
+			else addChatMessage(sender, new TextComponentTranslation("command.perdimres.remove.fail", resourceId), TextFormatting.RED);
 		}
 	}
 	
-	private void addChatMessage(ICommandSender sender, IChatComponent component, EnumChatFormatting color) {
+	private void addChatMessage(ICommandSender sender, ITextComponent component, TextFormatting color) {
 		component.setChatStyle(component.getChatStyle().setColor(color));
 		sender.addChatMessage(component);
 	}

@@ -1,5 +1,6 @@
 package stellarapi.api.interact;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import stellarapi.api.optics.IViewScope;
@@ -14,10 +15,10 @@ import stellarapi.api.optics.IViewScope;
 public interface IViewScopeItem {
 	/**
 	 * Gets the scope for this item.
-	 * @param player the player
+	 * @param viewer the viewer
 	 * @param item the item
 	 * */
-	public IViewScope getScope(EntityPlayer player, ItemStack item);
+	public IViewScope getScope(EntityLivingBase viewer, ItemStack item);
 	
 	/**
 	 * Checks if two items are same.

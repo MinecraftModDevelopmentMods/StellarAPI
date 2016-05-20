@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -21,7 +21,7 @@ public class ModelSimpleTextured implements IRenderModel {
 
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			WorldRenderer worldRenderer, TextureManager textureManager, float[] color) {
+			VertexBuffer worldRenderer, TextureManager textureManager, float[] color) {
 		float leftX = clipBound.getLeftX();
 		float upY = clipBound.getUpY();
 		float rightX = clipBound.getRightX();

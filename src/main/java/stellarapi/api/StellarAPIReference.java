@@ -3,10 +3,10 @@ package stellarapi.api;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
-import stellarapi.StellarAPI;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
@@ -79,6 +79,7 @@ public final class StellarAPIReference {
 	
 	/**
 	 * Updates the scope for the entity.
+	 * Only works for entities with optical event callback capabilities.
 	 * @param additionalParams additional parameters like changed itemstack.
 	 * */
 	public static void updateScope(Entity entity, Object... additionalParams) {
@@ -87,6 +88,7 @@ public final class StellarAPIReference {
 	
 	/**
 	 * Updates the filter for the entity.
+	 * Only works for entities with optical event callback capabilities.
 	 * @param additionalParams additional parameters like changed itemstack.
 	 * */
 	public static void updateFilter(Entity entity, Object... additionalParams) {
@@ -157,14 +159,14 @@ public final class StellarAPIReference {
 	 * Gets scope for certain entity.
 	 * */
 	public static IViewScope getScope(Entity entity) {
-		return reference.getPerEntityReference(entity).getScope();
+		return entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.UP).getScope();
 	}
 	
 	/**
 	 * Gets filter for certain entity.
 	 * */
 	public static IOpticalFilter getFilter(Entity entity) {
-		return reference.getPerEntityReference(entity).getFilter();
+		return entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.UP).getFilter();
 	}
 	
 	
@@ -175,7 +177,7 @@ public final class StellarAPIReference {
 	 * @param defaultLocation the default resource location
 	 * */
 	public static ResourceLocation getLocation(String resourceId, ResourceLocation defaultLocation) {
-		World world = StellarAPI.proxy.getClientWorld();
+		World world = reference.getPerClientReference().getClientWorld();
 		if(world != null)
 			return INSTANCE.resourceManager.getLocation(world, resourceId, defaultLocation);
 		else return defaultLocation;

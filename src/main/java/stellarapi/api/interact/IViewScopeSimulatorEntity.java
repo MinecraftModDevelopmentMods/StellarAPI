@@ -1,5 +1,6 @@
 package stellarapi.api.interact;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import stellarapi.api.optics.IViewScope;
 
@@ -11,8 +12,8 @@ public interface IViewScopeSimulatorEntity {
 
 	/**
 	 * Gets the scope for this entity.
-	 * @param player the player
+	 * @param simulated the simulated viewer
 	 * */
-	public IViewScope getScope(EntityPlayer player);
+	public IViewScope getScope(EntityLivingBase simulated);
 
 }

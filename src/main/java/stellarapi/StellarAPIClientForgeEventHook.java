@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -52,7 +51,7 @@ public class StellarAPIClientForgeEventHook {
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onUpdateFOV(EntityViewRenderEvent.FOVModifier event) {
-		IViewScope scope = StellarAPIReference.getScope(event.entity);
+		IViewScope scope = StellarAPIReference.getScope(event.getEntity());
 		if(scope.forceChange())
 			event.setFOV(70.0F / (float)scope.getMP());
 		else event.setFOV(event.getFOV() / (float)scope.getMP());
@@ -60,21 +59,21 @@ public class StellarAPIClientForgeEventHook {
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
-		IViewScope scope = StellarAPIReference.getScope(event.entity);
-		IOpticalFilter filter = StellarAPIReference.getFilter(event.entity);
+		IViewScope scope = StellarAPIReference.getScope(event.getEntity());
+		IOpticalFilter filter = StellarAPIReference.getFilter(event.getEntity());
 		
 		double multiplier = scope.getLGP() / (scope.getMP() * scope.getMP());
 		
 		double[] value = EyeDetector.getInstance().process(multiplier, filter, new double[] {
-				event.red, event.green, event.blue});
-		event.red = (float) value[0];
-		event.green = (float) value[1];
-		event.blue = (float) value[2];
+				event.getRed(), event.getGreen(), event.getBlue()});
+		event.setRed((float) value[0]);
+		event.setGreen((float) value[1]);
+		event.setBlue((float) value[2]);
 		
 		if(multiplier != 1.0 || !(filter instanceof NakedFilter)) {
 			DynamicTexture texture;
 			try {
-				texture = (DynamicTexture) lightMapField.get(event.renderer);
+				texture = (DynamicTexture) lightMapField.get(event.getRenderer());
 
 				for(int i = 0; i < 255; i++)
 				{
@@ -95,7 +94,7 @@ public class StellarAPIClientForgeEventHook {
 
 				texture.updateDynamicTexture();
 
-				lightMapUpdatedField.set(event.renderer, true);
+				lightMapUpdatedField.set(event.getRenderer(), true);
 
 			} catch (Exception exc) {
 				Throwables.propagate(exc);
@@ -105,13 +104,13 @@ public class StellarAPIClientForgeEventHook {
 	
 	@SubscribeEvent
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if(event.type == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
-			overlay.renderGameOverlay(event.resolution, event.partialTicks);
+		if(event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
+			overlay.renderGameOverlay(event.getResolution(), event.getPartialTicks());
 	}
 	
 	@SubscribeEvent
 	public void onClientWorldLoadFinish(GuiOpenEvent event) {
-		if(event.gui == null) {
+		if(event.getGui() == null) {
 			Minecraft mc = Minecraft.getMinecraft();
 			if(mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
 				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld, StellarAPI.proxy.getLoadingProgress());

@@ -4,25 +4,24 @@ import java.lang.reflect.Field;
 
 import com.google.common.base.Throwables;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-public class PlayerItemAccessHelper {
+public class LivingItemAccessHelper {
 	
-	private static final Field itemUseField = ReflectionHelper.findField(EntityPlayer.class,
-			ObfuscationReflectionHelper.remapFieldNames(EntityPlayer.class.getName(), "itemInUse", "field_71074_e"));
+	private static final Field itemUseField = ReflectionHelper.findField(EntityLivingBase.class,
+			ObfuscationReflectionHelper.remapFieldNames(EntityLivingBase.class.getName(), "activeItemStack", "field_184627_bm"));
 	
 	/**
-	 * Gets using item of the player.
-	 * This exists because {@link EntityPlayer#getItemInUse()} is client-only method,
-	 * while {@link EntityPlayer#itemInUse} is a private universal field.
+	 * Gets using item(Using on the main hand) of the player.
 	 * @param player the player
 	 * */
-	public static ItemStack getUsingItem(EntityPlayer player) {
+	public static ItemStack getUsingItem(EntityLivingBase entity) {
 		try {
-			return (ItemStack) itemUseField.get(player);
+			return (ItemStack) itemUseField.get(entity);
 		} catch (Exception exc) {
 			Throwables.propagate(exc);
 			
@@ -37,9 +36,9 @@ public class PlayerItemAccessHelper {
 	 * DO NOT use this method externally.
 	 * */
 	@Deprecated
-	public static void setUsingItem(EntityPlayer player, ItemStack stack) {
+	public static void setUsingItem(EntityLivingBase entity, ItemStack stack) {
 		try {
-			itemUseField.set(player, stack);
+			itemUseField.set(entity, stack);
 		} catch (Exception exc) {
 			Throwables.propagate(exc);
 		}

@@ -7,7 +7,7 @@ public class StellarAPIFMLEventHook {
 	@SubscribeEvent
 	public void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event)
 	{
-		if(event.modID == StellarAPI.modid)
+		if(event.getModID().equals(StellarAPI.modid))
 			StellarAPI.instance.getCfgManager().syncFromGUI();
 	}
 }

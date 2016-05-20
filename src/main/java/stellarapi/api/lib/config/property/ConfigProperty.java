@@ -35,7 +35,7 @@ public abstract class ConfigProperty {
 	}
 	
 	public void setComment(String comment) {
-		property.comment = comment;
+		property.setComment(comment);
 	}
 	
 	public abstract void setAsDefault();

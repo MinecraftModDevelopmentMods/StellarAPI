@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 public class WrappedFontRenderer extends FontRenderer {
 	
@@ -36,18 +36,18 @@ public class WrappedFontRenderer extends FontRenderer {
 	
 	private String getStyleContext() {
 		StringBuilder stringbuilder = new StringBuilder();
-
+		
         if (style.isBold())
-            stringbuilder.append(EnumChatFormatting.BOLD);
+            stringbuilder.append(TextFormatting.BOLD);
 
         if (style.isItalic())
-            stringbuilder.append(EnumChatFormatting.ITALIC);
+            stringbuilder.append(TextFormatting.ITALIC);
 
         if (style.isUnderlined())
-            stringbuilder.append(EnumChatFormatting.UNDERLINE);
+            stringbuilder.append(TextFormatting.UNDERLINE);
 
         if (style.isStrikeThrough())
-            stringbuilder.append(EnumChatFormatting.STRIKETHROUGH);
+            stringbuilder.append(TextFormatting.STRIKETHROUGH);
         
         return stringbuilder.toString();
 	}

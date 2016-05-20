@@ -79,12 +79,14 @@ public final class StellarAPI {
         public void preInit(FMLPreInitializationEvent event) { 
         	logger = event.getModLog();
         	
-        	StellarAPIReference.setReference(new StellarAPIReferenceHandler());
+        	StellarAPIReferenceHandler reference = new StellarAPIReferenceHandler();
+        	reference.initialize();
+        	StellarAPIReference.setReference(reference);
         	
     		MinecraftForge.EVENT_BUS.register(this.eventHook);
-    		FMLCommonHandler.instance().bus().register(this.tickHandler);
-    		FMLCommonHandler.instance().bus().register(this.fmlEventHook);
-    		FMLCommonHandler.instance().bus().register(this.networkManager);
+    		MinecraftForge.EVENT_BUS.register(this.tickHandler);
+    		MinecraftForge.EVENT_BUS.register(this.fmlEventHook);
+    		MinecraftForge.EVENT_BUS.register(this.networkManager);
     		
     		
     		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");

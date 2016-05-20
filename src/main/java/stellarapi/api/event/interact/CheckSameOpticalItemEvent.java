@@ -1,8 +1,9 @@
 package stellarapi.api.event.interact;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 /**
@@ -11,19 +12,15 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
  * Cancel this event to force the two item not to be same.
  * */
 @Cancelable
-public class CheckSameOpticalItemEvent extends PlayerEvent {
+public class CheckSameOpticalItemEvent extends LivingEvent {
 
 	private final ItemStack item1, item2;
 	private boolean isSame = false;
 
-	public CheckSameOpticalItemEvent(EntityPlayer player, ItemStack item1, ItemStack item2) {
-		super(player);
+	public CheckSameOpticalItemEvent(EntityLivingBase entity, ItemStack item1, ItemStack item2) {
+		super(entity);
 		this.item1 = item1;
 		this.item2 = item2;
-	}
-	
-	public EntityPlayer getPlayer() {
-		return this.entityPlayer;
 	}
 	
 	public ItemStack getFirstItem() {

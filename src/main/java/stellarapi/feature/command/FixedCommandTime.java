@@ -8,6 +8,8 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import stellarapi.api.CelestialPeriod;
+import stellarapi.api.PeriodHelper;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
@@ -15,37 +17,37 @@ import stellarapi.api.daywake.EnumDaytimeDescriptor;
 public class FixedCommandTime extends CommandTime {
 	
 	@Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-		if (args.length > 1)
+        if (args.length > 1)
         {
             if (args[0].equals("set"))
             {
-                long l;
+                long i1;
 
                 if (args[1].equals("day"))
                 {
-                    l = this.getDay(sender.getEntityWorld());
+                    i1 = this.getDay(sender.getEntityWorld());
                 }
                 else if (args[1].equals("night"))
                 {
-                    l = this.getMidnight(sender.getEntityWorld());
+                    i1 = this.getMidnight(sender.getEntityWorld());
                 }
                 else
                 {
-                    l = parseInt(args[1], 0);
+                    i1 = parseInt(args[1], 0);
                 }
 
-                this.setTime(sender, l);
-                notifyOperators(sender, this, "commands.time.set", new Object[] {Long.valueOf(l)});
+                this.setAllWorldTimes(server, i1);
+                notifyOperators(sender, this, "commands.time.set", new Object[] {Long.valueOf(i1)});
                 return;
             }
 
             if (args[0].equals("add"))
             {
-                int k = parseInt(args[1], 0);
-                this.addTime(sender, k);
-                notifyOperators(sender, this, "commands.time.added", new Object[] {Integer.valueOf(k)});
+                int l = parseInt(args[1], 0);
+                this.incrementAllWorldTimes(server, l);
+                notifyOperators(sender, this, "commands.time.added", new Object[] {Integer.valueOf(l)});
                 return;
             }
 
@@ -53,7 +55,15 @@ public class FixedCommandTime extends CommandTime {
             {
                 if (args[1].equals("daytime"))
                 {
-                    int j = (int)(sender.getEntityWorld().getWorldTime() % 2147483647L);
+                    int k = this.getDayTime(sender.getEntityWorld());
+                    sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, k);
+                    notifyOperators(sender, this, "commands.time.query", new Object[] {Integer.valueOf(k)});
+                    return;
+                }
+
+                if (args[1].equals("day"))
+                {
+                    int j = this.getDayNumber(sender.getEntityWorld());
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, j);
                     notifyOperators(sender, this, "commands.time.query", new Object[] {Integer.valueOf(j)});
                     return;
@@ -72,26 +82,20 @@ public class FixedCommandTime extends CommandTime {
         throw new WrongUsageException("commands.time.usage", new Object[0]);
     }
 	
-	/**
-     * Set the time in the server object.
-     */
-    protected void setTime(ICommandSender p_71552_1_, long p_71552_2_)
+    protected void setAllWorldTimes(MinecraftServer server, long time)
     {
-        for (int j = 0; j < MinecraftServer.getServer().worldServers.length; ++j)
+        for (int i = 0; i < server.worldServers.length; ++i)
         {
-            MinecraftServer.getServer().worldServers[j].setWorldTime(p_71552_2_);
+            server.worldServers[i].setWorldTime(time);
         }
     }
 
-    /**
-     * Adds (or removes) time in the server object.
-     */
-    protected void addTime(ICommandSender p_71553_1_, long p_71553_2_)
+    protected void incrementAllWorldTimes(MinecraftServer server, long amount)
     {
-        for (int j = 0; j < MinecraftServer.getServer().worldServers.length; ++j)
+        for (int i = 0; i < server.worldServers.length; ++i)
         {
-            WorldServer worldserver = MinecraftServer.getServer().worldServers[j];
-            worldserver.setWorldTime(worldserver.getWorldTime() + p_71553_2_);
+            WorldServer worldserver = server.worldServers[i];
+            worldserver.setWorldTime(worldserver.getWorldTime() + amount);
         }
     }
 	
@@ -107,5 +111,19 @@ public class FixedCommandTime extends CommandTime {
 		
 		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
 		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MIDNIGHT, defaultValue);
+	}
+	
+	public int getDayTime(World world) {		
+		CelestialPeriod period = PeriodHelper.getDayPeriod(world);
+		if(period != null) {
+			return (int)(period.getPeriodLength() * period.getBiasedOffset(world.getWorldTime(), 0.0f, -0.25));
+		} else return (int)(world.getWorldTime() % 24000L);
+	}
+	
+	public int getDayNumber(World world) {		
+		CelestialPeriod period = PeriodHelper.getDayPeriod(world);
+		if(period != null) {
+			return (int)Math.floor(world.getWorldTime() / period.getPeriodLength() - period.getBiasedOffset(world.getWorldTime(), 0.0f, -0.25));
+		} else return (int)(world.getWorldTime() / 24000L % 2147483647L);
 	}
 }

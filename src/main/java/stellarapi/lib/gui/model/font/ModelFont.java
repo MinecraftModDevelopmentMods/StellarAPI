@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import stellarapi.lib.gui.IFontHelper;
 import stellarapi.lib.gui.IRectangleBound;
@@ -42,7 +42,7 @@ public class ModelFont implements IRenderModel, IFontHelper {
 
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			WorldRenderer worldRenderer, TextureManager textureManager, float[] color) {
+			VertexBuffer worldRenderer, TextureManager textureManager, float[] color) {
 		float offset = this.centered? (totalBound.getWidth() - font.getStringWidth(info))*0.5f : 0.0f;
 		
 		float left = clipBound.getLeftX() - totalBound.getLeftX() - offset;

@@ -2,7 +2,7 @@ package stellarapi.lib.gui.text;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import stellarapi.lib.gui.GuiPositionHierarchy;
 import stellarapi.lib.gui.IFontHelper;
 import stellarapi.lib.gui.IGuiElementType;
