@@ -1,5 +1,6 @@
 package stellarapi.example.item;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -97,12 +98,12 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem
 	}
 
 	@Override
-	public IOpticalFilter getFilter(EntityPlayer player, ItemStack item) {
+	public IOpticalFilter getFilter(EntityLivingBase player, ItemStack item) {
 		return this.filter;
 	}
 
 	@Override
-	public IViewScope getScope(EntityPlayer player, ItemStack item) {
+	public IViewScope getScope(EntityLivingBase player, ItemStack item) {
 		return this.scope;
 	}
 

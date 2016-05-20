@@ -1,5 +1,6 @@
 package stellarapi.example.item;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,7 +45,7 @@ public class ItemTelescopeExample extends Item implements IViewScopeItem {
 	}
 
 	@Override
-	public IViewScope getScope(EntityPlayer player, ItemStack item) {
+	public IViewScope getScope(EntityLivingBase player, ItemStack item) {
 		return new IViewScope() {
 			@Override
 			public double getLGP() {
