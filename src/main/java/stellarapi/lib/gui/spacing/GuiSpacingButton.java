@@ -46,7 +46,9 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 	}
 	
 	@Override
-	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) { }
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+		subElement.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
+	}
 
 	@Override
 	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
