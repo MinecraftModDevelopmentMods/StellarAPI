@@ -139,7 +139,7 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
     	if (!FMLClientHandler.instance().handleLoadingScreen(scaledresolution)) {
     		Tessellator tessellator = Tessellator.getInstance();
             VertexBuffer worldrenderer = tessellator.getBuffer();
-    		mc.getTextureManager().bindTexture(Gui.optionsBackground);
+    		mc.getTextureManager().bindTexture(Gui.OPTIONS_BACKGROUND);
     		float f = 32.0F;
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
             worldrenderer.pos(0.0D, (double)l, 0.0D).tex(0.0D, (double)((float)l / f)).color(64, 64, 64, 255).endVertex();

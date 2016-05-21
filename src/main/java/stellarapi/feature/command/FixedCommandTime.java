@@ -39,7 +39,7 @@ public class FixedCommandTime extends CommandTime {
                 }
 
                 this.setAllWorldTimes(server, i1);
-                notifyOperators(sender, this, "commands.time.set", new Object[] {Long.valueOf(i1)});
+                notifyCommandListener(sender, this, "commands.time.set", new Object[] {Long.valueOf(i1)});
                 return;
             }
 
@@ -47,7 +47,7 @@ public class FixedCommandTime extends CommandTime {
             {
                 int l = parseInt(args[1], 0);
                 this.incrementAllWorldTimes(server, l);
-                notifyOperators(sender, this, "commands.time.added", new Object[] {Integer.valueOf(l)});
+                notifyCommandListener(sender, this, "commands.time.added", new Object[] {Integer.valueOf(l)});
                 return;
             }
 
@@ -57,7 +57,7 @@ public class FixedCommandTime extends CommandTime {
                 {
                     int k = this.getDayTime(sender.getEntityWorld());
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, k);
-                    notifyOperators(sender, this, "commands.time.query", new Object[] {Integer.valueOf(k)});
+                    notifyCommandListener(sender, this, "commands.time.query", new Object[] {Integer.valueOf(k)});
                     return;
                 }
 
@@ -65,7 +65,7 @@ public class FixedCommandTime extends CommandTime {
                 {
                     int j = this.getDayNumber(sender.getEntityWorld());
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, j);
-                    notifyOperators(sender, this, "commands.time.query", new Object[] {Integer.valueOf(j)});
+                    notifyCommandListener(sender, this, "commands.time.query", new Object[] {Integer.valueOf(j)});
                     return;
                 }
 
@@ -73,7 +73,7 @@ public class FixedCommandTime extends CommandTime {
                 {
                     int i = (int)(sender.getEntityWorld().getTotalWorldTime() % 2147483647L);
                     sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, i);
-                    notifyOperators(sender, this, "commands.time.query", new Object[] {Integer.valueOf(i)});
+                    notifyCommandListener(sender, this, "commands.time.query", new Object[] {Integer.valueOf(i)});
                     return;
                 }
             }

@@ -8,11 +8,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -363,8 +362,8 @@ public class WorldProviderExample extends WorldProvider {
 	}
 	
 	@Override
-	public WorldBorder getWorldBorder() {
-		return parProvider.getWorldBorder();
+	public WorldBorder createWorldBorder() {
+		return parProvider.createWorldBorder();
 	}
 
 	/*
@@ -510,8 +509,8 @@ public class WorldProviderExample extends WorldProvider {
 	 */
 
 	@Override
-	public BiomeGenBase getBiomeGenForCoords(BlockPos pos) {
-		return parProvider.getBiomeGenForCoords(pos);
+	public Biome getBiomeForCoords(BlockPos pos) {
+		return parProvider.getBiomeForCoords(pos);
 	}
 
 	@Override

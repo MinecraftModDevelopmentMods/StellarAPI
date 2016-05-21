@@ -1,6 +1,6 @@
 package stellarapi.impl;
 
-import net.minecraft.entity.player.EntityPlayer.EnumStatus;
+import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
@@ -42,7 +42,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 	}
 	
 	@Override
-	public EnumStatus getSleepPossibility(World world, CelestialEffectors lightSources,
+	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSources,
 			ICelestialCoordinate coordinate, long sleepTime) {
 		long nextMidnight = StellarAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
 				EnumDaytimeDescriptor.MIDNIGHT, sleepTime);
@@ -51,7 +51,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
 		double diff = (currentOffset - midnightOffset) % 1.0;
 		
-		return (!world.isDaytime() && (diff < 0.25 || diff > 0.75))? EnumStatus.OK : EnumStatus.NOT_POSSIBLE_NOW;
+		return (!world.isDaytime() && (diff < 0.25 || diff > 0.75))? SleepResult.OK : SleepResult.NOT_POSSIBLE_NOW;
 	}
 
 

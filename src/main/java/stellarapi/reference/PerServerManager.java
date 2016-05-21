@@ -16,11 +16,11 @@ public class PerServerManager extends WorldSavedData {
 	}
 	
 	public static boolean isInitiated(MinecraftServer server) {
-		return server.getEntityWorld().getMapStorage().loadData(PerServerManager.class, ID) instanceof PerServerManager;
+		return server.getEntityWorld().getMapStorage().getOrLoadData(PerServerManager.class, ID) instanceof PerServerManager;
 	}
 
 	public static PerServerManager getPerServerManager(MinecraftServer server) {
-		return (PerServerManager) server.getEntityWorld().getMapStorage().loadData(PerServerManager.class, ID);
+		return (PerServerManager) server.getEntityWorld().getMapStorage().getOrLoadData(PerServerManager.class, ID);
 	}
 
 	private PerServerManager() {
@@ -31,6 +31,6 @@ public class PerServerManager extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound compound) { }
 
 	@Override
-	public void writeToNBT(NBTTagCompound compound) { }
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) { return compound; }
 
 }

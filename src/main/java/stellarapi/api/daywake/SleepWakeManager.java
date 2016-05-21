@@ -120,19 +120,19 @@ public class SleepWakeManager implements IConfigHandler {
 	 * @param world the world to wake up
 	 * @param defaultStatus the default status
 	 * @return sleep possibility status, should be one of
-	 * {@code EntityPlayer.EnumStatus.OK} or
-	 * {@code EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW} or
-	 * {@code EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE}
+	 * {@code EntityPlayer.SleepResult.OK} or
+	 * {@code EntityPlayer.SleepResult.NOT_POSSIBLE_NOW} or
+	 * {@code EntityPlayer.SleepResult.NOT_POSSIBLE_HERE}
 	 * */
-	public EntityPlayer.EnumStatus getSleepPossibility(World world, EntityPlayer.EnumStatus defaultStatus) {
+	public EntityPlayer.SleepResult getSleepPossibility(World world, EntityPlayer.SleepResult defaultStatus) {
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 		
-		EntityPlayer.EnumStatus status = EntityPlayer.EnumStatus.OK;
+		EntityPlayer.SleepResult status = EntityPlayer.SleepResult.OK;
 		boolean accepted = false;
 
 		for(WakeHandler handler : this.wakeHandlers) {
-			if(status == EntityPlayer.EnumStatus.OK && handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
+			if(status == EntityPlayer.SleepResult.OK && handler.enabled && handler.handler.accept(world, lightSources, coordinate)) {
 				status = handler.handler.getSleepPossibility(world, lightSources, coordinate, world.getWorldTime());
 				accepted = true;
 			}

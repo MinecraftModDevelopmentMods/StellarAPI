@@ -52,7 +52,7 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 	}
 	
 	public static PerWorldManager getPerWorldManager(World world) {
-		return (PerWorldManager) world.getPerWorldStorage().loadData(PerWorldManager.class, ID);
+		return (PerWorldManager) world.getPerWorldStorage().getOrLoadData(PerWorldManager.class, ID);
 	}
 	
 	private PerWorldManager(World world) {
@@ -166,6 +166,6 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 	public void readFromNBT(NBTTagCompound compound) { }
 
 	@Override
-	public void writeToNBT(NBTTagCompound compound) { }
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) { return compound; }
 
 }

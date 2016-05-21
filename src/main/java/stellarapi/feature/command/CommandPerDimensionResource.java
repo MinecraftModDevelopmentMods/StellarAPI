@@ -85,7 +85,7 @@ public class CommandPerDimensionResource extends CommandBase {
 	}
 	
 	private void addChatMessage(ICommandSender sender, ITextComponent component, TextFormatting color) {
-		component.setChatStyle(component.getChatStyle().setColor(color));
+		component.setStyle(component.getStyle().setColor(color));
 		sender.addChatMessage(component);
 	}
 

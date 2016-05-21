@@ -20,7 +20,7 @@ public class PerDimensionResourceData extends WorldSavedData {
 	
 	public static PerDimensionResourceData getData(World world) {
 		PerDimensionResourceData result;
-		WorldSavedData data = world.getPerWorldStorage().loadData(PerDimensionResourceData.class, ID);
+		WorldSavedData data = world.getPerWorldStorage().getOrLoadData(PerDimensionResourceData.class, ID);
 		if(!(data instanceof PerDimensionResourceData)) {
 			result = new PerDimensionResourceData(ID);
 			world.getPerWorldStorage().setData(ID, result);
@@ -63,10 +63,11 @@ public class PerDimensionResourceData extends WorldSavedData {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		for(String key : resourceMap.keySet()) {
 			compound.setString(key, resourceMap.get(key).toString());
 		}
+		return compound;
 	}
 	
 	@Override

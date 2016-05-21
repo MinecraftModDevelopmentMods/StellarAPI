@@ -106,12 +106,12 @@ public final class StellarAPI {
     		    		
         	this.telescope = new ItemTelescopeExample()
         			.setUnlocalizedName("stellarapi.deftelescope")
-        			.setCreativeTab(CreativeTabs.tabTools).setMaxStackSize(1);
+        			.setCreativeTab(CreativeTabs.TOOLS).setMaxStackSize(1);
         	GameRegistry.registerItem(telescope, "defaulttelescope");
         	
         	this.filteredTelescope = new ItemFilteredTelescopeExample()
         			.setUnlocalizedName("stellarapi.deffilteredtelescope")
-        			.setCreativeTab(CreativeTabs.tabTools).setMaxStackSize(1);
+        			.setCreativeTab(CreativeTabs.TOOLS).setMaxStackSize(1);
         	GameRegistry.registerItem(filteredTelescope, "defaultfilteredtelescope");
         	
         	proxy.preInit(event);

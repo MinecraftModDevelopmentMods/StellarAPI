@@ -1,6 +1,6 @@
 package stellarapi.impl;
 
-import net.minecraft.entity.player.EntityPlayer.EnumStatus;
+import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
@@ -33,13 +33,13 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	}
 
 	@Override
-	public EnumStatus getSleepPossibility(World world, CelestialEffectors lightSource,
+	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource,
 			ICelestialCoordinate coordinate, long sleepTime) {
 		ICelestialObject sun = lightSource.getPrimarySource();
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);
 		if(Double.isNaN(offset))
-			return EnumStatus.NOT_POSSIBLE_HERE;
-		return world.provider.isDaytime()? EnumStatus.NOT_POSSIBLE_NOW : EnumStatus.OK;
+			return SleepResult.NOT_POSSIBLE_HERE;
+		return world.provider.isDaytime()? SleepResult.NOT_POSSIBLE_NOW : SleepResult.OK;
 	}
 
 	

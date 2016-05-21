@@ -1,6 +1,6 @@
 package stellarapi.api.daywake;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.celestials.CelestialEffectors;
@@ -46,7 +46,7 @@ public interface IWakeHandler extends IConfigHandler {
 	 * @param sleepTime specified sleep time in tick
 	 * @return flag to determine possibility of sleep
 	 * */
-	public EntityPlayer.EnumStatus getSleepPossibility(World world, CelestialEffectors lightSource,
+	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource,
 			ICelestialCoordinate coordinate, long sleepTime);
 	
 }

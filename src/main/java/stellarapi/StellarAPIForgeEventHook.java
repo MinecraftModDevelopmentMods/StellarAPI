@@ -1,13 +1,10 @@
 package stellarapi;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer.EnumStatus;
+import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -15,7 +12,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
 import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
@@ -111,17 +107,17 @@ public class StellarAPIForgeEventHook {
 			return;
 		}
 		
-		if(event.getResultStatus() == null || event.getResultStatus() == EnumStatus.OK || event.getResultStatus() == EnumStatus.NOT_POSSIBLE_NOW) {
+		if(event.getResultStatus() == null || event.getResultStatus() == SleepResult.OK || event.getResultStatus() == SleepResult.NOT_POSSIBLE_NOW) {
 			World worldObj = event.getEntityPlayer().worldObj;
 			
 			event.setResult(StellarAPIReference.getSleepWakeManager()
 					.getSleepPossibility(worldObj, event.getResultStatus()));
 		}
 		
-		if(event.getResultStatus() == EnumStatus.OK)
+		if(event.getResultStatus() == SleepResult.OK)
 		{
 	        event.getEntityPlayer().worldObj.updateAllPlayersSleepingFlag();
-	        event.setResult((EnumStatus)null);
+	        event.setResult((SleepResult)null);
 		}
 	}
 }
