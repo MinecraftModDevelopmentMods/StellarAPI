@@ -279,10 +279,11 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 	    		worldRenderer.pos((double)k1, (double)l1, 0.0D).color(128, 128, 128, 255).endVertex();
 	    		worldRenderer.pos((double)k1, (double)(l1 + j1), 0.0D).color(128, 128, 128, 255).endVertex();
 	    		worldRenderer.pos((double)(k1 + i1), (double)(l1 + j1), 0.0D).color(128, 128, 128, 255).endVertex();
+	    		worldRenderer.pos((double)(k1 + i1), (double)l1, 0.0D).color(128, 128, 128, 255).endVertex();
 	    		worldRenderer.pos((double)k1, (double)l1, 0.0D).color(128, 255, 128, 255).endVertex();
 	    		worldRenderer.pos((double)k1, (double)(l1 + j1), 0.0D).color(128, 255, 128, 255).endVertex();
-                worldRenderer.pos((double)(k1 + progress), (double)(l1 + j1), 0.0D).color(128, 255, 128, 255).endVertex();
-                worldRenderer.pos((double)(k1 + progress), (double)l1, 0.0D).color(128, 255, 128, 255).endVertex();
+	    		worldRenderer.pos((double)(k1 + progress), (double)(l1 + j1), 0.0D).color(128, 255, 128, 255).endVertex();
+	    		worldRenderer.pos((double)(k1 + progress), (double)l1, 0.0D).color(128, 255, 128, 255).endVertex();
 	    		tessellator.draw();
 	    		GlStateManager.enableTexture2D();
 	    	}
