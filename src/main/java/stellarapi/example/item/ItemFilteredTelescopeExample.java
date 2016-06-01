@@ -74,18 +74,14 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		if(hand == EnumHand.MAIN_HAND) {
-			this.onUse(player, hand);
-			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-		} else return ActionResult.newResult(EnumActionResult.PASS, stack);
+		this.onUse(player, hand);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 	
 	@Override
     public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		if(hand == EnumHand.MAIN_HAND) {
-			this.onUse(player, hand);
-			return EnumActionResult.SUCCESS;
-		} else return EnumActionResult.PASS;
+		this.onUse(player, hand);
+		return EnumActionResult.SUCCESS;
     }
 	
 	public void onUse(EntityPlayer player, EnumHand hand) {
