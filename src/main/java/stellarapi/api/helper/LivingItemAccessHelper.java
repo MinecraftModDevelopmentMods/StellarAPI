@@ -20,14 +20,7 @@ public class LivingItemAccessHelper {
 	 * @param player the player
 	 * */
 	public static ItemStack getUsingItem(EntityLivingBase entity) {
-		try {
-			return (ItemStack) itemUseField.get(entity);
-		} catch (Exception exc) {
-			Throwables.propagate(exc);
-			
-			// Code cannot reach here
-			return null;
-		}
+		return entity.getActiveItemStack();
 	}
 	
 	/**

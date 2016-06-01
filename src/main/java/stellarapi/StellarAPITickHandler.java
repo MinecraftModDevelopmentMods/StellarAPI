@@ -35,7 +35,7 @@ public class StellarAPITickHandler {
 	
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent e) {
-		ItemStack itemstack = e.getEntityLiving().getHeldItemMainhand();
+		ItemStack itemstack = e.getEntityLiving().getHeldItem(e.getEntityLiving().getActiveHand());
 		ItemStack itemInUse = LivingItemAccessHelper.getUsingItem(e.getEntityLiving());
 
 		if (itemInUse != null) {

@@ -25,7 +25,7 @@ import stellarapi.reference.OpticalViewerEventCallback;
 import stellarapi.reference.PerServerManager;
 
 public class StellarAPIForgeEventHook {
-	
+
 	@SubscribeEvent
 	public void onStartUsingItem(LivingEntityUseItemEvent.Start event) {
 		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
