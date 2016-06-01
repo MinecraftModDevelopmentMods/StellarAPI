@@ -6,6 +6,7 @@ import java.util.Iterator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -35,7 +36,8 @@ public class StellarAPITickHandler {
 	
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent e) {
-		ItemStack itemstack = e.getEntityLiving().getHeldItem(e.getEntityLiving().getActiveHand());
+		EnumHand hand = e.getEntityLiving().getActiveHand();
+		ItemStack itemstack = hand != null? e.getEntityLiving().getHeldItem(e.getEntityLiving().getActiveHand()) : null;
 		ItemStack itemInUse = LivingItemAccessHelper.getUsingItem(e.getEntityLiving());
 
 		if (itemInUse != null) {
