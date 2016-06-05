@@ -34,7 +34,7 @@ public class PerDimensionResourceData extends WorldSavedData {
 	private final Map<String, ResourceLocation> resourceMap = Maps.newHashMap();
 	private World world;
 
-	private PerDimensionResourceData(String id) {
+	public PerDimensionResourceData(String id) {
 		super(id);
 	}
 	
