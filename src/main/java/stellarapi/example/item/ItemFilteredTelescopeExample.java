@@ -9,6 +9,7 @@ import stellarapi.api.interact.IViewScopeItem;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.NakedScope;
 import stellarapi.api.optics.RGBFilter;
 import stellarapi.api.optics.Wavelength;
 
@@ -26,7 +27,7 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem
 
 		@Override
 		public double getResolution(Wavelength wl) {
-			return 0.1;
+			return NakedScope.DEFAULT_RESOLUTION / 3.0;
 		}
 
 		@Override
