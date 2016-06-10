@@ -4,6 +4,11 @@ package stellarapi.api.optics;
  * Scope settings for naked eye.
  * */
 public class NakedScope implements IViewScope {
+	
+	/**
+	 * Default naked eye resolution.
+	 * */
+	public static final double DEFAULT_RESOLUTION = 0.06;
 
 	@Override
 	public double getLGP() {
@@ -12,7 +17,7 @@ public class NakedScope implements IViewScope {
 
 	@Override
 	public double getResolution(Wavelength wl) {
-		return 0.3;
+		return DEFAULT_RESOLUTION;
 	}
 
 	@Override

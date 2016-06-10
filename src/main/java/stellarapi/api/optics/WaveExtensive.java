@@ -16,8 +16,18 @@ import stellarapi.api.lib.math.Spmath;
 public class WaveExtensive implements IWaveEstimation {
 	private Map<Wavelength, Double> waveMap;
 	
+	private Wavelength[] waves;
+	private double[] weights;
+	
 	public WaveExtensive(Map<Wavelength, Double> weights) {
 		this.waveMap = weights;
+		this.waves = new Wavelength[weights.size()];
+		this.weights = new double[weights.size()];
+		int index = 0;
+		for(Map.Entry<Wavelength, Double> entry : waveMap.entrySet()) {
+			this.waves[index] = entry.getKey();
+			this.weights[index++] = entry.getValue();
+		}
 	}
 	
 	public Double apply(Wavelength wavelength) {
@@ -28,12 +38,12 @@ public class WaveExtensive implements IWaveEstimation {
 		if(waveMap.containsKey(wavelength))
 			return waveMap.get(wavelength);
 		
-		for(Map.Entry<Wavelength, Double> entry : waveMap.entrySet()) {
-			if(entry.getKey().getLength() == wavelength.getLength())
-				return entry.getValue() * width / entry.getKey().getWidth();
+		for(int i = 0; i < waves.length; i++) {
+			if(waves[i].getLength() == wavelength.getLength())
+				return weights[i] * width / waves[i].getWidth();
 			
-			double weight = Spmath.quad(entry.getKey().getWidth() / (entry.getKey().getLength() - wavelength.getLength()));
-			res += entry.getValue() / entry.getKey().getWidth() * weight;
+			double weight = Spmath.quad(waves[i].getWidth() / (waves[i].getLength() - wavelength.getLength()));
+			res += weights[i] / waves[i].getWidth() * weight;
 			weightedSum += weight;
 		}
 		
