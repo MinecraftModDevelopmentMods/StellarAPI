@@ -3,6 +3,7 @@ package stellarapi.feature.gui.overlay;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import stellarapi.api.gui.overlay.IRawOverlaySet;
@@ -43,5 +44,7 @@ public class OverlayHandler {
 		container.setResolution(resolution);
 		GL11.glEnable(GL11.GL_BLEND);
 		container.render(mouseX, mouseY, partialTicks);
+		GL11.glDisable(GL11.GL_BLEND);
+		mc.renderEngine.bindTexture(GuiIngame.icons);
 	}
 }
