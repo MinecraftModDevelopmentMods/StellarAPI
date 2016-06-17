@@ -66,12 +66,12 @@ public class DefaultSun implements ICelestialObject {
 		return EnumCelestialObjectType.Star;
 	}
 
-	
-	/*@Override
+	@Override
 	public String getName() {
 		return "Sun";
 	}
-
+	
+	/*
 	@Override
 	public ImmutableList<String> additionalNumericalProperties() {
 		return ImmutableList.of();

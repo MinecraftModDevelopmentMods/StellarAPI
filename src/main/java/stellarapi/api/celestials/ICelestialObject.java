@@ -16,11 +16,9 @@ import stellarapi.api.optics.Wavelength;
 public interface ICelestialObject {
 	
 	/**
-	 * The name of the celestial object. <p>
-	 * Note that an object can have many names,
-	 * but a name should point at most one object.
+	 * The name of the celestial object.
 	 * */
-	//public String getName();
+	public String getName();
 	
 	/**
 	 * Absolute period for the effector. <p>

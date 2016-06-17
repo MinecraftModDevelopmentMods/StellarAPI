@@ -67,12 +67,13 @@ public class DefaultMoon implements ICelestialObject {
 		return EnumCelestialObjectType.Planet;
 	}
 
-	
-	/*@Override
+	@Override
 	public String getName() {
 		return "Moon";
 	}
 
+	
+	/*
 	@Override
 	public ImmutableList<String> additionalNumericalProperties() {
 		return ImmutableList.of();
