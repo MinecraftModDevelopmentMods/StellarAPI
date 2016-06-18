@@ -27,8 +27,8 @@ public class SpCoord {
 	 * @return the distance between two coordinates in degrees
 	 * */
 	public double distanceTo(SpCoord coord) {
-		return Spmath.Degrees(Math.acos(Math.sin(this.y) * Math.sin(coord.y)
-				+ Math.cos(this.y) * Math.cos(coord.y) * Math.sin(coord.x - this.x)));
+		return Spmath.Degrees(Math.acos(Spmath.sind(this.y) * Spmath.sind(coord.y)
+				+ Spmath.cosd(this.y) * Spmath.cosd(coord.y) * Spmath.sind(coord.x - this.x)));
 	}
 
 	/**
