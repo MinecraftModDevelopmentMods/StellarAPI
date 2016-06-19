@@ -41,6 +41,7 @@ public final class StellarAPI {
 
 		public static final String modid = "StellarAPI";
 		public static final String version = "@VERSION@";
+		public static final String apiid = "StellarAPI|API";
 
         // The instance of Stellarium
         @Instance(StellarAPI.modid)
