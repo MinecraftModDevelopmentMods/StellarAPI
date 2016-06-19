@@ -11,25 +11,25 @@ import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 
 /**
  * Registry for per-dimension resources.
- * */
+ */
 public class PerDimensionResourceRegistry implements IPerDimensionResourceHandler {
-	
+
 	private static final PerDimensionResourceRegistry INSTANCE = new PerDimensionResourceRegistry();
-	
+
 	public static PerDimensionResourceRegistry getInstance() {
 		return INSTANCE;
 	}
-	
+
 	private Set<String> resourceIds = Sets.newHashSet();
-	
+
 	public PerDimensionResourceRegistry() {
 		resourceIds.add("DEBUG_ONLY");
 	}
-	
+
 	public void registerResourceId(String id) {
 		resourceIds.add(id);
 	}
-	
+
 	public ImmutableSet<String> getResourceIds() {
 		return ImmutableSet.copyOf(this.resourceIds);
 	}

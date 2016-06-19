@@ -11,19 +11,18 @@ import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.daywake.IWakeHandler;
 
 /**
- * Example of wake handler,
- * as player gets up when the primary light source reaches certain angle.
- * */
+ * Example of wake handler, as player gets up when the primary light source
+ * reaches certain angle.
+ */
 public class SunHeightWakeHandler implements IWakeHandler {
 
 	private double wakeAngle;
-	
+
 	@Override
 	public boolean accept(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate) {
 		return lightSource != null && coordinate != null;
 	}
-	
-	
+
 	@Override
 	public long getWakeTime(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate,
 			long sleepTime) {
@@ -33,16 +32,15 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	}
 
 	@Override
-	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource,
-			ICelestialCoordinate coordinate, long sleepTime) {
+	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate,
+			long sleepTime) {
 		ICelestialObject sun = lightSource.getPrimarySource();
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);
-		if(Double.isNaN(offset))
+		if (Double.isNaN(offset))
 			return SleepResult.NOT_POSSIBLE_HERE;
-		return world.provider.isDaytime()? SleepResult.NOT_POSSIBLE_NOW : SleepResult.OK;
+		return world.provider.isDaytime() ? SleepResult.NOT_POSSIBLE_NOW : SleepResult.OK;
 	}
 
-	
 	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryLanguageKey(category, "config.category.sunheight");
@@ -61,6 +59,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	}
 
 	@Override
-	public void saveToConfig(Configuration config, String category) { }
+	public void saveToConfig(Configuration config, String category) {
+	}
 
 }

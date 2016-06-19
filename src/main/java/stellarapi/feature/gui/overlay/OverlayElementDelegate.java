@@ -11,13 +11,13 @@ import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 import stellarapi.api.lib.config.ConfigManager;
 
-public class OverlayElementDelegate<Element extends IOverlayElement<Settings>, Settings extends PerOverlaySettings> 
-implements IRawOverlayElement {
+public class OverlayElementDelegate<Element extends IOverlayElement<Settings>, Settings extends PerOverlaySettings>
+		implements IRawOverlayElement {
 
 	private OverlayManager manager;
-	
+
 	private String id, modid;
-	
+
 	private ElementPos pos;
 	private final IOverlayType<Element, Settings> type;
 	private final Element element;
@@ -25,12 +25,12 @@ implements IRawOverlayElement {
 	private final IRawHandler<Element> handler;
 	private final ConfigManager notified;
 
-	OverlayElementDelegate(IOverlayType<Element, Settings> type, Settings settings,
-			ConfigManager config, OverlayManager manager, String id, String modid) {
+	OverlayElementDelegate(IOverlayType<Element, Settings> type, Settings settings, ConfigManager config,
+			OverlayManager manager, String id, String modid) {
 		this.manager = manager;
 		this.id = id;
 		this.modid = modid;
-		
+
 		this.type = type;
 		this.element = type.generateElement();
 		this.handler = type.generateRawHandler();
@@ -40,20 +40,20 @@ implements IRawOverlayElement {
 
 	void initialize(Minecraft mc) {
 		element.initialize(mc, this.settings);
-		if(this.handler != null)
+		if (this.handler != null)
 			handler.initialize(mc, this.manager, this.element);
-		
+
 		this.pos = new ElementPos(settings.getHorizontal(), settings.getVertical());
 	}
-	
+
 	Element getElement() {
 		return this.element;
 	}
-	
+
 	public IRawHandler<Element> getHandler() {
 		return this.handler;
 	}
-	
+
 	ElementPos getPosition() {
 		return this.pos;
 	}
@@ -61,33 +61,32 @@ implements IRawOverlayElement {
 	void notifyChange() {
 		notified.syncFromFields();
 	}
-	
+
 	boolean visibleOnMain() {
 		return settings.isVisibleOnMain();
 	}
-	
+
 	@Override
 	public void setVisibleOnMain(boolean visibleOnMain) {
 		settings.setVisibleOnMain(visibleOnMain);
 	}
-	
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof ElementPos) {
+		if (obj instanceof ElementPos) {
 			return pos.equals(obj);
-		} else if(obj instanceof OverlayElementDelegate) {
+		} else if (obj instanceof OverlayElementDelegate) {
 			return pos.equals(((OverlayElementDelegate) obj).pos);
-			
-		} return false;
+
+		}
+		return false;
 	}
 
-	
 	@Override
 	public IOverlayType getType() {
 		return this.type;
 	}
-	
+
 	@Override
 	public EnumHorizontalPos getCurrentHorizontalPos() {
 		return pos.getHorizontalPos();
@@ -100,7 +99,7 @@ implements IRawOverlayElement {
 
 	@Override
 	public boolean acceptPos(EnumHorizontalPos horizontal, EnumVerticalPos vertical) {
-		if(!type.accepts(horizontal, vertical))
+		if (!type.accepts(horizontal, vertical))
 			return false;
 		return manager.hasNoDuplication(this.id, horizontal, vertical);
 	}
@@ -112,7 +111,7 @@ implements IRawOverlayElement {
 		settings.setHorizontal(pos.getHorizontalPos());
 		settings.setVertical(pos.getVerticalPos());
 		this.pos = pos;
-		
+
 		manager.setElementPosOnDisplaySets(this.id, pos);
 	}
 
@@ -130,7 +129,7 @@ implements IRawOverlayElement {
 	public String getId() {
 		return this.id;
 	}
-	
+
 	@Override
 	public String getModId() {
 		return this.modid;

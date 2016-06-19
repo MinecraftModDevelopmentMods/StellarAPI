@@ -1,9 +1,8 @@
 /**
- * Configuration Utility section of Stellar API.
- * */
+ * Interaction section of Stellar API.
+ */
 @API(apiVersion = "@VERSION@", owner = StellarAPI.modid, provides = StellarAPI.apiid)
-package stellarapi.api.lib.config;
-
+package stellarapi.api.interact;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.StellarAPI;

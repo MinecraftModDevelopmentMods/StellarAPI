@@ -13,11 +13,11 @@ public class GuiSimpleSpacing implements IGuiElementType<ISimpleSpacingControlle
 	private IGuiPosition position;
 	private ISimpleSpacingController controller;
 	private GuiElement subElement;
-	
+
 	public GuiSimpleSpacing(GuiElement subElement) {
 		this.subElement = subElement;
 	}
-	
+
 	@Override
 	public void initialize(GuiPositionHierarchy positions, ISimpleSpacingController controller) {
 		this.position = positions.getPosition();
@@ -34,7 +34,7 @@ public class GuiSimpleSpacing implements IGuiElementType<ISimpleSpacingControlle
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		subElement.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
+
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		subElement.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
@@ -54,16 +54,16 @@ public class GuiSimpleSpacing implements IGuiElementType<ISimpleSpacingControlle
 	public void checkMousePosition(float mouseX, float mouseY) {
 		subElement.getType().checkMousePosition(mouseX, mouseY);
 	}
-	
+
 	@Override
 	public void render(IRenderer renderer) {
 		IRectangleBound clipBound = position.getClipBound();
-		if(clipBound.isEmpty())
+		if (clipBound.isEmpty())
 			return;
-		
+
 		renderer.startRender();
 		String model = controller.setupSpacingRenderer(renderer);
-		if(model != null)
+		if (model != null)
 			renderer.render(model, position.getElementBound(), clipBound);
 		renderer.endRender();
 		subElement.getType().render(renderer);
@@ -91,8 +91,8 @@ public class GuiSimpleSpacing implements IGuiElementType<ISimpleSpacingControlle
 		public void initializeBounds() {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingX(), -controller.getSpacingY(), -controller.getSpacingX(),
+					-controller.getSpacingY());
 			clip.setAsIntersection(this.element);
 		}
 
@@ -100,8 +100,8 @@ public class GuiSimpleSpacing implements IGuiElementType<ISimpleSpacingControlle
 		public void updateBounds() {
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingX(), -controller.getSpacingY(), -controller.getSpacingX(),
+					-controller.getSpacingY());
 			clip.setAsIntersection(this.element);
 		}
 

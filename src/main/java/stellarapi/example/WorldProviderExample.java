@@ -199,8 +199,7 @@ public class WorldProviderExample extends WorldProvider {
 
 	public float getMixedBrightnessOnBlock(BlockPos pos) {
 		IBlockState state = worldObj.getBlockState(pos);
-		return (((state.getBlock().getPackedLightmapCoords(state, worldObj, pos) & 0xff)) >> 4)
-				* 0.005f;
+		return (((state.getBlock().getPackedLightmapCoords(state, worldObj, pos) & 0xff)) >> 4) * 0.005f;
 	}
 
 	@Override
@@ -258,7 +257,6 @@ public class WorldProviderExample extends WorldProvider {
 		return f2 * f2 * 0.5F;
 	}
 
-	
 	/**
 	 * Returns a new chunk provider which generates chunks for this world
 	 */
@@ -293,7 +291,7 @@ public class WorldProviderExample extends WorldProvider {
 	public boolean canRespawnHere() {
 		return parProvider.canRespawnHere();
 	}
-	
+
 	/**
 	 * the y level at which clouds are rendered.
 	 */
@@ -339,13 +337,12 @@ public class WorldProviderExample extends WorldProvider {
 	public boolean doesXZShowFog(int x, int z) {
 		return parProvider.doesXZShowFog(x, z);
 	}
-	
+
 	@Override
-    public BiomeProvider getBiomeProvider()
-    {
-        return parProvider.getBiomeProvider();
-    }
-	
+	public BiomeProvider getBiomeProvider() {
+		return parProvider.getBiomeProvider();
+	}
+
 	@Override
 	public boolean doesWaterVaporize() {
 		return parProvider.doesWaterVaporize();
@@ -355,21 +352,22 @@ public class WorldProviderExample extends WorldProvider {
 	public boolean getHasNoSky() {
 		return parProvider.getHasNoSky();
 	}
-	
+
 	@Override
 	public float[] getLightBrightnessTable() {
 		return parProvider.getLightBrightnessTable();
 	}
-	
+
 	@Override
 	public WorldBorder createWorldBorder() {
 		return parProvider.createWorldBorder();
 	}
 
 	/*
-	 * ======================================= Forge Start =========================================
+	 * ======================================= Forge Start
+	 * =========================================
 	 */
-	
+
 	/**
 	 * Sets the providers current dimension ID, used in default getSaveFolder()
 	 * Added to allow default providers to be registered for multiple
@@ -382,11 +380,11 @@ public class WorldProviderExample extends WorldProvider {
 	public void setDimension(int dim) {
 		parProvider.setDimension(dim);
 	}
-    public int getDimension()
-    {
-        return parProvider.getDimension();
-    }
-    
+
+	public int getDimension() {
+		return parProvider.getDimension();
+	}
+
 	/**
 	 * Returns the sub-folder of the world folder that this WorldProvider saves
 	 * to. EXA: DIM1, DIM-1
@@ -505,7 +503,8 @@ public class WorldProviderExample extends WorldProvider {
 	}
 
 	/*
-	 * ======================================= Start Moved From World =========================================
+	 * ======================================= Start Moved From World
+	 * =========================================
 	 */
 
 	@Override
@@ -608,56 +607,52 @@ public class WorldProviderExample extends WorldProvider {
 		return parProvider.canDoRainSnowIce(chunk);
 	}
 
-    /**
-     * Called when a Player is added to the provider's world.
-     */
+	/**
+	 * Called when a Player is added to the provider's world.
+	 */
 	@Override
-    public void onPlayerAdded(EntityPlayerMP p_186061_1_)
-    {
-    	parProvider.onPlayerAdded(p_186061_1_);
-    }
+	public void onPlayerAdded(EntityPlayerMP p_186061_1_) {
+		parProvider.onPlayerAdded(p_186061_1_);
+	}
 
-    /**
-     * Called when a Player is removed from the provider's world.
-     */
+	/**
+	 * Called when a Player is removed from the provider's world.
+	 */
 	@Override
-    public void onPlayerRemoved(EntityPlayerMP p_186062_1_)
-    {
-    	parProvider.onPlayerRemoved(p_186062_1_);
-    }
+	public void onPlayerRemoved(EntityPlayerMP p_186062_1_) {
+		parProvider.onPlayerRemoved(p_186062_1_);
+	}
 
 	@Override
-    public DimensionType getDimensionType() {
-    	return parProvider.getDimensionType();
-    }
+	public DimensionType getDimensionType() {
+		return parProvider.getDimensionType();
+	}
 
-    /**
-     * Called when the world is performing a save. Only used to save the state of the Dragon Boss fight in
-     * WorldProviderEnd in Vanilla.
-     */
+	/**
+	 * Called when the world is performing a save. Only used to save the state
+	 * of the Dragon Boss fight in WorldProviderEnd in Vanilla.
+	 */
 	@Override
-    public void onWorldSave()
-    {
-    	parProvider.onWorldSave();
-    }
+	public void onWorldSave() {
+		parProvider.onWorldSave();
+	}
 
-    /**
-     * Called when the world is updating entities. Only used in WorldProviderEnd to update the DragonFightManager in
-     * Vanilla.
-     */
+	/**
+	 * Called when the world is updating entities. Only used in WorldProviderEnd
+	 * to update the DragonFightManager in Vanilla.
+	 */
 	@Override
-    public void onWorldUpdateEntities()
-    {
-    	parProvider.onWorldUpdateEntities();
-    }
+	public void onWorldUpdateEntities() {
+		parProvider.onWorldUpdateEntities();
+	}
 
-    /**
-     * Called to determine if the chunk at the given chunk coordinates within the provider's world can be dropped. Used
-     * in WorldProviderSurface to prevent spawn chunks from being unloaded.
-     */
+	/**
+	 * Called to determine if the chunk at the given chunk coordinates within
+	 * the provider's world can be dropped. Used in WorldProviderSurface to
+	 * prevent spawn chunks from being unloaded.
+	 */
 	@Override
-    public boolean canDropChunk(int x, int z)
-    {
-        return parProvider.canDropChunk(x, z);
-    }
+	public boolean canDropChunk(int x, int z) {
+		return parProvider.canDropChunk(x, z);
+	}
 }

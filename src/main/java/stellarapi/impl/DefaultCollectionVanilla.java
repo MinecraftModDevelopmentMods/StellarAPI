@@ -9,10 +9,10 @@ import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 
 public class DefaultCollectionVanilla implements ICelestialCollection {
-	
+
 	public final DefaultSun sun;
 	public final DefaultMoon moon;
-	
+
 	public DefaultCollectionVanilla(World world) {
 		this.sun = new DefaultSun(world);
 		this.moon = new DefaultMoon(world);
@@ -31,17 +31,17 @@ public class DefaultCollectionVanilla implements ICelestialCollection {
 	@Override
 	public ImmutableSet<ICelestialObject> getObjectInRange(SpCoord pos, double radius) {
 		ImmutableSet.Builder<ICelestialObject> builder = ImmutableSet.builder();
-		if(pos.distanceTo(sun.getCurrentHorizontalPos()) < radius)
+		if (pos.distanceTo(sun.getCurrentHorizontalPos()) < radius)
 			builder.add(sun);
-		if(pos.distanceTo(moon.getCurrentHorizontalPos()) < radius)
+		if (pos.distanceTo(moon.getCurrentHorizontalPos()) < radius)
 			builder.add(moon);
 		return builder.build();
 	}
 
 	@Override
 	public ICelestialObject getNearerObject(SpCoord pos, ICelestialObject obj1, ICelestialObject obj2) {
-		return (pos.distanceTo(obj1.getCurrentHorizontalPos())
-				< pos.distanceTo(obj2.getCurrentHorizontalPos()))? obj1 : obj2;
+		return (pos.distanceTo(obj1.getCurrentHorizontalPos()) < pos.distanceTo(obj2.getCurrentHorizontalPos())) ? obj1
+				: obj2;
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package stellarapi.lib.gui;
 
 public abstract class PositionSimple implements IGuiPosition {
-	
+
 	private RectangleBound bound;
-	
+
 	@Override
 	public IRectangleBound getElementBound() {
 		return this.bound;
@@ -18,8 +18,9 @@ public abstract class PositionSimple implements IGuiPosition {
 	public IRectangleBound getAdditionalBound(String boundName) {
 		return null;
 	}
-	
+
 	public abstract RectangleBound getBound();
+
 	public abstract void updateBound(RectangleBound bound);
 
 	@Override

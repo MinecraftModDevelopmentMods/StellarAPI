@@ -6,15 +6,15 @@ import stellarapi.lib.gui.IGuiElementType;
 import stellarapi.lib.gui.IRenderer;
 
 /**
- * Core Gui Element for dynamic structures.
- * Can implement replaceable elements with this Gui.
- * */
+ * Core Gui Element for dynamic structures. Can implement replaceable elements
+ * with this Gui.
+ */
 public class GuiDynamic implements IGuiElementType<IDynamicController> {
-	
+
 	private GuiElement subElement;
 	private GuiPositionHierarchy positions;
 	private IDynamicController controller;
-	
+
 	public static GuiElement<IDynamicController> asElement(IDynamicController controller) {
 		return new GuiElement<IDynamicController>(new GuiDynamic(), controller);
 	}
@@ -24,20 +24,20 @@ public class GuiDynamic implements IGuiElementType<IDynamicController> {
 		this.positions = positions;
 		this.controller = controller;
 		this.subElement = controller.generateElement();
-		
+
 		subElement.initialize(this.positions);
 	}
 
 	@Override
 	public void updateElement() {
-		if(controller.needUpdate()) {
+		if (controller.needUpdate()) {
 			this.subElement = controller.generateElement();
 			positions.clearChild();
-			
+
 			subElement.initialize(this.positions);
 			positions.initializeBounds();
 		}
-		
+
 		subElement.getType().updateElement();
 	}
 
@@ -45,7 +45,7 @@ public class GuiDynamic implements IGuiElementType<IDynamicController> {
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		subElement.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
+
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		subElement.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);

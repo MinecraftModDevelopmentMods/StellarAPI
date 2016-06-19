@@ -7,7 +7,8 @@ public class TextStyle {
 	private boolean underlineStyle = false;
 	private boolean strikethroughStyle = false;
 
-	public TextStyle() { }
+	public TextStyle() {
+	}
 
 	public TextStyle setShaded(boolean shadedStyle) {
 		this.shadedStyle = shadedStyle;
@@ -55,8 +56,7 @@ public class TextStyle {
 	}
 
 	public void reset() {
-		this.shadedStyle = this.boldStyle = this.italicStyle
-				= this.underlineStyle = this.strikethroughStyle = false;
+		this.shadedStyle = this.boldStyle = this.italicStyle = this.underlineStyle = this.strikethroughStyle = false;
 	}
 
 	public void set(TextStyle newStyle) {

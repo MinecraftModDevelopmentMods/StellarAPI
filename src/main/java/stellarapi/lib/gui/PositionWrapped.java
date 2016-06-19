@@ -1,11 +1,11 @@
 package stellarapi.lib.gui;
 
 public class PositionWrapped implements IGuiPosition {
-	
+
 	private IGuiPosition wrapped, reference;
 	private String referenceBoundName;
 	private boolean isElement;
-	
+
 	public PositionWrapped(IGuiPosition wrapped, IGuiPosition reference, String refBoundName, boolean isElement) {
 		this.wrapped = wrapped;
 		this.reference = reference;
@@ -25,9 +25,10 @@ public class PositionWrapped implements IGuiPosition {
 
 	@Override
 	public IRectangleBound getAdditionalBound(String boundName) {
-		if(boundName.equals(this.referenceBoundName))
-			return this.isElement? reference.getElementBound() : reference.getClipBound();
-		else return wrapped.getAdditionalBound(boundName);
+		if (boundName.equals(this.referenceBoundName))
+			return this.isElement ? reference.getElementBound() : reference.getClipBound();
+		else
+			return wrapped.getAdditionalBound(boundName);
 	}
 
 	@Override

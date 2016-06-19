@@ -6,7 +6,7 @@ import stellarapi.api.optics.Wavelength;
 
 /**
  * Default implementation of sky.
- * */
+ */
 public class DefaultSkyVanilla implements ISkyEffect {
 
 	@Override

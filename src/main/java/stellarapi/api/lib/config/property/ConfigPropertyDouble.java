@@ -4,52 +4,53 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Property.Type;
 
 public class ConfigPropertyDouble extends ConfigPropertySingle {
-	
+
 	private double defaultValue;
 	private double currentValue;
-	
+
 	public ConfigPropertyDouble(String configKey, String dataKey, double defaultValue) {
 		super(configKey, dataKey);
 		this.currentValue = this.defaultValue = defaultValue;
 	}
-	
+
 	public double getDouble() {
 		return this.currentValue;
 	}
-	
+
 	public void setDouble(double value) {
 		this.currentValue = value;
 	}
-	
+
 	public void setMaxValue(double maxValue) {
 		property.setMaxValue(maxValue);
 	}
-	
+
 	public void setMinValue(double minValue) {
 		property.setMinValue(minValue);
 	}
-	
+
 	@Override
 	protected String getDefaultValue() {
 		return Double.toString(this.defaultValue);
 	}
-	
+
 	@Override
 	public void setAsDefault() {
 		this.currentValue = this.defaultValue;
 	}
-	
+
 	@Override
 	public void setAsProperty(ConfigProperty property) {
-		if(property instanceof ConfigPropertyDouble)
+		if (property instanceof ConfigPropertyDouble)
 			this.currentValue = ((ConfigPropertyDouble) property).currentValue;
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		if(compound.hasKey(this.dataKey))
+		if (compound.hasKey(this.dataKey))
 			this.currentValue = compound.getDouble(this.dataKey);
-		else this.currentValue = this.defaultValue;
+		else
+			this.currentValue = this.defaultValue;
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class ConfigPropertyDouble extends ConfigPropertySingle {
 	public void loadFromConfig() {
 		this.currentValue = property.getDouble(this.defaultValue);
 	}
-	
+
 	@Override
 	public void saveToConfig() {
 		property.set(this.currentValue);

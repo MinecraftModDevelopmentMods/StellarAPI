@@ -14,11 +14,11 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 	private ISpacingButtonController controller;
 	private GuiElement subElement;
 	private boolean isClicking, mouseOver;
-	
+
 	public GuiSpacingButton(GuiElement subElement) {
 		this.subElement = subElement;
 	}
-	
+
 	@Override
 	public void initialize(GuiPositionHierarchy positions, ISpacingButtonController controller) {
 		this.position = positions.getPosition();
@@ -37,14 +37,14 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 		IRectangleBound bound = position.getClipBound();
 		IRectangleBound subBound = subPosition.getClipBound();
 
-        if(controller.canClick(eventButton))
-    		if(bound.isInBound(mouseX, mouseY) && (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY)))
-    		{
-    			this.isClicking = true;
-    			controller.onClicked(eventButton);
-    		}
+		if (controller.canClick(eventButton))
+			if (bound.isInBound(mouseX, mouseY)
+					&& (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY))) {
+				this.isClicking = true;
+				controller.onClicked(eventButton);
+			}
 	}
-	
+
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		subElement.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
@@ -56,12 +56,12 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 		IRectangleBound bound = position.getClipBound();
 		IRectangleBound subBound = subPosition.getClipBound();
 
-        if(controller.canClick(eventButton))
-    		if(bound.isInBound(mouseX, mouseY) && (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY)))
-    		{
-    			this.isClicking = false;
-    			controller.onClickEnded(eventButton);
-    		}
+		if (controller.canClick(eventButton))
+			if (bound.isInBound(mouseX, mouseY)
+					&& (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY))) {
+				this.isClicking = false;
+				controller.onClickEnded(eventButton);
+			}
 	}
 
 	@Override
@@ -75,30 +75,31 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 		IRectangleBound clipBound = position.getClipBound();
 		IRectangleBound subBound = subPosition.getClipBound();
 
-		boolean newHover = clipBound.isInBound(mouseX, mouseY) && (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY));
+		boolean newHover = clipBound.isInBound(mouseX, mouseY)
+				&& (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY));
 		controller.updateHovering(newHover);
 		this.mouseOver = newHover;
 	}
-	
+
 	@Override
 	public void render(IRenderer renderer) {
 		IRectangleBound clipBound = position.getClipBound();
-		if(clipBound.isEmpty())
+		if (clipBound.isEmpty())
 			return;
-		
+
 		IRectangleBound elementBound = position.getElementBound();
-		
+
 		renderer.startRender();
 		controller.setupRenderer(this.mouseOver, renderer);
 		String main = controller.setupMain(this.mouseOver, renderer);
-		if(main != null)
+		if (main != null)
 			renderer.render(main, elementBound, clipBound);
 
 		String overlay = controller.setupOverlay(this.mouseOver, renderer);
-		if(overlay != null)
+		if (overlay != null)
 			renderer.render(overlay, elementBound, clipBound);
 		renderer.endRender();
-		
+
 		subElement.getType().render(renderer);
 	}
 
@@ -124,8 +125,8 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 		public void initializeBounds() {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
-			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
-					-controller.getSpacingRight(), -controller.getSpacingDown());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(), -controller.getSpacingRight(),
+					-controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 
@@ -133,8 +134,8 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 		public void updateBounds() {
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
-					-controller.getSpacingRight(), -controller.getSpacingDown());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(), -controller.getSpacingRight(),
+					-controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 

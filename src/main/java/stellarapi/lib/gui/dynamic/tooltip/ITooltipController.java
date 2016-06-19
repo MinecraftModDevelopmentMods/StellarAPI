@@ -7,22 +7,22 @@ import stellarapi.lib.gui.IFontHelper;
 import stellarapi.lib.gui.IRenderer;
 
 public interface ITooltipController extends IElementController {
-	
-	/**The tooltip has clip or not*/
+
+	/** The tooltip has clip or not */
 	public boolean hasClip();
-		
-	/**Must have background*/
+
+	/** Must have background */
 	public String setupBackground(StringFormat info, IRenderer renderer);
-	
-	/**Context for each line*/
+
+	/** Context for each line */
 	public List<String> getLineContext(StringFormat info);
-	
-	/**Setup for each line*/
+
+	/** Setup for each line */
 	public void setupTooltip(String context, IRenderer renderer);
 
 	public float getSpacingX();
-	public float getSpacingY();
 
+	public float getSpacingY();
 
 	/** Gets renderable text from context. */
 	public String toRenderableText(String context);

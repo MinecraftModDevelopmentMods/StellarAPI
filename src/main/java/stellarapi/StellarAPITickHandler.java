@@ -23,51 +23,55 @@ import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.reference.OpticalViewerEventCallback;
 
 public class StellarAPITickHandler {
-	
+
 	private Field sleep;
-			
+
 	public StellarAPITickHandler() {
 		sleep = getField(WorldServer.class, "allPlayersSleeping", "field_73068_P");
 	}
-	
+
 	public static Field getField(Class<?> clazz, String... fieldNames) {
-		return ReflectionHelper.findField(clazz, ObfuscationReflectionHelper.remapFieldNames(clazz.getName(), fieldNames));
+		return ReflectionHelper.findField(clazz,
+				ObfuscationReflectionHelper.remapFieldNames(clazz.getName(), fieldNames));
 	}
-	
+
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent e) {
 		EnumHand hand = e.getEntityLiving().getActiveHand();
-		ItemStack itemstack = hand != null? e.getEntityLiving().getHeldItem(e.getEntityLiving().getActiveHand()) : null;
+		ItemStack itemstack = hand != null ? e.getEntityLiving().getHeldItem(e.getEntityLiving().getActiveHand())
+				: null;
 		ItemStack itemInUse = LivingItemAccessHelper.getUsingItem(e.getEntityLiving());
 
 		if (itemInUse != null) {
-			CheckSameOpticalItemEvent checkEvent = new CheckSameOpticalItemEvent(e.getEntityLiving(), itemstack, itemInUse);
+			CheckSameOpticalItemEvent checkEvent = new CheckSameOpticalItemEvent(e.getEntityLiving(), itemstack,
+					itemInUse);
 			boolean flag = StellarAPIReference.getEventBus().post(checkEvent);
 
-			if(flag || !checkEvent.isSame()) {
+			if (flag || !checkEvent.isSame()) {
 				ApplyOpticalItemEvent applyEvent = new ApplyOpticalItemEvent(e.getEntityLiving(), itemInUse);
 				StellarAPIReference.getEventBus().post(applyEvent);
 
-				if(applyEvent.isViewScope() || applyEvent.isOpticalFilter())
+				if (applyEvent.isViewScope() || applyEvent.isOpticalFilter())
 					e.getEntityLiving().resetActiveHand();
-				if(applyEvent.isViewScope())
+				if (applyEvent.isViewScope())
 					StellarAPIReference.updateScope(e.getEntityLiving());
-				if(applyEvent.isOpticalFilter())
+				if (applyEvent.isOpticalFilter())
 					StellarAPIReference.updateFilter(e.getEntityLiving());
-			} else if(itemstack != itemInUse)
+			} else if (itemstack != itemInUse)
 				LivingItemAccessHelper.setUsingItem(e.getEntityLiving(), itemstack);
 		}
-		
-		IOpticalViewer viewer = e.getEntityLiving().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
-		if(viewer instanceof OpticalViewerEventCallback)
-			((OpticalViewerEventCallback)viewer).update();
+
+		IOpticalViewer viewer = e.getEntityLiving().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
+				EnumFacing.DOWN);
+		if (viewer instanceof OpticalViewerEventCallback)
+			((OpticalViewerEventCallback) viewer).update();
 	}
-		
+
 	@SubscribeEvent
 	public void tickStart(TickEvent.WorldTickEvent e) {
-		if(e.phase == TickEvent.Phase.START){
-			if(e.world != null) {
-				if(StellarAPIReference.getSleepWakeManager().isEnabled()) {
+		if (e.phase == TickEvent.Phase.START) {
+			if (e.world != null) {
+				if (StellarAPIReference.getSleepWakeManager().isEnabled()) {
 					WorldServer world = (WorldServer) e.world;
 
 					world.updateAllPlayersSleepingFlag();
@@ -86,28 +90,25 @@ public class StellarAPITickHandler {
 		}
 	}
 
-	private void tryWakePlayers(WorldServer world) {		
-        if (world.getGameRules().getBoolean("doDaylightCycle"))
-        {
-        	WorldInfo info = world.getWorldInfo();
-        	long worldTime = info.getWorldTime();
-            info.setWorldTime(StellarAPIReference.getSleepWakeManager().getWakeTime(
-            		world, (world.getWorldTime() / 24000L + 1L) * 24000L));
-        }
+	private void tryWakePlayers(WorldServer world) {
+		if (world.getGameRules().getBoolean("doDaylightCycle")) {
+			WorldInfo info = world.getWorldInfo();
+			long worldTime = info.getWorldTime();
+			info.setWorldTime(StellarAPIReference.getSleepWakeManager().getWakeTime(world,
+					(world.getWorldTime() / 24000L + 1L) * 24000L));
+		}
 
-        Iterator iterator = world.playerEntities.iterator();
+		Iterator iterator = world.playerEntities.iterator();
 
-        while (iterator.hasNext())
-        {
-            EntityPlayer entityplayer = (EntityPlayer)iterator.next();
+		while (iterator.hasNext()) {
+			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
-            if (entityplayer.isPlayerSleeping())
-            {
-                entityplayer.wakeUpPlayer(false, false, true);
-            }
-        }
+			if (entityplayer.isPlayerSleeping()) {
+				entityplayer.wakeUpPlayer(false, false, true);
+			}
+		}
 
-        world.provider.resetRainAndThunder();
+		world.provider.resetRainAndThunder();
 	}
 
 }

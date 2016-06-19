@@ -12,29 +12,32 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import stellarapi.api.interact.IViewScopeItem;
 import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.NakedScope;
 import stellarapi.api.optics.Wavelength;
 
 /**
- * Example for telescope item which gets activated any time the player press the right click to use the item.
- * */
+ * Example for telescope item which gets activated any time the player press the
+ * right click to use the item.
+ */
 public class ItemTelescopeExample extends Item implements IViewScopeItem {
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		this.onUse(player, hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
-	
+
 	@Override
-    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos,
+			EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		this.onUse(player, hand);
 		return EnumActionResult.SUCCESS;
-    }
-	
+	}
+
 	public void onUse(EntityPlayer player, EnumHand hand) {
 		player.setActiveHand(hand);
 	}
-	
+
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return Integer.MAX_VALUE;
@@ -50,7 +53,7 @@ public class ItemTelescopeExample extends Item implements IViewScopeItem {
 
 			@Override
 			public double getResolution(Wavelength wl) {
-				return 0.1;
+				return NakedScope.DEFAULT_RESOLUTION / 3.0;
 			}
 
 			@Override

@@ -24,9 +24,10 @@ public class StellarAPIForgeEventHook {
 
 	@SubscribeEvent
 	public void onStartUsingItem(LivingEntityUseItemEvent.Start event) {
-		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
+		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
+				EnumFacing.DOWN);
 
-		if(optics instanceof OpticalViewerEventCallback) {
+		if (optics instanceof OpticalViewerEventCallback) {
 			ApplyOpticalItemEvent applyEvent = new ApplyOpticalItemEvent(event.getEntityLiving(), event.getItem());
 			StellarAPIReference.getEventBus().post(applyEvent);
 
@@ -34,30 +35,31 @@ public class StellarAPIForgeEventHook {
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), event.getItem());
 
 			OpticalViewerEventCallback callback = (OpticalViewerEventCallback) optics;
-			
-			if(applyEvent.isViewScope())
+
+			if (applyEvent.isViewScope())
 				callback.updateScope();
-			if(applyEvent.isOpticalFilter())
+			if (applyEvent.isOpticalFilter())
 				callback.updateFilter();
 
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), previous);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onStopUsingItem(LivingEntityUseItemEvent.Stop event) {
 		this.onEndItemUse(event);
 	}
-	
+
 	@SubscribeEvent
 	public void onFinishUsingItem(LivingEntityUseItemEvent.Finish event) {
 		this.onEndItemUse(event);
 	}
-	
+
 	private void onEndItemUse(LivingEntityUseItemEvent event) {
-		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
-		
-		if(optics instanceof OpticalViewerEventCallback) {
+		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
+				EnumFacing.DOWN);
+
+		if (optics instanceof OpticalViewerEventCallback) {
 			ApplyOpticalItemEvent applyEvent = new ApplyOpticalItemEvent(event.getEntityLiving(), event.getItem());
 			StellarAPIReference.getEventBus().post(applyEvent);
 
@@ -65,59 +67,60 @@ public class StellarAPIForgeEventHook {
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), null);
 
 			OpticalViewerEventCallback callback = (OpticalViewerEventCallback) optics;
-			
-			if(applyEvent.isViewScope())
+
+			if (applyEvent.isViewScope())
 				callback.updateScope();
-			if(applyEvent.isOpticalFilter())
+			if (applyEvent.isOpticalFilter())
 				callback.updateFilter();
 
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), previous);
 		}
 	}
-	
-	
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldLoad(WorldEvent.Load event) {
-		if(event.getWorld().isRemote)
-			StellarAPIReference.getEventBus().post(new ClientWorldEvent.Load(event.getWorld(), StellarAPI.proxy.getLoadingProgress()));
+		if (event.getWorld().isRemote)
+			StellarAPIReference.getEventBus()
+					.post(new ClientWorldEvent.Load(event.getWorld(), StellarAPI.proxy.getLoadingProgress()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
-			if(!PerServerManager.isInitiated(server)) {
+			if (!PerServerManager.isInitiated(server)) {
 				StellarAPIReference.getEventBus().post(new ServerWorldEvent.Initial(server, server.getEntityWorld()));
 				PerServerManager.initiatePerServerManager(server);
 			}
-			
+
 			StellarAPIReference.getEventBus().post(new ServerWorldEvent.Load(server, event.getWorld()));
 		}
 	}
-	
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldUnload(WorldEvent.Unload event) {
-		if(event.getWorld().isRemote)
-			StellarAPIReference.getEventBus().post(new ClientWorldEvent.Unload(event.getWorld(), StellarAPI.proxy.getLoadingProgress()));
+		if (event.getWorld().isRemote)
+			StellarAPIReference.getEventBus()
+					.post(new ClientWorldEvent.Unload(event.getWorld(), StellarAPI.proxy.getLoadingProgress()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
 			StellarAPIReference.getEventBus().post(new ServerWorldEvent.Unload(server, event.getWorld()));
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onSleepInBed(PlayerSleepInBedEvent event) {
-		if(!StellarAPIReference.getSleepWakeManager().isEnabled() || event.getEntityPlayer().worldObj.isRemote) {
+		if (!StellarAPIReference.getSleepWakeManager().isEnabled() || event.getEntityPlayer().worldObj.isRemote) {
 			return;
 		}
-		
-		if(event.getResultStatus() == null || event.getResultStatus() == SleepResult.OK || event.getResultStatus() == SleepResult.NOT_POSSIBLE_NOW) {
+
+		if (event.getResultStatus() == null || event.getResultStatus() == SleepResult.OK
+				|| event.getResultStatus() == SleepResult.NOT_POSSIBLE_NOW) {
 			World worldObj = event.getEntityPlayer().worldObj;
-			
-			event.setResult(StellarAPIReference.getSleepWakeManager()
-					.getSleepPossibility(worldObj, event.getResultStatus()));
+
+			event.setResult(
+					StellarAPIReference.getSleepWakeManager().getSleepPossibility(worldObj, event.getResultStatus()));
 		}
-		
-		if(event.getResultStatus() == SleepResult.OK)
-		{
-	        event.getEntityPlayer().worldObj.updateAllPlayersSleepingFlag();
-	        event.setResult((SleepResult)null);
+
+		if (event.getResultStatus() == SleepResult.OK) {
+			event.getEntityPlayer().worldObj.updateAllPlayersSleepingFlag();
+			event.setResult((SleepResult) null);
 		}
 	}
 }

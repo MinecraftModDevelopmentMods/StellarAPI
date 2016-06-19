@@ -23,21 +23,21 @@ public abstract class SimpleNBTConfig extends SimpleConfigHandler implements INB
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		for(ConfigProperty property : this.listProperties)
+		for (ConfigProperty property : this.listProperties)
 			property.readFromNBT(compound);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
-		for(ConfigProperty property : this.listProperties)
+		for (ConfigProperty property : this.listProperties)
 			property.writeToNBT(compound);
 	}
 
 	@Override
 	public abstract INBTConfig copy();
-	
+
 	protected void applyCopy(SimpleNBTConfig config) {
-		for(ConfigProperty property : config.listProperties)
+		for (ConfigProperty property : config.listProperties)
 			property.setAsProperty(mapProperties.get(property.getConfigName()));
 	}
 

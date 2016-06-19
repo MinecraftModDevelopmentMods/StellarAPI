@@ -26,68 +26,70 @@ import stellarapi.api.optics.NakedFilter;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 
 public class StellarAPIClientForgeEventHook {
-	
+
 	private static final Field lightMapField = ReflectionHelper.findField(EntityRenderer.class,
-			ObfuscationReflectionHelper.remapFieldNames(EntityRenderer.class.getName(), "lightmapTexture", "field_78513_d"));
-	
+			ObfuscationReflectionHelper.remapFieldNames(EntityRenderer.class.getName(), "lightmapTexture",
+					"field_78513_d"));
+
 	private static final Field lightMapUpdatedField = ReflectionHelper.findField(EntityRenderer.class,
-			ObfuscationReflectionHelper.remapFieldNames(EntityRenderer.class.getName(), "lightmapUpdateNeeded", "field_78536_aa"));
-	
+			ObfuscationReflectionHelper.remapFieldNames(EntityRenderer.class.getName(), "lightmapUpdateNeeded",
+					"field_78536_aa"));
+
 	static {
 		try {
 			Field modifiersField = Field.class.getDeclaredField("modifiers");
 			modifiersField.setAccessible(true);
-			modifiersField.setInt(lightMapField, lightMapField.getModifiers() & ~ Modifier.FINAL);
-		} catch(Exception exc) {
+			modifiersField.setInt(lightMapField, lightMapField.getModifiers() & ~Modifier.FINAL);
+		} catch (Exception exc) {
 			Throwables.propagate(exc);
 		}
 	}
-	
+
 	private OverlayHandler overlay;
-	
+
 	public StellarAPIClientForgeEventHook(OverlayHandler overlay) {
 		this.overlay = overlay;
 	}
-	
+
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onUpdateFOV(EntityViewRenderEvent.FOVModifier event) {
 		IViewScope scope = StellarAPIReference.getScope(event.getEntity());
-		if(scope.forceChange())
-			event.setFOV(70.0F / (float)scope.getMP());
-		else event.setFOV(event.getFOV() / (float)scope.getMP());
+		if (scope.forceChange())
+			event.setFOV(70.0F / (float) scope.getMP());
+		else
+			event.setFOV(event.getFOV() / (float) scope.getMP());
 	}
-	
+
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
 		IViewScope scope = StellarAPIReference.getScope(event.getEntity());
 		IOpticalFilter filter = StellarAPIReference.getFilter(event.getEntity());
-		
+
 		double multiplier = scope.getLGP() / (scope.getMP() * scope.getMP());
-		
-		double[] value = EyeDetector.getInstance().process(multiplier, filter, new double[] {
-				event.getRed(), event.getGreen(), event.getBlue()});
+
+		double[] value = EyeDetector.getInstance().process(multiplier, filter,
+				new double[] { event.getRed(), event.getGreen(), event.getBlue() });
 		event.setRed((float) value[0]);
 		event.setGreen((float) value[1]);
 		event.setBlue((float) value[2]);
-		
-		if(multiplier != 1.0 || !(filter instanceof NakedFilter)) {
+
+		if (multiplier != 1.0 || !(filter instanceof NakedFilter)) {
 			DynamicTexture texture;
 			try {
 				texture = (DynamicTexture) lightMapField.get(event.getRenderer());
 
-				for(int i = 0; i < 255; i++)
-				{
+				for (int i = 0; i < 255; i++) {
 					int data = texture.getTextureData()[i];
 					int red = ((data & 0x00ff0000) >> 16);
 					int green = ((data & 0x0000ff00) >> 8);
 					int blue = data & 0x000000ff;
-					
-					double[] modified = EyeDetector.getInstance().process(multiplier, filter, new double[] {
-							red / 255.0, green / 255.0, blue / 255.0});
-					
-					red = Math.min(0xff, (int)(modified[0]*0xff));
-					green = Math.min(0xff, (int)(modified[1]*0xff));
-					blue = Math.min(0xff, (int)(modified[2]*0xff));
+
+					double[] modified = EyeDetector.getInstance().process(multiplier, filter,
+							new double[] { red / 255.0, green / 255.0, blue / 255.0 });
+
+					red = Math.min(0xff, (int) (modified[0] * 0xff));
+					green = Math.min(0xff, (int) (modified[1] * 0xff));
+					blue = Math.min(0xff, (int) (modified[2] * 0xff));
 
 					texture.getTextureData()[i] = 255 << 24 | red << 16 | green << 8 | blue;
 				}
@@ -101,20 +103,21 @@ public class StellarAPIClientForgeEventHook {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if(event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
+		if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
 			overlay.renderGameOverlay(event.getResolution(), event.getPartialTicks());
 	}
-	
+
 	@SubscribeEvent
 	public void onClientWorldLoadFinish(GuiOpenEvent event) {
-		if(event.getGui() == null) {
+		if (event.getGui() == null) {
 			Minecraft mc = Minecraft.getMinecraft();
-			if(mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
-				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld, StellarAPI.proxy.getLoadingProgress());
-				if(StellarAPIReference.getEventBus().post(loaded))
+			if (mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
+				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld,
+						StellarAPI.proxy.getLoadingProgress());
+				if (StellarAPIReference.getEventBus().post(loaded))
 					event.setCanceled(true);
 				StellarAPIClientFMLEventHook.startChecking();
 			}

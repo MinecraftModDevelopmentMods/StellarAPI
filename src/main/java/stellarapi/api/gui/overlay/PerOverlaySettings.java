@@ -13,43 +13,43 @@ public class PerOverlaySettings extends SimpleConfigHandler {
 	private EnumVerticalPos vertical;
 	private boolean visibleOnMain;
 	private boolean canOnMain;
-	
+
 	private ConfigPropertyString propHorizontal;
 	private ConfigPropertyString propVertical;
 	private ConfigPropertyBoolean propVisibleOnMain;
-	
+
 	void initializeSetttings(EnumHorizontalPos horizontal, EnumVerticalPos vertical, boolean canOnMain) {
 		this.setHorizontal(horizontal);
 		this.setVertical(vertical);
 		this.visibleOnMain = this.canOnMain;
-		
+
 		this.propHorizontal = new ConfigPropertyString("Horizontal_Position", "", horizontal.name());
 		this.propVertical = new ConfigPropertyString("Vertical_Position", "", vertical.name());
 		this.propVisibleOnMain = new ConfigPropertyBoolean("Visible_On_Main", "", canOnMain);
-		
+
 		this.addConfigProperty(this.propHorizontal);
 		this.addConfigProperty(this.propVertical);
 		this.addConfigProperty(this.propVisibleOnMain);
 	}
-	
+
 	@Override
 	public void setupConfig(Configuration config, String category) {
 		super.setupConfig(config, category);
-		
+
 		propHorizontal.setValidValues(EnumHorizontalPos.names);
 		propHorizontal.setComment("Horizontal Position on the Overlay.");
 		propHorizontal.setRequiresMcRestart(false);
-		//propHorizontal.setLanguageKey("config.property.gui.pos.horizontal");
-		
+		// propHorizontal.setLanguageKey("config.property.gui.pos.horizontal");
+
 		propVertical.setValidValues(EnumVerticalPos.names);
 		propVertical.setComment("Vertical Position on the Overlay.");
 		propVertical.setRequiresMcRestart(false);
-		//propVertical.setLanguageKey("config.property.gui.pos.vertical");
-		
+		// propVertical.setLanguageKey("config.property.gui.pos.vertical");
+
 		propVisibleOnMain.setComment("Visibility on Main Overlay.");
 		propVisibleOnMain.setRequiresMcRestart(false);
 	}
-	
+
 	@Override
 	public void loadFromConfig(Configuration config, String category) {
 		super.loadFromConfig(config, category);
@@ -81,11 +81,11 @@ public class PerOverlaySettings extends SimpleConfigHandler {
 	public void setVertical(EnumVerticalPos vertical) {
 		this.vertical = vertical;
 	}
-	
+
 	public boolean isVisibleOnMain() {
 		return this.visibleOnMain;
 	}
-	
+
 	public void setVisibleOnMain(boolean visible) {
 		this.visibleOnMain = visible;
 	}

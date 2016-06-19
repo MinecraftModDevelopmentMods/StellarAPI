@@ -35,20 +35,21 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 		this.controller = controller;
 		this.isHorizontal = controller.isHorizontal();
 		this.progress = controller.initialProgress();
-		
+
 		dragRegion.initialize(positions.addChild(new DragRegionPosition()), new DragRegionController());
 		drag.initialize(positions.addChild(new DragBtnPosition()), new DraggableController());
 	}
 
 	@Override
-	public void updateElement() { }
+	public void updateElement() {
+	}
 
 	@Override
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		dragRegion.mouseClicked(mouseX, mouseY, eventButton);
 		drag.mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
+
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		dragRegion.mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
@@ -62,7 +63,8 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 	}
 
 	@Override
-	public void keyTyped(char eventChar, int eventKey) { }
+	public void keyTyped(char eventChar, int eventKey) {
+	}
 
 	@Override
 	public void checkMousePosition(float mouseX, float mouseY) {
@@ -73,20 +75,19 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 	@Override
 	public void render(IRenderer renderer) {
 		IRectangleBound clipBound = position.getClipBound();
-		if(clipBound.isEmpty())
+		if (clipBound.isEmpty())
 			return;
-		
+
 		renderer.startRender();
 		String background = controller.setupBackgroundRenderer(renderer);
-		if(background != null)
+		if (background != null)
 			renderer.render(background, position.getElementBound(), clipBound);
 		renderer.endRender();
-		
+
 		dragRegion.render(renderer);
 		drag.render(renderer);
 	}
-	
-	
+
 	public class DraggableController implements IButtonDraggableController {
 
 		@Override
@@ -96,18 +97,18 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 
 		@Override
 		public void onDragStart(int eventButton, float dragRatioX, float dragRatioY) {
-			progress = (isHorizontal? dragRatioX : dragRatioY);
+			progress = (isHorizontal ? dragRatioX : dragRatioY);
 		}
 
 		@Override
 		public void onDragging(float dragRatioX, float dragRatioY) {
-			progress = (isHorizontal? dragRatioX : dragRatioY);
+			progress = (isHorizontal ? dragRatioX : dragRatioY);
 			controller.progressUpdating(progress);
 		}
 
 		@Override
 		public void onDragEnded(int eventButton, float dragRatioX, float dragRatioY) {
-			progress = (isHorizontal? dragRatioX : dragRatioY);
+			progress = (isHorizontal ? dragRatioX : dragRatioY);
 			controller.progressUpdated(progress);
 		}
 
@@ -125,31 +126,30 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 		public String setupMain(boolean mouseOver, IRenderer renderer) {
 			return controller.setupButtonMain(mouseOver, renderer);
 		}
-		
+
 	}
-	
+
 	private class DragBtnPosition implements IGuiPosition {
-		
+
 		private RectangleBound element, clip, drag;
-		
+
 		public void initializeBounds() {
 			this.drag = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
 
-			if(isHorizontal) {
-				drag.posY += (drag.height-size) / 2;
+			if (isHorizontal) {
+				drag.posY += (drag.height - size) / 2;
 				drag.height = size;
 				drag.extend(-controller.getSpacing(), 0.0f, -controller.getSpacing(), 0.0f);
 			} else {
-				drag.posX += (drag.width-size) / 2;
+				drag.posX += (drag.width - size) / 2;
 				drag.width = size;
 				drag.extend(0.0f, -controller.getSpacing(), 0.0f, -controller.getSpacing());
 			}
 
 			this.element = new RectangleBound(this.drag);
 
-			if(isHorizontal)
-			{
+			if (isHorizontal) {
 				element.width -= btnSize;
 				element.posX = element.getMainX(progress);
 				element.width = btnSize;
@@ -173,30 +173,30 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 
 		@Override
 		public IRectangleBound getAdditionalBound(String boundName) {
-			if("drag".equals(boundName))
+			if ("drag".equals(boundName))
 				return this.drag;
-			else return null;
+			else
+				return null;
 		}
 
 		@Override
 		public void updateBounds() {
 			drag.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			
-			if(isHorizontal) {
-				drag.posY += (drag.height-size) / 2;
+
+			if (isHorizontal) {
+				drag.posY += (drag.height - size) / 2;
 				drag.height = size;
 				drag.extend(-controller.getSpacing(), 0.0f, -controller.getSpacing(), 0.0f);
 			} else {
-				drag.posX += (drag.width-size) / 2;
+				drag.posX += (drag.width - size) / 2;
 				drag.width = size;
 				drag.extend(0.0f, -controller.getSpacing(), 0.0f, -controller.getSpacing());
 			}
-			
+
 			element.set(this.drag);
-			
-			if(isHorizontal)
-			{
+
+			if (isHorizontal) {
 				element.width -= btnSize;
 				element.posX = element.getMainX(progress);
 				element.width = btnSize;
@@ -212,9 +212,8 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 		public void updateAnimation(float partialTicks) {
 			this.updateBounds();
 		}
-		
-	}
 
+	}
 
 	private class DragRegionController implements IButtonDetectorController {
 		@Override
@@ -224,18 +223,19 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 
 		@Override
 		public void onClicked(int eventButton, float ratioX, float ratioY) {
-			if(controller.moveCenterOnClick())
-			{
-				progress = isHorizontal? ratioX : ratioY;
+			if (controller.moveCenterOnClick()) {
+				progress = isHorizontal ? ratioX : ratioY;
 				controller.progressUpdated(progress);
 			}
 		}
 
 		@Override
-		public void onClicking(float ratioX, float ratioY) { }
+		public void onClicking(float ratioX, float ratioY) {
+		}
 
 		@Override
-		public void onClickEnded(int eventButton, float ratioX, float ratioY) { }
+		public void onClickEnded(int eventButton, float ratioX, float ratioY) {
+		}
 
 		@Override
 		public void setupRenderer(boolean mouseOver, IRenderer renderer) {
@@ -261,17 +261,17 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
 
-			if(isHorizontal) {
-				element.posY += (element.height-regionSize) / 2;
+			if (isHorizontal) {
+				element.posY += (element.height - regionSize) / 2;
 				element.height = regionSize;
-				if(controller.isRegionCenterToCenter())
-					element.extend(-btnSize/2, 0.0f, -btnSize/2, 0.0f);
+				if (controller.isRegionCenterToCenter())
+					element.extend(-btnSize / 2, 0.0f, -btnSize / 2, 0.0f);
 				element.extend(-controller.getSpacing(), 0.0f, -controller.getSpacing(), 0.0f);
 			} else {
-				element.posX += (element.width-regionSize) / 2;
+				element.posX += (element.width - regionSize) / 2;
 				element.width = regionSize;
-				if(controller.isRegionCenterToCenter())
-					element.extend(0.0f, -btnSize/2, 0.0f, -btnSize/2);
+				if (controller.isRegionCenterToCenter())
+					element.extend(0.0f, -btnSize / 2, 0.0f, -btnSize / 2);
 				element.extend(0.0f, -controller.getSpacing(), 0.0f, -controller.getSpacing());
 			}
 
@@ -297,18 +297,18 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 		public void updateBounds() {
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			
-			if(isHorizontal) {
-				element.posY += (element.height-regionSize) / 2;
+
+			if (isHorizontal) {
+				element.posY += (element.height - regionSize) / 2;
 				element.height = regionSize;
-				if(controller.isRegionCenterToCenter())
-					element.extend(-btnSize/2, 0.0f, -btnSize/2, 0.0f);
+				if (controller.isRegionCenterToCenter())
+					element.extend(-btnSize / 2, 0.0f, -btnSize / 2, 0.0f);
 				element.extend(-controller.getSpacing(), 0.0f, -controller.getSpacing(), 0.0f);
 			} else {
-				element.posX += (element.width-regionSize) / 2;
+				element.posX += (element.width - regionSize) / 2;
 				element.width = regionSize;
-				if(controller.isRegionCenterToCenter())
-					element.extend(0.0f, -btnSize/2, 0.0f, -btnSize/2);
+				if (controller.isRegionCenterToCenter())
+					element.extend(0.0f, -btnSize / 2, 0.0f, -btnSize / 2);
 				element.extend(0.0f, -controller.getSpacing(), 0.0f, -controller.getSpacing());
 			}
 
@@ -319,6 +319,6 @@ public class GuiScrollBar implements IGuiElementType<IScrollBarController> {
 		public void updateAnimation(float partialTicks) {
 			this.updateBounds();
 		}
-		
+
 	}
 }

@@ -16,13 +16,13 @@ public class StellarAPIConfigScreen extends GuiConfig {
 	public StellarAPIConfigScreen(GuiScreen parentScreen) {
 		super(parentScreen, getConfigElement(), StellarAPI.modid, false, false, "Stellar API");
 	}
-	
+
 	private static List<IConfigElement> getConfigElement() {
 		Configuration config = StellarAPI.instance.getCfgManager().getConfig();
-		
+
 		List<IConfigElement> retList = Lists.newArrayList();
-		for(String category : config.getCategoryNames())
-			if(!category.contains(Configuration.CATEGORY_SPLITTER))
+		for (String category : config.getCategoryNames())
+			if (!category.contains(Configuration.CATEGORY_SPLITTER))
 				retList.add(new ConfigElement(config.getCategory(category)));
 		return retList;
 	}

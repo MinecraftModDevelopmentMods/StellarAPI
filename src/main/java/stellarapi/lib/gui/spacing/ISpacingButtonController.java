@@ -7,9 +7,9 @@ public interface ISpacingButtonController extends ISpacingController, IButtonCon
 
 	/** Handle mouse interaction the element in the spacing */
 	public boolean handleInElement();
-	
+
 	public void updateHovering(boolean newHover);
-	
+
 	@Override
 	@Deprecated
 	public String setupSpacingRenderer(IRenderer renderer);

@@ -4,9 +4,9 @@ import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.Wavelength;
 
 public class ScopeHorseRiding implements IViewScope {
-	
+
 	private IViewScope previous;
-	
+
 	public ScopeHorseRiding(IViewScope previous) {
 		this.previous = previous;
 	}

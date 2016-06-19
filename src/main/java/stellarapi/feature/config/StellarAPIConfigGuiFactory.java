@@ -9,7 +9,8 @@ import net.minecraftforge.fml.client.IModGuiFactory;
 public class StellarAPIConfigGuiFactory implements IModGuiFactory {
 
 	@Override
-	public void initialize(Minecraft minecraftInstance) { }
+	public void initialize(Minecraft minecraftInstance) {
+	}
 
 	@Override
 	public Class<? extends GuiScreen> mainConfigGuiClass() {

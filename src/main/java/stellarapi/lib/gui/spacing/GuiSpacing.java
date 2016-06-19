@@ -13,11 +13,11 @@ public class GuiSpacing implements IGuiElementType<ISpacingController> {
 	private IGuiPosition position;
 	private ISpacingController controller;
 	private GuiElement subElement;
-	
+
 	public GuiSpacing(GuiElement subElement) {
 		this.subElement = subElement;
 	}
-	
+
 	@Override
 	public void initialize(GuiPositionHierarchy positions, ISpacingController controller) {
 		this.position = positions.getPosition();
@@ -34,7 +34,6 @@ public class GuiSpacing implements IGuiElementType<ISpacingController> {
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		subElement.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
 
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
@@ -55,16 +54,16 @@ public class GuiSpacing implements IGuiElementType<ISpacingController> {
 	public void checkMousePosition(float mouseX, float mouseY) {
 		subElement.getType().checkMousePosition(mouseX, mouseY);
 	}
-	
+
 	@Override
 	public void render(IRenderer renderer) {
 		IRectangleBound clipBound = position.getClipBound();
-		if(clipBound.isEmpty())
+		if (clipBound.isEmpty())
 			return;
-		
+
 		renderer.startRender();
 		String model = controller.setupSpacingRenderer(renderer);
-		if(model != null)
+		if (model != null)
 			renderer.render(model, position.getElementBound(), clipBound);
 		renderer.endRender();
 		subElement.getType().render(renderer);
@@ -92,8 +91,8 @@ public class GuiSpacing implements IGuiElementType<ISpacingController> {
 		public void initializeBounds() {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
-			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
-					-controller.getSpacingRight(), -controller.getSpacingDown());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(), -controller.getSpacingRight(),
+					-controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 
@@ -101,8 +100,8 @@ public class GuiSpacing implements IGuiElementType<ISpacingController> {
 		public void updateBounds() {
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(),
-					-controller.getSpacingRight(), -controller.getSpacingDown());
+			element.extend(-controller.getSpacingLeft(), -controller.getSpacingUp(), -controller.getSpacingRight(),
+					-controller.getSpacingDown());
 			clip.setAsIntersection(this.element);
 		}
 

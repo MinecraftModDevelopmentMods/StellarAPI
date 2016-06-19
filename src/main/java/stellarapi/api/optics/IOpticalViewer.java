@@ -4,6 +4,7 @@ package stellarapi.api.optics;
 public interface IOpticalViewer {
 
 	public IViewScope getScope();
+
 	public IOpticalFilter getFilter();
-	
+
 }

@@ -11,56 +11,70 @@ import stellarapi.lib.gui.list.GuiHasFixedList;
 import stellarapi.lib.gui.list.IHasFixedListController;
 
 /**
- * Rollable GUI.
- * Note that the position only include the element to roll.
- * */
+ * Rollable GUI. Note that the position only include the element to roll.
+ */
 public class GuiRollableSimple implements IGuiElementType<IRollableSimpleController> {
 
 	private IGuiPosition position;
 	private IRollableSimpleController controller;
-	
+
 	private GuiLinearMoving mover;
 	private GuiElement elementToRoll, elementToExclude;
 	private float excludedSize;
-	
+
 	private boolean isHorizontal, increaseCoordOnRoll;
 
 	private boolean isRolling;
-	
+
 	public GuiRollableSimple(GuiElement elementToRoll, GuiElement elementToExclude, float excludedSize) {
 		this.elementToRoll = elementToRoll;
 		this.elementToExclude = elementToExclude;
 		this.excludedSize = excludedSize;
 	}
-	
+
 	@Override
 	public void initialize(GuiPositionHierarchy positions, IRollableSimpleController controller) {
 		this.position = positions.getPosition();
 		this.controller = controller;
-		
+
 		this.isHorizontal = controller.isHorizontal();
 		this.increaseCoordOnRoll = controller.increaseCoordOnRoll();
-		
+
 		this.isRolling = controller.shouldBeRolled();
-		
-		GuiHasFixedList guiFixedList = new GuiHasFixedList(this.elementToRoll, this.elementToExclude, this.excludedSize);
+
+		GuiHasFixedList guiFixedList = new GuiHasFixedList(this.elementToRoll, this.elementToExclude,
+				this.excludedSize);
 		GuiElement fixedList = new GuiElement(guiFixedList, new IHasFixedListController() {
 			@Override
-			public boolean isHorizontal() { return isHorizontal; }
+			public boolean isHorizontal() {
+				return isHorizontal;
+			}
+
 			@Override
-			public String setupRenderer(IRenderer renderer) { return null; }
+			public String setupRenderer(IRenderer renderer) {
+				return null;
+			}
+
 			@Override
-			public boolean isModifiableFirst() { return !increaseCoordOnRoll; }
+			public boolean isModifiableFirst() {
+				return !increaseCoordOnRoll;
+			}
+
 			@Override
-			public IGuiPosition wrapFixedPosition(IGuiPosition position, IGuiPosition listPos) { return position; }
+			public IGuiPosition wrapFixedPosition(IGuiPosition position, IGuiPosition listPos) {
+				return position;
+			}
+
 			@Override
-			public IGuiPosition wrapModifiablePosition(IGuiPosition position, IGuiPosition listPos) { return position; }
+			public IGuiPosition wrapModifiablePosition(IGuiPosition position, IGuiPosition listPos) {
+				return position;
+			}
 		});
-		
+
 		this.mover = new GuiLinearMoving(fixedList);
 		mover.initialize(positions.addChild(new RollPosition()), new AnimationController());
 	}
-	
+
 	@Override
 	public void updateElement() {
 		mover.updateElement();
@@ -70,7 +84,7 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		mover.mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
+
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		mover.mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
@@ -95,9 +109,9 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 	public void render(IRenderer renderer) {
 		mover.render(renderer);
 	}
-	
+
 	private class RollPosition implements IGuiPosition {
-		
+
 		private RectangleBound element, clip, animation;
 
 		@Override
@@ -112,9 +126,10 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 
 		@Override
 		public IRectangleBound getAdditionalBound(String boundName) {
-			if(boundName.equals("animation"))
+			if (boundName.equals("animation"))
 				return this.animation;
-			else return null;
+			else
+				return null;
 		}
 
 		@Override
@@ -122,15 +137,15 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
 			this.animation = new RectangleBound(this.element);
-			
+
 			this.extendBounds();
-			
+
 			clip.setAsIntersection(this.element);
 		}
-		
+
 		private void extendBounds() {
-			if(isHorizontal) {
-				if(increaseCoordOnRoll) {
+			if (isHorizontal) {
+				if (increaseCoordOnRoll) {
 					element.extend(excludedSize, 0.0f, 0.0f, 0.0f);
 					clip.extend(excludedSize, 0.0f, 0.0f, 0.0f);
 					animation.extend(excludedSize, 0.0f, animation.width, 0.0f);
@@ -140,7 +155,7 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 					animation.extend(animation.width, 0.0f, excludedSize, 0.0f);
 				}
 			} else {
-				if(increaseCoordOnRoll) {
+				if (increaseCoordOnRoll) {
 					element.extend(0.0f, excludedSize, 0.0f, 0.0f);
 					clip.extend(0.0f, excludedSize, 0.0f, 0.0f);
 					animation.extend(0.0f, excludedSize, 0.0f, animation.height);
@@ -157,9 +172,9 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
 			animation.set(this.element);
-			
+
 			this.extendBounds();
-			
+
 			clip.setAsIntersection(this.element);
 		}
 
@@ -167,11 +182,11 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 		public void updateAnimation(float partialTicks) {
 			this.updateBounds();
 		}
-		
+
 	}
-	
+
 	private class AnimationController implements ILinearMoveController {
-		
+
 		private int duration;
 
 		@Override
@@ -188,22 +203,24 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 		public boolean disableControlOnAnimating() {
 			return true;
 		}
-		
+
 		@Override
 		public boolean forceState() {
-			if(controller.forceState()) {
+			if (controller.forceState()) {
 				isRolling = controller.shouldBeRolled();
 				return true;
-			} else return false;
+			} else
+				return false;
 		}
 
 		@Override
 		public boolean doesStartAnimation() {
-			if(isRolling != controller.shouldBeRolled()) {
+			if (isRolling != controller.shouldBeRolled()) {
 				isRolling = controller.shouldBeRolled();
 				this.duration = controller.onRollingStart(isRolling);
 				return true;
-			} else return false;
+			} else
+				return false;
 		}
 
 		@Override
@@ -223,20 +240,24 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 
 		@Override
 		public float nextRatioX() {
-			if(isHorizontal) {
-				if(increaseCoordOnRoll ^ isRolling)
+			if (isHorizontal) {
+				if (increaseCoordOnRoll ^ isRolling)
 					return 0.0f;
-				else return 1.0f;
-			} else return 0.0f;
+				else
+					return 1.0f;
+			} else
+				return 0.0f;
 		}
 
 		@Override
 		public float nextRatioY() {
-			if(!isHorizontal) {
-				if(increaseCoordOnRoll ^ isRolling)
+			if (!isHorizontal) {
+				if (increaseCoordOnRoll ^ isRolling)
 					return 0.0f;
-				else return 1.0f;
-			} else return 0.0f;
+				else
+					return 1.0f;
+			} else
+				return 0.0f;
 		}
 	}
 

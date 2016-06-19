@@ -12,13 +12,14 @@ import stellarapi.feature.perdimres.PerDimensionResourceData;
 public class MessageSync implements IMessage {
 
 	private NBTTagCompound compoundInfo;
-	
-	public MessageSync() { }
-	
+
+	public MessageSync() {
+	}
+
 	public MessageSync(NBTTagCompound commonInfo) {
 		this.compoundInfo = commonInfo;
 	}
-	
+
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.compoundInfo = ByteBufUtils.readTag(buf);
@@ -28,7 +29,7 @@ public class MessageSync implements IMessage {
 	public void toBytes(ByteBuf buf) {
 		ByteBufUtils.writeTag(buf, this.compoundInfo);
 	}
-	
+
 	public static class MessageSyncCommonHandler implements IMessageHandler<MessageSync, IMessage> {
 
 		@Override
@@ -40,10 +41,10 @@ public class MessageSync implements IMessage {
 					data.readFromNBT(message.compoundInfo);
 				}
 			});
-			
+
 			return null;
 		}
-		
+
 	}
 
 }

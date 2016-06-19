@@ -10,13 +10,19 @@ import stellarapi.api.celestials.IEffectorType;
 public interface IPerWorldReference {
 
 	public void constructCollections();
+
 	public void resetCoordinate();
+
 	public void resetSkyEffect();
 
 	public ICelestialCoordinate getCoordinate();
+
 	public ISkyEffect getSkyEffect();
+
 	public ImmutableSet<IEffectorType> getEffectorTypeSet();
+
 	public CelestialEffectors getCelestialEffectors(IEffectorType type);
+
 	public CelestialCollectionManager getCollectionManager();
 
 }

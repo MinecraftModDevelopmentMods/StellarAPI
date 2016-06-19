@@ -1,19 +1,19 @@
 package stellarapi.lib.gui;
 
 public class GuiElement<C extends IElementController> {
-	
+
 	private C controller;
 	private IGuiElementType<C> type;
-	
+
 	public GuiElement(IGuiElementType<C> type, C controller) {
 		this.type = type;
 		this.controller = controller;
 	}
-	
+
 	public C getController() {
 		return this.controller;
 	}
-	
+
 	public IGuiElementType<C> getType() {
 		return this.type;
 	}

@@ -12,7 +12,7 @@ import stellarapi.api.gui.overlay.IRawOverlaySet;
 import stellarapi.api.gui.pos.ElementPos;
 
 public class OverlaySetDelegate implements IRawOverlaySet {
-	
+
 	private OverlayManager manager;
 	private IOverlaySetType type;
 	private Map<ElementPos, String> displayedIdMap = Maps.newHashMap();
@@ -47,12 +47,11 @@ public class OverlaySetDelegate implements IRawOverlaySet {
 		displayedIdMap.put(position, elementId);
 	}
 
-
 	@Override
 	public IOverlaySetType getType() {
 		return this.type;
 	}
-	
+
 	@Override
 	public void setDisplayed() {
 		manager.switchDisplaySet(this);
@@ -65,28 +64,29 @@ public class OverlaySetDelegate implements IRawOverlaySet {
 
 	@Override
 	public ImmutableList<IRawOverlayElement> getContainedElements() {
-		return ImmutableList.<IRawOverlayElement>copyOf(manager.getContainedElements(this));
+		return ImmutableList.<IRawOverlayElement> copyOf(manager.getContainedElements(this));
 	}
 
 	@Override
 	public boolean addElement(IRawOverlayElement element) {
 		ElementPos pos = new ElementPos(element.getCurrentHorizontalPos(), element.getCurrentVerticalPos());
-		if(this.canSetPos(element.getId(), pos)) {
-			if(type.isMain())
+		if (this.canSetPos(element.getId(), pos)) {
+			if (type.isMain())
 				element.setVisibleOnMain(true);
 			this.addToDisplay(element.getId(), pos);
 			return true;
-		} else return false;
+		} else
+			return false;
 	}
 
 	@Override
 	public void removeElement(IRawOverlayElement element) {
-		if(!this.doesContain(element))
+		if (!this.doesContain(element))
 			return;
-		
-		if(type.isMain())
+
+		if (type.isMain())
 			element.setVisibleOnMain(false);
-		
+
 		ElementPos pos = new ElementPos(element.getCurrentHorizontalPos(), element.getCurrentVerticalPos());
 		displayedIdMap.remove(pos);
 	}

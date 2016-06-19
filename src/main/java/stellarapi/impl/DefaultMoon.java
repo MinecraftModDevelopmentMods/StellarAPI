@@ -9,16 +9,17 @@ import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
 public class DefaultMoon implements ICelestialObject {
-	
+
 	private World world;
-	
+
 	public DefaultMoon(World world) {
 		this.world = world;
 	}
 
 	@Override
 	public CelestialPeriod getAbsolutePeriod() {
-		// Month is not absolute period in minecraft; It does not alter position of the moon.
+		// Month is not absolute period in minecraft; It does not alter position
+		// of the moon.
 		return null;
 	}
 
@@ -29,7 +30,7 @@ public class DefaultMoon implements ICelestialObject {
 
 	@Override
 	public CelestialPeriod getPhasePeriod() {
-		return new CelestialPeriod("Lunar Month", 24000.0*8.0, 0.5);
+		return new CelestialPeriod("Lunar Month", 24000.0 * 8.0, 0.5);
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class DefaultMoon implements ICelestialObject {
 	@Override
 	public SpCoord getCurrentHorizontalPos() {
 		float celestialAngle = world.getCelestialAngle(0.0f);
-		return new SpCoord(celestialAngle < 0.5? 270.0 : 90.0, 90.0-360.0*Math.abs(celestialAngle-0.5));
+		return new SpCoord(celestialAngle < 0.5 ? 270.0 : 90.0, 90.0 - 360.0 * Math.abs(celestialAngle - 0.5));
 	}
 
 	@Override
@@ -64,30 +65,23 @@ public class DefaultMoon implements ICelestialObject {
 		return EnumCelestialObjectType.Planet;
 	}
 
-	
-	/*@Override
+	@Override
 	public String getName() {
 		return "Moon";
 	}
 
-	@Override
-	public ImmutableList<String> additionalNumericalProperties() {
-		return ImmutableList.of();
-	}
-
-	@Override
-	public double additionalNumericalProperty(String propertyName) {
-		return 0;
-	}
-
-	@Override
-	public ImmutableList<String> additionalGenericProperties() {
-		return ImmutableList.of();
-	}
-
-	@Override
-	public String additionalGenericProperty(String propertyName) {
-		return null;
-	}*/
+	/*
+	 * @Override public ImmutableList<String> additionalNumericalProperties() {
+	 * return ImmutableList.of(); }
+	 * 
+	 * @Override public double additionalNumericalProperty(String propertyName)
+	 * { return 0; }
+	 * 
+	 * @Override public ImmutableList<String> additionalGenericProperties() {
+	 * return ImmutableList.of(); }
+	 * 
+	 * @Override public String additionalGenericProperty(String propertyName) {
+	 * return null; }
+	 */
 
 }

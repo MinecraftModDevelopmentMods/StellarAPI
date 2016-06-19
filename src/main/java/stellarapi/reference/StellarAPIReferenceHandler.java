@@ -25,20 +25,29 @@ import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
 
 public class StellarAPIReferenceHandler implements IReference {
-	
+
 	public void initialize() {
-		CapabilityManager.INSTANCE.register(IOpticalViewer.class,
-				new Capability.IStorage<IOpticalViewer>() {
-			public NBTBase writeNBT(Capability<IOpticalViewer> capability, IOpticalViewer instance, EnumFacing side) { return null; }
-			public void readNBT(Capability<IOpticalViewer> capability, IOpticalViewer instance, EnumFacing side, NBTBase nbt) {}
+		CapabilityManager.INSTANCE.register(IOpticalViewer.class, new Capability.IStorage<IOpticalViewer>() {
+			public NBTBase writeNBT(Capability<IOpticalViewer> capability, IOpticalViewer instance, EnumFacing side) {
+				return null;
+			}
+
+			public void readNBT(Capability<IOpticalViewer> capability, IOpticalViewer instance, EnumFacing side,
+					NBTBase nbt) {
+			}
 		}, new Callable<IOpticalViewer>() {
 			@Override
 			public IOpticalViewer call() throws Exception {
 				return new IOpticalViewer() {
 					@Override
-					public IViewScope getScope() { return null; }
+					public IViewScope getScope() {
+						return null;
+					}
+
 					@Override
-					public IOpticalFilter getFilter() { return null; }
+					public IOpticalFilter getFilter() {
+						return null;
+					}
 				};
 			}
 		});
@@ -53,22 +62,24 @@ public class StellarAPIReferenceHandler implements IReference {
 	@Override
 	public IPerEntityReference getPerEntityReference(Entity entity) {
 		IOpticalViewer viewer = entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
-		if(viewer instanceof IPerEntityReference)
+		if (viewer instanceof IPerEntityReference)
 			return (IPerEntityReference) viewer;
-		else return null;
+		else
+			return null;
 	}
 
 	@Override
 	public IPerClientReference getPerClientReference() {
 		return StellarAPI.proxy;
 	}
-	
+
 	@SubscribeEvent
 	public void onGatherEntityCapability(AttachCapabilitiesEvent.Entity event) {
 		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getEntity());
 		StellarAPIReference.getEventBus().post(check);
-		if(check.isOpticalEntity())
-			event.addCapability(new ResourceLocation(StellarAPI.modid, "viewer"), new PerEntityManager(event.getEntity()));
+		if (check.isOpticalEntity())
+			event.addCapability(new ResourceLocation(StellarAPI.modid, "viewer"),
+					new PerEntityManager(event.getEntity()));
 	}
 
 }

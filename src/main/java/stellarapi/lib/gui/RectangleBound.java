@@ -3,16 +3,16 @@ package stellarapi.lib.gui;
 import net.minecraft.util.math.MathHelper;
 
 public class RectangleBound implements IRectangleBound {
-	
+
 	public float posX, posY, width, height;
-	
+
 	public RectangleBound(float posX, float posY, float width, float height) {
 		this.posX = posX;
 		this.posY = posY;
 		this.width = width;
 		this.height = height;
 	}
-	
+
 	public RectangleBound(IRectangleBound bound) {
 		this.set(bound);
 	}
@@ -23,14 +23,14 @@ public class RectangleBound implements IRectangleBound {
 		this.width = width;
 		this.height = height;
 	}
-	
+
 	public void set(IRectangleBound bound) {
 		this.posX = bound.getLeftX();
 		this.posY = bound.getUpY();
 		this.width = bound.getWidth();
 		this.height = bound.getHeight();
 	}
-	
+
 	public void setAsIntersection(IRectangleBound outer) {
 		float rightX = this.getRightX();
 		float downY = this.getDownY();
@@ -39,7 +39,7 @@ public class RectangleBound implements IRectangleBound {
 		this.width = Math.min(rightX, outer.getRightX()) - this.posX;
 		this.height = Math.min(downY, outer.getDownY()) - this.posY;
 	}
-	
+
 	public void extend(float leftX, float upY, float rightX, float downY) {
 		this.posX -= leftX;
 		this.posY -= upY;

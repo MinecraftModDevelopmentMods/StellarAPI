@@ -13,39 +13,42 @@ import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 
 public class StellarAPIClientFMLEventHook {
-	private KeyBinding focusGuiKey = new KeyBinding("key.stellarapi.focusgui.description", Keyboard.KEY_U, "key.stellarapi");
-	
+	private KeyBinding focusGuiKey = new KeyBinding("key.stellarapi.focusgui.description", Keyboard.KEY_U,
+			"key.stellarapi");
+
 	private OverlayHandler overlay;
 	private int attempt = 1;
-	
+
 	public StellarAPIClientFMLEventHook(OverlayHandler overlay) {
 		ClientRegistry.registerKeyBinding(this.focusGuiKey);
-		
+
 		this.overlay = overlay;
 	}
-	
+
 	@SubscribeEvent
-	public void onTick(TickEvent.ClientTickEvent event) {		
-		if(event.phase == TickEvent.Phase.START) {
-			if(checking) {
+	public void onTick(TickEvent.ClientTickEvent event) {
+		if (event.phase == TickEvent.Phase.START) {
+			if (checking) {
 				Minecraft mc = Minecraft.getMinecraft();
-				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld, StellarAPI.proxy.getLoadingProgress(), this.attempt);
-				if(!StellarAPIReference.getEventBus().post(loaded)) {
+				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.theWorld,
+						StellarAPI.proxy.getLoadingProgress(), this.attempt);
+				if (!StellarAPIReference.getEventBus().post(loaded)) {
 					Minecraft.getMinecraft().displayGuiScreen(null);
 					checking = false;
 					this.attempt = 1;
-				} else this.attempt++;
+				} else
+					this.attempt++;
 			}
 			overlay.updateOverlay();
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onKeyInput(KeyInputEvent event) {
-		if(focusGuiKey.isPressed())
+		if (focusGuiKey.isPressed())
 			overlay.openGui(Minecraft.getMinecraft(), this.focusGuiKey);
 	}
-	
+
 	private static boolean checking = false;
 
 	public static void startChecking() {

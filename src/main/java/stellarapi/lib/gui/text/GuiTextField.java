@@ -14,18 +14,19 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 
 	private IGuiPosition position;
 	private ITextFieldController controller;
-	
+
 	private GuiTextInternal internal = new GuiTextInternal();
 	private GuiSimpleRenderElement background = null;
 	private float xOffset = 0.0f;
-	
+
 	@Override
 	public void initialize(GuiPositionHierarchy positions, ITextFieldController controller) {
 		this.position = positions.getPosition();
 		this.controller = controller;
-		internal.initialize(positions.addChild(new TextPosition()), new WrappedController(controller.getTextController()));
+		internal.initialize(positions.addChild(new TextPosition()),
+				new WrappedController(controller.getTextController()));
 
-		if(controller.getBackground() != null) {
+		if (controller.getBackground() != null) {
 			this.background = new GuiSimpleRenderElement();
 			background.initialize(positions, controller.getBackground());
 		}
@@ -40,7 +41,7 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		internal.mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
+
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		internal.mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
@@ -63,20 +64,20 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 
 	@Override
 	public void render(IRenderer renderer) {
-		if(this.background != null)
+		if (this.background != null)
 			background.render(renderer);
 		internal.render(renderer);
 	}
 
 	private class TextPosition implements IGuiPosition {
-		
+
 		private RectangleBound element, clip;
-		
+
 		public void initializeBounds() {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingX(), -controller.getSpacingY(), -controller.getSpacingX(),
+					-controller.getSpacingY());
 			clip.setAsIntersection(this.element);
 			element.posX -= xOffset;
 		}
@@ -100,8 +101,8 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 		public void updateBounds() {
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
-			element.extend(-controller.getSpacingX(), -controller.getSpacingY(),
-					-controller.getSpacingX(), -controller.getSpacingY());
+			element.extend(-controller.getSpacingX(), -controller.getSpacingY(), -controller.getSpacingX(),
+					-controller.getSpacingY());
 			clip.setAsIntersection(this.element);
 			element.posX -= xOffset;
 		}
@@ -110,15 +111,15 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 		public void updateAnimation(float partialTicks) {
 			this.updateBounds();
 		}
-		
+
 	}
-	
+
 	private class WrappedController implements ITextInternalController {
 
 		private ITextInternalController wrapped;
 		private String current = "";
 		private int scrollOffset;
-		
+
 		public WrappedController(ITextInternalController wrapped) {
 			this.wrapped = wrapped;
 		}
@@ -191,14 +192,13 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 
 		@Override
 		public boolean notifyText(String text, int cursor, int selection, boolean focused) {
-			if(!current.equals(text)) {
+			if (!current.equals(text)) {
 				this.current = text;
 				this.setupOffset(cursor, selection);
 			}
 			return wrapped.notifyText(text, cursor, selection, focused);
 		}
-		
-		
+
 		private void setupOffset(int cursor, int selection) {
 			int totalLength = current.length();
 
@@ -207,12 +207,13 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 			if (this.scrollOffset > totalLength)
 				this.scrollOffset = totalLength;
 
-			float fieldWidth = position.getElementBound().getWidth() - 2*controller.getSpacingX();
+			float fieldWidth = position.getElementBound().getWidth() - 2 * controller.getSpacingX();
 			String currentVisible = font.trimStringToWidth(current.substring(this.scrollOffset), fieldWidth);
 			int visibleEnd = this.scrollOffset + currentVisible.length();
 
 			if (selection == this.scrollOffset)
-				this.scrollOffset -= font.trimStringToWidth(current.substring(0, this.scrollOffset), fieldWidth, true).length();
+				this.scrollOffset -= font.trimStringToWidth(current.substring(0, this.scrollOffset), fieldWidth, true)
+						.length();
 
 			if (selection > visibleEnd)
 				this.scrollOffset += selection - visibleEnd;

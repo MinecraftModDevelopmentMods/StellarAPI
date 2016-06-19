@@ -6,33 +6,42 @@ import stellarapi.lib.gui.IGuiElementType;
 import stellarapi.lib.gui.IRenderer;
 
 public class GuiEmptyElement implements IGuiElementType<ISimpleController> {
-	
+
 	public static GuiElement generateEmptyElement() {
-		return new GuiElement(new GuiEmptyElement(), new ISimpleController(){});
+		return new GuiElement(new GuiEmptyElement(), new ISimpleController() {
+		});
 	}
-	
-	@Override
-	public void initialize(GuiPositionHierarchy positions, ISimpleController controller) { }
 
 	@Override
-	public void updateElement() { }
+	public void initialize(GuiPositionHierarchy positions, ISimpleController controller) {
+	}
 
 	@Override
-	public void mouseClicked(float mouseX, float mouseY, int eventButton) { }
+	public void updateElement() {
+	}
 
 	@Override
-	public void mouseReleased(float mouseX, float mouseY, int eventButton) { }
+	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
+	}
 
 	@Override
-	public void keyTyped(char eventChar, int eventKey) { }
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+	}
 
 	@Override
-	public void checkMousePosition(float mouseX, float mouseY) { }
-	
-	@Override
-	public void render(IRenderer renderer) { }
+	public void keyTyped(char eventChar, int eventKey) {
+	}
 
 	@Override
-	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) { }
+	public void checkMousePosition(float mouseX, float mouseY) {
+	}
+
+	@Override
+	public void render(IRenderer renderer) {
+	}
+
+	@Override
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+	}
 
 }

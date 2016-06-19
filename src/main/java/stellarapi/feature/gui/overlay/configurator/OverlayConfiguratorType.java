@@ -7,7 +7,7 @@ import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 
 public class OverlayConfiguratorType implements IOverlayType<OverlayConfigurator, PerOverlaySettings> {
-	
+
 	@Override
 	public OverlayConfigurator generateElement() {
 		return new OverlayConfigurator();
@@ -22,7 +22,7 @@ public class OverlayConfiguratorType implements IOverlayType<OverlayConfigurator
 	public String getName() {
 		return "Position";
 	}
-	
+
 	@Override
 	public String overlayType() {
 		return "Position";
@@ -43,12 +43,11 @@ public class OverlayConfiguratorType implements IOverlayType<OverlayConfigurator
 		return horizontal == EnumHorizontalPos.RIGHT && vertical == EnumVerticalPos.CENTER;
 	}
 
-
 	@Override
 	public IRawHandler<OverlayConfigurator> generateRawHandler() {
 		return new OverlayConfiguratorHandler();
 	}
-	
+
 	@Override
 	public boolean isUniversal() {
 		return true;

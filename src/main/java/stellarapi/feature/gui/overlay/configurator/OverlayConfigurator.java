@@ -16,7 +16,7 @@ public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> 
 
 	private Minecraft mc;
 	EnumOverlayMode currentMode = EnumOverlayMode.OVERLAY;
-	
+
 	IRawOverlaySet currentSet = null;
 	boolean gamePaused = false;
 
@@ -26,16 +26,15 @@ public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> 
 	boolean markForUpdate = false;
 	boolean markForUpdateSet = false;
 	boolean markForUpdatePause = false;
-	
+
 	@Override
 	public void initialize(Minecraft mc, PerOverlaySettings settings) {
 		this.mc = mc;
-		
-		this.button = new GuiButtonColorable(0, 0, 0, WIDTH, BTN_HEIGHT,
-				I18n.format(currentMode == EnumOverlayMode.POSITION?
-						"gui.configurator.stop" : "gui.configurator.position"));
+
+		this.button = new GuiButtonColorable(0, 0, 0, WIDTH, BTN_HEIGHT, I18n.format(
+				currentMode == EnumOverlayMode.POSITION ? "gui.configurator.stop" : "gui.configurator.position"));
 		this.btnOverlaySet = new GuiButtonColorable(0, 0, BTN_HEIGHT, WIDTH, BTN_HEIGHT, "");
-		this.btnGamePaused = new GuiButtonColorable(0, 0, BTN_HEIGHT*2, WIDTH, BTN_HEIGHT, "");
+		this.btnGamePaused = new GuiButtonColorable(0, 0, BTN_HEIGHT * 2, WIDTH, BTN_HEIGHT, "");
 	}
 
 	@Override
@@ -60,42 +59,43 @@ public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> 
 
 	@Override
 	public void switchMode(EnumOverlayMode mode) {
-		if(currentMode.displayed() != mode.displayed()) {
-			if(mode.displayed())
+		if (currentMode.displayed() != mode.displayed()) {
+			if (mode.displayed())
 				animationTick = 0;
-			else animationTick = ANIMATION_DURATION;
+			else
+				animationTick = ANIMATION_DURATION;
 		}
 		this.currentMode = mode;
-		
-		button.displayString = I18n.format(currentMode == EnumOverlayMode.POSITION?
-				"gui.configurator.stop" : "gui.configurator.position");
+
+		button.displayString = I18n.format(
+				currentMode == EnumOverlayMode.POSITION ? "gui.configurator.stop" : "gui.configurator.position");
 	}
 
 	@Override
 	public void updateOverlay() {
-		if(this.animationTick > 0 && !currentMode.displayed())
+		if (this.animationTick > 0 && !currentMode.displayed())
 			this.animationTick--;
-		else if(this.animationTick < ANIMATION_DURATION && currentMode.displayed())
+		else if (this.animationTick < ANIMATION_DURATION && currentMode.displayed())
 			this.animationTick++;
 	}
 
 	@Override
 	public boolean mouseClicked(int mouseX, int mouseY, int eventButton) {
-		if(currentMode.displayed()) {
-			if(button.mousePressed(this.mc, mouseX, mouseY))
+		if (currentMode.displayed()) {
+			if (button.mousePressed(this.mc, mouseX, mouseY))
 				this.markForUpdate = true;
-			if(btnOverlaySet.mousePressed(this.mc, mouseX, mouseY))
+			if (btnOverlaySet.mousePressed(this.mc, mouseX, mouseY))
 				this.markForUpdateSet = true;
-			if(btnGamePaused.mousePressed(this.mc, mouseX, mouseY))
+			if (btnGamePaused.mousePressed(this.mc, mouseX, mouseY))
 				this.markForUpdatePause = true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	public boolean mouseReleased(int mouseX, int mouseY, int eventButton) {
-		if(currentMode.displayed()) {
+		if (currentMode.displayed()) {
 			button.mouseReleased(mouseX, mouseY);
 			btnOverlaySet.mouseReleased(mouseX, mouseY);
 			btnGamePaused.mouseReleased(mouseX, mouseY);
@@ -110,18 +110,19 @@ public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> 
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		partialTicks = currentMode.displayed()? partialTicks : -partialTicks;
-		btnOverlaySet.alpha = button.alpha = btnGamePaused.alpha = (this.animationTick + partialTicks) / ANIMATION_DURATION;
-		
-		if(this.currentSet != null)
+		partialTicks = currentMode.displayed() ? partialTicks : -partialTicks;
+		btnOverlaySet.alpha = button.alpha = btnGamePaused.alpha = (this.animationTick + partialTicks)
+				/ ANIMATION_DURATION;
+
+		if (this.currentSet != null)
 			btnOverlaySet.displayString = I18n.format(currentSet.getType().getLanguageKey());
-		btnGamePaused.displayString = I18n.format(this.gamePaused? "gui.configurator.paused" : "gui.configurator.playing");
-		
+		btnGamePaused.displayString = I18n
+				.format(this.gamePaused ? "gui.configurator.paused" : "gui.configurator.playing");
+
 		button.drawButton(this.mc, mouseX, mouseY);
 		btnOverlaySet.drawButton(this.mc, mouseX, mouseY);
 		btnGamePaused.drawButton(this.mc, mouseX, mouseY);
 	}
-
 
 	@Override
 	public boolean mouseClickMove(int scaledMouseX, int scaledMouseY, int eventButton, long timeSinceLastClick) {

@@ -8,17 +8,17 @@ import stellarapi.lib.gui.IRenderer;
 
 /**
  * Tooltip Element Wrapper.
- * */
+ */
 public class GuiTooltipElementWrapper implements IGuiElementType<ITooltipElementController> {
-	
+
 	private GuiElement wrapped;
 	private IGuiPosition position;
 	private ITooltipElementController controller;
-	
+
 	private GuiHasTooltip parent;
-	
+
 	private long hoverStart = -1;
-	
+
 	protected GuiTooltipElementWrapper(GuiElement wrapped, GuiHasTooltip parent) {
 		this.wrapped = wrapped;
 		this.parent = parent;
@@ -28,7 +28,7 @@ public class GuiTooltipElementWrapper implements IGuiElementType<ITooltipElement
 	public void initialize(GuiPositionHierarchy positions, ITooltipElementController controller) {
 		this.position = positions.getPosition();
 		this.controller = controller;
-		
+
 		wrapped.initialize(positions);
 	}
 
@@ -41,7 +41,7 @@ public class GuiTooltipElementWrapper implements IGuiElementType<ITooltipElement
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
 		wrapped.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
+
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
 		wrapped.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
@@ -60,16 +60,17 @@ public class GuiTooltipElementWrapper implements IGuiElementType<ITooltipElement
 	@Override
 	public void checkMousePosition(float mouseX, float mouseY) {
 		boolean canHover = controller.canDisplayTooltip();
-        if (canHover && hoverStart == -1 && position.getClipBound().isInBound(mouseX, mouseY))
-            hoverStart = System.currentTimeMillis();
-        else if (!canHover || !position.getClipBound().isInBound(mouseX, mouseY))
-        	this.hoverStart = -1;
+		if (canHover && hoverStart == -1 && position.getClipBound().isInBound(mouseX, mouseY))
+			hoverStart = System.currentTimeMillis();
+		else if (!canHover || !position.getClipBound().isInBound(mouseX, mouseY))
+			this.hoverStart = -1;
 
-        if(canHover && hoverStart != -1 && System.currentTimeMillis() - hoverStart >= controller.getTooltipDisplayWaitTime()) {
-        	float ratioX = position.getElementBound().getRatioX(mouseX);
-        	float ratioY = position.getElementBound().getRatioY(mouseY);
-        	parent.notifyRenderTooltip(mouseX, mouseY, controller.getTooltipInfo(ratioX, ratioY));
-        }
+		if (canHover && hoverStart != -1
+				&& System.currentTimeMillis() - hoverStart >= controller.getTooltipDisplayWaitTime()) {
+			float ratioX = position.getElementBound().getRatioX(mouseX);
+			float ratioY = position.getElementBound().getRatioY(mouseY);
+			parent.notifyRenderTooltip(mouseX, mouseY, controller.getTooltipInfo(ratioX, ratioY));
+		}
 
 		wrapped.getType().checkMousePosition(mouseX, mouseY);
 	}

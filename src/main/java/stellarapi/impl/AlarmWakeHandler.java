@@ -13,13 +13,12 @@ import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IWakeHandler;
 
 /**
- * Example of wake handler,
- * as player gets up on certain amount of time after midnight.
- * Note that the day is checked as standard of primary light source.
- * */
+ * Example of wake handler, as player gets up on certain amount of time after
+ * midnight. Note that the day is checked as standard of primary light source.
+ */
 public class AlarmWakeHandler implements IWakeHandler {
 
-	//Wake time from midnight
+	// Wake time from midnight
 	private int wakeTime;
 
 	@Override
@@ -36,11 +35,12 @@ public class AlarmWakeHandler implements IWakeHandler {
 		double currentOffset = period.getOffset(sleepTime, 0.0f);
 		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
 
-		if(currentOffset < midnightOffset)
+		if (currentOffset < midnightOffset)
 			return nextMidnight + this.wakeTime;
-		else return nextMidnight - (long)period.getPeriodLength() + this.wakeTime;
+		else
+			return nextMidnight - (long) period.getPeriodLength() + this.wakeTime;
 	}
-	
+
 	@Override
 	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSources,
 			ICelestialCoordinate coordinate, long sleepTime) {
@@ -50,16 +50,15 @@ public class AlarmWakeHandler implements IWakeHandler {
 		double currentOffset = period.getOffset(sleepTime, 0.0f);
 		double midnightOffset = period.getOffset(nextMidnight, 0.0f);
 		double diff = (currentOffset - midnightOffset) % 1.0;
-		
-		return (!world.isDaytime() && (diff < 0.25 || diff > 0.75))? SleepResult.OK : SleepResult.NOT_POSSIBLE_NOW;
-	}
 
+		return (!world.isDaytime() && (diff < 0.25 || diff > 0.75)) ? SleepResult.OK : SleepResult.NOT_POSSIBLE_NOW;
+	}
 
 	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryLanguageKey(category, "config.category.alarm");
 		config.setCategoryComment(category, "Alarm type wake settings");
-		
+
 		Property pWakeTime = config.get(category, "Wake_Time_from_midnight", 6000);
 		pWakeTime.setComment("Wake-up time from midnight, in tick.");
 		pWakeTime.setRequiresWorldRestart(true);
@@ -73,6 +72,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 	}
 
 	@Override
-	public void saveToConfig(Configuration config, String category) { }
-	
+	public void saveToConfig(Configuration config, String category) {
+	}
+
 }

@@ -9,9 +9,8 @@ public interface IDynamicController extends IElementController {
 	public boolean needUpdate();
 
 	/**
-	 * Generate current element.
-	 * Called on initialization and update.
-	 * */
+	 * Generate current element. Called on initialization and update.
+	 */
 	public GuiElement generateElement();
 
 }

@@ -9,23 +9,22 @@ import stellarapi.lib.gui.IRenderer;
 import stellarapi.lib.gui.RectangleBound;
 
 /**
- * Linear moving motion.
- * Usually sub-element for something which controls animation.
- * */
+ * Linear moving motion. Usually sub-element for something which controls
+ * animation.
+ */
 public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 	private GuiElement subElement;
-	
+
 	private IGuiPosition position;
 	private ILinearMoveController controller;
-	
-	
+
 	private int duration, current;
 	private boolean isAnimating = false;
-	
+
 	private float previousPosX, nextPosX;
 	private float previousPosY, nextPosY;
-	
+
 	public GuiLinearMoving(GuiElement subElement) {
 		this.subElement = subElement;
 	}
@@ -34,7 +33,7 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 	public void initialize(GuiPositionHierarchy positions, ILinearMoveController controller) {
 		this.position = positions.getPosition();
 		this.controller = controller;
-		
+
 		this.previousPosX = this.nextPosX = controller.initialRatioX();
 		this.previousPosY = this.nextPosY = controller.initialRatioY();
 		subElement.initialize(positions.addChild(new AnimatedPosition()));
@@ -42,29 +41,28 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 	@Override
 	public void updateElement() {
-		if(controller.forceState()) {
+		if (controller.forceState()) {
 			this.previousPosX = this.nextPosX = controller.nextRatioX();
 			this.previousPosY = this.nextPosY = controller.nextRatioY();
 			this.current = this.duration;
 		}
-		
-		if(this.isAnimating)
-			if(controller.needHaltAnimation()) {
+
+		if (this.isAnimating)
+			if (controller.needHaltAnimation()) {
 				this.current = this.duration;
-			} else this.current++;
-		
-		if(this.isAnimating && this.duration == this.current)
-		{
+			} else
+				this.current++;
+
+		if (this.isAnimating && this.duration == this.current) {
 			controller.onAnimationEnded();
 			this.isAnimating = false;
 			this.previousPosX = this.nextPosX;
 			this.previousPosY = this.nextPosY;
 		}
-		
+
 		subElement.getType().updateElement();
-		
-		if(!this.isAnimating && controller.doesStartAnimation())
-		{
+
+		if (!this.isAnimating && controller.doesStartAnimation()) {
 			this.current = 0;
 			this.duration = controller.getAnimationDuration();
 			this.nextPosX = controller.nextRatioX();
@@ -75,16 +73,15 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 	@Override
 	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
-		if(this.isAnimating && controller.disableControlOnAnimating())
+		if (this.isAnimating && controller.disableControlOnAnimating())
 			return;
 
 		subElement.getType().mouseClicked(mouseX, mouseY, eventButton);
 	}
-	
 
 	@Override
 	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
-		if(this.isAnimating && controller.disableControlOnAnimating())
+		if (this.isAnimating && controller.disableControlOnAnimating())
 			return;
 
 		subElement.getType().mouseClickMove(mouseX, mouseY, eventButton, timeSinceLastClick);
@@ -92,7 +89,7 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 	@Override
 	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
-		if(this.isAnimating && controller.disableControlOnAnimating())
+		if (this.isAnimating && controller.disableControlOnAnimating())
 			return;
 
 		subElement.getType().mouseReleased(mouseX, mouseY, eventButton);
@@ -100,7 +97,7 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 	@Override
 	public void keyTyped(char eventChar, int eventKey) {
-		if(this.isAnimating && controller.disableControlOnAnimating())
+		if (this.isAnimating && controller.disableControlOnAnimating())
 			return;
 
 		subElement.getType().keyTyped(eventChar, eventKey);
@@ -115,25 +112,25 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 	public void render(IRenderer renderer) {
 		subElement.getType().render(renderer);
 	}
-	
+
 	private class AnimatedPosition implements IGuiPosition {
-		
+
 		private RectangleBound element, clip, animation;
-		
+
 		public void initializeBounds() {
 			this.element = new RectangleBound(position.getElementBound());
 			this.clip = new RectangleBound(position.getClipBound());
-			
+
 			this.animation = new RectangleBound(position.getAdditionalBound("animation"));
 
 			this.setupAnimationBound();
 
 			element.posX = animation.getMainX(nextPosX);
 			element.posY = animation.getMainY(nextPosY);
-			
+
 			clip.setAsIntersection(this.element);
 		}
-		
+
 		private void setupAnimationBound() {
 			animation.width -= element.width;
 			animation.height -= element.height;
@@ -162,9 +159,11 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 			this.setupAnimationBound();
 
-			if(isAnimating) {
-				element.posX = animation.getMainX(((duration - current) * previousPosX + current * nextPosX) / duration);
-				element.posY = animation.getMainY(((duration - current) * previousPosY + current * nextPosY) / duration);
+			if (isAnimating) {
+				element.posX = animation
+						.getMainX(((duration - current) * previousPosX + current * nextPosX) / duration);
+				element.posY = animation
+						.getMainY(((duration - current) * previousPosY + current * nextPosY) / duration);
 			} else {
 				element.posX = animation.getMainX(nextPosX);
 				element.posY = animation.getMainY(nextPosY);
@@ -174,12 +173,11 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 		@Override
 		public void updateAnimation(float partialTicks) {
-			if(!isAnimating)
-			{
+			if (!isAnimating) {
 				this.updateBounds();
 				return;
 			}
-			
+
 			float currentPr = current + partialTicks;
 			element.set(position.getElementBound());
 			clip.set(position.getClipBound());
@@ -187,8 +185,10 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
 			this.setupAnimationBound();
 
-			element.posX = animation.getMainX(((duration - currentPr) * previousPosX + currentPr * nextPosX) / duration);
-			element.posY = animation.getMainY(((duration - currentPr) * previousPosY + currentPr * nextPosY) / duration);
+			element.posX = animation
+					.getMainX(((duration - currentPr) * previousPosX + currentPr * nextPosX) / duration);
+			element.posY = animation
+					.getMainY(((duration - currentPr) * previousPosY + currentPr * nextPosY) / duration);
 			clip.setAsIntersection(this.element);
 		}
 	}

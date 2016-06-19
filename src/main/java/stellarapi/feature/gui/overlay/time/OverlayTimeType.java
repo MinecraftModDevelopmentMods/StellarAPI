@@ -7,7 +7,7 @@ import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 
 public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySettings> {
-	
+
 	@Override
 	public OverlayTime generateElement() {
 		return new OverlayTime();
@@ -22,7 +22,7 @@ public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySett
 	public String getName() {
 		return "Time";
 	}
-	
+
 	@Override
 	public String overlayType() {
 		return "Time";
@@ -42,7 +42,6 @@ public class OverlayTimeType implements IOverlayType<OverlayTime, PerOverlaySett
 	public boolean accepts(EnumHorizontalPos horizontal, EnumVerticalPos vertical) {
 		return vertical != EnumVerticalPos.DOWN;
 	}
-
 
 	@Override
 	public IRawHandler<OverlayTime> generateRawHandler() {

@@ -10,7 +10,7 @@ public class GuiSimpleRenderElement implements IGuiElementType<ISimpleRenderCont
 
 	private IGuiPosition position;
 	private ISimpleRenderController controller;
-	
+
 	@Override
 	public void initialize(GuiPositionHierarchy positions, ISimpleRenderController controller) {
 		this.position = positions.getPosition();
@@ -18,26 +18,31 @@ public class GuiSimpleRenderElement implements IGuiElementType<ISimpleRenderCont
 	}
 
 	@Override
-	public void updateElement() { }
+	public void updateElement() {
+	}
 
 	@Override
-	public void mouseClicked(float mouseX, float mouseY, int eventButton) { }
+	public void mouseClicked(float mouseX, float mouseY, int eventButton) {
+	}
 
 	@Override
-	public void mouseReleased(float mouseX, float mouseY, int eventButton) { }
+	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
+	}
 
 	@Override
-	public void keyTyped(char eventChar, int eventKey) { }
+	public void keyTyped(char eventChar, int eventKey) {
+	}
 
 	@Override
-	public void checkMousePosition(float mouseX, float mouseY) { }
-	
+	public void checkMousePosition(float mouseX, float mouseY) {
+	}
+
 	@Override
 	public void render(IRenderer renderer) {
 		IRectangleBound clipBound = position.getClipBound();
-		if(clipBound.isEmpty())
+		if (clipBound.isEmpty())
 			return;
-		
+
 		renderer.startRender();
 		String model = controller.setupRenderer(renderer);
 		renderer.render(model, position.getElementBound(), clipBound);
@@ -45,6 +50,7 @@ public class GuiSimpleRenderElement implements IGuiElementType<ISimpleRenderCont
 	}
 
 	@Override
-	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) { }
+	public void mouseClickMove(float mouseX, float mouseY, int eventButton, long timeSinceLastClick) {
+	}
 
 }

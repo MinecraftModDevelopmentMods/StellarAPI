@@ -4,6 +4,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
@@ -11,7 +12,7 @@ import stellarapi.api.gui.overlay.IRawOverlaySet;
 import stellarapi.api.gui.overlay.OverlayRegistry;
 
 public class OverlayHandler {
-	
+
 	private OverlayContainer container;
 	private OverlayManager manager;
 	private Minecraft mc;
@@ -25,9 +26,9 @@ public class OverlayHandler {
 		this.mc = mc;
 		OverlayRegistry.setupOverlay(this.manager);
 		manager.initialize(mc);
-		
-		for(IRawOverlaySet set : manager.getDisplayedSets())
-			if(set.getType() instanceof OverlaySetMain)
+
+		for (IRawOverlaySet set : manager.getDisplayedSets())
+			if (set.getType() instanceof OverlaySetMain)
 				set.setDisplayed();
 	}
 
@@ -50,6 +51,10 @@ public class OverlayHandler {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		container.render(mouseX, mouseY, partialTicks);
+
 		GlStateManager.disableBlend();
+
+		mc.renderEngine.bindTexture(GuiIngame.ICONS);
+
 	}
 }
