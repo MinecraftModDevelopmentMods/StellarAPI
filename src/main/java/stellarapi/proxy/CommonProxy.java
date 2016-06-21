@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.proxy;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.lib.math.Spmath;
+import stellarapi.mod.StellarAPI;
 
 public class CommonProxy implements IProxy {
 

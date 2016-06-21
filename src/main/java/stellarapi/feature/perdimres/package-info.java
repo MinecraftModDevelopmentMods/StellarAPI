@@ -7,5 +7,5 @@ package stellarapi.feature.perdimres;
 
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.mod.StellarAPI;
 

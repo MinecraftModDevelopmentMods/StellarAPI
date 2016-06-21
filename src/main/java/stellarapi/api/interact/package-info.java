@@ -5,4 +5,4 @@
 package stellarapi.api.interact;
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.mod.StellarAPI;

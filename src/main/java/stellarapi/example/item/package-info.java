@@ -6,5 +6,5 @@ package stellarapi.example.item;
 
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.mod.StellarAPI;
 

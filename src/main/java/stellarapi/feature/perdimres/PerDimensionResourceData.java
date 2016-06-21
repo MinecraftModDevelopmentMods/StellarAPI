@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
-import stellarapi.StellarAPI;
+import stellarapi.mod.StellarAPI;
 
 /**
  * Per dimension resource data.

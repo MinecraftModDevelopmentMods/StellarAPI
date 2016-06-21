@@ -6,5 +6,5 @@ package stellarapi.api.helper;
 
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.mod.StellarAPI;
 

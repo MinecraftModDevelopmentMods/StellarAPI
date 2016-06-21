@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.mod;
 
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.item.ItemStack;

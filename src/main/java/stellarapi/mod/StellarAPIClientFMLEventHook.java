@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.mod;
 
 import org.lwjgl.input.Keyboard;
 

@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
-import stellarapi.StellarAPI;
+import stellarapi.mod.StellarAPI;
 
 public class GuiRenderer implements IRenderer {
 

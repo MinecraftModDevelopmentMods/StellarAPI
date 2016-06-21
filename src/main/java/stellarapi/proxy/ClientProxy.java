@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.proxy;
 
 import java.io.IOException;
 
@@ -20,6 +20,9 @@ import stellarapi.feature.gui.overlay.OverlaySetMain;
 import stellarapi.feature.gui.overlay.OverlaySetStellarAPI;
 import stellarapi.feature.gui.overlay.configurator.OverlayConfiguratorType;
 import stellarapi.feature.gui.overlay.time.OverlayTimeType;
+import stellarapi.mod.StellarAPI;
+import stellarapi.mod.StellarAPIClientFMLEventHook;
+import stellarapi.mod.StellarAPIClientForgeEventHook;
 
 public class ClientProxy extends CommonProxy implements IProxy {
 

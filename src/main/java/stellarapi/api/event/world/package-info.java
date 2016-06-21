@@ -6,4 +6,4 @@ package stellarapi.api.event.world;
 
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.mod.StellarAPI;

@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.mod;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +32,7 @@ import stellarapi.impl.AlarmWakeHandler;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
+import stellarapi.proxy.IProxy;
 import stellarapi.reference.StellarAPIReferenceHandler;
 
 @Mod(modid = StellarAPI.modid, version = StellarAPI.version, guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")

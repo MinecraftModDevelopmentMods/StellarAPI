@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.mod;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;

@@ -13,7 +13,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import stellarapi.StellarAPI;
 import stellarapi.api.IPerClientReference;
 import stellarapi.api.IPerEntityReference;
 import stellarapi.api.IPerWorldReference;
@@ -25,6 +24,7 @@ import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
+import stellarapi.mod.StellarAPI;
 
 public class StellarAPIReferenceHandler implements IReference {
 

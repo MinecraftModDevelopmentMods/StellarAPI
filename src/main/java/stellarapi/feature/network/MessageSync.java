@@ -6,8 +6,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import stellarapi.StellarAPI;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
+import stellarapi.mod.StellarAPI;
 
 public class MessageSync implements IMessage {
 

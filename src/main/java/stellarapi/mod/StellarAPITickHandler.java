@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.mod;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
