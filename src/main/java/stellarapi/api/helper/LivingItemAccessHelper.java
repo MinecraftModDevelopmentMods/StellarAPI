@@ -17,10 +17,10 @@ public class LivingItemAccessHelper {
 
 	/**
 	 * Gets using item(Using on the main hand) of the player.
-	 * 
-	 * @param player
-	 *            the player
+	 * Will be removed.
+	 * @param player the player
 	 */
+	@Deprecated
 	public static ItemStack getUsingItem(EntityLivingBase entity) {
 		return entity.getActiveItemStack();
 	}
@@ -29,7 +29,7 @@ public class LivingItemAccessHelper {
 	 * Sets using item of the player. Used to fix problems with updated using
 	 * items.
 	 * <p>
-	 * DO NOT use this method externally.
+	 * Do not use this method.
 	 */
 	@Deprecated
 	public static void setUsingItem(EntityLivingBase entity, ItemStack stack) {
