@@ -4,25 +4,29 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import stellarapi.api.interact.IOpticalFilterItem;
-import stellarapi.api.interact.IViewScopeItem;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedScope;
 import stellarapi.api.optics.RGBFilter;
 import stellarapi.api.optics.Wavelength;
+import stellarapi.example.item.ItemTelescopeExample.ScopeProvider;
 
 /**
  * Example for filtered telescope item.
  */
-public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem, IOpticalFilterItem {
+public class ItemFilteredTelescopeExample extends Item {
 
 	private IViewScope scope = new IViewScope() {
 
@@ -94,20 +98,44 @@ public class ItemFilteredTelescopeExample extends Item implements IViewScopeItem
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return Integer.MAX_VALUE;
 	}
-
+	
 	@Override
-	public IOpticalFilter getFilter(EntityLivingBase player, ItemStack item) {
-		return this.filter;
-	}
+    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new FilterProvider();
+    }
+	
+	public class FilterProvider implements ICapabilityProvider, IOpticalProperties {
+		@Override
+		public boolean isFilter() {
+			return true;
+		}
 
-	@Override
-	public IViewScope getScope(EntityLivingBase player, ItemStack item) {
-		return this.scope;
-	}
+		@Override
+		public IOpticalFilter getFilter(EntityLivingBase viewer) {
+			return filter;
+		}
 
-	@Override
-	public boolean isSame(ItemStack instance, ItemStack another) {
-		return instance == another;
+		@Override
+		public boolean isScope() {
+			return true;
+		}
+
+		@Override
+		public IViewScope getScope(EntityLivingBase viewer) {
+			return scope;
+		}
+
+		@Override
+		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+			return capability == StellarAPICapabilities.OPTICAL_PROPERTY;
+		}
+
+		@Override
+		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+			if(capability == StellarAPICapabilities.OPTICAL_PROPERTY) {
+				return (T) this;
+			} else return null;
+		}
 	}
 
 }

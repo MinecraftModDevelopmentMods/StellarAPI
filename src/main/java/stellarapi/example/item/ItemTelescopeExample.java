@@ -4,13 +4,18 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import stellarapi.api.interact.IViewScopeItem;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.interact.IOpticalProperties;
+import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedScope;
 import stellarapi.api.optics.Wavelength;
@@ -19,7 +24,7 @@ import stellarapi.api.optics.Wavelength;
  * Example for telescope item which gets activated any time the player press the
  * right click to use the item.
  */
-public class ItemTelescopeExample extends Item implements IViewScopeItem {
+public class ItemTelescopeExample extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
@@ -42,40 +47,71 @@ public class ItemTelescopeExample extends Item implements IViewScopeItem {
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return Integer.MAX_VALUE;
 	}
-
+	
 	@Override
-	public IViewScope getScope(EntityLivingBase player, ItemStack item) {
-		return new IViewScope() {
-			@Override
-			public double getLGP() {
-				return 200.0;
-			}
+    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new ScopeProvider();
+    }
 
-			@Override
-			public double getResolution(Wavelength wl) {
-				return NakedScope.DEFAULT_RESOLUTION / 3.0;
-			}
+	public class ScopeProvider implements ICapabilityProvider, IOpticalProperties {
+		@Override
+		public boolean isFilter() {
+			return false;
+		}
 
-			@Override
-			public double getMP() {
-				return 10.0;
-			}
+		@Override
+		public IOpticalFilter getFilter(EntityLivingBase viewer) {
+			return null;
+		}
 
-			@Override
-			public boolean forceChange() {
-				return true;
-			}
+		@Override
+		public boolean isScope() {
+			return true;
+		}
 
-			@Override
-			public boolean isFOVCoverSky() {
-				return true;
-			}
-		};
+		@Override
+		public IViewScope getScope(EntityLivingBase viewer) {
+			return scope;
+		}
+
+		@Override
+		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+			return capability == StellarAPICapabilities.OPTICAL_PROPERTY;
+		}
+
+		@Override
+		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+			if(capability == StellarAPICapabilities.OPTICAL_PROPERTY) {
+				return (T) this;
+			} else return null;
+		}
 	}
 
-	@Override
-	public boolean isSame(ItemStack instance, ItemStack another) {
-		return instance == another;
-	}
+	private IViewScope scope = new IViewScope() {
+		@Override
+		public double getLGP() {
+			return 200.0;
+		}
+
+		@Override
+		public double getResolution(Wavelength wl) {
+			return NakedScope.DEFAULT_RESOLUTION / 3.0;
+		}
+
+		@Override
+		public double getMP() {
+			return 10.0;
+		}
+
+		@Override
+		public boolean forceChange() {
+			return true;
+		}
+
+		@Override
+		public boolean isFOVCoverSky() {
+			return true;
+		}
+	};
 
 }

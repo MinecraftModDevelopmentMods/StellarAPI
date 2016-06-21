@@ -3,6 +3,7 @@ package stellarapi.reference;
 import java.util.concurrent.Callable;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +21,7 @@ import stellarapi.api.IReference;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
+import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
@@ -51,6 +53,42 @@ public class StellarAPIReferenceHandler implements IReference {
 				};
 			}
 		});
+		
+		CapabilityManager.INSTANCE.register(IOpticalProperties.class, new Capability.IStorage<IOpticalProperties>() {
+			public NBTBase writeNBT(Capability<IOpticalProperties> capability, IOpticalProperties instance, EnumFacing side) {
+				return null;
+			}
+
+			public void readNBT(Capability<IOpticalProperties> capability, IOpticalProperties instance, EnumFacing side,
+					NBTBase nbt) {
+			}
+		}, new Callable<IOpticalProperties>() {
+			@Override
+			public IOpticalProperties call() throws Exception {
+				return new IOpticalProperties() {
+					@Override
+					public boolean isFilter() {
+						return false;
+					}
+
+					@Override
+					public IOpticalFilter getFilter(EntityLivingBase viewer) {
+						return null;
+					}
+
+					@Override
+					public boolean isScope() {
+						return false;
+					}
+
+					@Override
+					public IViewScope getScope(EntityLivingBase viewer) {
+						return null;
+					}
+				};
+			}
+		});
+
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 

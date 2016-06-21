@@ -4,27 +4,22 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
 import stellarapi.api.event.ResetCoordinateEvent;
 import stellarapi.api.event.ResetSkyEffectEvent;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
-import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
-import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
-import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
-import stellarapi.api.helper.LivingItemAccessHelper;
-import stellarapi.api.interact.IOpticalFilterItem;
-import stellarapi.api.interact.IOpticalFilterSimulatorEntity;
-import stellarapi.api.interact.IViewScopeItem;
-import stellarapi.api.interact.IViewScopeSimulatorEntity;
+import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.impl.DefaultCollectionVanilla;
 import stellarapi.impl.DefaultCoordinateVanilla;
 import stellarapi.impl.DefaultSkyVanilla;
@@ -65,63 +60,46 @@ public class StellarAPIOwnEventHook {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onUpdateScope(UpdateScopeEvent event) {
 		if (event.getEntity() instanceof EntityLivingBase) {
-			EntityLivingBase player = (EntityLivingBase) event.getEntity();
-			ItemStack itemToCheck = LivingItemAccessHelper.getUsingItem(player);
+			EntityLivingBase viewer = (EntityLivingBase) event.getEntity();
+			ItemStack itemToCheck = viewer.getActiveItemStack();
+			
 
-			if (itemToCheck != null && itemToCheck.getItem() instanceof IViewScopeItem)
-				event.setScope(((IViewScopeItem) itemToCheck.getItem()).getScope(player, itemToCheck));
-			else if (player.getRidingEntity() instanceof IViewScopeSimulatorEntity)
-				event.setScope(((IViewScopeSimulatorEntity) player.getRidingEntity()).getScope(player));
+			if (itemToCheck != null && itemToCheck.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = itemToCheck.getCapability(
+						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				if(property.isScope())
+					event.setScope(property.getScope(viewer));
+			}
+
+			if (viewer.getRidingEntity() != null && viewer.getRidingEntity().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = viewer.getRidingEntity().getCapability(
+						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				if(property.isScope())
+					event.setScope(property.getScope(viewer));
+			}
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onUpdateFilter(UpdateFilterEvent event) {
 		if (event.getEntity() instanceof EntityLivingBase) {
-			EntityLivingBase player = (EntityLivingBase) event.getEntity();
-			ItemStack itemToCheck = LivingItemAccessHelper.getUsingItem(player);
+			EntityLivingBase viewer = (EntityLivingBase) event.getEntity();
+			ItemStack itemToCheck = viewer.getActiveItemStack();
 
-			if (itemToCheck != null && itemToCheck.getItem() instanceof IOpticalFilterItem)
-				event.setFilter(((IOpticalFilterItem) itemToCheck.getItem()).getFilter(player, itemToCheck));
-			else if (player.getRidingEntity() instanceof IOpticalFilterSimulatorEntity)
-				event.setFilter(((IOpticalFilterSimulatorEntity) player.getRidingEntity()).getFilter(player));
+			if (itemToCheck != null && itemToCheck.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = itemToCheck.getCapability(
+						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				if(property.isFilter())
+					event.setFilter(property.getFilter(viewer));
+			}
+
+			if (viewer.getRidingEntity() != null && viewer.getRidingEntity().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = viewer.getRidingEntity().getCapability(
+						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				if(property.isFilter())
+					event.setFilter(property.getFilter(viewer));
+			}
 		}
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void applyOpticalItem(ApplyOpticalItemEvent event) {
-		event.setIsViewScope(event.getItem().getItem() instanceof IViewScopeItem);
-		event.setIsOpticalFilter(event.getItem().getItem() instanceof IOpticalFilterItem);
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void checkSameOpticalItem(CheckSameOpticalItemEvent event) {
-		ItemStack first = event.getFirstItem();
-		ItemStack second = event.getSecondItem();
-
-		if (first == null && second == null) {
-			event.markAsSame();
-			return;
-		} else if (first == null || second == null)
-			return;
-
-		if (first.getItem() instanceof IViewScopeItem && ((IViewScopeItem) first.getItem()).isSame(first, second))
-			event.markAsSame();
-		if (second.getItem() instanceof IViewScopeItem && ((IViewScopeItem) second.getItem()).isSame(second, first))
-			event.markAsSame();
-
-		if (first.getItem() instanceof IOpticalFilterItem
-				&& ((IOpticalFilterItem) first.getItem()).isSame(first, second))
-			event.markAsSame();
-		if (second.getItem() instanceof IOpticalFilterItem
-				&& ((IOpticalFilterItem) second.getItem()).isSame(second, first))
-			event.markAsSame();
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void applyOpticalSimulatorEntity(ApplyOpticalEntityEvent event) {
-		event.setIsViewScope(event.getSimulatorEntity() instanceof IViewScopeSimulatorEntity);
-		event.setIsOpticalFilter(event.getSimulatorEntity() instanceof IOpticalFilterSimulatorEntity);
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

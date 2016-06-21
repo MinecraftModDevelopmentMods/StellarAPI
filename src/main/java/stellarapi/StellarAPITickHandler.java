@@ -16,11 +16,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.event.interact.ApplyOpticalItemEvent;
-import stellarapi.api.event.interact.CheckSameOpticalItemEvent;
 import stellarapi.api.helper.LivingItemAccessHelper;
-import stellarapi.api.optics.IOpticalViewer;
-import stellarapi.reference.OpticalViewerEventCallback;
+import stellarapi.api.interact.IOpticalProperties;
 
 public class StellarAPITickHandler {
 
@@ -36,35 +33,38 @@ public class StellarAPITickHandler {
 	}
 
 	@SubscribeEvent
-	public void livingUpdate(LivingUpdateEvent e) {
-		EnumHand hand = e.getEntityLiving().getActiveHand();
-		ItemStack itemstack = hand != null ? e.getEntityLiving().getHeldItem(e.getEntityLiving().getActiveHand())
-				: null;
-		ItemStack itemInUse = LivingItemAccessHelper.getUsingItem(e.getEntityLiving());
+	public void livingUpdate(LivingUpdateEvent event) {
+		EnumHand hand = event.getEntityLiving().getActiveHand();
+		ItemStack itemstack = hand != null ? event.getEntityLiving().getHeldItem(hand) : null;
+		ItemStack itemInUse = event.getEntityLiving().getActiveItemStack();
 
-		if (itemInUse != null) {
-			CheckSameOpticalItemEvent checkEvent = new CheckSameOpticalItemEvent(e.getEntityLiving(), itemstack,
-					itemInUse);
-			boolean flag = StellarAPIReference.getEventBus().post(checkEvent);
+		if (!ItemStack.areItemStacksEqual(itemstack, itemInUse)) {
+			boolean updateScope = false;
+			boolean updateFilter = false;
 
-			if (flag || !checkEvent.isSame()) {
-				ApplyOpticalItemEvent applyEvent = new ApplyOpticalItemEvent(e.getEntityLiving(), itemInUse);
-				StellarAPIReference.getEventBus().post(applyEvent);
+			if (itemstack != null && itemstack.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = itemstack.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				updateScope = updateScope || property.isScope();
+				updateFilter = updateFilter || property.isFilter();
+			}
 
-				if (applyEvent.isViewScope() || applyEvent.isOpticalFilter())
-					e.getEntityLiving().resetActiveHand();
-				if (applyEvent.isViewScope())
-					StellarAPIReference.updateScope(e.getEntityLiving());
-				if (applyEvent.isOpticalFilter())
-					StellarAPIReference.updateFilter(e.getEntityLiving());
-			} else if (itemstack != itemInUse)
-				LivingItemAccessHelper.setUsingItem(e.getEntityLiving(), itemstack);
-		}
+			if (itemInUse != null && itemInUse.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = itemInUse.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				updateScope = updateScope || property.isScope();
+				updateFilter = updateFilter || property.isFilter();
+			}
 
-		IOpticalViewer viewer = e.getEntityLiving().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
-				EnumFacing.DOWN);
-		if (viewer instanceof OpticalViewerEventCallback)
-			((OpticalViewerEventCallback) viewer).update();
+			if(updateScope) {
+				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == null? null : itemstack);
+				StellarAPIReference.updateScope(event.getEntityLiving());
+			}
+
+			if(updateFilter) {
+				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == null? null :  itemstack);
+				StellarAPIReference.updateFilter(event.getEntityLiving());
+			}
+		} else if(itemstack != itemInUse)
+			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemstack);
 	}
 
 	@SubscribeEvent

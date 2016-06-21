@@ -26,7 +26,6 @@ import stellarapi.example.item.ItemFilteredTelescopeExample;
 import stellarapi.example.item.ItemTelescopeExample;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
-import stellarapi.feature.horseriding.HorseRidingEventHandler;
 import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 import stellarapi.impl.AlarmWakeHandler;
@@ -122,8 +121,6 @@ public final class StellarAPI {
 		cfgManager.syncFromFile();
 
 		proxy.load(event);
-
-		StellarAPIReference.getEventBus().register(new HorseRidingEventHandler());
 
 		CompatManager.getInstance().onInit();
 	}

@@ -12,10 +12,10 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.event.interact.ApplyOpticalItemEvent;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
 import stellarapi.api.helper.LivingItemAccessHelper;
+import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.reference.OpticalViewerEventCallback;
 import stellarapi.reference.PerServerManager;
@@ -27,18 +27,19 @@ public class StellarAPIForgeEventHook {
 		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
 				EnumFacing.DOWN);
 
-		if (optics instanceof OpticalViewerEventCallback) {
-			ApplyOpticalItemEvent applyEvent = new ApplyOpticalItemEvent(event.getEntityLiving(), event.getItem());
-			StellarAPIReference.getEventBus().post(applyEvent);
+		if (optics instanceof OpticalViewerEventCallback
+				&& event.getItem().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			IOpticalProperties properties = event.getItem().getCapability(
+					StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 
-			ItemStack previous = LivingItemAccessHelper.getUsingItem(event.getEntityLiving());
+			ItemStack previous = event.getEntityLiving().getActiveItemStack();
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), event.getItem());
 
 			OpticalViewerEventCallback callback = (OpticalViewerEventCallback) optics;
 
-			if (applyEvent.isViewScope())
+			if (properties.isScope())
 				callback.updateScope();
-			if (applyEvent.isOpticalFilter())
+			if (properties.isFilter())
 				callback.updateFilter();
 
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), previous);
@@ -59,18 +60,19 @@ public class StellarAPIForgeEventHook {
 		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
 				EnumFacing.DOWN);
 
-		if (optics instanceof OpticalViewerEventCallback) {
-			ApplyOpticalItemEvent applyEvent = new ApplyOpticalItemEvent(event.getEntityLiving(), event.getItem());
-			StellarAPIReference.getEventBus().post(applyEvent);
+		if (optics instanceof OpticalViewerEventCallback
+				&& event.getItem().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			IOpticalProperties properties = event.getItem().getCapability(
+					StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 
-			ItemStack previous = LivingItemAccessHelper.getUsingItem(event.getEntityLiving());
+			ItemStack previous = event.getEntityLiving().getActiveItemStack();
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), null);
 
 			OpticalViewerEventCallback callback = (OpticalViewerEventCallback) optics;
 
-			if (applyEvent.isViewScope())
+			if (properties.isScope())
 				callback.updateScope();
-			if (applyEvent.isOpticalFilter())
+			if (properties.isFilter())
 				callback.updateFilter();
 
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), previous);

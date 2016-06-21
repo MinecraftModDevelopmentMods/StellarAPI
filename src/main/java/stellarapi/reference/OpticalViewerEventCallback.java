@@ -1,12 +1,13 @@
 package stellarapi.reference;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
 import stellarapi.api.IPerEntityReference;
+import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
-import stellarapi.api.event.interact.ApplyOpticalEntityEvent;
+import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
@@ -61,20 +62,16 @@ public final class OpticalViewerEventCallback implements IPerEntityReference, IO
 			boolean updateScope = false;
 			boolean updateFilter = false;
 
-			if (this.ridingEntity != null) {
-				ApplyOpticalEntityEvent applyEvent = new ApplyOpticalEntityEvent((EntityPlayer) this.entity,
-						this.ridingEntity);
-				StellarAPIReference.getEventBus().post(applyEvent);
-				updateScope = updateScope || applyEvent.isViewScope();
-				updateFilter = updateFilter || applyEvent.isOpticalFilter();
+			if (this.ridingEntity != null && ridingEntity.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = ridingEntity.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				updateScope = updateScope || property.isScope();
+				updateFilter = updateFilter || property.isFilter();
 			}
 
-			if (entity.getRidingEntity() != null) {
-				ApplyOpticalEntityEvent applyEvent = new ApplyOpticalEntityEvent((EntityPlayer) this.entity,
-						entity.getRidingEntity());
-				StellarAPIReference.getEventBus().post(applyEvent);
-				updateScope = updateScope || applyEvent.isViewScope();
-				updateFilter = updateFilter || applyEvent.isOpticalFilter();
+			if (entity.getRidingEntity() != null && entity.getRidingEntity().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = entity.getRidingEntity().getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+				updateScope = updateScope || property.isScope();
+				updateFilter = updateFilter || property.isFilter();
 			}
 
 			if (updateScope)
