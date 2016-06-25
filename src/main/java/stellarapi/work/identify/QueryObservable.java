@@ -3,6 +3,10 @@ package stellarapi.work.identify;
 import stellarapi.work.optics.position.ISpRegion;
 import stellarapi.work.optics.wavelength.IWaveCategory;
 
+/**
+ * TODO Observer-dependency
+ *  - Deal with Observer position?
+ * */
 public class QueryObservable {
 
 	/**
