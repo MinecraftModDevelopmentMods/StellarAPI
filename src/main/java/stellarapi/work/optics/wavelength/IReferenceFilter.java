@@ -1,5 +1,7 @@
 package stellarapi.work.optics.wavelength;
 
+import stellarapi.work.util.IRegistryEntry;
+
 /**
  * Reference Filter to be used to estimate the brightness from objects.
  * A reference filter should suffice these conditions:
@@ -11,18 +13,18 @@ package stellarapi.work.optics.wavelength;
  * 		because there are objects which have notably small brightness on them compared to nearby filters. <p>
  * Interpolation method should be provided from the object when the data does not exist on the object.
  * */
-public interface IReferenceFilter {
+public interface IReferenceFilter extends IRegistryEntry {
 
 	/**
-	 * Flux in as Jy.
+	 * Flux for magnitude 0.0 / brightness 1.0 as Jy.
 	 * */
 	public double referenceFlux();
-	
+
 	/**
 	 * Central wavelength of the filter.
 	 * */
 	public double getCentralWavelength();
-	
+
 	/**
 	 * Full Width Half Maximum of the filter.
 	 * */

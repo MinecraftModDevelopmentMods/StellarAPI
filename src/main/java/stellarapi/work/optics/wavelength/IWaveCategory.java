@@ -1,5 +1,7 @@
 package stellarapi.work.optics.wavelength;
 
+import stellarapi.work.util.IRegistryEntry;
+
 /**
  * Wave category mainly for determination of observable objects, or checking brightness by order of magnitude.
  * A wave category is determined as follows:
@@ -16,12 +18,7 @@ package stellarapi.work.optics.wavelength;
  *  but 'Red' is not wave category because its observability is approximately same with
  *  	observability on 'Visible' category.
  * */
-public interface IWaveCategory {
-
-	/**
-	 * Name of the category.
-	 * */
-	public String getName();
+public interface IWaveCategory extends IRegistryEntry {
 
 	/**
 	 * Basis reference filter on the category.
@@ -32,5 +29,15 @@ public interface IWaveCategory {
 	 * Checks if certain reference filter is in the category.
 	 * */
 	public boolean isInCategory(IReferenceFilter filter);
+
+	/**
+	 * Approximation on minimum wavelength.
+	 * */
+	public double approxMinWavelength();
+
+	/**
+	 * Approximation on maximum wavelength.
+	 * */
+	public double approxMaxWavelength();
 
 }
