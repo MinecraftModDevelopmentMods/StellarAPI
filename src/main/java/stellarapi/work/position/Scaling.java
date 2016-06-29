@@ -1,4 +1,4 @@
-package stellarapi.work.optics.position;
+package stellarapi.work.position;
 
 public class Scaling {
 	
