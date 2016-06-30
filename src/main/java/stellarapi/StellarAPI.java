@@ -34,7 +34,9 @@ import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.StellarAPIReferenceHandler;
 
-@Mod(modid = StellarAPI.modid, version = StellarAPI.version, guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
+@Mod(modid = StellarAPI.modid, version = StellarAPI.version,
+acceptedMinecraftVersions="[1.9.4, 1.11.0)",
+guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
 
 	public static final String modid = "StellarAPI";
