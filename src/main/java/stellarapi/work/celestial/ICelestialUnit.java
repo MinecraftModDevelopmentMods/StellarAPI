@@ -1,5 +1,7 @@
 package stellarapi.work.celestial;
 
+import stellarapi.work.identify.ICelestialIdentifier;
+
 /**
  * Celestial Unit which can be identified as 'same object' in some case. <p>
  * This will include galaxy cluster, galaxy,
@@ -9,16 +11,6 @@ package stellarapi.work.celestial;
  * 		if they are not ancestor/descendant of each other. <p>
  * TODO implementation of approximation strategies
  * */
-public class CelestialUnit {
-
-	/**
-	 * The parent unit for this unit.
-	 * */
-	private CelestialUnit parent;
-
-	/**
-	 * Approximation of its scale, in AU.
-	 * */
-	private double scale;
-
+public interface ICelestialUnit {
+	public Iterable<ICelestialUnit> subUnits(ICelestialIdentifier identifier, double bound);
 }
