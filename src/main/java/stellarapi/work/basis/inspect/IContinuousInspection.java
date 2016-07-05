@@ -1,4 +1,4 @@
-package stellarapi.work.inspect;
+package stellarapi.work.basis.inspect;
 
 public interface IContinuousInspection<R, C> extends IInspection<R, C> {
 

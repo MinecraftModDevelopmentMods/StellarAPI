@@ -1,4 +1,4 @@
-package stellarapi.work.inspect;
+package stellarapi.work.basis.inspect;
 
 /**
  * Certain type of inspection.

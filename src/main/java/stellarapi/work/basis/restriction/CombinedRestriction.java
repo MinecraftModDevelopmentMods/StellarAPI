@@ -1,4 +1,4 @@
-package stellarapi.work.restriction;
+package stellarapi.work.basis.restriction;
 
 import java.util.List;
 
