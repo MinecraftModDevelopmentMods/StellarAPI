@@ -1,5 +1,5 @@
 package stellarapi.work.basis.accuracy;
 
-public interface IAccuracyFactor extends Comparable {
+public interface IAccuracyFactor<F extends IAccuracyFactor> extends Comparable<F> {
 
 }
