@@ -1,8 +1,17 @@
 package stellarapi.work.basis.inspect;
 
-public interface IInspectionType {
+import stellarapi.work.basis.collect.ICallbackBuilder;
 
-	// TODO inspection Builder getter
-	// TODO Callback Builder getter
+public interface IInspectionType<B extends IInspectBuilder, C extends ICallbackBuilder> {
+
+	/**
+	 * Creates and gives the inspection compound builder.
+	 * */
+	public B inspectionBuilder();
+	
+	/**
+	 * Creates and gives the callback builder.
+	 * */
+	public C callbackBuilder();
 
 }
