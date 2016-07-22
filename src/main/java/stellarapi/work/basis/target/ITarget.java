@@ -23,7 +23,7 @@ public interface ITarget<S extends IAccuracyStage> {
 	public S getCurrentStage();
 
 	/**
-	 * Change check flag which might be used for data management.
+	 * Changed time. Any unit can be used if there is only consistency.
 	 * */
-	public boolean isChanged();
+	public long timeChanged();
 }
