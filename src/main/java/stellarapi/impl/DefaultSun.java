@@ -50,7 +50,7 @@ public class DefaultSun implements ICelestialObject {
 	@Override
 	public SpCoord getCurrentHorizontalPos() {
 		float celestialAngle = world.getCelestialAngle(0.0f);
-		return new SpCoord(celestialAngle < 0.5 ? 90.0 : 270.0, 360.0 * Math.abs(celestialAngle - 0.5) - 90.0);
+		return new SpCoord(celestialAngle < 0.5 ? 0.0 : 180.0, 360.0 * Math.abs(celestialAngle - 0.5) - 90.0);
 	}
 
 	@Override

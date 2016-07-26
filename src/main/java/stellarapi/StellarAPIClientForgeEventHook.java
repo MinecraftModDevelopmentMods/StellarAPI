@@ -18,7 +18,10 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.StellarAPIReference;
+import stellarapi.api.celestials.CelestialCollectionManager;
+import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.event.world.ClientWorldEvent;
+import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.EyeDetector;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
@@ -53,7 +56,11 @@ public class StellarAPIClientForgeEventHook {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onUpdateFOV(EntityViewRenderEvent.FOVModifier event) {
+		if(!StellarAPIReference.hasOpticalInformation(event.getEntity()))
+			return;
+
 		IViewScope scope = StellarAPIReference.getScope(event.getEntity());
+
 		if (scope.forceChange())
 			event.setFOV(70.0F / (float) scope.getMP());
 		else
@@ -62,6 +69,9 @@ public class StellarAPIClientForgeEventHook {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
+		if(!StellarAPIReference.hasOpticalInformation(event.getEntity()))
+			return;
+
 		IViewScope scope = StellarAPIReference.getScope(event.getEntity());
 		IOpticalFilter filter = StellarAPIReference.getFilter(event.getEntity());
 

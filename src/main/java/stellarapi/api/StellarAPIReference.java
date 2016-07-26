@@ -178,17 +178,30 @@ public final class StellarAPIReference {
 	}
 
 	/**
+	 * Checks if certain entity has optical information.
+	 * Check this before trying to get the scope.
+	 * @param entity the entity
+	 * */
+	public static boolean hasOpticalInformation(Entity entity) {
+		return reference.getPerEntityReference(entity) != null;
+	}
+
+	/**
 	 * Gets scope for certain entity.
+	 * @param entity the entity
 	 */
 	public static IViewScope getScope(Entity entity) {
-		return entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.UP).getScope();
+		IPerEntityReference ref = reference.getPerEntityReference(entity);
+		return ref != null? ref.getScope() : null;
 	}
 
 	/**
 	 * Gets filter for certain entity.
+	 * @param entity the entity
 	 */
 	public static IOpticalFilter getFilter(Entity entity) {
-		return entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.UP).getFilter();
+		IPerEntityReference ref = reference.getPerEntityReference(entity);
+		return ref != null? ref.getFilter() : null;
 	}
 
 	/**

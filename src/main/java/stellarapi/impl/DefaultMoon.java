@@ -51,7 +51,7 @@ public class DefaultMoon implements ICelestialObject {
 	@Override
 	public SpCoord getCurrentHorizontalPos() {
 		float celestialAngle = world.getCelestialAngle(0.0f);
-		return new SpCoord(celestialAngle < 0.5 ? 270.0 : 90.0, 90.0 - 360.0 * Math.abs(celestialAngle - 0.5));
+		return new SpCoord(celestialAngle < 0.5 ? 180.0 : 0.0, 90.0 - 360.0 * Math.abs(celestialAngle - 0.5));
 	}
 
 	@Override
