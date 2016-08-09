@@ -8,7 +8,7 @@ public interface IInspectionType<B extends IInspectBuilder, C extends ICallbackB
 	 * Creates and gives the inspection compound builder.
 	 * */
 	public B inspectionBuilder();
-	
+
 	/**
 	 * Creates and gives the callback builder.
 	 * */

@@ -1,7 +1,7 @@
 package stellarapi.work.basis.target;
 
 public interface IDataLogic<T extends ITarget, D> {
-	
+
 	/**
 	 * Reads data and apply it to the instance.
 	 * @param instance the instance

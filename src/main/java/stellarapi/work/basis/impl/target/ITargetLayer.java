@@ -1,4 +1,4 @@
-package stellarapi.work.impl.target.layered;
+package stellarapi.work.basis.impl.target;
 
 import stellarapi.work.basis.accuracy.IAccuracyStage;
 import stellarapi.work.basis.compound.ICompound;

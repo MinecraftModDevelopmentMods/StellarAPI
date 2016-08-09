@@ -1,22 +1,21 @@
-package stellarapi.work.impl.target.layered;
+package stellarapi.work.basis.impl.target;
+
+import com.google.common.collect.Ordering;
 
 import stellarapi.work.basis.accuracy.IAccuracyStage;
 import stellarapi.work.basis.compound.ICompound;
 import stellarapi.work.basis.compound.IModifiableCompound;
 import stellarapi.work.basis.target.ITarget;
 
-public abstract class LayeredTarget<S extends IAccuracyStage> implements ITarget<S> {
-
-	private S currentStage = null;
-	private long timeChanged = this.captureCurrentTime();
+public abstract class LayeredTarget<S extends IAccuracyStage> extends AbstractTarget<S> {
 	private ITargetLayer<S, LayeredTarget>[] layers;
 
 	@Override
 	public void process(S stage, ICompound inspect, IModifiableCompound additional) {
-		if(this.checkProcess(stage, inspect, additional))
+		if(this.checkProcessNotRequired(stage, inspect, additional))
 			return;
 
-		this.transition(stage.compareTo(this.currentStage), stage, inspect, additional);
+		this.transition(stageOrdering.compare(stage, this.getCurrentStage()), stage, inspect, additional);
 	}
 
 	/**
@@ -27,25 +26,16 @@ public abstract class LayeredTarget<S extends IAccuracyStage> implements ITarget
 	}
 
 	protected void stageTransition(int comparison, S stage, ICompound inspect, IModifiableCompound additional) {
-		this.preProcess(comparison, this.currentStage, stage, inspect, additional);
+		S current = this.getCurrentStage();
+		this.preProcess(comparison, current, stage, inspect, additional);
 		if(comparison > 0)
 			for(ITargetLayer<S, LayeredTarget> layer : this.layers)
-				layer.populate(this, this.currentStage, stage, inspect, additional);
+				layer.populate(this, current, stage, inspect, additional);
 		else if(comparison < 0)
 			for(ITargetLayer<S, LayeredTarget> layer : this.layers)
-				layer.demolish(this, this.currentStage, stage, inspect, additional);
-		this.postProcess(comparison, this.currentStage, stage, inspect, additional);
-		this.syncStage(stage);
-	}
-
-	@Override
-	public S getCurrentStage() {
-		return this.currentStage;
-	}
-
-	@Override
-	public long timeChanged() {
-		return this.timeChanged;
+				layer.demolish(this, current, stage, inspect, additional);
+		this.postProcess(comparison, current, stage, inspect, additional);
+		this.syncStageTime(stage);
 	}
 
 
@@ -56,14 +46,5 @@ public abstract class LayeredTarget<S extends IAccuracyStage> implements ITarget
 
 	protected void setupLayers(ITargetLayer[] layers) {
 		this.layers = layers;
-	}
-
-	protected boolean checkProcess(S stage, ICompound inspect, IModifiableCompound additional) {
-		return this.timeChanged == this.captureCurrentTime() || stage.equals(this.currentStage);
-	}
-
-	protected void syncStage(S stage) {
-		this.currentStage = stage;
-		this.timeChanged = this.captureCurrentTime();
 	}
 }
