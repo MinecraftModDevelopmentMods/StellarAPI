@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 
+import stellarapi.work.basis.accuracy.AccuracyHelper;
 import stellarapi.work.basis.accuracy.IAccuracyStage;
 import stellarapi.work.basis.compound.ICompound;
 import stellarapi.work.basis.compound.IModifiableCompound;
@@ -13,7 +14,7 @@ import stellarapi.work.basis.target.ITarget;
 public abstract class AbstractTarget<S extends IAccuracyStage> implements ITarget<S> {
 
 	/** The ordering to use for stages. This should be used to avoid NPE. */
-	protected final Ordering<S> stageOrdering = IAccuracyStage.getOrdering();
+	protected final Ordering<S> stageOrdering = AccuracyHelper.getOrdering();
 
 	private @Nullable S currentStage = null;
 	private long timeChanged = this.captureCurrentTime();
