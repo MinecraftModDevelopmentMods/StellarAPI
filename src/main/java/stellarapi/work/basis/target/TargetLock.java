@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
@@ -18,6 +19,10 @@ public class TargetLock<S extends IAccuracyStage, T extends ITarget<S>> {
 	// TODO implementation of the target lock
 	private Ordering<S> comparison = AccuracyHelper.getOrdering();
 	private Map<UUID, S> lockedStateMap = Maps.newHashMap();
+
+	private S evaluatedMax;
+	private int maxNum = 1;
+
 	private T target;
 
 	/**
@@ -29,11 +34,30 @@ public class TargetLock<S extends IAccuracyStage, T extends ITarget<S>> {
 	 * @param additional the additional compound containing current information
 	 * */
 	public void setup(UUID inspectionId, @Nullable S stage, ICompound inspect, IModifiableCompound additional) {
-		if(comparison.compare(stage, lockedStateMap.get(inspectionId)) > 0) {
-			lockedStateMap.put(inspectionId, stage);
-			if(comparison.compare(stage, target.getCurrentStage()) > 0) {
-				// TODO interrupt/wait for the former process
-				target.process(stage, inspect, additional);
+		S previous = lockedStateMap.put(inspectionId, stage);
+		int thanMax = comparison.compare(stage, this.evaluatedMax);
+		int thanPrevious = comparison.compare(stage, previous);
+
+		if(thanMax >= 0) {
+			// TODO interrupt/wait for the former process
+			target.process(stage, inspect, additional);
+			if(thanMax != 0)
+				this.maxNum = 1;
+
+			if(thanPrevious > 0)
+				this.maxNum ++;
+		}
+
+		if(Objects.equal(previous, this.evaluatedMax) && thanPrevious < 0 && this.maxNum <= 1) {
+			this.evaluatedMax = null;
+			this.maxNum = 1;
+			for(S ite : lockedStateMap.values()) {
+				thanMax = comparison.compare(ite, this.evaluatedMax);
+				if(thanMax > 0) {
+					this.evaluatedMax = ite;
+					this.maxNum = 1;
+				} else if(thanMax == 0)
+					this.maxNum ++;
 			}
 		}
 	}

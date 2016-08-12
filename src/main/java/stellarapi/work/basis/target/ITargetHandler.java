@@ -4,6 +4,7 @@ import stellarapi.work.basis.data.IDataType;
 import stellarapi.work.basis.inspect.IInspectionType;
 
 public interface ITargetHandler<T extends ITarget> {
+	// TODO rewrite, instantiation, state lock
 
 	/**
 	 * Gets the inspection logic for the target.
