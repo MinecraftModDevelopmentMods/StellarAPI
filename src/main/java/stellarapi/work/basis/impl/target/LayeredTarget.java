@@ -14,7 +14,7 @@ public abstract class LayeredTarget<S extends IAccuracyStage> extends AbstractTa
 	public void process(S stage, ICompound inspect, IModifiableCompound additional) {
 		if(this.checkProcessNotRequired(stage, inspect, additional))
 			return;
-
+		// TODO condition which demands holding the stage
 		this.transition(stageOrdering.compare(stage, this.getCurrentStage()), stage, inspect, additional);
 	}
 

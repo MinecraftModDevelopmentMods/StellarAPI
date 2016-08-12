@@ -7,15 +7,17 @@ import stellarapi.work.basis.inspect.IInspectionType;
 
 public class OpticalInspection3d implements IInspectionType<Inspect3dBuilder, Callback3dBuilder> {
 
+	public static final OpticalInspection3d INSPECTION_3D = new OpticalInspection3d();
+
+	private OpticalInspection3d() { }
+
 	@Override
 	public Inspect3dBuilder inspectionBuilder() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Callback3dBuilder callbackBuilder() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

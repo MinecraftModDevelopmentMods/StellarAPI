@@ -7,7 +7,6 @@ public class Inspect3dBuilder implements IInspectBuilder {
 
 	@Override
 	public ICompound build() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
