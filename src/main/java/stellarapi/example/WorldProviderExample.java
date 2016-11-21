@@ -352,6 +352,11 @@ public class WorldProviderExample extends WorldProvider {
 	public boolean hasNoSky() {
 		return parProvider.hasNoSky();
 	}
+	
+	@Override
+	public boolean hasSkyLight() {
+		return parProvider.hasSkyLight();
+	}
 
 	@Override
 	public float[] getLightBrightnessTable() {

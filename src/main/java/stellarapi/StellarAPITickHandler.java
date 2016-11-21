@@ -35,32 +35,32 @@ public class StellarAPITickHandler {
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent event) {
 		EnumHand hand = event.getEntityLiving().getActiveHand();
-		ItemStack itemstack = hand != null ? event.getEntityLiving().getHeldItem(hand) : null;
+		ItemStack itemstack = hand != null ? event.getEntityLiving().getHeldItem(hand) : ItemStack.EMPTY;
 		ItemStack itemInUse = event.getEntityLiving().getActiveItemStack();
 
 		if (!ItemStack.areItemStacksEqual(itemstack, itemInUse)) {
 			boolean updateScope = false;
 			boolean updateFilter = false;
 
-			if (itemstack != null && itemstack.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			if (itemstack.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 				IOpticalProperties property = itemstack.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				updateScope = updateScope || property.isScope();
 				updateFilter = updateFilter || property.isFilter();
 			}
 
-			if (itemInUse != null && itemInUse.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			if (itemInUse.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 				IOpticalProperties property = itemInUse.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				updateScope = updateScope || property.isScope();
 				updateFilter = updateFilter || property.isFilter();
 			}
 
 			if(updateScope) {
-				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == null? null : itemstack);
+				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == ItemStack.EMPTY? ItemStack.EMPTY : itemstack);
 				StellarAPIReference.updateScope(event.getEntityLiving());
 			}
 
 			if(updateFilter) {
-				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == null? null :  itemstack);
+				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == ItemStack.EMPTY? ItemStack.EMPTY :  itemstack);
 				StellarAPIReference.updateFilter(event.getEntityLiving());
 			}
 		} else if(itemstack != itemInUse)
