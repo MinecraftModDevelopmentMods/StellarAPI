@@ -17,7 +17,7 @@ import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 public class CommandPerDimensionResource extends CommandBase {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "perdimres";
 	}
 
@@ -27,7 +27,7 @@ public class CommandPerDimensionResource extends CommandBase {
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getUsage(ICommandSender sender) {
 		return "command.perdimres.usage";
 	}
 
@@ -46,7 +46,7 @@ public class CommandPerDimensionResource extends CommandBase {
 			if (list.contains("\n"))
 				list = list.substring(list.indexOf('\n'));
 
-			sender.addChatMessage(new TextComponentTranslation("command.perdimres.list", list));
+			sender.sendMessage(new TextComponentTranslation("command.perdimres.list", list));
 
 		} else if (args[0].equals("available")) {
 			String list = "";
@@ -56,7 +56,7 @@ public class CommandPerDimensionResource extends CommandBase {
 			if (list.contains(","))
 				list = list.substring(list.indexOf(','));
 
-			sender.addChatMessage(new TextComponentTranslation("command.perdimres.available", list));
+			sender.sendMessage(new TextComponentTranslation("command.perdimres.available", list));
 
 		} else if (args[0].equals("set")) {
 			if (args.length < 3)
@@ -89,7 +89,7 @@ public class CommandPerDimensionResource extends CommandBase {
 
 	private void addChatMessage(ICommandSender sender, ITextComponent component, TextFormatting color) {
 		component.setStyle(component.getStyle().setColor(color));
-		sender.addChatMessage(component);
+		sender.sendMessage(component);
 	}
 
 }

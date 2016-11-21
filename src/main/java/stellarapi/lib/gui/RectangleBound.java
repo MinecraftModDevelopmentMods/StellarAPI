@@ -89,12 +89,12 @@ public class RectangleBound implements IRectangleBound {
 
 	@Override
 	public float getRatioX(float x) {
-		return MathHelper.clamp_float((x - this.posX) / this.width, 0.0f, 1.0f);
+		return MathHelper.clamp((x - this.posX) / this.width, 0.0f, 1.0f);
 	}
 
 	@Override
 	public float getRatioY(float y) {
-		return MathHelper.clamp_float((y - this.posY) / this.height, 0.0f, 1.0f);
+		return MathHelper.clamp((y - this.posY) / this.height, 0.0f, 1.0f);
 	}
 
 	@Override

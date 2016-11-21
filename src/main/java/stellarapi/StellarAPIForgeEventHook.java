@@ -66,7 +66,7 @@ public class StellarAPIForgeEventHook {
 					StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 
 			ItemStack previous = event.getEntityLiving().getActiveItemStack();
-			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), null);
+			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), ItemStack.EMPTY);
 
 			OpticalViewerEventCallback callback = (OpticalViewerEventCallback) optics;
 
@@ -108,20 +108,20 @@ public class StellarAPIForgeEventHook {
 
 	@SubscribeEvent
 	public void onSleepInBed(PlayerSleepInBedEvent event) {
-		if (!StellarAPIReference.getSleepWakeManager().isEnabled() || event.getEntityPlayer().worldObj.isRemote) {
+		if (!StellarAPIReference.getSleepWakeManager().isEnabled() || event.getEntityPlayer().world.isRemote) {
 			return;
 		}
 
 		if (event.getResultStatus() == null || event.getResultStatus() == SleepResult.OK
 				|| event.getResultStatus() == SleepResult.NOT_POSSIBLE_NOW) {
-			World worldObj = event.getEntityPlayer().worldObj;
+			World worldObj = event.getEntityPlayer().world;
 
 			event.setResult(
 					StellarAPIReference.getSleepWakeManager().getSleepPossibility(worldObj, event.getResultStatus()));
 		}
 
 		if (event.getResultStatus() == SleepResult.OK) {
-			event.getEntityPlayer().worldObj.updateAllPlayersSleepingFlag();
+			event.getEntityPlayer().world.updateAllPlayersSleepingFlag();
 			event.setResult((SleepResult) null);
 		}
 	}

@@ -77,7 +77,7 @@ public class CelestialHelperExample {
 	 *            the partial tick
 	 */
 	public float getSunlightFactor(EnumRGBA color, float partialTicks) {
-		return MathHelper.clamp_float(2.0f * this.getSunHeightFactor(partialTicks) + 0.5f, 0.0f, 1.0f)
+		return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.5f, 0.0f, 1.0f)
 				* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color)) * this.relativeMultiplierSun;
 	}
 
@@ -90,7 +90,7 @@ public class CelestialHelperExample {
 	 *            the partial tick
 	 */
 	public float getSunlightRenderBrightnessFactor(float partialTicks) {
-		return MathHelper.clamp_float(2.0f * this.getSunHeightFactor(partialTicks) + 0.2f, 0.0f, 1.0f)
+		return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.2f, 0.0f, 1.0f)
 				* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(EnumRGBA.Alpha))
 				* this.relativeMultiplierSun;
 	}

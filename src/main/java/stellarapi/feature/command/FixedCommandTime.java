@@ -70,14 +70,14 @@ public class FixedCommandTime extends CommandTime {
 	}
 
 	protected void setAllWorldTimes(MinecraftServer server, long time) {
-		for (int i = 0; i < server.worldServers.length; ++i) {
-			server.worldServers[i].setWorldTime(time);
+		for (int i = 0; i < server.worlds.length; ++i) {
+			server.worlds[i].setWorldTime(time);
 		}
 	}
 
 	protected void incrementAllWorldTimes(MinecraftServer server, long amount) {
-		for (int i = 0; i < server.worldServers.length; ++i) {
-			WorldServer worldserver = server.worldServers[i];
+		for (int i = 0; i < server.worlds.length; ++i) {
+			WorldServer worldserver = server.worlds[i];
 			worldserver.setWorldTime(worldserver.getWorldTime() + amount);
 		}
 	}

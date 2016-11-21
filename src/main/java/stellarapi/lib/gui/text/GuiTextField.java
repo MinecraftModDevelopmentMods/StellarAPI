@@ -220,7 +220,7 @@ public class GuiTextField implements IGuiElementType<ITextFieldController> {
 			else if (selection <= this.scrollOffset)
 				this.scrollOffset = selection;
 
-			this.scrollOffset = MathHelper.clamp_int(this.scrollOffset, 0, totalLength);
+			this.scrollOffset = MathHelper.clamp(this.scrollOffset, 0, totalLength);
 
 			xOffset = wrapped.getFontHelper().getStringWidth(current.substring(0, this.scrollOffset));
 		}

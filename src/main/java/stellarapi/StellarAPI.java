@@ -35,13 +35,13 @@ import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.StellarAPIReferenceHandler;
 
 @Mod(modid = StellarAPI.modid, version = StellarAPI.version,
-acceptedMinecraftVersions="[1.9.4, 1.11.0)",
+acceptedMinecraftVersions="[1.11.0, 1.12.0)",
 guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
 
-	public static final String modid = "StellarAPI";
+	public static final String modid = "stellarapi";
 	public static final String version = "@VERSION@";
-	public static final String apiid = "StellarAPI|API";
+	public static final String apiid = "stellarapi|api";
 
 	// The instance of Stellarium
 	@Instance(StellarAPI.modid)
@@ -106,12 +106,14 @@ public final class StellarAPI {
 
 		this.telescope = new ItemTelescopeExample().setUnlocalizedName("stellarapi.deftelescope")
 				.setCreativeTab(CreativeTabs.TOOLS).setMaxStackSize(1);
-		GameRegistry.registerItem(telescope, "defaulttelescope");
+		telescope.setRegistryName("defaulttelescope");
+		GameRegistry.register(telescope);
 
 		this.filteredTelescope = new ItemFilteredTelescopeExample()
 				.setUnlocalizedName("stellarapi.deffilteredtelescope").setCreativeTab(CreativeTabs.TOOLS)
 				.setMaxStackSize(1);
-		GameRegistry.registerItem(filteredTelescope, "defaultfilteredtelescope");
+		filteredTelescope.setRegistryName("defaultfilteredtelescope");
+		GameRegistry.register(filteredTelescope);
 
 		proxy.preInit(event);
 

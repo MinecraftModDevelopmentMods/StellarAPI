@@ -83,7 +83,7 @@ public class Spmath {
 
 	// Float tangent
 	public static final float tanf(float d) {
-		int k = MathHelper.floor_float(d * signi / PI);
+		int k = MathHelper.floor(d * signi / PI);
 		k %= signi;
 		if (k < 0)
 			k += signi;
@@ -91,7 +91,7 @@ public class Spmath {
 	}
 
 	public static final double asin(double d) {
-		int k = MathHelper.floor_double((d + 1) * signi / 2);
+		int k = MathHelper.floor((d + 1) * signi / 2);
 		if (k < 0 || k > signi)
 			return Float.NaN;
 		return datasin[k];

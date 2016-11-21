@@ -63,10 +63,10 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 
 	@Override
 	public void updateOverlay() {
-		if (mc.theWorld == null)
+		if (mc.world == null)
 			return;
 
-		CelestialPeriod dayPeriod = PeriodHelper.getDayPeriod(mc.theWorld);
+		CelestialPeriod dayPeriod = PeriodHelper.getDayPeriod(mc.world);
 		if (dayPeriod == null) {
 			descriptors.clear();
 			this.invalidDay = true;
@@ -76,8 +76,8 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 		descriptors.clear();
 		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
 
-		long dawnTime = checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DAWN, -1L);
-		long duskTime = checker.timeForCertainDescriptor(mc.theWorld, EnumDaytimeDescriptor.DUSK, -1L);
+		long dawnTime = checker.timeForCertainDescriptor(mc.world, EnumDaytimeDescriptor.DAWN, -1L);
+		long duskTime = checker.timeForCertainDescriptor(mc.world, EnumDaytimeDescriptor.DUSK, -1L);
 
 		if (dawnTime == -1 || duskTime == -1)
 			this.invalidDay = true;
@@ -87,11 +87,11 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 		double dawn = dayPeriod.getOffset(dawnTime, 0.0f);
 		double dusk = dayPeriod.getOffset(duskTime, 0.0f);
 
-		double current = dayPeriod.getOffset(mc.theWorld.getWorldTime(), 0.0f);
+		double current = dayPeriod.getOffset(mc.world.getWorldTime(), 0.0f);
 
 		this.isDay = current > dawn - 1.0 / 32 && current < dusk + 1.0 / 32;
 
-		float[] colors = mc.theWorld.provider.calcSunriseSunsetColors(mc.theWorld.getCelestialAngle(0.0f), 0.0f);
+		float[] colors = mc.world.provider.calcSunriseSunsetColors(mc.world.getCelestialAngle(0.0f), 0.0f);
 		if (colors != null)
 			this.icolor = ((int) (colors[0] * 255.0) << 16) + ((int) (colors[1] * 255.0) << 8)
 					+ (int) (colors[2] * 255.0);
@@ -99,7 +99,7 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 			this.icolor = this.isDay ? 0x77ff77 : 0xbb3333;
 
 		for (EnumDaytimeDescriptor descriptor : EnumDaytimeDescriptor.values())
-			if (checker.isDescriptorApply(mc.theWorld, descriptor, mc.theWorld.getWorldTime(),
+			if (checker.isDescriptorApply(mc.world, descriptor, mc.world.getWorldTime(),
 					(int) (dayPeriod.getPeriodLength() / 16), false))
 				descriptors.add(descriptor);
 	}
@@ -127,7 +127,7 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 		this.drawString(mc.fontRendererObj, this.invalidDay ? "invalid" : this.isDay ? "day" : "night", WIDTH / 2,
 				10 * (yOffset++) + 5, 255, this.invalidDay ? 0x770000 : this.isDay ? 0xffff77 : 0x5555aa);
 		for (EnumDaytimeDescriptor descriptor : this.descriptors)
-			if (mc.theWorld != null)
+			if (mc.world != null)
 				this.drawString(mc.fontRendererObj, descriptor.name(), WIDTH / 2, 10 * (yOffset++) + 5, 255,
 						this.icolor);
 	}

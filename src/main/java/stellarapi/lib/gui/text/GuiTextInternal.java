@@ -440,7 +440,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	 * sets the position of the cursor to the provided index
 	 */
 	public void setCursorPosition(int p_146190_1_) {
-		this.cursorPosition = MathHelper.clamp_int(p_146190_1_, 0, text.length());
+		this.cursorPosition = MathHelper.clamp(p_146190_1_, 0, text.length());
 		this.setSelectionPos(this.cursorPosition);
 	}
 
@@ -478,7 +478,7 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 	 * was started at)
 	 */
 	public void setSelectionPos(int selectionPos) {
-		selectionPos = MathHelper.clamp_int(selectionPos, 0, text.length());
+		selectionPos = MathHelper.clamp(selectionPos, 0, text.length());
 		this.selectionEnd = selectionPos;
 
 		controller.notifySelection(this.cursorPosition, this.selectionEnd);
