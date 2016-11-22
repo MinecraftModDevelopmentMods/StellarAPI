@@ -20,7 +20,7 @@ public enum EnumDaytimeDescriptor {
 	MIDDAY,
 
 	/**
-	 * Early Morning, when it is dark enough to call it 'night', before midday.
+	 * Early Morning, when it is dark enough to call it 'night', after midnight.
 	 */
 	EARLY_MORNING,
 

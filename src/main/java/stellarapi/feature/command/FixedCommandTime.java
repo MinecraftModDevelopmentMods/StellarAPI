@@ -25,7 +25,9 @@ public class FixedCommandTime extends CommandTime {
 				if (args[1].equals("day")) {
 					i1 = this.getDay(sender.getEntityWorld());
 				} else if (args[1].equals("night")) {
-					i1 = this.getMidnight(sender.getEntityWorld());
+					i1 = this.getNight(sender.getEntityWorld());
+				} else if (this.getDescriptor(args[1]) != null) {
+					i1 = this.getTime(sender.getEntityWorld(), this.getDescriptor(args[1]));
 				} else {
 					i1 = parseInt(args[1], 0);
 				}
@@ -89,11 +91,25 @@ public class FixedCommandTime extends CommandTime {
 		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MORNING, defaultValue);
 	}
 
-	public long getMidnight(World world) {
+	public long getNight(World world) {
 		long defaultValue = 13000L;
 
 		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
-		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MIDNIGHT, defaultValue);
+		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.EVENING, defaultValue);
+	}
+	
+	public EnumDaytimeDescriptor getDescriptor(String str) {
+		for(EnumDaytimeDescriptor desc : EnumDaytimeDescriptor.values()) {
+			if(str.toUpperCase().equals(desc.name().toLowerCase()))
+				return desc;
+		}
+		
+		return null;
+	}
+	
+	public long getTime(World world, EnumDaytimeDescriptor descriptor) {
+		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
+		return checker.timeForCertainDescriptor(world, descriptor, 0);
 	}
 
 	public int getDayTime(World world) {
