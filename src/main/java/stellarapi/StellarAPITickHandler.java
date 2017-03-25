@@ -1,9 +1,9 @@
 package stellarapi;
 
-import java.lang.reflect.Field;
-import java.util.Iterator;
+import java.lang.reflect.Method;
 
-import net.minecraft.entity.player.EntityPlayer;
+import com.google.common.base.Throwables;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -21,15 +21,19 @@ import stellarapi.api.interact.IOpticalProperties;
 
 public class StellarAPITickHandler {
 
-	private Field sleep;
+	private Method wakeAllPlayers = null;
+	
+	private void wakeAllPlayers(WorldServer world) {
+		if(this.wakeAllPlayers == null) {
+			this.wakeAllPlayers = ReflectionHelper.findMethod(WorldServer.class,
+					world, ObfuscationReflectionHelper.remapFieldNames(WorldServer.class.getName(), "wakeAllPlayers", "func_73053_d"));
+		}
 
-	public StellarAPITickHandler() {
-		sleep = getField(WorldServer.class, "allPlayersSleeping", "field_73068_P");
-	}
-
-	public static Field getField(Class<?> clazz, String... fieldNames) {
-		return ReflectionHelper.findField(clazz,
-				ObfuscationReflectionHelper.remapFieldNames(clazz.getName(), fieldNames));
+		try {
+			wakeAllPlayers.invoke(world);
+		} catch (Exception exception) {
+			throw Throwables.propagate(exception);
+		}
 	}
 
 	@SubscribeEvent
@@ -77,14 +81,6 @@ public class StellarAPITickHandler {
 					world.updateAllPlayersSleepingFlag();
 					if (world.areAllPlayersAsleep())
 						this.tryWakePlayers(world);
-
-					try {
-						sleep.setBoolean(world, false);
-					} catch (IllegalArgumentException ex) {
-						ex.printStackTrace();
-					} catch (IllegalAccessException ex) {
-						ex.printStackTrace();
-					}
 				}
 			}
 		}
@@ -98,17 +94,7 @@ public class StellarAPITickHandler {
 					(world.getWorldTime() / 24000L + 1L) * 24000L));
 		}
 
-		Iterator iterator = world.playerEntities.iterator();
-
-		while (iterator.hasNext()) {
-			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
-			if (entityplayer.isPlayerSleeping()) {
-				entityplayer.wakeUpPlayer(false, false, true);
-			}
-		}
-
-		world.provider.resetRainAndThunder();
+		this.wakeAllPlayers(world);
 	}
 
 }
