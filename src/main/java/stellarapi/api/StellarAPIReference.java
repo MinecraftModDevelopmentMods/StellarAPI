@@ -3,7 +3,6 @@ package stellarapi.api;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
@@ -86,7 +85,7 @@ public final class StellarAPIReference {
 	 *            additional parameters like changed itemstack.
 	 */
 	public static void updateScope(Entity entity, Object... additionalParams) {
-		reference.getPerEntityReference(entity).updateScope(additionalParams);
+		reference.getUpdatedViewerSafe(entity).updateScope(additionalParams);
 	}
 
 	/**
@@ -97,7 +96,7 @@ public final class StellarAPIReference {
 	 *            additional parameters like changed itemstack.
 	 */
 	public static void updateFilter(Entity entity, Object... additionalParams) {
-		reference.getPerEntityReference(entity).updateFilter(additionalParams);
+		reference.getUpdatedViewerSafe(entity).updateFilter(additionalParams);
 	}
 
 	/**
@@ -162,7 +161,7 @@ public final class StellarAPIReference {
 	 *         <code>null</code> otherwise
 	 */
 	public static CelestialEffectors getEffectors(World world, IEffectorType type) {
-		return reference.getPerWorldReference(world).getCelestialEffectors(type);
+		return .getCelestialEffectors(type);
 	}
 
 	/**
@@ -191,7 +190,7 @@ public final class StellarAPIReference {
 	 * @param entity the entity
 	 */
 	public static IViewScope getScope(Entity entity) {
-		IPerEntityReference ref = reference.getPerEntityReference(entity);
+		IUpdatedOpticalViewer ref = reference.getUpdatedViewerSafe(entity);
 		return ref != null? ref.getScope() : null;
 	}
 
@@ -200,7 +199,7 @@ public final class StellarAPIReference {
 	 * @param entity the entity
 	 */
 	public static IOpticalFilter getFilter(Entity entity) {
-		IPerEntityReference ref = reference.getPerEntityReference(entity);
+		IUpdatedOpticalViewer ref = reference.getUpdatedViewerSafe(entity);
 		return ref != null? ref.getFilter() : null;
 	}
 

@@ -2,7 +2,7 @@ package stellarapi.reference;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
-import stellarapi.api.IPerEntityReference;
+import stellarapi.api.IUpdatedOpticalViewer;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.UpdateFilterEvent;
@@ -18,7 +18,7 @@ import stellarapi.api.optics.NakedScope;
  * Per entity manager to contain the per-entity objects, Which gets event
  * callbacks.
  */
-public final class OpticalViewerEventCallback implements IPerEntityReference, IOpticalViewer {
+public final class OpticalViewerEventCallback implements IUpdatedOpticalViewer, IOpticalViewer {
 
 	private static final String ID = "stellarapiperplayermanager";
 

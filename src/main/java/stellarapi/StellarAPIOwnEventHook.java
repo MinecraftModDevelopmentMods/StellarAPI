@@ -12,8 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
-import stellarapi.api.event.ResetCoordinateEvent;
-import stellarapi.api.event.ResetSkyEffectEvent;
+import stellarapi.api.event.SetCoordinateEvent;
+import stellarapi.api.event.SetSkyEffectEvent;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
@@ -40,13 +40,13 @@ public class StellarAPIOwnEventHook {
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onResetCoordinate(ResetCoordinateEvent event) {
+	public void onResetCoordinate(SetCoordinateEvent event) {
 		if (event.getCoordinate() == null)
 			event.setCoordinate(new DefaultCoordinateVanilla(event.getWorld()));
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onResetEffect(ResetSkyEffectEvent event) {
+	public void onResetEffect(SetSkyEffectEvent event) {
 		if (event.getSkyEffect() == null)
 			if (!event.getWorld().provider.hasNoSky())
 				event.setSkyEffect(new DefaultSkyVanilla());
@@ -107,15 +107,6 @@ public class StellarAPIOwnEventHook {
 		event.setIsOpticalEntity(event.getEntity() instanceof EntityPlayer);
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void onClientWorldLoad(ClientWorldEvent.Load event) {
-		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
-		progress.resetProgressAndMessage(I18n.format("progress.stellarapi.loading.main"));
-		progress.displayLoadingString(I18n.format("progress.stellarapi.loading.worldhook"));
-		PerWorldManager.initiatePerWorldManager(event.getWorld());
-		progress.displayLoadingString("");
-	}
-
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
 	public void onClientWorldLoadedPre(ClientWorldEvent.Loaded event) {
 		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
@@ -130,14 +121,5 @@ public class StellarAPIOwnEventHook {
 			progress.displayLoadingString(I18n.format("progress.stellarapi.other.pending.text"));
 		} else
 			progress.displayLoadingString("");
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void onServerLoad(ServerWorldEvent.Load event) {
-		PerWorldManager.initiatePerWorldManager(event.getWorld());
-	}
-
-	@SubscribeEvent
-	public void onServerInitial(ServerWorldEvent.Initial event) {
 	}
 }

@@ -7,7 +7,7 @@ import stellarapi.api.gui.loading.ICombinedProgressUpdate;
  * Interface of per client(client-only) reference to improve independence of
  * api.
  */
-public interface IPerClientReference {
+public interface IClientReference {
 
 	public ICombinedProgressUpdate getLoadingProgress();
 

@@ -14,10 +14,9 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.StellarAPI;
-import stellarapi.api.IPerClientReference;
-import stellarapi.api.IPerEntityReference;
-import stellarapi.api.IPerWorldReference;
+import stellarapi.api.IClientReference;
 import stellarapi.api.IReference;
+import stellarapi.api.IUpdatedOpticalViewer;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
@@ -93,31 +92,30 @@ public class StellarAPIReferenceHandler implements IReference {
 	}
 
 	@Override
-	public IPerWorldReference getPerWorldReference(World world) {
-		return PerWorldManager.getPerWorldManager(world);
-	}
-
-	@Override
-	public IPerEntityReference getPerEntityReference(Entity entity) {
+	public IUpdatedOpticalViewer getUpdatedViewerSafe(Entity entity) {
 		IOpticalViewer viewer = entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
-		if (viewer instanceof IPerEntityReference)
-			return (IPerEntityReference) viewer;
-		else
-			return null;
+		if (viewer instanceof IUpdatedOpticalViewer)
+			return (IUpdatedOpticalViewer) viewer;
+		else return null;
 	}
 
 	@Override
-	public IPerClientReference getPerClientReference() {
+	public IClientReference getPerClientReference() {
 		return StellarAPI.proxy;
 	}
 
 	@SubscribeEvent
-	public void onGatherEntityCapability(AttachCapabilitiesEvent.Entity event) {
-		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getEntity());
+	public void onGatherEntityCapability(AttachCapabilitiesEvent<Entity> event) {
+		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getObject());
 		StellarAPIReference.getEventBus().post(check);
 		if (check.isOpticalEntity())
 			event.addCapability(new ResourceLocation(StellarAPI.modid, "viewer"),
-					new PerEntityManager(event.getEntity()));
+					new PerEntityManager(event.getObject()));
 	}
 
+	@SubscribeEvent
+	public void onGatherWorldCapability(AttachCapabilitiesEvent<World> event) {
+		event.addCapability(new ResourceLocation(StellarAPI.modid, "celestials"),
+				new PerWorldManager(event.getObject()));
+	}
 }
