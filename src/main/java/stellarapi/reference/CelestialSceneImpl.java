@@ -22,17 +22,6 @@ import stellarapi.api.event.SortCelestialsEvent;
 
 public class CelestialSceneImpl implements ICelestialUniverse {
 
-	private CelestialCollectionManager collectionManager = null;
-	private HashMap<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
-
-	private static final Ordering<ICelestialCollection> collectionOrdering = Ordering
-			.from(new Comparator<ICelestialCollection>() {
-				@Override
-				public int compare(ICelestialCollection col1, ICelestialCollection col2) {
-					return Integer.compare(-col1.searchOrder(), -col2.searchOrder());
-				}
-			});
-
 	/**
 	 * Tries to construct celestial scene. If it fails, returns null.
 	 * */
@@ -58,26 +47,6 @@ public class CelestialSceneImpl implements ICelestialUniverse {
 			effectorMap.put(type, new CelestialEffectors(sort.getSortedEffectors(type)));
 
 		return new CelestialSceneImpl(collectionManager, effectorMap);
-	}
-
-	CelestialSceneImpl(CelestialCollectionManager manager, HashMap<IEffectorType, CelestialEffectors> effectorMap) {
-		this.collectionManager = manager;
-		this.effectorMap = effectorMap;
-	}
-
-	@Override
-	public ImmutableSet<IEffectorType> getEffectorTypeSet() {
-		return ImmutableSet.copyOf(effectorMap.keySet());
-	}
-
-	@Override
-	public CelestialEffectors getCelestialEffectors(IEffectorType type) {
-		return effectorMap.get(type);
-	}
-
-	@Override
-	public CelestialCollectionManager getCollectionManager() {
-		return this.collectionManager;
 	}
 
 }

@@ -2,7 +2,7 @@ package stellarapi.impl;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.celestials.EnumCelestialObjectType;
+import stellarapi.api.celestials.EnumCelestialCategory;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
@@ -61,8 +61,8 @@ public class DefaultMoon implements ICelestialObject {
 	}
 
 	@Override
-	public EnumCelestialObjectType getObjectType() {
-		return EnumCelestialObjectType.Planet;
+	public EnumCelestialCategory getObjectType() {
+		return EnumCelestialCategory.Planet;
 	}
 
 	@Override

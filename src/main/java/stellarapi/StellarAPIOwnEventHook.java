@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.StellarAPICapabilities;
-import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
 import stellarapi.api.event.SetCoordinateEvent;
 import stellarapi.api.event.SetSkyEffectEvent;
@@ -18,12 +17,10 @@ import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.event.world.ClientWorldEvent;
-import stellarapi.api.event.world.ServerWorldEvent;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.impl.DefaultCollectionVanilla;
 import stellarapi.impl.DefaultCoordinateVanilla;
 import stellarapi.impl.DefaultSkyVanilla;
-import stellarapi.reference.PerWorldManager;
 
 public class StellarAPIOwnEventHook {
 

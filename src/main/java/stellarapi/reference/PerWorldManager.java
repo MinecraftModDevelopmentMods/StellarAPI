@@ -14,7 +14,7 @@ import stellarapi.api.event.SetSkyEffectEvent;
 
 /**
  * Per world manager to contain the per-world(dimension) objects.
- * TODO is this ever needed?
+ * TODO appropriate revamp needed
  */
 public class PerWorldManager implements ICapabilityProvider {
 
@@ -30,7 +30,6 @@ public class PerWorldManager implements ICapabilityProvider {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		// TODO Auto-generated method stub
 		if(capability == StellarAPICapabilities.CELESTIAL_CAPABILITY) {
 			return true;
 		} else if(capability == StellarAPICapabilities.COORDINATE_CAPABILITY) {
@@ -41,10 +40,11 @@ public class PerWorldManager implements ICapabilityProvider {
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		// TODO Auto-generated method stub
 		if(capability == StellarAPICapabilities.CELESTIAL_CAPABILITY) {
 			
-		} else if(capability == StellarAPICapabilities)
+		} else if(capability == StellarAPICapabilities.COORDINATE_CAPABILITY) {
+			
+		}
 		return null;
 	}
 

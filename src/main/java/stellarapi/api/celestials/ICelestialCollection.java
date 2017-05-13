@@ -6,13 +6,18 @@ import stellarapi.api.lib.math.SpCoord;
 
 /**
  * Interface representing certain celestial collection, i.e. celestial layer.
+ * TODO Directly get the type with minimal data.
  */
 public interface ICelestialCollection {
+
+	// Tinkering...
+	// What's the best way to expose the celestial type of certain object?
+	//public ICelestialType[] typesInvolved();
 
 	/**
 	 * Name of this celestial collection.
 	 */
-	public String getName();
+	//public String getName();
 
 	/**
 	 * Gets the set of celestial objects.
@@ -21,7 +26,7 @@ public interface ICelestialCollection {
 	 *         empty set if it is not available. (Especially when the set is too
 	 *         big)
 	 */
-	public ImmutableSet<? extends ICelestialObject> getObjects();
+	//public ImmutableSet<? extends ICelestialObject> getObjects();
 
 	/**
 	 * Gets the set of celestial objects in certain range.
@@ -37,7 +42,7 @@ public interface ICelestialCollection {
 	 * @param radius
 	 *            the angular radius of the range in degrees
 	 */
-	public ImmutableSet<? extends ICelestialObject> getObjectInRange(SpCoord pos, double radius);
+	//public ImmutableSet<? extends ICelestialObject> getObjectInRange(SpCoord pos, double radius);
 
 	/**
 	 * Gets the nearer celestial object to certain position from two objects.
@@ -50,7 +55,7 @@ public interface ICelestialCollection {
 	 *            another object of the two object
 	 * @return celestial object which is nearer to the position
 	 */
-	public ICelestialObject getNearerObject(SpCoord pos, ICelestialObject obj1, ICelestialObject obj2);
+	//public ICelestialObject getNearerObject(SpCoord pos, ICelestialObject obj1, ICelestialObject obj2);
 
 	/**
 	 * Gets the default search order of this collection.
@@ -59,17 +64,12 @@ public interface ICelestialCollection {
 	 * <p>
 	 * Should be constant.
 	 */
-	public int searchOrder();
+	//public int searchOrder();
 
 	/**
 	 * Gets flag if this collection should be served as background, i.e. the
 	 * objects are fixed on the celestial sphere, without any change.
 	 */
-	public boolean isBackground();
-
-	/**
-	 * Gets type of this collection.
-	 */
-	public EnumCelestialCollectionType getCollectionType();
+	//public boolean isBackground();
 
 }
