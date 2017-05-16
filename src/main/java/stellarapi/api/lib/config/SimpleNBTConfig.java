@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.lib.config.property.ConfigProperty;
 
-public abstract class SimpleNBTConfig extends SimpleConfigHandler implements INBTConfig {
+public abstract class SimpleNBTConfig extends SimpleConfigHandler implements INBTConfig<NBTTagCompound> {
 
 	@Override
 	public void setupConfig(Configuration config, String category) {
@@ -22,15 +22,23 @@ public abstract class SimpleNBTConfig extends SimpleConfigHandler implements INB
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void deserializeNBT(NBTTagCompound compound) {
 		for (ConfigProperty property : this.listProperties)
 			property.readFromNBT(compound);
 	}
 
-	@Override
-	public void writeToNBT(NBTTagCompound compound) {
+	/**
+	 * Placeholder for writing to pre-existing compound on subclasses.
+	 * */
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		for (ConfigProperty property : this.listProperties)
 			property.writeToNBT(compound);
+		return compound;
+	}
+
+	@Override
+	public NBTTagCompound serializeNBT() {
+		return this.writeToNBT(new NBTTagCompound());
 	}
 
 	@Override

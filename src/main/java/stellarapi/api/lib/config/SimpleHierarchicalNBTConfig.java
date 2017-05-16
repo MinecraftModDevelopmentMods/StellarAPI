@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 
-public abstract class SimpleHierarchicalNBTConfig extends SimpleNBTConfig implements INBTConfig {
+public abstract class SimpleHierarchicalNBTConfig extends SimpleNBTConfig {
 
 	private Map<String, INBTConfig> subConfigs = Maps.newHashMap();
 
@@ -20,20 +20,19 @@ public abstract class SimpleHierarchicalNBTConfig extends SimpleNBTConfig implem
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+	public void deserializeNBT(NBTTagCompound compound) {
+		super.deserializeNBT(compound);
 		for (Map.Entry<String, INBTConfig> entry : subConfigs.entrySet())
-			entry.getValue().readFromNBT(compound.getCompoundTag(entry.getKey()));
+			entry.getValue().deserializeNBT(compound.getCompoundTag(entry.getKey()));
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		for (Map.Entry<String, INBTConfig> entry : subConfigs.entrySet()) {
-			NBTTagCompound subComp = new NBTTagCompound();
-			entry.getValue().writeToNBT(subComp);
-			compound.setTag(entry.getKey(), subComp);
-		}
+		for (Map.Entry<String, INBTConfig> entry : subConfigs.entrySet())
+			compound.setTag(entry.getKey(), entry.getValue().serializeNBT());
+
+		return compound;
 	}
 
 	@Override
