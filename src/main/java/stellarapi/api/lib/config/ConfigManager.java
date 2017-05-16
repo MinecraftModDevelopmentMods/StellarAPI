@@ -28,16 +28,16 @@ public class ConfigManager {
 		if (loadFromFile)
 			config.load();
 
-		for (Pair<String, IConfigHandler> entry : handlerPairList) {
+		for (Pair<String, IConfigHandler> entry : this.handlerPairList) {
 			entry.getValue().setupConfig(config, entry.getKey());
 		}
 
 		if (isLoadPhase) {
-			for (Pair<String, IConfigHandler> entry : handlerPairList) {
+			for (Pair<String, IConfigHandler> entry : this.handlerPairList) {
 				entry.getValue().loadFromConfig(config, entry.getKey());
 			}
 		} else {
-			for (Pair<String, IConfigHandler> entry : handlerPairList) {
+			for (Pair<String, IConfigHandler> entry : this.handlerPairList) {
 				entry.getValue().saveToConfig(config, entry.getKey());
 			}
 		}
