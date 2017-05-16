@@ -70,16 +70,16 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		this.guiConfig = new ConfigManager(
 				StellarSkyReferences.getConfiguration(event.getModConfigurationDirectory(),
 						StellarSkyReferences.guiSettings));
-		
+
 		MinecraftForge.EVENT_BUS.register(new StellarClientFMLHook());
-		
+
 		OverlayRegistry.registerOverlaySet("stellarsky", new StellarSkyOverlays());
 		OverlayRegistry.registerOverlay("clock", new OverlayClockType(), this.guiConfig);
 		OverlayRegistry.registerOverlay("clientconfig", new OverlayClientSettingsType(), this.guiConfig);
-		
+
 		this.skyModel = new SkyModel(this.celestialManager);
 		skyModel.initializeSettings(this.clientSettings);
-		
+
 		EnumSkyRenderState.constructRender();
 	}
 
@@ -140,9 +140,9 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	public float getScreenWidth() {
 		return Minecraft.getMinecraft().displayWidth;
 	}
-	
+
 	private int counter = 0;
-	
+
 	@Override
 	public void updateTick() {
 		if(clientSettings.checkDirty())
@@ -151,7 +151,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		Minecraft mc = Minecraft.getMinecraft();
 		World world = mc.world;
 		Entity viewer = mc.getRenderViewEntity();
-		
+
 		try {
 			if(this.counter > 5) {
 				this.counter = 0;
@@ -168,7 +168,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		} catch(IllegalAccessException exception) {
 			throw new IllegalStateException("Illegal access to field " + fieldLightUpdateSet.getName() + ", Unexpected.");
 		}
-		
+
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		ISkyEffect sky = StellarAPIReference.getSkyEffect(world);
 		IViewScope scope = StellarAPIReference.getScope(viewer);

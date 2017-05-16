@@ -18,7 +18,7 @@ import stellarium.render.stellars.access.EnumStellarPass;
 import stellarium.render.stellars.phased.StellarRenderInformation;
 import stellarium.util.math.Allocator;
 
-public enum AtmosphereRenderer implements IGenericRenderer<AtmosphereSettings, EnumAtmospherePass, AtmosphereModel, StellarRenderInformation> {
+public enum AtmosphereRenderer implements IGenericRenderer<EnumAtmospherePass, AtmosphereModel, StellarRenderInformation> {
 	
 	INSTANCE;
 
@@ -41,7 +41,6 @@ public enum AtmosphereRenderer implements IGenericRenderer<AtmosphereSettings, E
 		this.shaderManager = new AtmShaderManager();
 	}
 
-	@Override
 	public void initialize(AtmosphereSettings settings) {
 		shaderManager.reloadShaders();
 
@@ -71,9 +70,9 @@ public enum AtmosphereRenderer implements IGenericRenderer<AtmosphereSettings, E
 	}
 
 	@Override
-	public void preRender(AtmosphereSettings settings, StellarRenderInformation info) {
+	public void preRender(StellarRenderInformation info) {
 		if(this.cacheChangedFlag || this.previousFlag != info.isFrameBufferEnabled) {
-			this.reallocList(settings, info.isFrameBufferEnabled, info.deepDepth);
+			this.reallocList(info.isFrameBufferEnabled, info.deepDepth);
 			this.previousFlag = info.isFrameBufferEnabled;
 			this.cacheChangedFlag = false;
 		}
@@ -183,12 +182,12 @@ public enum AtmosphereRenderer implements IGenericRenderer<AtmosphereSettings, E
 	private int prevTexture = 0;
 	
 	@Override
-	public void postRender(AtmosphereSettings settings, StellarRenderInformation info) {
+	public void postRender(StellarRenderInformation info) {
 
 	}
 
 
-	public void reallocList(AtmosphereSettings settings, boolean isFramebufferEnabled, double deepDepth) {
+	public void reallocList(boolean isFramebufferEnabled, double deepDepth) {
 		Vector3[][] displayvec = Allocator.createAndInitialize(settings.fragLong + 1, settings.fragLat+1);
 
 		for(int longc=0; longc<=settings.fragLong; longc++)
