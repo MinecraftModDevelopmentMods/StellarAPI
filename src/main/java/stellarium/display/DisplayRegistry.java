@@ -8,19 +8,14 @@ import stellarium.display.ecgrid.EcGridType;
 import stellarium.display.eqgrid.EqGridType;
 import stellarium.display.horgrid.HorGridType;
 
-public class DisplayRegistry {
-	
-	private static final DisplayRegistry instance = new DisplayRegistry();
-	
-	public static DisplayRegistry getInstance() {
-		return instance;
-	}
+public enum DisplayRegistry {
+	INSTANCE;
 
-	static {
+	DisplayRegistry() {
 		// TODO Interaction with existing objects
-		instance.register(new HorGridType());
-		instance.register(new EqGridType());
-		instance.register(new EcGridType());
+		register(new HorGridType());
+		register(new EqGridType());
+		register(new EcGridType());
 	}
 
 	private ImmutableList.Builder<RegistryDelegate> builder = ImmutableList.builder();

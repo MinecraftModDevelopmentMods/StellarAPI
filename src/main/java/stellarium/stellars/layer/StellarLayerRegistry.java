@@ -20,20 +20,13 @@ import stellarium.stellars.system.LayerSolarSystem;
 import stellarium.stellars.system.SolarSystemClientSettings;
 import stellarium.stellars.system.SolarSystemSettings;
 
-public class StellarLayerRegistry {
-	
-	private static StellarLayerRegistry INSTANCE;
-	
-	public static StellarLayerRegistry getInstance() {
-		if(INSTANCE == null)
-			INSTANCE = new StellarLayerRegistry();
-		return INSTANCE;
-	}
+public enum StellarLayerRegistry {
+	INSTANCE;
 	
 	private List<RegistryDelegate> registeredLayers = Lists.newArrayList();
 	private Map<Class, String> layerNameMap = Maps.newHashMap();
 	
-	public StellarLayerRegistry() {
+	StellarLayerRegistry() {
 		this.registerLayer(new LayerBrStar(), null, (Callable)null, (Callable)null);
 		this.registerLayer(new LayerMilkyway(), "MilkyWay", (Callable)null, MilkywaySettings.class);
 		this.registerLayer(new LayerSolarSystem(), "SolarSystem", SolarSystemSettings.class, SolarSystemClientSettings.class);
@@ -47,7 +40,7 @@ public class StellarLayerRegistry {
 		delegate.commonConfigCallable = commonConfigFactory;
 		delegate.clientConfigCallable = clientConfigFactory;
 		delegate.configName = configName;
-		
+
 		registeredLayers.add(delegate);
 	}
 	

@@ -5,14 +5,13 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
 import stellarapi.StellarAPI;
 
-public class CelestialRegistry {
+public enum CelestialRegistry {
+	INSTANCE;
 
 	public static final ResourceLocation CELESTIALS = new ResourceLocation(StellarAPI.modid, "celestials");
 
 	private final IForgeRegistry<CelestialType> registry;
 
-
-	private static final CelestialRegistry INSTANCE = new CelestialRegistry();
 
 	private CelestialRegistry() {
 		// TODO Implement Callbacks - might not be needed.

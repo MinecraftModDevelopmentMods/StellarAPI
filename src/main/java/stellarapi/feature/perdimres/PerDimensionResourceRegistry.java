@@ -12,17 +12,12 @@ import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 /**
  * Registry for per-dimension resources.
  */
-public class PerDimensionResourceRegistry implements IPerDimensionResourceHandler {
-
-	private static final PerDimensionResourceRegistry INSTANCE = new PerDimensionResourceRegistry();
-
-	public static PerDimensionResourceRegistry getInstance() {
-		return INSTANCE;
-	}
+public enum PerDimensionResourceRegistry implements IPerDimensionResourceHandler {
+	INSTANCE;
 
 	private Set<String> resourceIds = Sets.newHashSet();
 
-	public PerDimensionResourceRegistry() {
+	PerDimensionResourceRegistry() {
 		resourceIds.add("DEBUG_ONLY");
 	}
 

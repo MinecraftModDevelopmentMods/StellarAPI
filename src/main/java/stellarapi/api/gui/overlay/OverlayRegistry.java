@@ -7,9 +7,8 @@ import com.google.common.collect.Maps;
 import net.minecraftforge.fml.common.Loader;
 import stellarapi.api.lib.config.ConfigManager;
 
-public class OverlayRegistry {
-
-	private static OverlayRegistry INSTANCE = new OverlayRegistry();
+public enum OverlayRegistry {
+	INSTANCE;
 
 	private Map<String, IOverlaySetType> mapSet = Maps.newHashMap();
 	private Map<String, RegistryDelegate> mapOverlay = Maps.newHashMap();
