@@ -226,7 +226,7 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
        	this.latitude = propLatitude.getDouble();
    		this.longitude = propLongitude.getDouble();
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -235,7 +235,7 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
    		this.longitude = propLongitude.getDouble();
 	}
 
-	
+
 	public boolean doesPatchProvider() {
 		return propPatchProvider.getBoolean();
 	}
@@ -271,15 +271,15 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
 	public boolean isLandscapeEnabled() {
 		return propLandscapeEnabled.getBoolean();
 	}
-	
+
 	public double getInnerRadius() {
 		return 1.0 / propAtmScaleHeight.getDouble();
 	}
-	
+
 	public double getOuterRadius() {
 		return (1.0 + propAtmTotalHeight.getDouble()) / propAtmScaleHeight.getDouble();
 	}
-	
+
 	public double getHeightOffset() {
 		return propAtmHeightOffset.getDouble();
 	}

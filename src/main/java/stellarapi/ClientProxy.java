@@ -40,6 +40,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 
 		OverlayRegistry.registerOverlaySet("main", new OverlaySetMain());
 		OverlayRegistry.registerOverlaySet("stellarapi", new OverlaySetStellarAPI());
+
 		OverlayRegistry.registerOverlay("position", new OverlayConfiguratorType(), guiConfig);
 		OverlayRegistry.registerOverlay("stellarapi.time", new OverlayTimeType(), guiConfig);
 

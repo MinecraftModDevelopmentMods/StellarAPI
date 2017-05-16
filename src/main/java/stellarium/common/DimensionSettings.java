@@ -24,14 +24,14 @@ public class DimensionSettings extends HierarchicalConfig {
 		dimensionApplied.setComment("Dimensions which will get applied the stellar sky settings.");
 		dimensionApplied.setRequiresWorldRestart(true);
 		dimensionApplied.setLanguageKey("config.property.dimension.applied");
-		
+
 		Set<String> dimApplied = Sets.newHashSet(dimensionApplied.getStringList());
 		
 		for(String dimName : dimensionApplied.getStringList())
 			if(!this.hasSubConfig(dimName))
 				this.putSubConfig(dimName, new PerDimensionSettings(dimName));
-		
-		
+
+
 		for(String dimName : this.getKeySet())
 			if(!dimApplied.contains(dimName))
 				this.removeSubConfig(dimName);

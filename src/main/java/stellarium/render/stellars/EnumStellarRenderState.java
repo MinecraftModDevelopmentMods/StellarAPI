@@ -146,8 +146,7 @@ public enum EnumStellarRenderState implements IRenderState<Void, StellarRenderIn
 		public IRenderState<Void, StellarRenderInformation> transitionTo(Void pass, StellarRenderInformation resInfo) {
 			return RenderCachedAtmosphere;
 		}
-	}
-	;
+	};
 
 	private static void endRendering(StellarRenderInformation resInfo) {
 		ShaderHelper.getInstance().releaseCurrentShader();

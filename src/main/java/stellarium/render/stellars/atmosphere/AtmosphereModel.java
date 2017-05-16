@@ -34,7 +34,7 @@ public class AtmosphereModel implements ICheckedAtmModel {
 	public void dimensionLoad(StellarDimensionManager dimManager) {
 		this.azimuthCheckEnabled = dimManager.getSettings().hideObjectsUnderHorizon();
 		this.leastAzimuthRendered = -90.0f;
-		
+
 		this.outerRadius = (float) dimManager.getSettings().getOuterRadius();
 		this.innerRadius = (float) dimManager.getSettings().getInnerRadius();
 		this.heightOffset = (float) dimManager.getSettings().getHeightOffset();

@@ -43,7 +43,7 @@ public final class StellarDimensionManager extends WorldSavedData {
 		{
 			dimManager = new StellarDimensionManager(String.format(ID, dimName));
 			world.getPerWorldStorage().setData(String.format(ID, dimName), dimManager);
-			
+
 			dimManager.loadSettingsFromConfig();
 		} else
 			dimManager = (StellarDimensionManager) data;
@@ -91,7 +91,6 @@ public final class StellarDimensionManager extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		// TODO fix this mess; Change to get server in better way
 		this.syncFromNBT(compound, StellarManager.getServerManager(FMLCommonHandler.instance().getMinecraftServerInstance()), false);
 	}
 
@@ -117,9 +116,7 @@ public final class StellarDimensionManager extends WorldSavedData {
 	
 	public void setup() {
 		StellarSky.logger.info(String.format("Initializing Dimension Settings on Dimension %s...", this.dimensionName));
-		if(settings.allowRefraction())
-			this.skyset = new RefractiveSkySet(this.settings);
-		else this.skyset = new NonRefractiveSkySet(this.settings);
+		this.skyset = settings.allowRefraction()? new RefractiveSkySet(this.settings) : new NonRefractiveSkySet(this.settings);
 		this.coordinate = new StellarCoordinate(manager.getSettings(), this.settings);
 		coordinate.update(manager.getSkyTime(0.0) / manager.getSettings().day / manager.getSettings().year);
 

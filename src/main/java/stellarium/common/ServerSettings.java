@@ -25,7 +25,7 @@ public class ServerSettings extends SimpleHierarchicalNBTConfig {
 	
 	public ServerSettings() {
 		StellarLayerRegistry.getInstance().composeSettings(this);
-		
+
 		this.propServerEnabled = new ConfigPropertyBoolean("Server_Enabled", "serverEnabled", true);
         this.propDay = new ConfigPropertyDouble("Day_Length", "day", 24000.0);
         this.propYear = new ConfigPropertyDouble("Year_Length", "year", 365.25);
