@@ -296,7 +296,7 @@ public class RollHierarchyController implements IDynamicController {
 		public boolean isHorizontal() {
 			return isHorizontal;
 		}
-		
+	
 		@Override
 		public String setupRenderer(IRenderer renderer) {
 			return null;

@@ -82,7 +82,7 @@ public class StellarAPIEventHook {
 		String dimName = WorldUtil.getWorldName(event.getWorld());
 		if(!StellarSky.proxy.getServerSettings().serverEnabled)
 			handleDimOnServerDisabled(event.getWorld(), manager,update);
-		
+
 		if(mark) {
 			handleNotHaveModOnServer(event.getWorld(), manager, update);
 		} else if(StellarSky.proxy.getServerSettings().serverEnabled) {

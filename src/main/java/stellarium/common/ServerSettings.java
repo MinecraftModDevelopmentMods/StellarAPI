@@ -34,7 +34,7 @@ public class ServerSettings extends SimpleHierarchicalNBTConfig {
         this.propTickOffset = new ConfigPropertyDouble("Tick_Offset", "tickOffset", 16000.0);
         this.propAxialTilt = new ConfigPropertyDouble("Axial_Tilt", "axialTilt", 23.5);
         this.propPrecession = new ConfigPropertyDouble("Precession", "precession", 0.0);
-       	
+
         this.addConfigProperty(this.propServerEnabled);
        	this.addConfigProperty(this.propDay);
        	this.addConfigProperty(this.propYear);
@@ -95,7 +95,7 @@ public class ServerSettings extends SimpleHierarchicalNBTConfig {
        	
        	this.setValues();
 	}
-	
+
 	/**Default for servers without Stellar Sky*/
 	public void setDefault() {
 		for(ConfigProperty property : this.listProperties)
