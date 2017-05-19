@@ -71,7 +71,7 @@ public enum OverlayRegistry {
 			this.modid = modid;
 
 			config.register(type.getName(), this.settings);
-			settings.initializeSetttings(type.defaultHorizontalPos(), type.defaultVerticalPos(), type.isOnMain());
+			settings.initializeSettings(type.defaultHorizontalPos(), type.defaultVerticalPos(), type.isOnMain());
 		}
 
 		public void inject(String id, IOverlayInjectable injectable) {

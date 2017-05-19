@@ -100,7 +100,7 @@ public final class StellarAPI {
 		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
 		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
 
-		StellarAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
+		StellarAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.INSTANCE);
 
 		StellarAPIReference.getEventBus().register(new StellarAPIOwnEventHook());
 

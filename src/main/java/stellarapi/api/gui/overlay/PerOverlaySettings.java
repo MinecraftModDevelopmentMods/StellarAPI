@@ -18,7 +18,7 @@ public class PerOverlaySettings extends SimpleConfigHandler {
 	private ConfigPropertyString propVertical;
 	private ConfigPropertyBoolean propVisibleOnMain;
 
-	void initializeSetttings(EnumHorizontalPos horizontal, EnumVerticalPos vertical, boolean canOnMain) {
+	void initializeSettings(EnumHorizontalPos horizontal, EnumVerticalPos vertical, boolean canOnMain) {
 		this.setHorizontal(horizontal);
 		this.setVertical(vertical);
 		this.visibleOnMain = this.canOnMain;
