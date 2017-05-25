@@ -20,7 +20,7 @@ import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.gui.overlay.OverlayRegistry;
-import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.lib.config.DynamicConfigManager;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.lib.render.RendererRegistry;
@@ -48,7 +48,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	
 	private ClientSettings clientSettings = new ClientSettings();
 	
-	private ConfigManager guiConfig;
+	private DynamicConfigManager guiConfig;
 	private CelestialManager celestialManager = new CelestialManager(true);
 	
 	private SkyModel skyModel;
@@ -67,7 +67,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
-		this.guiConfig = new ConfigManager(
+		this.guiConfig = new DynamicConfigManager(
 				StellarSkyReferences.getConfiguration(event.getModConfigurationDirectory(),
 						StellarSkyReferences.guiSettings));
 
@@ -98,7 +98,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	}
 
 	@Override
-	public void setupCelestialConfigManager(ConfigManager manager) {
+	public void setupCelestialConfigManager(DynamicConfigManager manager) {
 		super.setupCelestialConfigManager(manager);
 		manager.register(clientConfigCategory, this.clientSettings);
 		manager.register(clientConfigOpticsCategory, OpticsHelper.instance);

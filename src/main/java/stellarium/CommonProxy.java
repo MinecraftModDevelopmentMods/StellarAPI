@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.lib.config.DynamicConfigManager;
 import stellarapi.api.lib.config.HierarchicalConfig;
 import stellarium.client.ClientSettings;
 import stellarium.common.DimensionSettings;
@@ -36,7 +36,7 @@ public class CommonProxy implements IProxy {
 	public void postInit(FMLPostInitializationEvent event) { }
 	
 	@Override
-	public void setupCelestialConfigManager(ConfigManager manager) {
+	public void setupCelestialConfigManager(DynamicConfigManager manager) {
 		manager.register(serverConfigCategory, this.serverSettings);
 		manager.register(serverConfigDimensionCategory, this.dimensionSettings);
 	}

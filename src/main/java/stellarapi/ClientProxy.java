@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.gui.overlay.OverlayRegistry;
-import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.lib.config.DynamicConfigManager;
 import stellarapi.feature.gui.loading.CombinedLoadingScreenRenderer;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.feature.gui.overlay.OverlaySetMain;
@@ -24,7 +24,7 @@ import stellarapi.feature.gui.overlay.time.OverlayTimeType;
 public class ClientProxy extends CommonProxy implements IProxy {
 
 	private OverlayHandler overlay;
-	private ConfigManager guiConfig;
+	private DynamicConfigManager guiConfig;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -35,7 +35,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		MinecraftForge.EVENT_BUS.register(new StellarAPIClientForgeEventHook(this.overlay));
 		FMLCommonHandler.instance().bus().register(new StellarAPIClientFMLEventHook(this.overlay));
 
-		this.guiConfig = new ConfigManager(
+		this.guiConfig = new DynamicConfigManager(
 				StellarAPI.getConfiguration(event.getModConfigurationDirectory(), "GuiConfig.cfg"));
 
 		OverlayRegistry.registerOverlaySet("main", new OverlaySetMain());

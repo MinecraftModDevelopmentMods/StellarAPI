@@ -9,7 +9,7 @@ import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
-import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.lib.config.DynamicConfigManager;
 
 public class OverlayElementDelegate<Element extends IOverlayElement<Settings>, Settings extends PerOverlaySettings>
 		implements IRawOverlayElement {
@@ -23,9 +23,9 @@ public class OverlayElementDelegate<Element extends IOverlayElement<Settings>, S
 	private final Element element;
 	private final Settings settings;
 	private final IRawHandler<Element> handler;
-	private final ConfigManager notified;
+	private final DynamicConfigManager notified;
 
-	OverlayElementDelegate(IOverlayType<Element, Settings> type, Settings settings, ConfigManager config,
+	OverlayElementDelegate(IOverlayType<Element, Settings> type, Settings settings, DynamicConfigManager config,
 			OverlayManager manager, String id, String modid) {
 		this.manager = manager;
 		this.id = id;

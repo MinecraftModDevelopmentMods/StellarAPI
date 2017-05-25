@@ -2,6 +2,7 @@ package stellarapi.impl;
 
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -19,7 +20,11 @@ import stellarapi.api.daywake.IWakeHandler;
 public class AlarmWakeHandler implements IWakeHandler {
 
 	// Wake time from midnight
-	private int wakeTime;
+	@Config.Name("Wake_Time_from_midnight")
+	@Config.LangKey("config.property.waketime")
+	@Config.Comment("Wake-up time from midnight, in tick.")
+	@Config.RequiresWorldRestart
+	private int wakeTime = 6000;
 
 	@Override
 	public boolean accept(World world, CelestialEffectors lightSources, ICelestialCoordinate coordinate) {
@@ -54,25 +59,9 @@ public class AlarmWakeHandler implements IWakeHandler {
 		return (!world.isDaytime() && (diff < 0.25 || diff > 0.75)) ? SleepResult.OK : SleepResult.NOT_POSSIBLE_NOW;
 	}
 
-	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryLanguageKey(category, "config.category.alarm");
 		config.setCategoryComment(category, "Alarm type wake settings");
-
-		Property pWakeTime = config.get(category, "Wake_Time_from_midnight", 6000);
-		pWakeTime.setComment("Wake-up time from midnight, in tick.");
-		pWakeTime.setRequiresWorldRestart(true);
-		pWakeTime.setLanguageKey("config.property.waketime");
-	}
-
-	@Override
-	public void loadFromConfig(Configuration config, String category) {
-		ConfigCategory cfgCategory = config.getCategory(category);
-		this.wakeTime = cfgCategory.get("Wake_Time_from_midnight").getInt();
-	}
-
-	@Override
-	public void saveToConfig(Configuration config, String category) {
 	}
 
 }

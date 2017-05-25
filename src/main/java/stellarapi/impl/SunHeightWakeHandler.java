@@ -2,6 +2,7 @@ package stellarapi.impl;
 
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -16,7 +17,12 @@ import stellarapi.api.daywake.IWakeHandler;
  */
 public class SunHeightWakeHandler implements IWakeHandler {
 
-	private double wakeAngle;
+	@Config.Name("Sun_Height_for_Wake")
+	@Config.RangeDouble(min = -90.0, max = 90.0)
+	@Config.LangKey("config.property.wakeangle")
+	@Config.Comment("Solar azimuth(height) angle to wake up. (in degrees)")
+	@Config.RequiresWorldRestart
+	private double wakeAngle = 10.0;
 
 	@Override
 	public boolean accept(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate) {
@@ -41,25 +47,9 @@ public class SunHeightWakeHandler implements IWakeHandler {
 		return world.provider.isDaytime() ? SleepResult.NOT_POSSIBLE_NOW : SleepResult.OK;
 	}
 
-	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryLanguageKey(category, "config.category.sunheight");
 		config.setCategoryComment(category, "Sun height type wake settings");
-
-		Property wakeAngle = config.get(category, "Sun_Height_for_Wake", 10.0);
-		wakeAngle.setComment("Solar azimuth(height) angle to wake up. (in degrees)");
-		wakeAngle.setRequiresWorldRestart(true);
-		wakeAngle.setLanguageKey("config.property.wakeangle");
-	}
-
-	@Override
-	public void loadFromConfig(Configuration config, String category) {
-		ConfigCategory cfgCategory = config.getCategory(category);
-		this.wakeAngle = cfgCategory.get("Sun_Height_for_Wake").getDouble();
-	}
-
-	@Override
-	public void saveToConfig(Configuration config, String category) {
 	}
 
 }

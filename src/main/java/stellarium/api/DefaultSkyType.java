@@ -27,7 +27,7 @@ public class DefaultSkyType implements ISkyType {
 	@Override
 	public double getDefaultDouble(EnumSkyProperty property) {
 		switch(property) {
-		case Lattitude:
+		case Latitude:
 			return 37.5;
 		case Longitude:
 			return 0.0;

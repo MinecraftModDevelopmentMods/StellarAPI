@@ -81,7 +81,7 @@ public class HierarchyWrapper {
 		field.set(wrapped, wrapper);
 		System.out.println(field.get(wrapped));
 	}
-	
+
 	private static final WrapperClassLoader loader = new WrapperClassLoader();
 
 	private static class WrapperClassLoader extends ClassLoader {
@@ -93,7 +93,7 @@ public class HierarchyWrapper {
 			return super.defineClass(name, byteArray, 0, byteArray.length);
 		}
 	}
-	
+
 	// Generates call with instance from the top of the stack, end with the top entry of the stack removed.
 	private void generateCall(GeneratorAdapter adapter, Class<?> invokedType, Method invokedMethod, int[] args) {
 		// Loads Arguments

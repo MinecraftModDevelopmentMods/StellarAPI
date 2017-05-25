@@ -14,7 +14,7 @@ import stellarapi.api.lib.config.IConfigHandler;
  * Also, each wake handler will be registered to wake configuration, so it would
  * be configurable using Stellar API config.
  */
-public interface IWakeHandler extends IConfigHandler {
+public interface IWakeHandler {
 
 	/**
 	 * Checks if this wake handler will accept certain case or not. Note that

@@ -6,20 +6,56 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.IEffectorType;
-import stellarapi.api.lib.config.IConfigHandler;
+import stellarapi.api.lib.config.DynamicConfig;
 
-public class SleepWakeManager implements IConfigHandler {
+public class SleepWakeManager {
 
-	private boolean enabled;
+	@Config.Name("Custom_Wake_Enabled")
+	@Config.LangKey("config.property.wakeenable")
+	@Config.Comment("Enable/Disable wake system provided by Stellar API")
+	@Config.RequiresWorldRestart
+	private boolean enabled = true;
+
 	// true for first, false for last
-	private boolean mode;
+	@Config.Name("Wake_Mode")
+	@DynamicConfig.BooleanCycle({"latest", "earliest"})
+	@Config.LangKey("config.property.wakemode")
+	@Config.Comment("You can choose earliest or latest available wake time"
+			+ "among these wake properties")
+	@Config.RequiresWorldRestart
+	private boolean mode = true;
+
+	// TODO List handling in config
+	@DynamicConfig.DynamicProperty(
+			affected={Config.Name.class, Config.LangKey.class, Config.Comment.class},
+			handler=SleepWakeManager.class)
+	@DynamicConfig.Collection(addableField = false)
+	@Config.RequiresWorldRestart
 	private List<WakeHandler> wakeHandlers = Lists.newArrayList();
+
+	private class WakeHandler {
+		public WakeHandler(String name, IWakeHandler handler, boolean enabled) {
+			this.name = name;
+			this.handler = handler;
+			this.enabled = enabled;
+		}
+
+		protected transient String name;
+
+		@DynamicConfig.Expand
+		protected IWakeHandler handler;
+
+		@Config.Name("Enabled")
+		@Config.LangKey("config.property.enablewake")
+		@Config.Comment("Enable this wake property.")
+		@Config.RequiresWorldRestart
+		protected boolean enabled;
+	}
 
 	/**
 	 * Registers wake handler.
@@ -35,47 +71,10 @@ public class SleepWakeManager implements IConfigHandler {
 		return this.enabled;
 	}
 
-	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryComment(category, "Configuration for Waking System.");
 		config.setCategoryLanguageKey(category, "config.category.server.wake");
 		config.setCategoryRequiresWorldRestart(category, true);
-
-		Property allEnabled = config.get(category, "Custom_Wake_Enabled", true);
-		allEnabled.setComment("Enable/Disable wake system provided by Stellar API");
-		allEnabled.setRequiresWorldRestart(true);
-		allEnabled.setLanguageKey("config.property.wakeenable");
-
-		Property mode = config.get(category, "Wake_Mode", "latest")
-				.setValidValues(new String[] { "earliest", "latest" });
-		mode.setComment("You can choose earliest or latest available wake time" + "among these wake properties");
-		mode.setRequiresWorldRestart(true);
-		mode.setLanguageKey("config.property.wakemode");
-
-		for (WakeHandler entry : this.wakeHandlers) {
-			String cat2 = category + Configuration.CATEGORY_SPLITTER + entry.name.toLowerCase();
-			Property enabled = config.get(cat2, "Enabled", entry.enabled);
-			enabled.setComment("Enable this wake property.");
-			enabled.setRequiresWorldRestart(true);
-			enabled.setLanguageKey("config.property.enablewake");
-			entry.handler.setupConfig(config, cat2);
-		}
-	}
-
-	@Override
-	public void loadFromConfig(Configuration config, String category) {
-		this.enabled = config.getCategory(category).get("Custom_Wake_Enabled").getBoolean();
-		this.mode = config.getCategory(category).get("Wake_Mode").getString().equals("first");
-
-		for (WakeHandler entry : this.wakeHandlers) {
-			String cat2 = category + Configuration.CATEGORY_SPLITTER + entry.name.toLowerCase();
-			entry.enabled = config.getCategory(cat2).get("Enabled").getBoolean();
-			entry.handler.loadFromConfig(config, cat2);
-		}
-	}
-
-	@Override
-	public void saveToConfig(Configuration config, String category) {
 	}
 
 	/**
@@ -87,7 +86,6 @@ public class SleepWakeManager implements IConfigHandler {
 	 *            the default wake time
 	 */
 	public long getWakeTime(World world, long defaultWakeTime) {
-
 		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
 		CelestialEffectors lightSources = StellarAPIReference.getEffectors(world, IEffectorType.Light);
 
@@ -151,17 +149,5 @@ public class SleepWakeManager implements IConfigHandler {
 			return status;
 
 		return defaultStatus;
-	}
-
-	private class WakeHandler {
-		public WakeHandler(String name, IWakeHandler handler, boolean enabled) {
-			this.name = name;
-			this.handler = handler;
-			this.enabled = enabled;
-		}
-
-		protected String name;
-		protected IWakeHandler handler;
-		protected boolean enabled;
 	}
 }

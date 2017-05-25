@@ -9,7 +9,7 @@ import stellarapi.api.gui.overlay.EnumOverlayMode;
 import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
-import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.lib.config.DynamicConfigManager;
 import stellarapi.lib.gui.GuiContent;
 import stellarapi.lib.gui.GuiElement;
 import stellarapi.lib.gui.GuiRenderer;
@@ -49,7 +49,7 @@ public class OverlayClientSettings implements IOverlayElement<SettingsOverlaySet
 	private ICfgHierarchyHandler handler;
 	private RollHierarchyController controller;
 	
-	private ConfigManager notified;
+	private DynamicConfigManager notified;
 	private GuiContent gui;
 	
 	private EnumHorizontalPos currentHorizontal;

@@ -8,7 +8,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.lib.config.DynamicConfigManager;
 import stellarapi.api.lib.config.HierarchicalConfig;
 import stellarium.client.ClientSettings;
 import stellarium.common.ServerSettings;
@@ -27,7 +27,7 @@ public interface IProxy {
 	public World getDefWorld();
 	public Entity getDefViewerEntity();
 	
-	public void setupCelestialConfigManager(ConfigManager manager);
+	public void setupCelestialConfigManager(DynamicConfigManager manager);
 	
     public ClientSettings getClientSettings();
 	public ServerSettings getServerSettings();

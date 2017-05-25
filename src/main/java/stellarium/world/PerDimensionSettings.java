@@ -4,9 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.lib.config.INBTConfig;
-import stellarapi.api.lib.config.SimpleHierarchicalNBTConfig;
+import stellarapi.api.lib.config.DynamicConfig;
 import stellarapi.api.lib.config.property.ConfigPropertyBoolean;
 import stellarapi.api.lib.config.property.ConfigPropertyDouble;
 import stellarapi.api.lib.config.property.ConfigPropertyDoubleList;
@@ -16,135 +17,119 @@ import stellarium.api.ISkyRenderType;
 import stellarium.api.ISkyType;
 import stellarium.api.StellarSkyAPI;
 
-public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
+public class PerDimensionSettings {
 
-	private String dimensionName;
-	
-	public double latitude, longitude;
-	
-	private ConfigPropertyBoolean propPatchProvider;
+	private transient DimensionType dimensionType;
 
-	private ConfigPropertyDouble propLatitude, propLongitude;
-	
-	private ConfigPropertyBoolean propHideObjectsUnderHorizon;
-	
-	private ConfigPropertyDouble propAtmScaleHeight;
-	private ConfigPropertyDouble propAtmTotalHeight;
-	private ConfigPropertyDouble propAtmHeightOffset;
-	private ConfigPropertyDouble propAtmHeightIncScale;
-	
-	private ConfigPropertyDoubleList propAtmExtinctionFactor;
-	
-	private ConfigPropertyBoolean propAllowRefraction;
-	private ConfigPropertyDouble propSunlightMultiplier;
-	private ConfigPropertyDouble propSkyDispersionRate;
-	private ConfigPropertyDouble propLightPollutionRate;
+	@Config.Name("Patch_Provider")
+	@Config.LangKey("config.property.dimension.patchprovider")
+	@Config.Comment("Determine whether or not patch provider. "
+			+ "Cannot adjust longitude and latitude when this is false.")
+	@Config.RequiresWorldRestart
+	private boolean patchProvider = true;
 
-	private ConfigPropertyDouble propMinimumSkyRenderBrightness;
+
+	@Config.Name("Latitude")
+	@Config.RangeDouble(min = -90.0, max = +90.0)
+	@Config.LangKey("config.property.dimension.latitude")
+	@Config.Comment("Latitude on this world, in Degrees.")
+	@Config.RequiresWorldRestart
+	public double latitude;
+
+	@Config.Name("Longitude")
+	@Config.RangeDouble(min = 0.0, max = 360.0)
+	@Config.LangKey("config.property.dimension.longitude")
+	@Config.Comment("Longitude on this world, in Degrees. (East is +)")
+	@Config.RequiresWorldRestart
+	public double longitude;
+
+
+	@Config.Name("Sky_Renderer_Type")
+	@DynamicConfig.DynamicProperty({DynamicConfig.StringCycle.class})
+	@Config.LangKey("config.property.dimension.skyrenderertype")
+	@Config.Comment("Sky renderer type for this dimension.\n"
+        		+ "There are 'Overworld Sky', 'End Sky' type by default.")
+	@Config.RequiresWorldRestart
+	private String skyRenderType;
+
+
+	@Config.Name("Hide_Objects_Under_Horizon")
+	@Config.LangKey("config.property.dimension.hidehorizonobj")
+	@Config.Comment("Determine whether or not hide objects under horizon.")
+	@Config.RequiresWorldRestart
+	private boolean hideObjectsUnderHorizon;
+
+
+	@Config.Name("Atmosphere_Scale_Height")
+	@Config.RangeDouble(min = 1.0e-4, max = 1.0)
+	@Config.LangKey("config.property.dimension.atmscaleheight")
+	@Config.Comment("Scale Height of the atmosphere relative to the radius.\n"
+       			+ "This determines the thickness of the atmosphere.")
+	@Config.RequiresWorldRestart
+	private double atmScaleHeight = 1 / 800.0;
+	@Config.Name("Atmosphere_Total_Height")
+	private double atmTotalHeight = 20.0 / 800.0;
+	@Config.Name("Atmosphere_Height_Offset")
+	private double atmHeightOffet = 0.2;
+	@Config.Name("Atmosphere_Height_Increase_Scale")
+	private double atmHeightIncScale = 1.0;
+
+	@Config.Name("Sky_Extinction_Factors")
+	private double[] atmExtinctionFactor;
+
+	@Config.Name("Allow_Atmospheric_Refraction")
+	private boolean allowRefraction;
+
+	// FIXME Fix Sunlight Multiplier Property
+	@Config.Name("SunLight_Multiplier")
+	private double sunlightMultiplier = 1.0;
+
+	@Config.Name("Sky_Dispersion_Rate")
+	private double skyDispersionRate;
+	@Config.Name("Light_Pollution_Rate")
+	private double lightPollutionRate = 1.0;
+
+	@Config.Name("Minimum_Sky_Render_Brightness")
+	private double minimumSkyRenderBrightness;
+
+	@Config.Name("Landscape_Enabled")
+	private boolean landscapeEnabled = false;
+
+
+	private transient ISkyType skyType;
 	
-	private ConfigPropertyBoolean propLandscapeEnabled;
-	
-	private ConfigPropertyString propRenderType;
-	
-	private ISkyType skyType;
-	
-	public PerDimensionSettings(String dimensionName) {
-		this.dimensionName = dimensionName;
+	public PerDimensionSettings(DimensionType dimensionType) {
+		this.dimensionType = dimensionType;
 		
-		this.propPatchProvider = new ConfigPropertyBoolean("Patch_Provider", "patchProvider", true);
-		
-		this.skyType = StellarSkyAPI.getSkyType(this.dimensionName);
+		this.skyType = StellarSkyAPI.getSkyType(dimensionType.getName());
 
-		this.propRenderType = new ConfigPropertyString("Sky_Renderer_Type", "skyRendererType", skyType.possibleTypes().get(0).getName());
-		
-		this.propLatitude = new ConfigPropertyDouble("Latitude", "lattitude", skyType.getDefaultDouble(EnumSkyProperty.Lattitude));
-		this.propLongitude = new ConfigPropertyDouble("Longitude", "longitude", skyType.getDefaultDouble(EnumSkyProperty.Longitude));
-		
-		this.propHideObjectsUnderHorizon = new ConfigPropertyBoolean("Hide_Objects_Under_Horizon", "hideObjectsUnderHorizon", skyType.getDefaultBoolean(EnumSkyProperty.HideObjectsUnderHorizon));
-		
-		this.propAtmScaleHeight = new ConfigPropertyDouble("Atmosphere_Scale_Height", "atmScaleHeight", 1 / 800.0);
-		this.propAtmTotalHeight = new ConfigPropertyDouble("Atmosphere_Total_Height", "atmTotalHeight", 20.0 / 800.0);
-		this.propAtmHeightOffset = new ConfigPropertyDouble("Atmosphere_Height_Offset", "atmHeightOffset", 0.2);
-		this.propAtmHeightIncScale = new ConfigPropertyDouble("Atmosphere_Height_Increase_Scale", "atmHeightIncreaseScale", 1.0);
+		this.skyRenderType = skyType.possibleTypes().get(0).getName();
 
-		this.propAtmExtinctionFactor = new ConfigPropertyDoubleList("Sky_Extinction_Factors", "skyExtinctionFactors", skyType.getDefaultDoubleList(EnumSkyProperty.SkyExtinctionFactors));
-		
-		this.propAllowRefraction = new ConfigPropertyBoolean("Allow_Atmospheric_Refraction", "allowRefraction", skyType.getDefaultBoolean(EnumSkyProperty.AllowRefraction));
+		this.latitude = skyType.getDefaultDouble(EnumSkyProperty.Latitude);
+		this.longitude = skyType.getDefaultDouble(EnumSkyProperty.Longitude);
 
-		// TODO Fix Sunlight Multiplier Property
-		this.propSunlightMultiplier = new ConfigPropertyDouble("SunLight_Multiplier", "sunlightMultiplier", 1.0);
-       	
-		this.propSkyDispersionRate = new ConfigPropertyDouble("Sky_Dispersion_Rate", "skyDispersionRate", skyType.getDefaultDouble(EnumSkyProperty.SkyDispersionRate));
-       	this.propLightPollutionRate = new ConfigPropertyDouble("Light_Pollution_Rate", "lightPollutionRate", 1.0);
-       	this.propMinimumSkyRenderBrightness = new ConfigPropertyDouble("Minimum_Sky_Render_Brightness", "minimumSkyRenderBrightness", skyType.getDefaultDouble(EnumSkyProperty.SkyRenderBrightness));
-       	
-       	this.propLandscapeEnabled = new ConfigPropertyBoolean("Landscape_Enabled", "landscapeEnabled", false);
-       	
-       	this.addConfigProperty(this.propPatchProvider);
-       	this.addConfigProperty(this.propRenderType);
-       	this.addConfigProperty(this.propLatitude);
-       	this.addConfigProperty(this.propLongitude);
-       	this.addConfigProperty(this.propHideObjectsUnderHorizon);
-       	this.addConfigProperty(this.propAtmScaleHeight);
-       	this.addConfigProperty(this.propAtmTotalHeight);
-       	this.addConfigProperty(this.propAtmHeightOffset);
-       	this.addConfigProperty(this.propAtmHeightIncScale);
-       	this.addConfigProperty(this.propAtmExtinctionFactor);
-       	this.addConfigProperty(this.propAllowRefraction);
-       	this.addConfigProperty(this.propSunlightMultiplier);
-       	this.addConfigProperty(this.propSkyDispersionRate);
-       	this.addConfigProperty(this.propLightPollutionRate);
+		this.hideObjectsUnderHorizon = skyType.getDefaultBoolean(EnumSkyProperty.HideObjectsUnderHorizon);
 
-       	this.addConfigProperty(this.propMinimumSkyRenderBrightness);
-       	this.addConfigProperty(this.propLandscapeEnabled);
+		this.atmExtinctionFactor = skyType.getDefaultDoubleList(EnumSkyProperty.SkyExtinctionFactors);
+
+		this.allowRefraction = skyType.getDefaultBoolean(EnumSkyProperty.AllowRefraction);
+
+		this.skyDispersionRate = skyType.getDefaultDouble(EnumSkyProperty.SkyDispersionRate);
+
+		this.minimumSkyRenderBrightness = skyType.getDefaultDouble(EnumSkyProperty.SkyRenderBrightness);
 	}
 
-	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryComment(category, "Configurations for this dimension.");
 		config.setCategoryRequiresWorldRestart(category, true);
-		
-		super.setupConfig(config, category);
-		
-		propPatchProvider.setComment("Determine whether or not patch provider. Cannot adjust longitude and latitude when this is false.");
-		propPatchProvider.setRequiresWorldRestart(true);
-		propPatchProvider.setLanguageKey("config.property.dimension.patchprovider");
         
 		String[] transformed = Lists.transform(skyType.possibleTypes(), new Function<ISkyRenderType, String>() {
 			@Override
 			public String apply(ISkyRenderType input) {
 				return input.getName();
 			}
-		}).toArray(new String[0]);
-    
-        propRenderType.setComment("Sky renderer type for this dimension.\n"
-        		+ "There are 'Overworld Sky', 'End Sky' type by default.");
-        propRenderType.setRequiresWorldRestart(true);
-        propRenderType.setLanguageKey("config.property.dimension.skyrenderertype");
-        propRenderType.setValidValues(transformed);
-		
-       	propLatitude.setComment("Latitude on this world, in Degrees.");
-       	propLatitude.setRequiresWorldRestart(true);
-       	propLatitude.setLanguageKey("config.property.dimension.latitude");
-       	propLatitude.setMaxValue(90.0);
-       	propLatitude.setMinValue(-90.0);
+		}).toArray(new String[0]); // TODO Render Type Dynamic Valid Values
 
-       	propLongitude.setComment("Longitude on this world, in Degrees. (East is +)");
-       	propLongitude.setRequiresWorldRestart(true);
-       	propLongitude.setLanguageKey("config.property.dimension.longitude");
-       	propLongitude.setMaxValue(360.0);
-       	propLongitude.setMinValue(0.0);
-        
-        propHideObjectsUnderHorizon.setComment("Determine whether or not hide objects under horizon.");
-        propHideObjectsUnderHorizon.setRequiresWorldRestart(true);
-        propHideObjectsUnderHorizon.setLanguageKey("config.property.dimension.hidehorizonobj");
-        
-       	propAtmScaleHeight.setComment("Scale Height of the atmosphere relative to the radius.\n"
-       			+ "This determines the thickness of the atmosphere.");
-       	propAtmScaleHeight.setRequiresWorldRestart(true);
-       	propAtmScaleHeight.setLanguageKey("config.property.dimension.atmscaleheight");
-       	propAtmScaleHeight.setMinValue(1.0e-4);
-       	propAtmScaleHeight.setMaxValue(1.0);
        	
        	propAtmTotalHeight.setComment("Total Height of the atmosphere relative to the radius.\n"
        			+ "This determines the accuracy of the atmosphere, relative to the scale height.");
@@ -211,7 +196,7 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
 	@Override
 	public void loadFromConfig(Configuration config, String category) {
 		super.loadFromConfig(config, category);
-		
+
 		if(!this.doesPatchProvider()) {
 			propLatitude.setAsDefault();
 			propLongitude.setAsDefault();
@@ -222,14 +207,6 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
 			propLightPollutionRate.setAsDefault();
 			propMinimumSkyRenderBrightness.setAsDefault();
 		}
-       	
-       	this.latitude = propLatitude.getDouble();
-   		this.longitude = propLongitude.getDouble();
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
 
        	this.latitude = propLatitude.getDouble();
    		this.longitude = propLongitude.getDouble();
@@ -291,14 +268,4 @@ public class PerDimensionSettings extends SimpleHierarchicalNBTConfig {
 	public double[] extinctionRates() {
 		return propAtmExtinctionFactor.getDoubleList();
 	}
-
-	@Override
-	public INBTConfig copy() {
-		PerDimensionSettings settings = new PerDimensionSettings(this.dimensionName);
-		this.applyCopy(settings);
-		settings.latitude = this.latitude;
-		settings.longitude = this.longitude;
-		return settings;
-	}
-
 }
