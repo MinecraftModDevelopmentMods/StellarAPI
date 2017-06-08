@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import net.minecraftforge.fml.common.Loader;
-import stellarapi.api.lib.config.DynamicConfigManager;
+import stellarapi.api.lib.config.DCfgManager;
 
 public enum OverlayRegistry {
 	INSTANCE;
@@ -38,7 +38,7 @@ public enum OverlayRegistry {
 	 *            the configuration instance to save the settings
 	 */
 	public static <E extends IOverlayElement<S>, S extends PerOverlaySettings> void registerOverlay(String id,
-			IOverlayType<E, S> type, DynamicConfigManager config) {
+			IOverlayType<E, S> type, DCfgManager config) {
 		String modid = Loader.instance().activeModContainer().getModId();
 		INSTANCE.mapOverlay.put(id, INSTANCE.new RegistryDelegate(type, config, modid));
 	}
@@ -61,10 +61,10 @@ public enum OverlayRegistry {
 
 		private final IOverlayType<E, S> type;
 		private final S settings;
-		private final DynamicConfigManager config;
+		private final DCfgManager config;
 		private final String modid;
 
-		private RegistryDelegate(IOverlayType<E, S> type, DynamicConfigManager config, String modid) {
+		private RegistryDelegate(IOverlayType<E, S> type, DCfgManager config, String modid) {
 			this.type = type;
 			this.settings = type.generateSettings();
 			this.config = config;

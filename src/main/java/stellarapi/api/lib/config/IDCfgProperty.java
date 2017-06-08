@@ -8,4 +8,5 @@ public interface IDCfgProperty {
 	public Object getValue();
 
 	public boolean isChanged();
+	public void resetChanged();
 }

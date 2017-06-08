@@ -33,7 +33,7 @@ public class SleepWakeManager {
 	// TODO List handling in config
 	@DynamicConfig.DynamicProperty(
 			affected={Config.Name.class, Config.LangKey.class, Config.Comment.class},
-			handler=SleepWakeManager.class)
+			id = "handlers")
 	@DynamicConfig.Collection(addableField = false)
 	@Config.RequiresWorldRestart
 	private List<WakeHandler> wakeHandlers = Lists.newArrayList();
@@ -55,6 +55,18 @@ public class SleepWakeManager {
 		@Config.Comment("Enable this wake property.")
 		@Config.RequiresWorldRestart
 		protected boolean enabled;
+	}
+
+	public Config.Name getName(String key, WakeHandler individual) {
+		return null;
+	}
+
+	public Config.LangKey getLangKey(String key, WakeHandler individual) {
+		return null;
+	}
+
+	public Config.Comment getComment(String key, WakeHandler individual) {
+		return null;
 	}
 
 	/**

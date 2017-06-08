@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
  * */
 public interface IDConfig {
 
+	public boolean hasCategory(String entry);
 	public IDCfgCategory getCategory(String entry);
 
 	/**

@@ -12,4 +12,6 @@ public interface IDCfgCategory {
 
 	IDCfgProperty getProperty(String propEntry);
 
+	boolean isChanged();
+
 }

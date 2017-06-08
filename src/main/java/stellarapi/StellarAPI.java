@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.daywake.SleepWakeManager;
-import stellarapi.api.lib.config.DynamicConfigManager;
+import stellarapi.api.lib.config.DCfgManager;
 import stellarapi.example.item.ItemFilteredTelescopeExample;
 import stellarapi.example.item.ItemTelescopeExample;
 import stellarapi.feature.command.CommandPerDimensionResource;
@@ -64,7 +64,7 @@ public final class StellarAPI {
 	private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
 
 	private Configuration config;
-	private DynamicConfigManager cfgManager;
+	private DCfgManager cfgManager;
 
 	public Item telescope, filteredTelescope;
 
@@ -72,7 +72,7 @@ public final class StellarAPI {
 		return this.networkManager;
 	}
 
-	public DynamicConfigManager getCfgManager() {
+	public DCfgManager getCfgManager() {
 		return this.cfgManager;
 	}
 
@@ -90,7 +90,7 @@ public final class StellarAPI {
 		MinecraftForge.EVENT_BUS.register(this.networkManager);
 
 		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
-		this.cfgManager = new DynamicConfigManager(this.config);
+		this.cfgManager = new DCfgManager(this.config);
 
 		StellarAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
 

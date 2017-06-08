@@ -22,7 +22,7 @@ import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
-import stellarapi.api.lib.config.DynamicConfigManager;
+import stellarapi.api.lib.config.DCfgManager;
 
 public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 	private Map<String, OverlayElementDelegate> elementMap = Maps.newHashMap();
@@ -41,7 +41,7 @@ public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 
 	@Override
 	public <E extends IOverlayElement<S>, S extends PerOverlaySettings> void injectOverlay(String id, String modid,
-			IOverlayType<E, S> type, S settings, DynamicConfigManager notified) {
+			IOverlayType<E, S> type, S settings, DCfgManager notified) {
 		OverlayElementDelegate delegate = new OverlayElementDelegate<E, S>(type, settings, notified, this, id, modid);
 		elementMap.put(id, delegate);
 	}

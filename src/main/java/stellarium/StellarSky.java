@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.lib.config.DynamicConfigManager;
+import stellarapi.api.lib.config.DCfgManager;
 import stellarium.api.DefaultSkyType;
 import stellarium.api.SkyRenderTypeSurface;
 import stellarium.api.StellarSkyAPI;
@@ -39,7 +39,7 @@ public class StellarSky {
 
 	public static Logger logger;
 
-	private DynamicConfigManager celestialConfigManager;
+	private DCfgManager celestialConfigManager;
 	private StellarForgeEventHook eventHook = new StellarForgeEventHook();
 	private StellarTickHandler tickHandler = new StellarTickHandler();
 	private StellarFMLEventHook fmlEventHook = new StellarFMLEventHook();
@@ -49,7 +49,7 @@ public class StellarSky {
 		return this.networkManager;
 	}
 
-	public DynamicConfigManager getCelestialConfigManager() {
+	public DCfgManager getCelestialConfigManager() {
 		return this.celestialConfigManager;
 	}
 
@@ -57,7 +57,7 @@ public class StellarSky {
 	public void preInit(FMLPreInitializationEvent event) { 
 		logger = event.getModLog();
 
-		this.celestialConfigManager = new DynamicConfigManager(
+		this.celestialConfigManager = new DCfgManager(
 				StellarSkyReferences.getConfiguration(event.getModConfigurationDirectory(),
 						StellarSkyReferences.celestialSettings));
 

@@ -18,13 +18,74 @@ public @interface DynamicConfig {
 	String name() default "";
 
 	/**
-	 * Declares that annotation properties for this field are determined dynamically.
+	 * Declares that annotation properties for this field are determined dynamically.<p>
+	 * <br>
+	 * Leaving target as Object.class(default) means it's evaluated for the final descendent.<br>
+	 * Leaving handler as Object.class(default) means the parent class evaluates the value.<p>
+	 * <br>
+	 * Can be applied to any field, while {@link DynamicProperty} can't specify this one.<p>
 	 * */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface DynamicProperty {
 		Class<?>[] affected() default {};
-		Class<?> handler();
+		Class<?> target() default Object.class;
+		Class<?> handler() default Object.class;
+		String id() default "";
+	}
+
+	/**
+	 * To express Multiple Dynamic Properties.
+	 * Mutually exclusive with {@link DynamicProperty}.
+	 * */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface DynamicProperties {
+		DynamicProperty[] value() default {};
+	}
+
+	/**
+	 * Declares the dynamic default evaluator for the field. <p>
+	 * This is to provide the immutable Default.
+	 *  (Lack of this annotation means the default is the initial value of the field) <p>
+	 * <br>
+	 * Leaving target as Object.class(default) means it's evaluated for the final descendent. <br>
+	 * Leaving handler as Object.class(default) means the value is . <p>
+	 * <br>
+	 * Can be applied to any field, while {@link DynamicProperty} can't specify this one.
+	 * */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface Default {
+		Class<?> target() default Object.class;
+		Class<?> handler() default Object.class;
+		String id() default "";
+	}
+
+	/**
+	 * To express Multiple Dynamic Defaults. <p>
+	 * Mutually exclusive with {@link Default}.
+	 * */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface Defaults {
+		Default[] value() default {};
+	}
+
+	/**
+	 * Priority of this field. <p>
+	 * Fields with higher priority will be loaded/saved earlier.
+	 *  (Priority of a field is 0 by default, even w/o this annotation) <p>
+	 * Among fields of the same priority,
+	 *  fields will be loaded/saved in order of declaration
+	 *  with exception of changed fields being at first and added fields at last. <p>
+	 *  
+	 * Can be applied to any field, while {@link DynamicProperty} can't specify this one.
+	 * */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface Priority {
+		int value() default 0;
 	}
 
 	/**
@@ -38,21 +99,6 @@ public @interface DynamicConfig {
 
 		/** If true, An object can be added to this field according to the configuration. */
 		boolean addableField() default true;
-	}
-
-	/**
-	 * Priority of this field. <p>
-	 * Fields with higher priority will be loaded/saved earlier.
-	 *  (Priority of a field is 0 by default, even w/o this annotation) <p>
-	 * Among fields of the same priority,
-	 *  fields will be loaded/saved in order of declaration
-	 *  with exception of changed fields being at first and added fields at last. <p>
-	 * Can be applied to any field, while {@link DynamicProperty} can't specify this one.
-	 * */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.FIELD)
-	public @interface Priority {
-		int value() default 0;
 	}
 
 	/**
