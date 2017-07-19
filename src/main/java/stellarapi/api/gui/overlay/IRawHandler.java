@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 /**
  * Raw handler to control the overlay with the container.
  */
+@SuppressWarnings("rawtypes")
 public interface IRawHandler<Element extends IOverlayElement> {
 
 	/**

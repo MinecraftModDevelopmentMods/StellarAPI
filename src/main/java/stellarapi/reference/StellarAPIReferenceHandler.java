@@ -112,12 +112,12 @@ public class StellarAPIReferenceHandler implements IReference {
 	}
 
 	@SubscribeEvent
-	public void onGatherEntityCapability(AttachCapabilitiesEvent.Entity event) {
-		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getEntity());
+	public void onGatherEntityCapability(AttachCapabilitiesEvent<Entity> event) {
+		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getObject());
 		StellarAPIReference.getEventBus().post(check);
 		if (check.isOpticalEntity())
 			event.addCapability(new ResourceLocation(StellarAPI.modid, "viewer"),
-					new PerEntityManager(event.getEntity()));
+					new PerEntityManager(event.getObject()));
 	}
 
 }

@@ -48,7 +48,7 @@ public class GuiButtonDetectMouse implements IGuiElementType<IButtonDetectorCont
 
 	@Override
 	public void mouseReleased(float mouseX, float mouseY, int eventButton) {
-		IRectangleBound bound = position.getClipBound();
+		position.getClipBound();
 		if (controller.canClick(eventButton) && this.isClicking) {
 			this.isClicking = false;
 

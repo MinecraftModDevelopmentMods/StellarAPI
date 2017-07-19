@@ -67,6 +67,7 @@ public class OverlaySetDelegate implements IRawOverlaySet {
 		return ImmutableList.<IRawOverlayElement> copyOf(manager.getContainedElements(this));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean addElement(IRawOverlayElement element) {
 		ElementPos pos = new ElementPos(element.getCurrentHorizontalPos(), element.getCurrentVerticalPos());
@@ -79,6 +80,7 @@ public class OverlaySetDelegate implements IRawOverlaySet {
 			return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void removeElement(IRawOverlayElement element) {
 		if (!this.doesContain(element))

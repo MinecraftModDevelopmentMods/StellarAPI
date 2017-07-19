@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -33,7 +32,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		this.overlay = new OverlayHandler();
 
 		MinecraftForge.EVENT_BUS.register(new StellarAPIClientForgeEventHook(this.overlay));
-		FMLCommonHandler.instance().bus().register(new StellarAPIClientFMLEventHook(this.overlay));
+		MinecraftForge.EVENT_BUS.register(new StellarAPIClientFMLEventHook(this.overlay));
 
 		this.guiConfig = new ConfigManager(
 				StellarAPI.getConfiguration(event.getModConfigurationDirectory(), "GuiConfig.cfg"));

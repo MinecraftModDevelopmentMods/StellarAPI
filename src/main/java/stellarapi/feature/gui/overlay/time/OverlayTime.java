@@ -19,8 +19,7 @@ import stellarapi.api.gui.overlay.PerOverlaySettings;
 public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 	private static final int WIDTH = 100;
 	private static final int HEIGHT = 10;
-	private static final int ANIMATION_DURATION = 10;
-
+	
 	private Minecraft mc;
 	EnumOverlayMode currentMode = EnumOverlayMode.OVERLAY;
 

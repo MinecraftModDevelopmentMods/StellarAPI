@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import net.minecraftforge.fml.common.Loader;
 import stellarapi.api.lib.config.ConfigManager;
 
+@SuppressWarnings("rawtypes")
 public class OverlayRegistry {
 
 	private static OverlayRegistry INSTANCE = new OverlayRegistry();
@@ -41,7 +42,7 @@ public class OverlayRegistry {
 	public static <E extends IOverlayElement<S>, S extends PerOverlaySettings> void registerOverlay(String id,
 			IOverlayType<E, S> type, ConfigManager config) {
 		String modid = Loader.instance().activeModContainer().getModId();
-		INSTANCE.mapOverlay.put(id, INSTANCE.new RegistryDelegate(type, config, modid));
+		INSTANCE.mapOverlay.put(id, INSTANCE.new RegistryDelegate<E,S>(type, config, modid));
 	}
 
 	/**

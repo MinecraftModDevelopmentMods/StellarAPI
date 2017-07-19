@@ -7,8 +7,8 @@ import stellarapi.lib.gui.IRenderer;
 
 public class GuiEmptyElement implements IGuiElementType<ISimpleController> {
 
-	public static GuiElement generateEmptyElement() {
-		return new GuiElement(new GuiEmptyElement(), new ISimpleController() {
+	public static GuiElement<ISimpleController> generateEmptyElement() {
+		return new GuiElement<ISimpleController>(new GuiEmptyElement(), new ISimpleController() {
 		});
 	}
 

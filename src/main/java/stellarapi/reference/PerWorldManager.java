@@ -154,6 +154,7 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 	 * @param id
 	 *            the id
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> T getPerWorldData(String id) {
 		return (T) perWorldData.get(id);
 	}

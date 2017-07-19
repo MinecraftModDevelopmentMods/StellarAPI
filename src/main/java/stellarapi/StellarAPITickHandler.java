@@ -36,6 +36,7 @@ public class StellarAPITickHandler {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent event) {
 		EnumHand hand = event.getEntityLiving().getActiveHand();
@@ -89,7 +90,6 @@ public class StellarAPITickHandler {
 	private void tryWakePlayers(WorldServer world) {
 		if (world.getGameRules().getBoolean("doDaylightCycle")) {
 			WorldInfo info = world.getWorldInfo();
-			long worldTime = info.getWorldTime();
 			info.setWorldTime(StellarAPIReference.getSleepWakeManager().getWakeTime(world,
 					(world.getWorldTime() / 24000L + 1L) * 24000L));
 		}

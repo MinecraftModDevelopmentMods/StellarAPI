@@ -3,7 +3,6 @@ package stellarapi.api;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventBus;

@@ -9,6 +9,7 @@ public abstract class ConfigProperty {
 	protected String configKey;
 	protected String dataKey;
 
+	@SuppressWarnings("unused")
 	private String comment;
 
 	public ConfigProperty(String configKey, String dataKey) {

@@ -10,6 +10,7 @@ import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.overlay.IRawOverlayElement;
 import stellarapi.api.gui.pos.ElementPos;
 
+@SuppressWarnings("rawtypes")
 public class OverlayContainer {
 
 	private int width;
@@ -37,12 +38,12 @@ public class OverlayContainer {
 		if (!mode.displayed())
 			this.pauseGame = false;
 
-		for (OverlayElementDelegate delegate : this.currentlyDisplayedList)
+		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList)
 			delegate.getElement().switchMode(mode);
 	}
 
 	public void updateOverlay() {
-		for (OverlayElementDelegate delegate : this.currentlyDisplayedList) {
+		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList) {
 			delegate.getElement().updateOverlay();
 			if (delegate.getHandler() != null)
 				delegate.getHandler().updateHandler();
@@ -52,9 +53,9 @@ public class OverlayContainer {
 	public void mouseClicked(int mouseX, int mouseY, int eventButton) {
 		boolean changedUniversal = false;
 
-		for (OverlayElementDelegate delegate : this.currentlyDisplayedList) {
+		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList) {
 			ElementPos pos = delegate.getPosition();
-			IOverlayElement element = delegate.getElement();
+			IOverlayElement<?> element = delegate.getElement();
 			int width = element.getWidth();
 			int height = element.getHeight();
 			int scaledMouseX = pos.getHorizontalPos().translateInto(mouseX, this.width, width);
@@ -70,16 +71,16 @@ public class OverlayContainer {
 		}
 
 		if (changedUniversal)
-			for (OverlayElementDelegate delegate : this.currentlyDisplayedList)
+			for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList)
 				delegate.notifyChange();
 	}
 
 	public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
 		boolean changedUniversal = false;
 
-		for (OverlayElementDelegate delegate : this.currentlyDisplayedList) {
+		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList) {
 			ElementPos pos = delegate.getPosition();
-			IOverlayElement element = delegate.getElement();
+			IOverlayElement<?> element = delegate.getElement();
 			int width = element.getWidth();
 			int height = element.getHeight();
 			int scaledMouseX = pos.getHorizontalPos().translateInto(mouseX, this.width, width);
@@ -96,16 +97,16 @@ public class OverlayContainer {
 		}
 
 		if (changedUniversal)
-			for (OverlayElementDelegate delegate : this.currentlyDisplayedList)
+			for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList)
 				delegate.notifyChange();
 	}
 
 	public void mouseReleased(int mouseX, int mouseY, int eventButton) {
 		boolean changedUniversal = false;
 
-		for (OverlayElementDelegate delegate : this.currentlyDisplayedList) {
+		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList) {
 			ElementPos pos = delegate.getPosition();
-			IOverlayElement element = delegate.getElement();
+			IOverlayElement<?> element = delegate.getElement();
 			int width = element.getWidth();
 			int height = element.getHeight();
 			int scaledMouseX = pos.getHorizontalPos().translateInto(mouseX, this.width, width);
@@ -121,14 +122,14 @@ public class OverlayContainer {
 		}
 
 		if (changedUniversal)
-			for (OverlayElementDelegate delegate : this.currentlyDisplayedList)
+			for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList)
 				delegate.notifyChange();
 	}
 
 	public void keyTyped(char eventChar, int eventKey) {
 		boolean changedUniversal = false;
 
-		for (OverlayElementDelegate delegate : this.currentlyDisplayedList) {
+		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList) {
 			if (delegate.getElement().keyTyped(eventChar, eventKey))
 				delegate.notifyChange();
 
@@ -137,14 +138,14 @@ public class OverlayContainer {
 		}
 
 		if (changedUniversal)
-			for (OverlayElementDelegate delegate : this.currentlyDisplayedList)
+			for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList)
 				delegate.notifyChange();
 	}
 
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		for (OverlayElementDelegate delegate : this.currentlyDisplayedList) {
+		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList) {
 			ElementPos pos = delegate.getPosition();
-			IOverlayElement element = delegate.getElement();
+			IOverlayElement<?> element = delegate.getElement();
 			int width = element.getWidth();
 			int height = element.getHeight();
 			float animationOffsetX = element.animationOffsetX(partialTicks);

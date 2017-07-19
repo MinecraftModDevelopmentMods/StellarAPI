@@ -76,14 +76,14 @@ public class OverlayElementDelegate<Element extends IOverlayElement<Settings>, S
 		if (obj instanceof ElementPos) {
 			return pos.equals(obj);
 		} else if (obj instanceof OverlayElementDelegate) {
-			return pos.equals(((OverlayElementDelegate) obj).pos);
+			return pos.equals(((OverlayElementDelegate<?, ?>) obj).pos);
 
 		}
 		return false;
 	}
 
 	@Override
-	public IOverlayType getType() {
+	public IOverlayType<Element, Settings> getType() {
 		return this.type;
 	}
 

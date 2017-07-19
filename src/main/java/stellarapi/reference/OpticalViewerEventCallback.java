@@ -20,8 +20,6 @@ import stellarapi.api.optics.NakedScope;
  */
 public final class OpticalViewerEventCallback implements IPerEntityReference, IOpticalViewer {
 
-	private static final String ID = "stellarapiperplayermanager";
-
 	private Entity entity;
 	private Entity ridingEntity;
 

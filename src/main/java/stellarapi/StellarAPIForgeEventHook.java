@@ -22,6 +22,7 @@ import stellarapi.reference.PerServerManager;
 
 public class StellarAPIForgeEventHook {
 
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void onStartUsingItem(LivingEntityUseItemEvent.Start event) {
 		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
@@ -56,6 +57,7 @@ public class StellarAPIForgeEventHook {
 		this.onEndItemUse(event);
 	}
 
+	@SuppressWarnings("deprecation")
 	private void onEndItemUse(LivingEntityUseItemEvent event) {
 		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
 				EnumFacing.DOWN);

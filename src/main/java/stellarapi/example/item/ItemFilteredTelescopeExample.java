@@ -21,7 +21,6 @@ import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedScope;
 import stellarapi.api.optics.RGBFilter;
 import stellarapi.api.optics.Wavelength;
-import stellarapi.example.item.ItemTelescopeExample.ScopeProvider;
 
 /**
  * Example for filtered telescope item.
@@ -133,7 +132,7 @@ public class ItemFilteredTelescopeExample extends Item {
 		@Override
 		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 			if(capability == StellarAPICapabilities.OPTICAL_PROPERTY) {
-				return (T) this;
+				return StellarAPICapabilities.OPTICAL_PROPERTY.cast(this);
 			} else return null;
 		}
 	}

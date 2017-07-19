@@ -197,6 +197,7 @@ public class WorldProviderExample extends WorldProvider {
 		return (float) f2 * 0.33f;
 	}
 
+	@SuppressWarnings("deprecation")
 	public float getMixedBrightnessOnBlock(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		return (((state.getBlock().getPackedLightmapCoords(state, world, pos) & 0xff)) >> 4) * 0.005f;

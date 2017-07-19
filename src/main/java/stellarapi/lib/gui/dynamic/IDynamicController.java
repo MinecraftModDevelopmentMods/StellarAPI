@@ -11,6 +11,6 @@ public interface IDynamicController extends IElementController {
 	/**
 	 * Generate current element. Called on initialization and update.
 	 */
-	public GuiElement generateElement();
+	public GuiElement<?> generateElement();
 
 }

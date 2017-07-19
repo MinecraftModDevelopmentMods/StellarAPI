@@ -19,14 +19,14 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 	private IRollableSimpleController controller;
 
 	private GuiLinearMoving mover;
-	private GuiElement elementToRoll, elementToExclude;
+	private GuiElement<?> elementToRoll, elementToExclude;
 	private float excludedSize;
 
 	private boolean isHorizontal, increaseCoordOnRoll;
 
 	private boolean isRolling;
 
-	public GuiRollableSimple(GuiElement elementToRoll, GuiElement elementToExclude, float excludedSize) {
+	public GuiRollableSimple(GuiElement<?> elementToRoll, GuiElement<?> elementToExclude, float excludedSize) {
 		this.elementToRoll = elementToRoll;
 		this.elementToExclude = elementToExclude;
 		this.excludedSize = excludedSize;
@@ -44,7 +44,7 @@ public class GuiRollableSimple implements IGuiElementType<IRollableSimpleControl
 
 		GuiHasFixedList guiFixedList = new GuiHasFixedList(this.elementToRoll, this.elementToExclude,
 				this.excludedSize);
-		GuiElement fixedList = new GuiElement(guiFixedList, new IHasFixedListController() {
+		GuiElement<IHasFixedListController> fixedList = new GuiElement<IHasFixedListController>(guiFixedList, new IHasFixedListController() {
 			@Override
 			public boolean isHorizontal() {
 				return isHorizontal;

@@ -8,11 +8,9 @@ import stellarapi.api.StellarAPICapabilities;
 
 public class PerEntityManager implements ICapabilityProvider {
 
-	private Entity entity;
 	private OpticalViewerEventCallback scope;
 
 	public PerEntityManager(Entity entity) {
-		this.entity = entity;
 		this.scope = new OpticalViewerEventCallback(entity);
 	}
 
@@ -26,7 +24,7 @@ public class PerEntityManager implements ICapabilityProvider {
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == StellarAPICapabilities.VIEWER_CAPABILITY)
-			return (T) this.scope;
+			return StellarAPICapabilities.VIEWER_CAPABILITY.cast(this.scope);
 		return null;
 	}
 

@@ -11,7 +11,7 @@ import stellarapi.lib.gui.IRenderer;
  */
 public class GuiTooltipElementWrapper implements IGuiElementType<ITooltipElementController> {
 
-	private GuiElement wrapped;
+	private GuiElement<?> wrapped;
 	private IGuiPosition position;
 	private ITooltipElementController controller;
 
@@ -19,7 +19,7 @@ public class GuiTooltipElementWrapper implements IGuiElementType<ITooltipElement
 
 	private long hoverStart = -1;
 
-	protected GuiTooltipElementWrapper(GuiElement wrapped, GuiHasTooltip parent) {
+	protected GuiTooltipElementWrapper(GuiElement<?> wrapped, GuiHasTooltip parent) {
 		this.wrapped = wrapped;
 		this.parent = parent;
 	}
