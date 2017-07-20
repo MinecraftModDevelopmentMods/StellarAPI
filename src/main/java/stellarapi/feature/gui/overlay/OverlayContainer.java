@@ -43,6 +43,9 @@ public class OverlayContainer {
 	}
 
 	public void updateOverlay() {
+		if(this.currentlyDisplayedList == null) // Safety check for change of order (postinit & first client tick)
+			return;
+
 		for (OverlayElementDelegate<?, ?> delegate : this.currentlyDisplayedList) {
 			delegate.getElement().updateOverlay();
 			if (delegate.getHandler() != null)
