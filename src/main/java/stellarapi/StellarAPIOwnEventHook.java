@@ -104,6 +104,7 @@ public class StellarAPIOwnEventHook {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void checkOpticalEntity(CheckEntityOpticalViewerEvent event) {
+		// TODO better implementation & logic of checking for the optical entities.
 		event.setIsOpticalEntity(event.getEntity() instanceof EntityPlayer);
 	}
 

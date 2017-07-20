@@ -2,6 +2,8 @@ package stellarapi.api;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IViewScope;
 
 public interface IReference {
 
@@ -10,5 +12,8 @@ public interface IReference {
 	public IPerEntityReference getPerEntityReference(Entity entity);
 
 	public IPerClientReference getPerClientReference();
+
+	public IViewScope getDefaultScope();
+	public IOpticalFilter getDefaultFilter();
 
 }

@@ -191,7 +191,7 @@ public final class StellarAPIReference {
 	 */
 	public static IViewScope getScope(Entity entity) {
 		IPerEntityReference ref = reference.getPerEntityReference(entity);
-		return ref != null? ref.getScope() : null;
+		return ref != null? ref.getScope() : reference.getDefaultScope();
 	}
 
 	/**
@@ -200,7 +200,7 @@ public final class StellarAPIReference {
 	 */
 	public static IOpticalFilter getFilter(Entity entity) {
 		IPerEntityReference ref = reference.getPerEntityReference(entity);
-		return ref != null? ref.getFilter() : null;
+		return ref != null? ref.getFilter() : reference.getDefaultFilter();
 	}
 
 	/**

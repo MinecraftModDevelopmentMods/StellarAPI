@@ -25,6 +25,8 @@ import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.NakedFilter;
+import stellarapi.api.optics.NakedScope;
 
 public class StellarAPIReferenceHandler implements IReference {
 
@@ -118,6 +120,16 @@ public class StellarAPIReferenceHandler implements IReference {
 		if (check.isOpticalEntity())
 			event.addCapability(new ResourceLocation(StellarAPI.modid, "viewer"),
 					new PerEntityManager(event.getObject()));
+	}
+
+	@Override
+	public IViewScope getDefaultScope() {
+		return new NakedScope();
+	}
+
+	@Override
+	public IOpticalFilter getDefaultFilter() {
+		return new NakedFilter();
 	}
 
 }
