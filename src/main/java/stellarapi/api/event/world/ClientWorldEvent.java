@@ -41,7 +41,7 @@ public class ClientWorldEvent extends PerWorldEvent {
 	 */
 	@Cancelable
 	public static class Loaded extends ClientWorldEvent {
-		private int attempt;
+		private int attempt = 0;
 
 		public Loaded(World world, ICombinedProgressUpdate loading) {
 			super(world, loading);
