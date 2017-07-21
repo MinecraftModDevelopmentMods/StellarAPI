@@ -77,6 +77,10 @@ public final class StellarAPIReference {
 		reference.getPerWorldReference(world).resetSkyEffect();
 	}
 
+	public static boolean isOpticalEntity(Entity entity) {
+		return reference.getPerEntityReference(entity) != null;
+	}
+
 	/**
 	 * Updates the scope for the entity. Only works for entities with optical
 	 * event callback capabilities.

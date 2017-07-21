@@ -39,6 +39,9 @@ public class StellarAPITickHandler {
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent event) {
+		if(!StellarAPIReference.isOpticalEntity(event.getEntityLiving()))
+			return;
+
 		EnumHand hand = event.getEntityLiving().getActiveHand();
 		ItemStack itemstack = hand != null ? event.getEntityLiving().getHeldItem(hand) : ItemStack.EMPTY;
 		ItemStack itemInUse = event.getEntityLiving().getActiveItemStack();
