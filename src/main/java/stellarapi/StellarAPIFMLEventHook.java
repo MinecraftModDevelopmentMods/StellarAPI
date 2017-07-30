@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class StellarAPIFMLEventHook {
 	@SubscribeEvent
 	public void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if (event.getModID().equals(StellarAPI.modid))
-			StellarAPI.instance.getCfgManager().syncFromGUI();
+		if (event.getModID().equals(StellarAPI.MODID))
+			StellarAPI.INSTANCE.getCfgManager().syncFromGUI();
 	}
 }

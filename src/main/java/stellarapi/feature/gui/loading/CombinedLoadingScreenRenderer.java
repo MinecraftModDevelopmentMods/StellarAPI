@@ -14,10 +14,10 @@ import net.minecraft.client.LoadingScreenRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.IProgressUpdate;
@@ -137,7 +137,7 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 		try {
 			if (!FMLClientHandler.instance().handleLoadingScreen(scaledresolution)) {
 				Tessellator tessellator = Tessellator.getInstance();
-				VertexBuffer worldrenderer = tessellator.getBuffer();
+				BufferBuilder worldrenderer = tessellator.getBuffer();
 				mc.getTextureManager().bindTexture(Gui.OPTIONS_BACKGROUND);
 				float f = 32.0F;
 				worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
@@ -257,7 +257,7 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 			int l = scaledresolution.getScaledHeight();
 
 			Tessellator tessellator = Tessellator.getInstance();
-			VertexBuffer worldRenderer = tessellator.getBuffer();
+			BufferBuilder worldRenderer = tessellator.getBuffer();
 
 			if (this.progress >= 0) {
 				int i1 = 100;
@@ -279,10 +279,10 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 				GlStateManager.enableTexture2D();
 			}
 
-			mc.fontRendererObj.drawStringWithShadow(this.currentDisplayed,
-					(k - mc.fontRendererObj.getStringWidth(this.currentDisplayed)) / 2, l / 2 - 4 - 12, 16777215);
-			mc.fontRendererObj.drawStringWithShadow(this.currentContext,
-					(k - mc.fontRendererObj.getStringWidth(this.currentContext)) / 2, l / 2 - 4 + 4, 16777215);
+			mc.fontRenderer.drawStringWithShadow(this.currentDisplayed,
+					(k - mc.fontRenderer.getStringWidth(this.currentDisplayed)) / 2, l / 2 - 4 - 12, 16777215);
+			mc.fontRenderer.drawStringWithShadow(this.currentContext,
+					(k - mc.fontRenderer.getStringWidth(this.currentContext)) / 2, l / 2 - 4 + 4, 16777215);
 		}
 	}
 }

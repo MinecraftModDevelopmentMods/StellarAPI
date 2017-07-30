@@ -13,19 +13,20 @@ public class CommonProxy implements IProxy {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		StellarAPI.logger.info("Initializing Math class...");
+		StellarAPI.LOGGER.info("Initializing Math class...");
 		// Initializing Spmath
 		Spmath.Initialize();
-		StellarAPI.logger.info("Math Class Initialized!");
+		StellarAPI.LOGGER.info("Math Class Initialized!");
 	}
 
 	@Override
-	public void load(FMLInitializationEvent event) throws IOException {
-	}
+	public void load(FMLInitializationEvent event) throws IOException { }
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-	}
+	public void postInit(FMLPostInitializationEvent event) { }
+
+	@Override
+	public void registerModels() { }
 
 	@Override
 	public World getClientWorld() {

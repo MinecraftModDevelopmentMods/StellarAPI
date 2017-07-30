@@ -14,11 +14,11 @@ import stellarapi.StellarAPI;
 public class StellarAPIConfigScreen extends GuiConfig {
 
 	public StellarAPIConfigScreen(GuiScreen parentScreen) {
-		super(parentScreen, getConfigElement(), StellarAPI.modid, false, false, "Stellar API");
+		super(parentScreen, getConfigElement(), StellarAPI.MODID, false, false, "Stellar API");
 	}
 
 	private static List<IConfigElement> getConfigElement() {
-		Configuration config = StellarAPI.instance.getCfgManager().getConfig();
+		Configuration config = StellarAPI.INSTANCE.getCfgManager().getConfig();
 
 		List<IConfigElement> retList = Lists.newArrayList();
 		for (String category : config.getCategoryNames())

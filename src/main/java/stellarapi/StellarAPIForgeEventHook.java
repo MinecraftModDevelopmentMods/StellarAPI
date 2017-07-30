@@ -85,7 +85,7 @@ public class StellarAPIForgeEventHook {
 	public void onWorldLoad(WorldEvent.Load event) {
 		if (event.getWorld().isRemote)
 			StellarAPIReference.getEventBus()
-					.post(new ClientWorldEvent.Load(event.getWorld(), StellarAPI.proxy.getLoadingProgress()));
+					.post(new ClientWorldEvent.Load(event.getWorld(), StellarAPI.PROXY.getLoadingProgress()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
 			if (!PerServerManager.isInitiated(server)) {
@@ -101,7 +101,7 @@ public class StellarAPIForgeEventHook {
 	public void onWorldUnload(WorldEvent.Unload event) {
 		if (event.getWorld().isRemote)
 			StellarAPIReference.getEventBus()
-					.post(new ClientWorldEvent.Unload(event.getWorld(), StellarAPI.proxy.getLoadingProgress()));
+					.post(new ClientWorldEvent.Unload(event.getWorld(), StellarAPI.PROXY.getLoadingProgress()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
 			StellarAPIReference.getEventBus().post(new ServerWorldEvent.Unload(server, event.getWorld()));

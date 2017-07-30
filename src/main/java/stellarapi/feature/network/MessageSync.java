@@ -34,10 +34,10 @@ public class MessageSync implements IMessage {
 
 		@Override
 		public IMessage onMessage(final MessageSync message, MessageContext ctx) {
-			StellarAPI.proxy.registerTask(new Runnable() {
+			StellarAPI.PROXY.registerTask(new Runnable() {
 				@Override
 				public void run() {
-					PerDimensionResourceData data = PerDimensionResourceData.getData(StellarAPI.proxy.getClientWorld());
+					PerDimensionResourceData data = PerDimensionResourceData.getData(StellarAPI.PROXY.getClientWorld());
 					data.readFromNBT(message.compoundInfo);
 				}
 			});

@@ -34,23 +34,23 @@ import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.StellarAPIReferenceHandler;
 
-@Mod(modid = StellarAPI.modid, version = StellarAPI.version,
-acceptedMinecraftVersions="[1.11.0, 1.12.0)",
+@Mod(modid = StellarAPI.MODID, version = StellarAPI.VERSION,
+acceptedMinecraftVersions="[1.12.0, 1.13.0)",
 guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
 
-	public static final String modid = "stellarapi";
-	public static final String version = "@VERSION@";
-	public static final String apiid = "stellarapi|api";
+	public static final String MODID = "stellarapi";
+	public static final String VERSION = "@VERSION@";
+	public static final String APIID = "stellarapi|api";
 
 	// The instance of Stellarium
-	@Instance(StellarAPI.modid)
-	public static StellarAPI instance;
+	@Instance(StellarAPI.MODID)
+	public static StellarAPI INSTANCE;
 
 	@SidedProxy(clientSide = "stellarapi.ClientProxy", serverSide = "stellarapi.CommonProxy")
-	public static IProxy proxy;
+	public static IProxy PROXY;
 
-	public static Logger logger;
+	public static Logger LOGGER;
 
 	public static Configuration getConfiguration(File configDir, String subName) {
 		return new Configuration(new File(new File(configDir, "stellarapi"), subName));
@@ -66,8 +66,6 @@ public final class StellarAPI {
 	private Configuration config;
 	private ConfigManager cfgManager;
 
-	public Item telescope, filteredTelescope;
-
 	public StellarAPINetworkManager getNetworkManager() {
 		return this.networkManager;
 	}
@@ -79,7 +77,7 @@ public final class StellarAPI {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		logger = event.getModLog();
+		LOGGER = event.getModLog();
 
 		StellarAPIReferenceHandler reference = new StellarAPIReferenceHandler();
 		reference.initialize();
@@ -89,6 +87,7 @@ public final class StellarAPI {
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
 		MinecraftForge.EVENT_BUS.register(this.fmlEventHook);
 		MinecraftForge.EVENT_BUS.register(this.networkManager);
+		MinecraftForge.EVENT_BUS.register(StellarRegistries.INSTANCE);
 
 		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
 		this.cfgManager = new ConfigManager(this.config);
@@ -105,18 +104,7 @@ public final class StellarAPI {
 
 		StellarAPIReference.getEventBus().register(new StellarAPIOwnEventHook());
 
-		this.telescope = new ItemTelescopeExample().setUnlocalizedName("stellarapi.deftelescope")
-				.setCreativeTab(CreativeTabs.TOOLS).setMaxStackSize(1);
-		telescope.setRegistryName("defaulttelescope");
-		GameRegistry.register(telescope);
-
-		this.filteredTelescope = new ItemFilteredTelescopeExample()
-				.setUnlocalizedName("stellarapi.deffilteredtelescope").setCreativeTab(CreativeTabs.TOOLS)
-				.setMaxStackSize(1);
-		filteredTelescope.setRegistryName("defaultfilteredtelescope");
-		GameRegistry.register(filteredTelescope);
-
-		proxy.preInit(event);
+		PROXY.preInit(event);
 
 		CompatManager.getInstance().onPreInit();
 	}
@@ -125,14 +113,14 @@ public final class StellarAPI {
 	public void load(FMLInitializationEvent event) throws IOException {
 		cfgManager.syncFromFile();
 
-		proxy.load(event);
+		PROXY.load(event);
 
 		CompatManager.getInstance().onInit();
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		proxy.postInit(event);
+		PROXY.postInit(event);
 
 		CompatManager.getInstance().onPostInit();
 	}

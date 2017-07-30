@@ -49,7 +49,6 @@ public class CompatManager {
 	}
 
 	private class CompatModuleDelegate {
-		@SuppressWarnings("unused")
 		public String modid;
 		public ICompatModule module;
 

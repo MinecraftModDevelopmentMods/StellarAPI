@@ -13,7 +13,7 @@ public class OverlaySetStellarAPI implements IOverlaySetType {
 
 	@Override
 	public boolean acceptOverlayByDefault(IRawOverlayElement overlay) {
-		return overlay.getModId().equals(StellarAPI.modid);
+		return overlay.getModId().equals(StellarAPI.MODID);
 	}
 
 	@Override

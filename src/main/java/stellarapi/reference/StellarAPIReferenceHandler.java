@@ -110,7 +110,7 @@ public class StellarAPIReferenceHandler implements IReference {
 
 	@Override
 	public IPerClientReference getPerClientReference() {
-		return StellarAPI.proxy;
+		return StellarAPI.PROXY;
 	}
 
 	@SubscribeEvent
@@ -118,7 +118,7 @@ public class StellarAPIReferenceHandler implements IReference {
 		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getObject());
 		StellarAPIReference.getEventBus().post(check);
 		if (check.isOpticalEntity())
-			event.addCapability(new ResourceLocation(StellarAPI.modid, "viewer"),
+			event.addCapability(new ResourceLocation(StellarAPI.MODID, "viewer"),
 					new PerEntityManager(event.getObject()));
 	}
 

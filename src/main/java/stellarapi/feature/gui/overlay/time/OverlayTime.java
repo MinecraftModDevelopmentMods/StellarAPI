@@ -122,12 +122,12 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		int yOffset = 0;
 
-		this.drawString(mc.fontRendererObj, "display", WIDTH / 2, 10 * (yOffset++) + 5, 255, 0xffffff);
-		this.drawString(mc.fontRendererObj, this.invalidDay ? "invalid" : this.isDay ? "day" : "night", WIDTH / 2,
+		this.drawString(mc.fontRenderer, "display", WIDTH / 2, 10 * (yOffset++) + 5, 255, 0xffffff);
+		this.drawString(mc.fontRenderer, this.invalidDay ? "invalid" : this.isDay ? "day" : "night", WIDTH / 2,
 				10 * (yOffset++) + 5, 255, this.invalidDay ? 0x770000 : this.isDay ? 0xffff77 : 0x5555aa);
 		for (EnumDaytimeDescriptor descriptor : this.descriptors)
 			if (mc.world != null)
-				this.drawString(mc.fontRendererObj, descriptor.name(), WIDTH / 2, 10 * (yOffset++) + 5, 255,
+				this.drawString(mc.fontRenderer, descriptor.name(), WIDTH / 2, 10 * (yOffset++) + 5, 255,
 						this.icolor);
 	}
 

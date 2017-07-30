@@ -119,9 +119,9 @@ public class OverlayConfigurator implements IOverlayElement<PerOverlaySettings> 
 		btnGamePaused.displayString = I18n
 				.format(this.gamePaused ? "gui.configurator.paused" : "gui.configurator.playing");
 
-		button.drawButton(this.mc, mouseX, mouseY);
-		btnOverlaySet.drawButton(this.mc, mouseX, mouseY);
-		btnGamePaused.drawButton(this.mc, mouseX, mouseY);
+		button.drawButton(this.mc, mouseX, mouseY, partialTicks);
+		btnOverlaySet.drawButton(this.mc, mouseX, mouseY, partialTicks);
+		btnGamePaused.drawButton(this.mc, mouseX, mouseY, partialTicks);
 	}
 
 	@Override

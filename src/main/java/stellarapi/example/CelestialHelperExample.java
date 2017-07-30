@@ -28,7 +28,6 @@ public class CelestialHelperExample {
 	private final ICelestialObject sun;
 	private final ICelestialObject moon;
 
-	@SuppressWarnings("unused")
 	private final ICelestialCoordinate coordinate;
 
 	private final ISkyEffect sky;

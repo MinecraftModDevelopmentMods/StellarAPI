@@ -8,9 +8,10 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import stellarapi.StellarAPI;
 
 public class GuiRenderer implements IRenderer {
@@ -18,7 +19,7 @@ public class GuiRenderer implements IRenderer {
 	private IRenderModel currentModel = null;
 
 	private Tessellator tessellator;
-	private VertexBuffer worldRenderer;
+	private BufferBuilder worldRenderer;
 	private TextureManager textureManager;
 
 	private float partialTicks;
@@ -36,7 +37,7 @@ public class GuiRenderer implements IRenderer {
 		this.textureManager = minecraft.getTextureManager();
 	}
 
-	public GuiRenderer(Tessellator tessellator, TextureManager textureManager, VertexBuffer worldRenderer) {
+	public GuiRenderer(Tessellator tessellator, TextureManager textureManager, BufferBuilder worldRenderer) {
 		this.tessellator = tessellator;
 		this.worldRenderer = worldRenderer;
 		this.textureManager = textureManager;
@@ -100,7 +101,7 @@ public class GuiRenderer implements IRenderer {
 		if (currentModel == null)
 			throw new IllegalStateException("The model doesn't have got bound!");
 		if (info == null) {
-			StellarAPI.logger.warn(
+			StellarAPI.LOGGER.warn(
 					"Found invalid null argument as information on gui rendering." + "Replacing it with empty String.");
 			info = "";
 		}

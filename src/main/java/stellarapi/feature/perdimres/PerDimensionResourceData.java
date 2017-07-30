@@ -8,7 +8,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import stellarapi.StellarAPI;
 
 /**
@@ -72,7 +72,7 @@ public class PerDimensionResourceData extends WorldSavedData {
 
 	@Override
 	public void markDirty() {
-		StellarAPI.instance.getNetworkManager().onSyncToAll(this.world);
+		StellarAPI.INSTANCE.getNetworkManager().onSyncToAll(this.world);
 		super.markDirty();
 	}
 

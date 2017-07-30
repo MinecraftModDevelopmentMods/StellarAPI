@@ -41,10 +41,13 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		OverlayRegistry.registerOverlaySet("stellarapi", new OverlaySetStellarAPI());
 		OverlayRegistry.registerOverlay("position", new OverlayConfiguratorType(), guiConfig);
 		OverlayRegistry.registerOverlay("stellarapi.time", new OverlayTimeType(), guiConfig);
+	}
 
-		ModelLoader.setCustomModelResourceLocation(StellarAPI.instance.telescope, 0,
+	@Override
+	public void registerModels() {
+		ModelLoader.setCustomModelResourceLocation(StellarRegistries.INSTANCE.telescope, 0,
 				new ModelResourceLocation("stellarapi:deftelescope", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(StellarAPI.instance.filteredTelescope, 0,
+		ModelLoader.setCustomModelResourceLocation(StellarRegistries.INSTANCE.filteredTelescope, 0,
 				new ModelResourceLocation("stellarapi:deffilteredtelescope", "inventory"));
 	}
 

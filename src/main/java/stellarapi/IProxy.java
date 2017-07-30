@@ -14,10 +14,12 @@ public interface IProxy extends IPerClientReference {
 
 	public void preInit(FMLPreInitializationEvent event);
 
+	public void registerModels();
+
 	public void load(FMLInitializationEvent event) throws IOException;
 
 	public void postInit(FMLPostInitializationEvent event);
 
-	void registerTask(Runnable runnable);
+	public void registerTask(Runnable runnable);
 
 }

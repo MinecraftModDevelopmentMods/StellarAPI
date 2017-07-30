@@ -25,8 +25,7 @@ public class StellarAPITickHandler {
 	
 	private void wakeAllPlayers(WorldServer world) {
 		if(this.wakeAllPlayers == null) {
-			this.wakeAllPlayers = ReflectionHelper.findMethod(WorldServer.class,
-					world, ObfuscationReflectionHelper.remapFieldNames(WorldServer.class.getName(), "wakeAllPlayers", "func_73053_d"));
+			this.wakeAllPlayers = ReflectionHelper.findMethod(WorldServer.class, "wakeAllPlayers", "func_73053_d");
 		}
 
 		try {

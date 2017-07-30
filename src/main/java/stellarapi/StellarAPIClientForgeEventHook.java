@@ -124,7 +124,7 @@ public class StellarAPIClientForgeEventHook {
 			if (mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
 				if(mc.world != null) {
 					ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
-							StellarAPI.proxy.getLoadingProgress());
+							StellarAPI.PROXY.getLoadingProgress());
 					if (StellarAPIReference.getEventBus().post(loaded))
 						event.setCanceled(true);
 				}

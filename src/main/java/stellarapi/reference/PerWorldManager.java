@@ -11,7 +11,7 @@ import com.google.common.collect.Ordering;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.ISkyEffect;

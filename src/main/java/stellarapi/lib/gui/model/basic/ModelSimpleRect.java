@@ -2,9 +2,9 @@ package stellarapi.lib.gui.model.basic;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import stellarapi.lib.gui.IRectangleBound;
@@ -20,7 +20,7 @@ public class ModelSimpleRect implements IRenderModel {
 
 	@Override
 	public void renderModel(String info, IRectangleBound totalBound, IRectangleBound clipBound, Tessellator tessellator,
-			VertexBuffer worldRenderer, TextureManager textureManager, float[] color) {
+			BufferBuilder worldRenderer, TextureManager textureManager, float[] color) {
 		GlStateManager.disableTexture2D();
 
 		float posX = clipBound.getLeftX();

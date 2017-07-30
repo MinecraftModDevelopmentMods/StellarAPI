@@ -31,7 +31,7 @@ public class StellarAPIClientFMLEventHook {
 			Minecraft mc = Minecraft.getMinecraft();
 			if (checking && mc.world != null) {
 				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
-						StellarAPI.proxy.getLoadingProgress(), this.attempt);
+						StellarAPI.PROXY.getLoadingProgress(), this.attempt);
 				if (!StellarAPIReference.getEventBus().post(loaded)) {
 					Minecraft.getMinecraft().displayGuiScreen(null);
 					checking = false;

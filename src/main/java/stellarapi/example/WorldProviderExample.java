@@ -11,7 +11,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.border.WorldBorder;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,6 +38,7 @@ public class WorldProviderExample extends WorldProvider {
 		this.celestialHelper = celestialHelper;
 	}
 
+	// Modification Starts Here
 	@Override
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		return celestialHelper.calculateCelestialAngle(worldTime, partialTicks);
@@ -257,6 +258,7 @@ public class WorldProviderExample extends WorldProvider {
 
 		return f2 * f2 * 0.5F;
 	}
+	// Modification Ends Here
 
 	/**
 	 * Returns a new chunk provider which generates chunks for this world
@@ -348,16 +350,16 @@ public class WorldProviderExample extends WorldProvider {
 	public boolean doesWaterVaporize() {
 		return parProvider.doesWaterVaporize();
 	}
-
-	@Override
-	public boolean hasNoSky() {
-		return parProvider.hasNoSky();
-	}
 	
 	@Override
 	public boolean hasSkyLight() {
 		return parProvider.hasSkyLight();
 	}
+
+	@Override
+    public boolean isNether() {
+    	return parProvider.isNether();
+    }
 
 	@Override
 	public float[] getLightBrightnessTable() {
@@ -387,6 +389,7 @@ public class WorldProviderExample extends WorldProvider {
 		parProvider.setDimension(dim);
 	}
 
+	@Override
 	public int getDimension() {
 		return parProvider.getDimension();
 	}
@@ -400,27 +403,6 @@ public class WorldProviderExample extends WorldProvider {
 	@Override
 	public String getSaveFolder() {
 		return parProvider.getSaveFolder();
-	}
-
-	/**
-	 * A message to display to the user when they transfer to this dimension.
-	 *
-	 * @return The message to be displayed
-	 */
-	@Override
-	public String getWelcomeMessage() {
-		return parProvider.getWelcomeMessage();
-	}
-
-	/**
-	 * A Message to display to the user when they transfer out of this
-	 * dismension.
-	 *
-	 * @return The message to be displayed
-	 */
-	@Override
-	public String getDepartMessage() {
-		return parProvider.getDepartMessage();
 	}
 
 	/**
