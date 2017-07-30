@@ -86,12 +86,11 @@ public class CelestialPeriod {
 	 * @param timeFrom
 	 *            the certain time before the time with the offset
 	 * @param offset
-	 *            the offset for this periodd in range of [0, 1)
+	 *            the offset for this period in range of [0, 1)
 	 * @return time in tick for the offset
 	 */
 	public long getTimeForOffset(long timeFrom, double offset) {
-		return timeFrom + (long) Math.floor(this.periodLength
-				+ ((offset - this.zeroTimeOffset) * this.periodLength - timeFrom) % this.periodLength);
+		return timeFrom + (long) Math.floor((((offset - this.zeroTimeOffset) * this.periodLength - timeFrom) % this.periodLength + this.periodLength) % this.periodLength);
 	}
 
 	@Override
