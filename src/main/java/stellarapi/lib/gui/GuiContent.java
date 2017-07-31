@@ -5,11 +5,10 @@ package stellarapi.lib.gui;
  */
 public class GuiContent {
 	private IRenderer renderer;
-	private GuiElement element;
-	private IGuiPosition position;
+	private GuiElement<?> element;
 	private GuiPositionHierarchy positions;
 
-	public GuiContent(IRenderer renderer, GuiElement element, IGuiPosition position) {
+	public GuiContent(IRenderer renderer, GuiElement<?> element, IGuiPosition position) {
 		this.renderer = renderer;
 		this.element = element;
 		this.positions = new GuiPositionHierarchy(position);

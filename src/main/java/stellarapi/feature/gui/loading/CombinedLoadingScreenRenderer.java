@@ -185,8 +185,6 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 		private int progress;
 		private long updateTime = Minecraft.getSystemTime();
 
-		private boolean field_73724_e;
-
 		public LoadingDelegate(String id) {
 			super(mc);
 			this.id = id;
@@ -194,13 +192,11 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 
 		@Override
 		public void resetProgressAndMessage(String p_73721_1_) {
-			this.field_73724_e = false;
 			this.displayString(p_73721_1_);
 		}
 
 		@Override
 		public void displaySavingString(String p_73720_1_) {
-			this.field_73724_e = true;
 			this.displayString(p_73720_1_);
 		}
 
@@ -256,7 +252,7 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 		}
 
 		public void renderProgress(ScaledResolution scaledresolution) {
-			int j = scaledresolution.getScaleFactor();
+			scaledresolution.getScaleFactor();
 			int k = scaledresolution.getScaledWidth();
 			int l = scaledresolution.getScaledHeight();
 

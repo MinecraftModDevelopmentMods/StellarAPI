@@ -17,7 +17,6 @@ public class Spmath {
 	private static final int ATAN2_DIM = (int) Math.sqrt(ATAN2_COUNT);
 
 	private static final float INV_ATAN2_DIM_MINUS_1 = 1.0f / (ATAN2_DIM - 1);
-	private static final float DEG = 180.0f / (float) Math.PI;
 
 	private static final float[] atan2 = new float[ATAN2_COUNT];
 

@@ -11,7 +11,7 @@ import stellarapi.lib.gui.IRenderer;
  */
 public class GuiDynamic implements IGuiElementType<IDynamicController> {
 
-	private GuiElement subElement;
+	private GuiElement<?> subElement;
 	private GuiPositionHierarchy positions;
 	private IDynamicController controller;
 

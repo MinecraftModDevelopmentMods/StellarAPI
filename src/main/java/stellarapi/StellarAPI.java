@@ -76,6 +76,7 @@ public final class StellarAPI {
 		return this.cfgManager;
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();

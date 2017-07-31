@@ -16,7 +16,6 @@ import stellarapi.api.gui.pos.EnumVerticalPos;
 
 public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurator> {
 
-	private Minecraft mc;
 	private IOverlayManager manager;
 	private OverlayConfigurator element;
 
@@ -30,7 +29,6 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 
 	@Override
 	public void initialize(Minecraft mc, IOverlayManager manager, OverlayConfigurator element) {
-		this.mc = mc;
 		this.manager = manager;
 		this.element = element;
 

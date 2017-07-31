@@ -17,7 +17,7 @@ public class GuiButtonDraggable implements IGuiElementType<IButtonDraggableContr
 	private IButtonDraggableController controller;
 	private IGuiPosition position;
 	private boolean isClicking;
-	private boolean mouseOver, mouseOverDrag;
+	private boolean mouseOver;
 	private float clickRatioX, clickRatioY;
 	private float dragRatioX, dragRatioY;
 

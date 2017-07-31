@@ -82,7 +82,7 @@ public class ItemTelescopeExample extends Item {
 		@Override
 		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 			if(capability == StellarAPICapabilities.OPTICAL_PROPERTY) {
-				return (T) this;
+				return StellarAPICapabilities.OPTICAL_PROPERTY.cast(this);
 			} else return null;
 		}
 	}

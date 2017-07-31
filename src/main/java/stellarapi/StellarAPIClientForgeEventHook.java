@@ -122,10 +122,13 @@ public class StellarAPIClientForgeEventHook {
 		if (event.getGui() == null) {
 			Minecraft mc = Minecraft.getMinecraft();
 			if (mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
-				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
-						StellarAPI.proxy.getLoadingProgress());
-				if (StellarAPIReference.getEventBus().post(loaded))
-					event.setCanceled(true);
+				if(mc.world != null) {
+					ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
+							StellarAPI.proxy.getLoadingProgress());
+					if (StellarAPIReference.getEventBus().post(loaded))
+						event.setCanceled(true);
+				}
+
 				StellarAPIClientFMLEventHook.startChecking();
 			}
 		}

@@ -12,9 +12,9 @@ public class GuiSpacing implements IGuiElementType<ISpacingController> {
 
 	private IGuiPosition position;
 	private ISpacingController controller;
-	private GuiElement subElement;
+	private GuiElement<?> subElement;
 
-	public GuiSpacing(GuiElement subElement) {
+	public GuiSpacing(GuiElement<?> subElement) {
 		this.subElement = subElement;
 	}
 

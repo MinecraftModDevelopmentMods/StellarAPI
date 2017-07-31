@@ -316,7 +316,6 @@ public class GuiTextInternal implements IGuiElementType<ITextInternalController>
 		int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
 		int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
 		int k = controller.maxStringLength() - this.text.length() - (i - this.selectionEnd);
-		boolean flag = false;
 
 		if (this.text.length() > 0) {
 			s1 = s1 + this.text.substring(0, i);

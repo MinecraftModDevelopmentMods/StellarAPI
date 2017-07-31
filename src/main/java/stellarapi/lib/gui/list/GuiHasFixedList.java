@@ -15,6 +15,7 @@ import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderer;
 import stellarapi.lib.gui.RectangleBound;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class GuiHasFixedList implements IGuiElementType<IHasFixedListController> {
 
 	private GuiElement modifiable;
@@ -67,7 +68,6 @@ public class GuiHasFixedList implements IGuiElementType<IHasFixedListController>
 		this.isHorizontal = controller.isHorizontal();
 		this.isModifiableFirst = controller.isModifiableFirst();
 
-		int size = list.size();
 		int index = 0;
 		float currentPos = 0.0f;
 

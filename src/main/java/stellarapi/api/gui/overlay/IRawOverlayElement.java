@@ -5,7 +5,7 @@ import stellarapi.api.gui.pos.EnumVerticalPos;
 
 public interface IRawOverlayElement {
 
-	public IOverlayType getType();
+	public IOverlayType<?, ?> getType();
 
 	public EnumHorizontalPos getCurrentHorizontalPos();
 

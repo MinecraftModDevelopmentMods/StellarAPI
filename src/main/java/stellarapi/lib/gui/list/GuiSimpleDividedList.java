@@ -12,6 +12,7 @@ import stellarapi.lib.gui.IRectangleBound;
 import stellarapi.lib.gui.IRenderer;
 import stellarapi.lib.gui.RectangleBound;
 
+@SuppressWarnings("rawtypes")
 public class GuiSimpleDividedList implements IGuiElementType<ISimpleListController> {
 
 	private List<GuiElement> list;

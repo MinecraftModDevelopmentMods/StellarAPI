@@ -14,7 +14,7 @@ import stellarapi.lib.gui.RectangleBound;
  */
 public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 
-	private GuiElement subElement;
+	private GuiElement<?> subElement;
 
 	private IGuiPosition position;
 	private ILinearMoveController controller;
@@ -25,7 +25,7 @@ public class GuiLinearMoving implements IGuiElementType<ILinearMoveController> {
 	private float previousPosX, nextPosX;
 	private float previousPosY, nextPosY;
 
-	public GuiLinearMoving(GuiElement subElement) {
+	public GuiLinearMoving(GuiElement<?> subElement) {
 		this.subElement = subElement;
 	}
 

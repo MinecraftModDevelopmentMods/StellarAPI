@@ -36,8 +36,12 @@ public class StellarAPITickHandler {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent event) {
+		if(!StellarAPIReference.isOpticalEntity(event.getEntityLiving()))
+			return;
+
 		EnumHand hand = event.getEntityLiving().getActiveHand();
 		ItemStack itemstack = hand != null ? event.getEntityLiving().getHeldItem(hand) : ItemStack.EMPTY;
 		ItemStack itemInUse = event.getEntityLiving().getActiveItemStack();
@@ -89,7 +93,6 @@ public class StellarAPITickHandler {
 	private void tryWakePlayers(WorldServer world) {
 		if (world.getGameRules().getBoolean("doDaylightCycle")) {
 			WorldInfo info = world.getWorldInfo();
-			long worldTime = info.getWorldTime();
 			info.setWorldTime(StellarAPIReference.getSleepWakeManager().getWakeTime(world,
 					(world.getWorldTime() / 24000L + 1L) * 24000L));
 		}

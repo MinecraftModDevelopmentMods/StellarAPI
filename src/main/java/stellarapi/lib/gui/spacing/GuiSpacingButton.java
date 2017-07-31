@@ -12,10 +12,10 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 
 	private IGuiPosition position, subPosition;
 	private ISpacingButtonController controller;
-	private GuiElement subElement;
-	private boolean isClicking, mouseOver;
+	private GuiElement<?> subElement;
+	private boolean mouseOver;
 
-	public GuiSpacingButton(GuiElement subElement) {
+	public GuiSpacingButton(GuiElement<?> subElement) {
 		this.subElement = subElement;
 	}
 
@@ -40,7 +40,6 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 		if (controller.canClick(eventButton))
 			if (bound.isInBound(mouseX, mouseY)
 					&& (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY))) {
-				this.isClicking = true;
 				controller.onClicked(eventButton);
 			}
 	}
@@ -59,7 +58,6 @@ public class GuiSpacingButton implements IGuiElementType<ISpacingButtonControlle
 		if (controller.canClick(eventButton))
 			if (bound.isInBound(mouseX, mouseY)
 					&& (controller.handleInElement() || !subBound.isInBound(mouseX, mouseY))) {
-				this.isClicking = false;
 				controller.onClickEnded(eventButton);
 			}
 	}

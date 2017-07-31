@@ -21,7 +21,7 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 	private static final float mouseSize = 10.0f;
 
 	private IGuiPosition position;
-	private GuiElement wrapped;
+	private GuiElement<?> wrapped;
 	private ITooltipController controller;
 
 	private float mouseX, mouseY;
@@ -31,7 +31,7 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 	private RectangleBound temporalClip = new RectangleBound(0, 0, 0, 0);
 	private RectangleBound temporalClip2 = new RectangleBound(0, 0, 0, 0);
 
-	public void setWrappedGui(GuiElement wrapped) {
+	public void setWrappedGui(GuiElement<?> wrapped) {
 		this.wrapped = wrapped;
 	}
 
@@ -165,11 +165,11 @@ public class GuiHasTooltip implements IGuiElementType<ITooltipController> {
 		this.info = info;
 	}
 
-	public GuiElement wrapElement(GuiElement element, ITooltipElementController controller) {
+	public GuiElement<ITooltipElementController> wrapElement(GuiElement<?> element, ITooltipElementController controller) {
 		return new GuiElement<ITooltipElementController>(new GuiTooltipElementWrapper(element, this), controller);
 	}
 
-	public GuiElement wrapElement(GuiElement element, final String info) {
+	public GuiElement<ITooltipElementController> wrapElement(GuiElement<?> element, final String info) {
 		return new GuiElement<ITooltipElementController>(new GuiTooltipElementWrapper(element, this),
 				new ITooltipElementController() {
 					@Override

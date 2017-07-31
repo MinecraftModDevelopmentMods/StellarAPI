@@ -12,9 +12,9 @@ public class GuiSimpleSpacing implements IGuiElementType<ISimpleSpacingControlle
 
 	private IGuiPosition position;
 	private ISimpleSpacingController controller;
-	private GuiElement subElement;
+	private GuiElement<?> subElement;
 
-	public GuiSimpleSpacing(GuiElement subElement) {
+	public GuiSimpleSpacing(GuiElement<?> subElement) {
 		this.subElement = subElement;
 	}
 

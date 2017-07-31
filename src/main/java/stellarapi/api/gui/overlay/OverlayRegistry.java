@@ -40,7 +40,7 @@ public enum OverlayRegistry {
 	public static <E extends IOverlayElement<S>, S extends PerOverlaySettings> void registerOverlay(String id,
 			IOverlayType<E, S> type, DCfgManager config) {
 		String modid = Loader.instance().activeModContainer().getModId();
-		INSTANCE.mapOverlay.put(id, INSTANCE.new RegistryDelegate(type, config, modid));
+		INSTANCE.mapOverlay.put(id, INSTANCE.new RegistryDelegate<E,S>(type, config, modid));
 	}
 
 	/**

@@ -60,7 +60,8 @@ public class CelestialPeriod {
 	 * @return the offset for this period on the time
 	 */
 	public double getOffset(long worldTime, float partialTicks) {
-		return (this.zeroTimeOffset + (worldTime + partialTicks) / this.periodLength) % 1.0;
+		double offset = (this.zeroTimeOffset + (worldTime + partialTicks) / this.periodLength) % 1.0;
+		return (offset + 1.0) % 1.0;
 	}
 
 	/**
@@ -75,7 +76,8 @@ public class CelestialPeriod {
 	 * @return the biased offset for this period on the time
 	 */
 	public double getBiasedOffset(long worldTime, float partialTicks, double bias) {
-		return (this.zeroTimeOffset + bias + (worldTime + partialTicks) / this.periodLength) % 1.0;
+		double offset = (this.zeroTimeOffset + bias + (worldTime + partialTicks) / this.periodLength) % 1.0;
+		return (offset + 1.0) % 1.0;
 	}
 
 	/**
@@ -84,12 +86,11 @@ public class CelestialPeriod {
 	 * @param timeFrom
 	 *            the certain time before the time with the offset
 	 * @param offset
-	 *            the offset for this period
+	 *            the offset for this period in range of [0, 1)
 	 * @return time in tick for the offset
 	 */
 	public long getTimeForOffset(long timeFrom, double offset) {
-		return timeFrom + (long) Math.floor(this.periodLength
-				+ ((offset - this.zeroTimeOffset) * this.periodLength - timeFrom) % this.periodLength);
+		return timeFrom + (long) Math.floor((((offset - this.zeroTimeOffset) * this.periodLength - timeFrom) % this.periodLength + this.periodLength) % this.periodLength);
 	}
 
 	@Override

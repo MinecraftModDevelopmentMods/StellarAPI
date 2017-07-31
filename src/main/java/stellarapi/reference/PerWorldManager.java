@@ -1,5 +1,6 @@
 package stellarapi.reference;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -8,7 +9,6 @@ import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.StellarAPICapabilities;
 import stellarapi.api.StellarAPIReference;
-import stellarapi.api.event.ConstructCelestialsEvent;
 import stellarapi.api.event.SetCoordinateEvent;
 import stellarapi.api.event.SetSkyEffectEvent;
 

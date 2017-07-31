@@ -24,6 +24,7 @@ import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
 import stellarapi.api.lib.config.DCfgManager;
 
+@SuppressWarnings("rawtypes")
 public class OverlayManager implements IOverlayManager, IOverlayInjectable {
 	private Map<String, OverlayElementDelegate> elementMap = Maps.newHashMap();
 	private List<OverlaySetDelegate> displaySets = Lists.newArrayList();
