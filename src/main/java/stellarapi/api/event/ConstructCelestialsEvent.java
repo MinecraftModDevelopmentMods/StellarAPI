@@ -47,7 +47,7 @@ public class ConstructCelestialsEvent extends PerWorldEvent {
 	 */
 	public List<ICelestialObject> getEffectors(IEffectorType type) {
 		if (!effectorMap.containsKey(type))
-			effectorMap.put(type, Lists.<ICelestialObject> newArrayList());
+			effectorMap.create(type, Lists.<ICelestialObject> newArrayList());
 		return effectorMap.get(type);
 	}
 

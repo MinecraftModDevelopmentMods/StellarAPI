@@ -1,6 +1,6 @@
 package stellarapi.api.lib.config;
 
-import java.lang.reflect.Type;
+import java.lang.reflect.Field;
 
 /**
  * Abstract interface for dynamic configuration. <p>
@@ -8,14 +8,11 @@ import java.lang.reflect.Type;
  *  to {@link IDCfgCategory Configuration Category}.<p>
  * Can be synced and formatted.
  * */
-public interface IDConfig {
-
-	public boolean hasCategory(String entry);
-	public IDCfgCategory getCategory(String entry);
+public interface IDConfigHandler {
 
 	/**
-	 * Checks if this config supports certain field type or not.
+	 * Check if this config supports the handling.
 	 * */
-	public boolean supportPropType(Type type);
+	public boolean supportHandling(Field field, String entry);
 
 }

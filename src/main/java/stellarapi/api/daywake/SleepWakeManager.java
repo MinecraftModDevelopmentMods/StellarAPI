@@ -1,5 +1,6 @@
 package stellarapi.api.daywake;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -34,7 +35,7 @@ public class SleepWakeManager {
 	@DynamicConfig.DynamicProperty(
 			affected={Config.Name.class, Config.LangKey.class, Config.Comment.class},
 			id = "handlers")
-	@DynamicConfig.Collection(addableField = false)
+	@DynamicConfig.Collection
 	@Config.RequiresWorldRestart
 	private List<WakeHandler> wakeHandlers = Lists.newArrayList();
 
@@ -57,15 +58,24 @@ public class SleepWakeManager {
 		protected boolean enabled;
 	}
 
-	public Config.Name getName(String key, WakeHandler individual) {
+	@DynamicConfig.EvaluatorID("handlers")
+	public Config.Name getName(final String key, final WakeHandler individual) {
+		return new Config.Name() {
+			@Override
+			public Class<? extends Annotation> annotationType() { return Config.Name.class; }
+
+			@Override
+			public String value() { return individual.name; }
+		};
+	}
+
+	@DynamicConfig.EvaluatorID("handlers")
+	public Config.LangKey getLangKey(final String key, final WakeHandler individual) {
 		return null;
 	}
 
-	public Config.LangKey getLangKey(String key, WakeHandler individual) {
-		return null;
-	}
-
-	public Config.Comment getComment(String key, WakeHandler individual) {
+	@DynamicConfig.EvaluatorID("handlers")
+	public Config.Comment getComment(final String key, final WakeHandler individual) {
 		return null;
 	}
 

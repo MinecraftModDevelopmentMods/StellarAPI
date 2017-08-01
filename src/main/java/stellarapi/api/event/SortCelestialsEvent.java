@@ -36,8 +36,8 @@ public class SortCelestialsEvent extends PerWorldEvent {
 		this.orderingEffectors = Maps.newHashMap();
 		this.effectorSources = Maps.newHashMap();
 		for (Map.Entry<IEffectorType, List<ICelestialObject>> entry : mapEffectors.entrySet()) {
-			effectorSources.put(entry.getKey(), ImmutableList.copyOf(entry.getValue()));
-			orderingEffectors.put(entry.getKey(), entry.getKey().getOrderingFor(entry.getValue()));
+			effectorSources.create(entry.getKey(), ImmutableList.copyOf(entry.getValue()));
+			orderingEffectors.create(entry.getKey(), entry.getKey().getOrderingFor(entry.getValue()));
 		}
 	}
 
@@ -50,7 +50,7 @@ public class SortCelestialsEvent extends PerWorldEvent {
 	}
 
 	public void setEffectorOrdering(IEffectorType type, Ordering<ICelestialObject> ordering) {
-		orderingEffectors.put(type, ordering);
+		orderingEffectors.create(type, ordering);
 	}
 
 	public Ordering<ICelestialObject> getEffectorOrdering(IEffectorType type) {

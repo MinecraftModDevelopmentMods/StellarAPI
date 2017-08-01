@@ -20,7 +20,6 @@ public @interface DynamicConfig {
 	/**
 	 * Declares that annotation properties for this field are determined dynamically.<p>
 	 * <br>
-	 * Leaving target as Object.class(default) means it's evaluated for the final descendent.<br>
 	 * Leaving handler as Object.class(default) means the parent class evaluates the value.<p>
 	 * <br>
 	 * Can be applied to any field, while {@link DynamicProperty} can't specify this one.<p>
@@ -29,47 +28,24 @@ public @interface DynamicConfig {
 	@Target(ElementType.FIELD)
 	public @interface DynamicProperty {
 		Class<?>[] affected() default {};
-		Class<?> target() default Object.class;
 		Class<?> handler() default Object.class;
 		String id() default "";
-	}
-
-	/**
-	 * To express Multiple Dynamic Properties.
-	 * Mutually exclusive with {@link DynamicProperty}.
-	 * */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.FIELD)
-	public @interface DynamicProperties {
-		DynamicProperty[] value() default {};
 	}
 
 	/**
 	 * Declares the dynamic default evaluator for the field. <p>
-	 * This is to provide the immutable Default.
+	 * This is to provide the case-dependent Default.
 	 *  (Lack of this annotation means the default is the initial value of the field) <p>
 	 * <br>
-	 * Leaving target as Object.class(default) means it's evaluated for the final descendent. <br>
-	 * Leaving handler as Object.class(default) means the value is . <p>
+	 * Leaving handler as Object.class(default) means the value is set by default. <p>
 	 * <br>
-	 * Can be applied to any field, while {@link DynamicProperty} can't specify this one.
+	 * Can only be applied to the leaf field, and {@link DynamicProperty} can't specify this one.
 	 * */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface Default {
-		Class<?> target() default Object.class;
 		Class<?> handler() default Object.class;
 		String id() default "";
-	}
-
-	/**
-	 * To express Multiple Dynamic Defaults. <p>
-	 * Mutually exclusive with {@link Default}.
-	 * */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.FIELD)
-	public @interface Defaults {
-		Default[] value() default {};
 	}
 
 	/**
@@ -79,7 +55,8 @@ public @interface DynamicConfig {
 	 * Among fields of the same priority,
 	 *  fields will be loaded/saved in order of declaration
 	 *  with exception of changed fields being at first and added fields at last. <p>
-	 *  
+	 * Fields with higher priority will get higher chance to be overwritten. <p>
+	 * 
 	 * Can be applied to any field, while {@link DynamicProperty} can't specify this one.
 	 * */
 	@Retention(RetentionPolicy.RUNTIME)
@@ -89,32 +66,31 @@ public @interface DynamicConfig {
 	}
 
 	/**
-	 * Marks a field as collection, with remove/add handling.
+	 * Marks a field as collection, with remove/add handling.<p>
+	 * <br>
+	 * Note that a collection in collection is not allowed
+	 *  - use a dummy class for that.<p>
+	 * Also, if a node of a collection is a property,
+	 *  all the other nodes should be a property as well.
 	 * */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface Collection {
-		/** If true, An object can be removed from this field according to the configuration. */
-		boolean removableField() default false;
+		/** If true, objects can be added/removed from this field according to the configuration. */
+		boolean isConfigurable() default false;
 
-		/** If true, An object can be added to this field according to the configuration. */
-		boolean addableField() default true;
+		/** The ID of this collection field. Needed for configurable collection*/
+		String id() default "";
 	}
 
 	/**
 	 * Expands a field, i.e. the categories and properties from the field
 	 *  is merged to the parent category. <p>
+	 * No other annotations are allowed for the field. Can't assign this on a collection field.
 	 * */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
-	public @interface Expand {
-		/**
-		 * If true, categories and properties from this field will be as sub-entry. <p>
-		 * As a sub-entry, it can have various config property annotations. <p>
-		 * Otherwise, it will be just merged into the parent category.
-		 * */
-		boolean value() default false;
-	}
+	public @interface Expand { }
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
@@ -131,4 +107,12 @@ public @interface DynamicConfig {
 		String[] value();
 	}
 
+
+
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public @interface EvaluatorID {
+		String value();
+	}
 }

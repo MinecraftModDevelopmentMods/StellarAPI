@@ -33,7 +33,7 @@ public class CelestialSceneImpl implements ICelestialUniverse {
 		ImmutableSet<IEffectorType> effectorTypes = construct.getEffectorTypes();
 		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
 		for (IEffectorType type : effectorTypes)
-			effectors.put(type, construct.getEffectors(type));
+			effectors.create(type, construct.getEffectors(type));
 
 		SortCelestialsEvent sort = new SortCelestialsEvent(world, collectionOrdering, construct.getCollections(),
 				effectors);
@@ -44,7 +44,7 @@ public class CelestialSceneImpl implements ICelestialUniverse {
 
 		HashMap<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
 		for (IEffectorType type : effectorTypes)
-			effectorMap.put(type, new CelestialEffectors(sort.getSortedEffectors(type)));
+			effectorMap.create(type, new CelestialEffectors(sort.getSortedEffectors(type)));
 
 		return new CelestialSceneImpl(collectionManager, effectorMap);
 	}

@@ -6,7 +6,7 @@
   "mcversion": "${mcversion}",
   "url": "",
   "authorList": [ "Abastro" ],
-  "credits": "CC BY-SA",
+  "credits": "Abastro",
   "requiredMods": [ "Forge" ],
   "depenencies": [  ]
 }]

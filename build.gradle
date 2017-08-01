@@ -19,7 +19,7 @@ archivesBaseName = "Stellar API"
 
 minecraft {
     version = "1.11.2-13.20.1.2386"
-    runDir = "run"
+    runDir = "eclipse/assets"
 
     mappings = "snapshot_20170518"
     replace "@VERSION@", project.version
