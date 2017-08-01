@@ -6,6 +6,8 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
@@ -69,16 +71,8 @@ public final class DConfigNode {
 			// TODO move to the specific default handler.
 			DynamicConfig.Default defInfo = field.getAnnotation(DynamicConfig.Default.class);
 
-			if(!DCfgManager.hasExpansion(field)) {
-				SubNode node = new SubNode();
-
-				if(fieldInfo.isLeaf) {
-					node.value = fieldValue;
-					node.defaultValue = defInfo == null? fieldValue : DCfgManager.evaluateDefault(field, "", defInfo);
-				} else if(fieldValue != null)
-					node.instance = new DConfigNode(field.getType(), fieldValue);
-
-				fieldInfo.subNodes = ImmutableMap.of("", node);
+			if(!DCfgManager.isNonSingleton(field)) {
+				fieldInfo.subNodes = ImmutableMap.of("", fieldInfo.createNode("", fieldValue));
 			} else {
 				ITypeExpansion expansion = DCfgManager.getExpansion(field);
 				fieldInfo.subNodes = Maps.newHashMap();
@@ -86,7 +80,7 @@ public final class DConfigNode {
 				for(String key : expansion.getKeys(fieldValue)) {
 					Object subValue = expansion.getValue(instance, key);
 
-					fieldInfo.create(key, subValue);
+					fieldInfo.createAndPut(key, subValue);
 				}
 			}
 		}
@@ -95,16 +89,23 @@ public final class DConfigNode {
 		this.infoMap = mapBuilder.build();
 	}
 
+	public boolean isChanged() {
+		for(FieldInformation fieldInfo : infoMap.values()) {
+			if(fieldInfo.isChanged())
+				return true;
+		}
+
+		return false;
+	}
+
 	static final class FieldInformation {
 		private final Annotation[] annotations;
 		/*
 		 * Values which can be only assigned to the leaf node.
 		 * */
 		private Map<String, SubNode> subNodes = null;
-
 		// Cache for leaf
 		private boolean isLeaf;
-
 		// Changed flag
 		private boolean isChanged;
 
@@ -121,7 +122,13 @@ public final class DConfigNode {
 		}
 
 		public boolean isChanged() {
-			return this.isChanged;
+			if(this.isChanged)
+				return true;
+			if(!this.isLeaf)
+				for(SubNode node : subNodes.values())
+					if(node.instance.isChanged())
+						return true;
+			return false;
 		}
 
 		public boolean hasKey(String key) {
@@ -134,7 +141,7 @@ public final class DConfigNode {
 			return subNodes.keySet();
 		}
 
-		public void create(String key, Object subValue) {
+		private SubNode createNode(String key, Object subValue) {
 			SubNode node = new SubNode();
 
 			//If it's the leaf
@@ -145,6 +152,12 @@ public final class DConfigNode {
 				//If there are subEntries
 				node.instance = new DConfigNode(subValue.getClass(), subValue);
 			}
+
+			return node;
+		}
+
+		public void createAndPut(String key, Object subValue) {
+			subNodes.put(key, createNode(key, subValue));
 		}
 
 		public void remove(String key) {
@@ -152,16 +165,30 @@ public final class DConfigNode {
 			subNodes.remove(key);
 		}
 
+		@Nonnull
 		public DConfigNode getInstance(String key) {
 			assert(this.subNodes != null);
 			assert(!this.isLeaf);
 			return subNodes.get(key).instance;
 		}
+
+		@Nonnull
+		public Object getValue(String key) {
+			assert(this.subNodes != null);
+			assert(this.isLeaf);
+			return subNodes.get(key).value;
+		}
+
+		public void setValue(String key, Object subValue) {
+			assert(this.subNodes != null);
+			assert(this.isLeaf);
+			subNodes.get(key).value = subValue;
+		}
 	}
 
-	static final class SubNode {
+	private static final class SubNode {
 		Object value = null;
-		Object defaultValue = null;
+		//Object defaultValue = null;
 		// For non-leaves.
 		DConfigNode instance = null;
 	}

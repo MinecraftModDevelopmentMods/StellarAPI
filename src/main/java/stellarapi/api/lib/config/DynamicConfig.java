@@ -79,7 +79,7 @@ public @interface DynamicConfig {
 		/** If true, objects can be added/removed from this field according to the configuration. */
 		boolean isConfigurable() default false;
 
-		/** The ID of this collection field. Needed for configurable collection*/
+		/** The ID of this collection field. Needed for configurable collection */
 		String id() default "";
 	}
 
@@ -91,6 +91,18 @@ public @interface DynamicConfig {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface Expand { }
+
+
+	/**
+	 * Marks a field as a dependent variable on the configuration. <p>
+	 * Don't reference properties from the child configs, it can cause problems.
+	 * */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface Dependent {
+		/** The ID of the dependence. */
+		String value() default "";
+	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
@@ -109,7 +121,9 @@ public @interface DynamicConfig {
 
 
 
-
+	/**
+	 * Specifies the evaluator id for methods.
+	 * */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
 	public @interface EvaluatorID {

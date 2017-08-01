@@ -3,6 +3,7 @@ package stellarapi.api.lib.config;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -34,60 +35,82 @@ public final class DCfgManager {
 				continue;
 
 			DConfigNode.FieldInformation fieldInfo = node.infoMap.get(field);
+			ITypeExpansion expansion = DCfgManager.getExpansion(field);
 
-			if(DCfgManager.hasExpansion(field)) {
+			if(!fieldInfo.isChanged())
+				continue;
+
+			if(DCfgManager.isNonSingleton(field)) {
 				DynamicConfig.Collection colInfo = field.getAnnotation(DynamicConfig.Collection.class);
-				ITypeExpansion expansion = DCfgManager.getExpansion(field);				
 
 				if(colInfo != null && colInfo.isConfigurable() && fieldInfo.isChanged()) {
 					for(String key : fieldInfo.keys())
 						if(!expansion.hasKey(fieldValue, key)) {
-							//expansion.setValue(instance, key, value);
+							Object value = null;
+							// TODO implement here; how to create this one?
+							expansion.setValue(instance, key, value);
 						}
 
-					for(String key : expansion.getKeys(fieldValue))
-						if(!fieldInfo.hasKey(key))
-							expansion.remove(instance, key); // FIXME ConcurrentModificationException
+					Iterator<String> iterator = expansion.getKeys(fieldValue).iterator();
+					while(iterator.hasNext())
+						if(!fieldInfo.hasKey(iterator.next()))
+							iterator.remove();
 				}
 			}
 
-			if(!fieldInfo.isLeaf()) {
-				for(String key : fieldInfo.keys()) {
-					
-				}
-			} else {
-				
+			for(String key : fieldInfo.keys()) {
+				if(!expansion.hasKey(instance, key))
+					continue;
+
+				if(fieldInfo.isLeaf())
+					try { // Simulates the singleton case.
+						field.set(instance,
+								expansion.setValue(fieldValue, key, fieldInfo.getValue(key)));
+					} catch (Exception exc) {
+						Throwables.propagate(exc); // Can't reach here
+					}
 			}
 		}
 
 
 		//Second pass, sets up the configuration from the structure of instance.
 		for(Field field : node.fieldsSet) {
-			DConfigNode.FieldInformation fieldInfo = node.infoMap.get(field);
 			Object fieldValue = null;
 			try {
 				fieldValue = field.get(instance);
 			} catch (Exception exc) {
 				Throwables.propagate(exc); // Can't reach here
 			}
+
 			if(fieldValue == null)
 				continue;
 
-			if(DCfgManager.hasExpansion(field)) {
+			DConfigNode.FieldInformation fieldInfo = node.infoMap.get(field);
+			ITypeExpansion expansion = DCfgManager.getExpansion(field);	
+
+			if(DCfgManager.isNonSingleton(field)) {
 				DynamicConfig.Collection colInfo = field.getAnnotation(DynamicConfig.Collection.class);
-				ITypeExpansion expansion = DCfgManager.getExpansion(field);	
 
 				if(colInfo == null || !colInfo.isConfigurable() || !fieldInfo.isChanged()) {
 					for(String key : expansion.getKeys(fieldValue)) {
 						Object subValue = expansion.getValue(fieldValue, key);
 						if(!fieldInfo.hasKey(key))
-							fieldInfo.create(key, subValue);
+							fieldInfo.createAndPut(key, subValue);
 					}
 
-					for(String key : fieldInfo.keys())
-						if(!expansion.hasKey(fieldValue, key))
-							fieldInfo.remove(key); // FIXME ConcurrentModificationException
+					Iterator<String> iterator = fieldInfo.keys().iterator();
+					while(!iterator.hasNext())
+						if(!expansion.hasKey(fieldValue, iterator.next()))
+							iterator.remove();
 				}
+			}
+
+			for(String key : expansion.getKeys(fieldValue)) {
+				if(!fieldInfo.isLeaf()) {
+					Object subInstance = expansion.getValue(fieldValue, key);
+					DConfigNode subNode = fieldInfo.getInstance(key);
+					sync(handler, subInstance.getClass(), subInstance, subNode);
+				} else fieldInfo.setValue(key, expansion.getValue(fieldValue, key));
 			}
 		}
 	}
@@ -98,16 +121,16 @@ public final class DCfgManager {
 		return field.getAnnotation(DynamicConfig.Priority.class).value();
 	}
 
-	static boolean hasExpansion(Field field) {
+	static boolean isNonSingleton(Field field) {
 		return false;
 	}
 
+	/**
+	 * Gives expansion even for singleton fields;
+	 * ID is already ""(empty string) in the case.
+	 * */
 	static ITypeExpansion getExpansion(Field field) {
 		return null;
-	}
-
-	static boolean isPrimitive(Type type) {
-		return (type instanceof Class) && ((Class)type).isPrimitive();
 	}
 
 	static boolean isLeaf(Field field) {
