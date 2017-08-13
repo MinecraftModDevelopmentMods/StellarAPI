@@ -50,7 +50,7 @@ public class CommandPerDimensionResource extends CommandBase {
 
 		} else if (args[0].equals("available")) {
 			String list = "";
-			for (String id : PerDimensionResourceRegistry.getInstance().getResourceIds())
+			for (String id : PerDimensionResourceRegistry.getValue().getResourceIds())
 				list = String.format("%s, %s", list, id);
 
 			if (list.contains(","))
@@ -64,7 +64,7 @@ public class CommandPerDimensionResource extends CommandBase {
 			String resourceId = args[1];
 			String resourceLocation = args[2];
 
-			if (PerDimensionResourceRegistry.getInstance().getResourceIds().contains(resourceId)) {
+			if (PerDimensionResourceRegistry.getValue().getResourceIds().contains(resourceId)) {
 				data.addToResourceMap(resourceId, new ResourceLocation(resourceLocation));
 				addChatMessage(sender,
 						new TextComponentTranslation("command.perdimres.set.success", resourceId, resourceLocation),

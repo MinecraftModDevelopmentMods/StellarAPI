@@ -45,7 +45,9 @@ public class PerDimensionSettings {
 
 
 	@Config.Name("Sky_Renderer_Type")
-	@DynamicConfig.DynamicProperty({DynamicConfig.StringCycle.class})
+	@DynamicConfig.DynamicFieldProperty(
+			affected = {DynamicConfig.StringCycle.class},
+			id = "skyRenderType")
 	@Config.LangKey("config.property.dimension.skyrenderertype")
 	@Config.Comment("Sky renderer type for this dimension.\n"
         		+ "There are 'Overworld Sky', 'End Sky' type by default.")
@@ -80,7 +82,7 @@ public class PerDimensionSettings {
 	@Config.Name("Allow_Atmospheric_Refraction")
 	private boolean allowRefraction;
 
-	// FIXME Fix Sunlight Multiplier Property
+	// TODO Let aligned solar panels know this multiplier... how?
 	@Config.Name("SunLight_Multiplier")
 	private double sunlightMultiplier = 1.0;
 

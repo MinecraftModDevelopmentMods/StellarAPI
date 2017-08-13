@@ -24,7 +24,7 @@ public class ServerSettings extends SimpleHierarchicalNBTConfig {
 	public ConfigPropertyDouble propAxialTilt, propPrecession;
 	
 	public ServerSettings() {
-		StellarLayerRegistry.getInstance().composeSettings(this);
+		StellarLayerRegistry.getValue().composeSettings(this);
 
 		this.propServerEnabled = new ConfigPropertyBoolean("Server_Enabled", "serverEnabled", true);
         this.propDay = new ConfigPropertyDouble("Day_Length", "day", 24000.0);

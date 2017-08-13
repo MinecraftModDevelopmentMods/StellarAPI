@@ -39,7 +39,7 @@ public class StellarRenderModel {
 	}
 	
 	public void initializeSettings(ClientSettings settings) {
-		StellarLayerRegistry.getInstance().composeSettings(settings);
+		StellarLayerRegistry.getValue().composeSettings(settings);
 	}
 
 	public void updateSettings(ClientSettings settings) {

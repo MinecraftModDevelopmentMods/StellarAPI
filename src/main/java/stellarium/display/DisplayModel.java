@@ -31,7 +31,7 @@ public class DisplayModel implements IDisplayInjectable {
 	}
 
 	public void initializeSettings(ClientSettings settings) {
-		DisplayRegistry.getInstance().setupDisplay(settings, this);
+		DisplayRegistry.getValue().setupDisplay(settings, this);
 	}
 
 	public void updateSettings(ClientSettings settings) {

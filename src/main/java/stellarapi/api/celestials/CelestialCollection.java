@@ -9,6 +9,6 @@ import java.util.List;
  * */
 public class CelestialCollection {
 
-	private List<CelestialType> knownTypesContained;
+	//private List<CelestialType> knownTypesContained;
 
 }

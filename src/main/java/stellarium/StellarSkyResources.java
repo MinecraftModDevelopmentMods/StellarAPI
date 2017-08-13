@@ -36,17 +36,17 @@ public class StellarSkyResources {
 			new PerDimensionResource("Landscape", new ResourceLocation(StellarSkyReferences.resourceId, "textures/overlay/landscape.png"));
 
 	public static void init() {
-		PerDimensionResourceRegistry.getInstance().registerResourceId("End_Sky");
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Milkyway");
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Star");
+		PerDimensionResourceRegistry.getValue().registerResourceId("End_Sky");
+		PerDimensionResourceRegistry.getValue().registerResourceId("Milkyway");
+		PerDimensionResourceRegistry.getValue().registerResourceId("Star");
 		
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Sun_Surface");
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Sun_Halo");
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Moon_Surface");
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Moon_Halo");		
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Planet_Small");
+		PerDimensionResourceRegistry.getValue().registerResourceId("Sun_Surface");
+		PerDimensionResourceRegistry.getValue().registerResourceId("Sun_Halo");
+		PerDimensionResourceRegistry.getValue().registerResourceId("Moon_Surface");
+		PerDimensionResourceRegistry.getValue().registerResourceId("Moon_Halo");		
+		PerDimensionResourceRegistry.getValue().registerResourceId("Planet_Small");
 		
-		PerDimensionResourceRegistry.getInstance().registerResourceId("Landscape");
+		PerDimensionResourceRegistry.getValue().registerResourceId("Landscape");
 	}
 	
 	

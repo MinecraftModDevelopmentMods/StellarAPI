@@ -31,10 +31,9 @@ public class SleepWakeManager {
 	@Config.RequiresWorldRestart
 	private boolean mode = true;
 
-	// TODO List handling in config
-	@DynamicConfig.DynamicProperty(
+	@DynamicConfig.DynamicElementProperty(
 			affected={Config.Name.class, Config.LangKey.class, Config.Comment.class},
-			id = "handlers")
+			id = "wakeHandlers")
 	@DynamicConfig.Collection
 	@Config.RequiresWorldRestart
 	private List<WakeHandler> wakeHandlers = Lists.newArrayList();
@@ -46,19 +45,20 @@ public class SleepWakeManager {
 			this.enabled = enabled;
 		}
 
+		@DynamicConfig.NameField
 		protected transient String name;
-
-		@DynamicConfig.Expand
-		protected IWakeHandler handler;
 
 		@Config.Name("Enabled")
 		@Config.LangKey("config.property.enablewake")
 		@Config.Comment("Enable this wake property.")
 		@Config.RequiresWorldRestart
 		protected boolean enabled;
+
+		@DynamicConfig.Expand
+		protected IWakeHandler handler;
 	}
 
-	@DynamicConfig.EvaluatorID("handlers")
+	/*@DynamicConfig.EvaluatorID("wakeHandlers")
 	public Config.Name getName(final String key, final WakeHandler individual) {
 		return new Config.Name() {
 			@Override
@@ -67,14 +67,14 @@ public class SleepWakeManager {
 			@Override
 			public String value() { return individual.name; }
 		};
-	}
+	}*/
 
-	@DynamicConfig.EvaluatorID("handlers")
+	@DynamicConfig.EvaluatorID("wakeHandlers")
 	public Config.LangKey getLangKey(final String key, final WakeHandler individual) {
 		return null;
 	}
 
-	@DynamicConfig.EvaluatorID("handlers")
+	@DynamicConfig.EvaluatorID("wakeHandlers")
 	public Config.Comment getComment(final String key, final WakeHandler individual) {
 		return null;
 	}

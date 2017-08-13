@@ -21,7 +21,7 @@ public class CelestialManager {
 	public CelestialManager(boolean isRemote) {
 		this.isRemote = isRemote;
 		
-		StellarLayerRegistry registry = StellarLayerRegistry.getInstance();
+		StellarLayerRegistry registry = StellarLayerRegistry.getValue();
 		registry.composeLayer(isRemote, this.layers);
 	}
 	
