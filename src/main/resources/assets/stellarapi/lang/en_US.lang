@@ -30,7 +30,7 @@ gui.configurator.position=Overlay
 gui.configurator.paused=Paused
 gui.configurator.playing=Playing
 
-gui.time.display=<Currently>
+gui.time.display=<Time>
 
 gui.time.midnight=MIDNIGHT
 gui.time.midday=MIDDAY

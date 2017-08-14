@@ -25,17 +25,17 @@ public class GuiButtonColorable extends GuiButton {
 	@Override
 	public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_) {
 		if (this.visible) {
-			FontRenderer fontrenderer = p_146112_1_.fontRendererObj;
+			FontRenderer fontrenderer = p_146112_1_.fontRenderer;
 			p_146112_1_.getTextureManager().bindTexture(BUTTON_TEXTURES);
 			GlStateManager.color(red, green, blue, alpha);
-			this.hovered = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition
-					&& p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
+			this.hovered = p_146112_2_ >= this.x && p_146112_3_ >= this.y
+					&& p_146112_2_ < this.x + this.width && p_146112_3_ < this.y + this.height;
 			int k = this.getHoverState(this.hovered);
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + k * 20, this.width / 2, this.height);
-			this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2,
+			this.drawTexturedModalRect(this.x, this.y, 0, 46 + k * 20, this.width / 2, this.height);
+			this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2,
 					46 + k * 20, this.width / 2, this.height);
 			this.mouseDragged(p_146112_1_, p_146112_2_, p_146112_3_);
 			int l = 14737632;
@@ -59,8 +59,8 @@ public class GuiButtonColorable extends GuiButton {
 
 			l = ((alpha << 24) | (red << 16) | (green << 8) | blue);
 			if (alpha > 3)
-				this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2,
-						this.yPosition + (this.height - 8) / 2, l);
+				this.drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2,
+						this.y + (this.height - 8) / 2, l);
 		}
 	}
 

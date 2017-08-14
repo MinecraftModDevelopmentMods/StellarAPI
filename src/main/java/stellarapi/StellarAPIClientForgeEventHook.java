@@ -2,6 +2,7 @@ package stellarapi;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import com.google.common.base.Throwables;
 
@@ -64,6 +65,8 @@ public class StellarAPIClientForgeEventHook {
 			event.setFOV(event.getFOV() / (float) scope.getMP());
 	}
 
+	private int counter = 0;
+
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
 		if(!StellarAPIReference.hasOpticalInformation(event.getEntity()))
@@ -76,9 +79,9 @@ public class StellarAPIClientForgeEventHook {
 
 		double[] value = EyeDetector.getInstance().process(multiplier, filter,
 				new double[] { event.getRed(), event.getGreen(), event.getBlue() });
-		event.setRed((float) value[0]);
-		event.setGreen((float) value[1]);
-		event.setBlue((float) value[2]);
+		event.setRed((float) Math.min(value[0], 1.0));
+		event.setGreen((float) Math.min(value[1], 1.0));
+		event.setBlue((float) Math.min(value[2], 1.0));
 
 		if (multiplier != 1.0 || !(filter instanceof NakedFilter)) {
 			DynamicTexture texture;

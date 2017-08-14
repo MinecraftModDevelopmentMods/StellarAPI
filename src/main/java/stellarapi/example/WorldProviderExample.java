@@ -348,11 +348,6 @@ public class WorldProviderExample extends WorldProvider {
 	public boolean doesWaterVaporize() {
 		return parProvider.doesWaterVaporize();
 	}
-
-	@Override
-	public boolean hasNoSky() {
-		return parProvider.hasNoSky();
-	}
 	
 	@Override
 	public boolean hasSkyLight() {

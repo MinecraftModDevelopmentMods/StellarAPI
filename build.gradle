@@ -12,7 +12,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.6.4.1.6"
+version = "0.6.4.1.7"
 group= "stellarapi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Stellar API"
 
@@ -20,7 +20,7 @@ minecraft {
     version = "1.11.2-13.20.1.2386"
     runDir = "run"
 
-    mappings = "snapshot_20161121"
+    mappings = "stable_32"
     replace "@VERSION@", project.version
 }
 
