@@ -126,11 +126,15 @@ public @interface DynamicConfig {
 
 	/**
 	 * Custom collection handling.
-	 * Type expansion.
+	 * Provides custom type expansion.
 	 * */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface CustomCollection {
+		/**
+		 * Class for the type expansion.
+		 * It should have the constructor without any parameters.
+		 * */
 		Class<? extends ITypeExpansion> customHandler();
 	}
 
