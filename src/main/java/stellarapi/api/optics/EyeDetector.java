@@ -33,15 +33,12 @@ public class EyeDetector implements IOpticalDetector {
 				scale = Math.max(scale, result[color.ordinal()]);
 			}
 
-			for (EnumRGBA color : EnumRGBA.RGB)
-				result[color.ordinal()] /= scale;
-
 			if (scale > 1.0) {
-				for (EnumRGBA color : EnumRGBA.RGB)
+				for (EnumRGBA color : EnumRGBA.RGB) {
+					result[color.ordinal()] /= scale;
 					result[color.ordinal()] = result[color.ordinal()] / scale + 1.0 - 1.0 / scale;
-			} else
-				for (EnumRGBA color : EnumRGBA.RGB)
-					result[color.ordinal()] *= scale;
+				}
+			}
 
 			return result;
 		} else if (origin.length == 4) {
@@ -54,8 +51,9 @@ public class EyeDetector implements IOpticalDetector {
 				scale = Math.max(scale, result[color.ordinal()]);
 			}
 
-			for (EnumRGBA color : EnumRGBA.RGB)
-				result[color.ordinal()] /= scale;
+			if(scale > 0.0)
+				for (EnumRGBA color : EnumRGBA.RGB)
+					result[color.ordinal()] /= scale;
 
 			result[3] = origin[3] * scale * multiplier;
 			scale = result[3];

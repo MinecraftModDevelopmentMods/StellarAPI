@@ -279,10 +279,10 @@ public class CombinedLoadingScreenRenderer extends LoadingScreenRenderer impleme
 				GlStateManager.enableTexture2D();
 			}
 
-			mc.fontRendererObj.drawStringWithShadow(this.currentDisplayed,
-					(k - mc.fontRendererObj.getStringWidth(this.currentDisplayed)) / 2, l / 2 - 4 - 12, 16777215);
-			mc.fontRendererObj.drawStringWithShadow(this.currentContext,
-					(k - mc.fontRendererObj.getStringWidth(this.currentContext)) / 2, l / 2 - 4 + 4, 16777215);
+			mc.fontRenderer.drawStringWithShadow(this.currentDisplayed,
+					(k - mc.fontRenderer.getStringWidth(this.currentDisplayed)) / 2, l / 2 - 4 - 12, 16777215);
+			mc.fontRenderer.drawStringWithShadow(this.currentContext,
+					(k - mc.fontRenderer.getStringWidth(this.currentContext)) / 2, l / 2 - 4 + 4, 16777215);
 		}
 	}
 }

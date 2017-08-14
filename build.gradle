@@ -21,7 +21,7 @@ minecraft {
     version = "1.11.2-13.20.1.2386"
     runDir = "eclipse/assets"
 
-    mappings = "snapshot_20170518"
+    mappings = "stable_32"
     replace "@VERSION@", project.version
 }
 

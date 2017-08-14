@@ -45,7 +45,7 @@ public class StellarAPIOwnEventHook {
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onResetEffect(SetSkyEffectEvent event) {
 		if (event.getSkyEffect() == null)
-			if (!event.getWorld().provider.hasNoSky())
+			if (event.getWorld().provider.hasSkyLight())
 				event.setSkyEffect(new DefaultSkyVanilla());
 	}
 
