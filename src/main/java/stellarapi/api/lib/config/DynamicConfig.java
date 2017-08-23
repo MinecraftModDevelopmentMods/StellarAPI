@@ -5,6 +5,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Comparator;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Annotation marking Dynamic Configuration.
@@ -57,22 +60,6 @@ public @interface DynamicConfig {
 	}
 
 	/**
-	 * Defines ID specifier for collection fields,
-	 *  to provide reliable reordering for lists. <p>
-	 * The ID will be evaluated on any time, so it should be constant over time. <p>
-	 * This won't work to change a key for each field. <p>
-	 * <p><br>
-	 * Warning: Any operation around this can be slow.
-	 * */
-	/*@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.FIELD)
-	public @interface IDSpecifier {
-		Class<?> handler() default Object.class;
-		String id() default "";
-	}*/
-
-
-	/**
 	 * Priority of this field. <p>
 	 * Fields with higher priority will be loaded/saved earlier.
 	 *  (Priority of a field is 0 by default, even w/o this annotation) <p>
@@ -90,7 +77,7 @@ public @interface DynamicConfig {
 	}
 
 	/**
-	 * Marks a field as collection, with remove/add handling.<p>
+	 * Marks a field as collection, with remove/add handling. (only those two are detected)<p>
 	 * Leaving handler as Object.class(default) means the value is set by default. <p>
 	 * <br>
 	 * About a collection: Instance of a collection <b>must</b> not be changed.
@@ -99,7 +86,8 @@ public @interface DynamicConfig {
 	 *  - use a dummy class for that.<p>
 	 * <br>
 	 * If a node of a collection is a property,
-	 *  all the other nodes should be a property as well.
+	 *  all the other nodes should be a property as well. <p>
+	 *  DO NOT change order of non-order-configurable collection with order-specific keys.
 	 * */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
@@ -136,6 +124,23 @@ public @interface DynamicConfig {
 		 * It should have the constructor without any parameters.
 		 * */
 		Class<? extends ITypeExpansion> customHandler();
+	}
+
+	/**
+	 * Custom Order handling. Defines the order of instance-side field collection.
+	 * When used on non-order-configurable ones, this will give illegal state exception.
+	 * */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface Ordered {
+		/**
+		 * Class for comparator factory which defines the order.
+		 * */
+		Class<? extends IComparatorFactory> comparatorFactory();
+	}
+
+	public interface IComparatorFactory {
+		public Comparator<Pair<String, ?>> createComparator();
 	}
 
 	/**

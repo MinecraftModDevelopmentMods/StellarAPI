@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -11,9 +12,14 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.base.Function;
 import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -23,11 +29,12 @@ import com.google.common.collect.Sets;
  * Node on each field of the configuration class.
  * 
  * */
-public class DCfgFieldNode implements IDCfgNode {
+public class DCfgFieldNode implements IDCfgNode, IDCfgCollection {
 	private Field field;
 	private Class<?> fieldType; // Type of this field. Useful for collections & leaves.
 	private boolean isCollection, isConfigurable, isOrderConfigurable;
-	private boolean isLeafParent;
+	private boolean hasOneLeaf;
+	private ITypeExpansion expansion; // Expansion of this field. Evaluated just after creation.
 
 	private final List<String> order = Lists.newArrayList();
 	private final Map<String, DCfgInstanceNode> childNodes = Maps.newHashMap(); // Needs SingletonMap impl.
@@ -37,6 +44,7 @@ public class DCfgFieldNode implements IDCfgNode {
 
 	private final Set<String> toAdd = Sets.newHashSet();
 	private final Set<String> toRemove = Sets.newHashSet();
+	private final Map<String, String> toReplace = Maps.newHashMap();
 
 	private Map<Class<? extends Annotation>, Annotation> fieldAnnotations = Maps.newHashMap();
 	private ImmutableMap<Class<? extends Annotation>, Annotation> thoseForElements;
@@ -46,7 +54,7 @@ public class DCfgFieldNode implements IDCfgNode {
 	DCfgFieldNode(Field field) {
 		this.field = field;
 		this.isCollection = DCfgManager.isCollection(field);
-		this.isLeafParent = DCfgManager.isLeaf(field);
+		this.hasOneLeaf = DCfgManager.isLeaf(field);
 		this.fieldType = field.getType();
 
 		if(this.isCollection) {
@@ -60,15 +68,23 @@ public class DCfgFieldNode implements IDCfgNode {
 		}
 	}
 
+	Field getField() {
+		return this.field;
+	}
+
+	ITypeExpansion getExpansion() {
+		return this.expansion;
+	}
+
 	// Only called once after some instance-side initialization.
 	void setupInitial(Object instance, Object fieldValue) {
 		this.storeFixedAnnotations();
 		this.updateFieldAnnotations(instance, EnumConfigPhase.Creation);
 
-		ITypeExpansion expansion = DCfgManager.getExpansion(this);
+		ITypeExpansion<Object> expansion = this.expansion = DCfgManager.getExpansion(this);
 		for(String key : expansion.getKeys(fieldValue)) {
 			Object subValue = expansion.getValue(fieldValue, key);
-			this.createNode(instance, key, subValue);
+			this.createNode(instance, fieldValue, key, subValue);
 		}
 
 		postOrder.addAll(this.order);
@@ -78,9 +94,10 @@ public class DCfgFieldNode implements IDCfgNode {
 		ImmutableMap.Builder<Class<? extends Annotation>, Annotation> builder = ImmutableMap.builder();
 
 		for(Annotation annotation : field.getAnnotations()) {
+			if(DCfgManager.isFieldAnnotation(annotation.annotationType()))
+				fieldAnnotations.put(annotation.annotationType(), annotation);
 			if(DCfgManager.isElementAnnotation(annotation.annotationType()))
 				builder.put(annotation.annotationType(), annotation);
-			else fieldAnnotations.put(annotation.annotationType(), annotation);
 		}
 
 		this.thoseForElements = builder.build();
@@ -243,6 +260,10 @@ public class DCfgFieldNode implements IDCfgNode {
 	}
 
 
+	boolean hasOneLeaf() {
+		return this.hasOneLeaf;
+	}
+
 	@Override
 	public boolean isCollection() {
 		return this.isCollection;
@@ -259,10 +280,6 @@ public class DCfgFieldNode implements IDCfgNode {
 		if(!this.isCollection)
 			throw new UnsupportedOperationException("Only collection node can be order-configurable or not.");
 		return this.isOrderConfigurable;
-	}
-
-	public boolean isLeafParent() {
-		return this.isLeafParent;
 	}
 
 
@@ -283,13 +300,21 @@ public class DCfgFieldNode implements IDCfgNode {
 		return this.toRemove;
 	}
 
+	Map<String, String> requestedToChangeKey() {
+		return this.toReplace;
+	}
+
 
 	boolean hasKey(String key) {
 		return childNodes.containsKey(key);
 	}
 
-	void createNode(Object instance, String key, Object childValue) {
-		DCfgInstanceNode childNode = new DCfgInstanceNode(this.fieldType, childValue, this.isLeafParent);
+	void createNode(Object instance, Object fieldValue, String key, Object childValue) {
+		Class<?> valType = expansion.getValueType(fieldValue, key, this.getGenericType());
+		DCfgInstanceNode childNode = this.hasOneLeaf? new DCfgInstanceNode(valType, childValue, DCfgManager.getPropertyType(this.field))
+				: DCfgManager.isLeaf(valType)?
+						new DCfgInstanceNode(valType, childValue, DCfgManager.getPropertyType(valType)) 
+						: new DCfgInstanceNode(valType, childValue);
 		childNodes.put(key, childNode);
 		order.add(key); // Add to the order.
 
@@ -299,8 +324,13 @@ public class DCfgFieldNode implements IDCfgNode {
 		// TODO Notify to the theme handlers
 	}
 
-	DCfgInstanceNode addRequested(Object instance, String reqKey, String key, Object childValue) {
-		DCfgInstanceNode childNode = new DCfgInstanceNode(this.fieldType, childValue, this.isLeafParent);
+	DCfgInstanceNode addRequested(Object instance, Object fieldValue, String reqKey, String key, Object childValue) {
+		Class<?> valType = expansion.getValueType(fieldValue, key, this.getGenericType());
+		DCfgInstanceNode childNode = this.hasOneLeaf? new DCfgInstanceNode(valType, childValue, DCfgManager.getPropertyType(this.field))
+				: DCfgManager.isLeaf(valType)?
+						new DCfgInstanceNode(valType, childValue, DCfgManager.getPropertyType(valType)) 
+						: new DCfgInstanceNode(valType, childValue);
+
 		childNodes.put(key, childNode);
 
 		// Replace the key
@@ -326,12 +356,33 @@ public class DCfgFieldNode implements IDCfgNode {
 		order.remove(key);
 	}
 
+	void changeKeyRequested(String oldKey, String newKey) {
+		// TODO safety checks.
+		DCfgInstanceNode oldValue = childNodes.get(oldKey);
+		int oldIndex = postOrder.indexOf(oldKey);
+
+		if(childNodes.containsKey(newKey)) {
+			DCfgInstanceNode newValue = childNodes.get(newKey);
+			int newIndex = postOrder.indexOf(newKey);
+
+			childNodes.put(oldKey, newValue);
+			childNodes.put(newKey, oldValue);
+			postOrder.set(oldIndex, newKey);
+			postOrder.set(newIndex, oldKey);
+		} else {
+			childNodes.remove(oldKey);
+			childNodes.put(newKey, oldValue);
+			postOrder.set(oldIndex, newKey);
+		}
+	}
+
 	void refreshRequest() {
 		order.clear();
 		order.addAll(this.postOrder);
 
 		toAdd.clear();
 		toRemove.clear();
+		toReplace.clear();
 	}
 
 	// Updates post order to the normal order, when the change is not applied.
@@ -342,8 +393,11 @@ public class DCfgFieldNode implements IDCfgNode {
 
 
 	// Only called on DCfgManager sync methods
-	void reorder(List<String> order) {
+	void reorder(Object collection, List<String> order) {
 		try {
+			if(expansion.isOrderDependent())
+				expansion.reorder(collection, order, order); // simply puts the ids.
+			if(!order.equals(this.order)); // TODO Notify theme handlers for order change
 			Collections.sort(this.order, Ordering.<String>explicit(order));
 			postOrder.clear();
 			postOrder.addAll(this.order);
@@ -351,6 +405,25 @@ public class DCfgFieldNode implements IDCfgNode {
 			throw new IllegalArgumentException(
 					"the order should cover whole array. The instance and the node might not be synced");
 		}
+	}
+
+	void reorderInstanceField(ITypeExpansion expansion, Object fieldValue, List<String> trackedOrder) {
+		if(order.size() != childNodes.size())
+			throw new IllegalStateException("Order state has not the same size for child nodes,"
+					+ "logic error.");
+
+		if(!trackedOrder.equals(this.order)); // TODO Notify theme handlers for order change
+		expansion.reorder(fieldValue, trackedOrder, this.order);
+		Map<String, DCfgInstanceNode> cache = Maps.newHashMapWithExpectedSize(order.size());
+
+		for(int i = 0; i < order.size(); i++) {
+			String key = order.get(i);
+			cache.put(expansion.getValidKey(fieldValue, key, i), childNodes.get(key));
+		}
+
+		childNodes.clear();
+		for(Map.Entry<String, DCfgInstanceNode> entry : cache.entrySet())
+			childNodes.put(entry.getKey(), entry.getValue());
 	}
 
 
@@ -379,8 +452,8 @@ public class DCfgFieldNode implements IDCfgNode {
 	}
 
 	@Override
-	public Annotation getAnnotation(Class<? extends Annotation> annotationType) {
-		return fieldAnnotations.get(annotationType);
+	public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
+		return (T) fieldAnnotations.get(annotationType);
 	}
 
 	@Override
@@ -396,30 +469,130 @@ public class DCfgFieldNode implements IDCfgNode {
 	}
 
 	@Override
+	public Type getGenericType() {
+		if(!this.isCollection)
+			throw new UnsupportedOperationException("Non-collection field node shouldn't be exposed.");
+		return field.getGenericType();
+	}
+
+	@Override
 	public boolean isLeafNode() {
 		return false;
 	}
 
 	@Override
-	public Object getValue() {
-		throw new UnsupportedOperationException("A field node can't exchange values.");
+	public IDCfgProperty getProperty() {
+		throw new UnsupportedOperationException("Non-leaf node can't be a property");
+	}
+
+
+	@Override
+	public Iterable<Map.Entry<String, IDCfgNode>> getEntries() {
+		return Iterables.transform(this.getKeys(),
+				new Function<String, Map.Entry<String, IDCfgNode>>() {
+					@Override
+					public Map.Entry<String, IDCfgNode> apply(String input) {
+						return Pair.<String, IDCfgNode>of(input, childNodes.get(input));
+					}
+		});
 	}
 
 	@Override
-	public void setValue(Object value) {
-		throw new UnsupportedOperationException("A field node can't exchange values.");
+	public Iterable<String> getKeys() {
+		return ImmutableList.copyOf(this.order);
 	}
 
+	@Override
+	public Iterable<IDCfgNode> getChildNodes() {
+		return Iterables.transform(this.getKeys(),
+				new Function<String, IDCfgNode>() {
+					@Override
+					public IDCfgNode apply(String input) {
+						return childNodes.get(input);
+					}
+		});
+	}
+
+	@Override
+	public IDCfgCollection getCollection() {
+		if(!this.isCollection)
+			throw new UnsupportedOperationException("Can't get collection from a non-collection node.");
+		return this;
+	}
+
+	// IDCfgCollection Starts Here
+
+	@Override
+	public boolean hasChildNode(String key) {
+		return childNodes.containsKey(key);
+	}
+
+	@Override
+	public IDCfgNode getChildNode(String key) {
+		return childNodes.get(key);
+	}
+
+	@Override
+	public void requestAdd(String locKey, String requestKey) {
+		if(!this.isConfigurable)
+			throw new UnsupportedOperationException(
+					"Can't add key on non-configuration collection");
+	
+		toAdd.add(requestKey);
+		if(locKey != null && !postOrder.contains(locKey))
+			throw new IllegalArgumentException(
+					"location key has no match with actual instance.");
+		postOrder.add(postOrder.indexOf(locKey)+1, requestKey);
+		this.isChanged = true;
+	}
+
+	@Override
+	public boolean requestRemove(String key) {
+		if(!this.isConfigurable)
+			throw new UnsupportedOperationException(
+					"Can't remove key on non-configuration collection");
+
+		if(!childNodes.containsKey(key))
+			return false;
+
+		toRemove.add(key);
+		postOrder.remove(key);
+		this.isChanged = true;
+		return true;
+	}
+
+	@Override
+	public void requestChangeOrder(String... keys) {
+		if(keys.length < 2)
+			return;
+
+		String temp = keys[0];
+		for(int i = keys.length - 1; i > 0; i--)
+			keys[(i+1) % keys.length] = keys[i];
+		keys[1] = temp;
+
+		this.isChanged = true;
+	}
+
+	@Override
+	public void requestChangeKey(String oldKey, String newKey) {
+		if(!this.isConfigurable)
+			throw new UnsupportedOperationException(
+					"Can't request key change on non-configuration collection");
+
+		if(!childNodes.containsKey(oldKey))
+			throw new IllegalArgumentException("The old key is not in use!");
+
+		toReplace.put(oldKey, newKey);
+		this.isChanged = true;
+	}
 
 	/**
-	 * Gets children iterator. This is given to
-	 *  1. External user by interface IDCfgNode
-	 *  2. Configurable collection restrictions
+	 * For both external use and collection restrictions.
 	 * */
 	@Override
-	public ICfgIterator<IDCfgNode> getChildNodeIte() {
-		return new ICfgIterator<IDCfgNode>() {
-			private DCfgFieldNode parent = DCfgFieldNode.this;
+	public ICfgIterator<Map.Entry<String, IDCfgNode>> requestIterator() {
+		return new ICfgIterator<Map.Entry<String, IDCfgNode>>() {
 			private ListIterator<String> iterator = postOrder.listIterator();
 			private String lastKey;
 
@@ -429,8 +602,9 @@ public class DCfgFieldNode implements IDCfgNode {
 			}
 
 			@Override
-			public IDCfgNode next() {
-				return childNodes.get(this.lastKey = iterator.next());
+			public Map.Entry<String, IDCfgNode> next() {
+				this.lastKey = iterator.next();
+				return Pair.<String, IDCfgNode>of(this.lastKey, childNodes.get(this.lastKey));
 			}
 
 			@Override
@@ -447,7 +621,8 @@ public class DCfgFieldNode implements IDCfgNode {
 			@Override
 			public void remove() {
 				if(!isConfigurable)
-					throw new UnsupportedOperationException("Can't request node addition to non-configurable field.");
+					throw new UnsupportedOperationException(
+							"Can't request node removal to non-configurable field.");
 
 				toRemove.add(this.lastKey);
 				iterator.remove();
@@ -455,4 +630,5 @@ public class DCfgFieldNode implements IDCfgNode {
 			}
 		};
 	}
+
 }

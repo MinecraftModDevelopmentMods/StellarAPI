@@ -8,15 +8,20 @@ import stellarapi.StellarAPI;
 public enum CelestialRegistry {
 	INSTANCE;
 
-	public static final ResourceLocation CELESTIALS = new ResourceLocation(StellarAPI.modid, "celestials");
+	public final ResourceLocation CELESTIALS = new ResourceLocation(StellarAPI.modid, "celestials");
+	public final ResourceLocation COORDS = new ResourceLocation(StellarAPI.modid, "coords");
 
-	private final IForgeRegistry<CelestialType> registry;
+	private final IForgeRegistry<CelestialType> typeRegistry;
+	private final IForgeRegistry<Coordinate> coordRegistry;
 
 
 	private CelestialRegistry() {
 		// TODO Implement Callbacks - might not be needed.
-		this.registry = new RegistryBuilder<CelestialType>()
+		this.typeRegistry = new RegistryBuilder<CelestialType>()
 				.setName(CELESTIALS).setType(CelestialType.class).setIDRange(0, Integer.MAX_VALUE)
+				.create();
+		this.coordRegistry = new RegistryBuilder<Coordinate>()
+				.setName(COORDS).setType(Coordinate.class).setIDRange(0, Integer.MAX_VALUE)
 				.create();
 	}
 }

@@ -1,19 +1,109 @@
 package stellarapi.api.lib.config;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 /**
  * Configuration manager.
  */
 public final class DCfgManager {
 
-	public static final String SEPARATOR = ".";
+	// Expansions
+	private static Multimap<Class<?>, IFieldSpecs<ITypeExpansion>> expansions = HashMultimap.create();
+	// Leaf properties
+	private static Multimap<Class<?>, IFieldSpecs<IPropertyType>> leafProperties = HashMultimap.create();
+	private static Set<Class<?>> nativeTypes = Sets.newHashSet();
+
+	static {
+		// Native Types
+		registerPropTypes(IPropertyType.boolT, boolean.class, Boolean.class);
+
+		registerPropTypes(IPropertyType.byteT, byte.class, Byte.class);
+		registerPropTypes(IPropertyType.charT, char.class, Character.class);
+		registerPropTypes(IPropertyType.shortT, short.class, Short.class);
+		registerPropTypes(IPropertyType.intT, int.class, Integer.class);
+		registerPropTypes(IPropertyType.longT, long.class, Long.class);
+
+		registerPropTypes(IPropertyType.floatT, float.class, Float.class);
+		registerPropTypes(IPropertyType.doubleT, double.class, Double.class);
+
+		registerPropTypes(IPropertyType.stringT, String.class);
+
+		// Array Types
+		registerPropTypes(IPropertyType.boolAT, boolean[].class);
+		registerPropTypes(IPropertyType.BoolAT, Boolean[].class);
+
+		registerPropTypes(IPropertyType.byteAT, byte[].class);
+		registerPropTypes(IPropertyType.ByteAT, Byte[].class);
+		registerPropTypes(IPropertyType.charAT, char[].class);
+		registerPropTypes(IPropertyType.CharacterAT, Character[].class);
+		registerPropTypes(IPropertyType.shortAT, short[].class);
+		registerPropTypes(IPropertyType.ShortAT, Short[].class);
+		registerPropTypes(IPropertyType.intAT, int[].class);
+		registerPropTypes(IPropertyType.IntegerAT, Integer[].class);
+		registerPropTypes(IPropertyType.longAT, long[].class);
+		registerPropTypes(IPropertyType.LongAT, Long[].class);
+		
+		registerPropTypes(IPropertyType.floatAT, float[].class);
+		registerPropTypes(IPropertyType.FloatAT, Float[].class);
+		registerPropTypes(IPropertyType.doubleAT, double[].class);
+		registerPropTypes(IPropertyType.DoubleAT, Double[].class);
+
+		registerPropTypes(IPropertyType.stringAT, String[].class);
+
+		// List Handling
+		for(Class<?> nativeType : nativeTypes) {
+			registerPropType(List.class,
+					new FixedListPropertySpec(nativeType));
+		}
+
+		// Expansions
+		registerExpansion(List.class, ITypeExpansion.LIST);
+		registerExpansion(Map.class, new MapExpansionSpec());
+	}
+
+	private static void registerPropTypes(IPropertyType propType, Class<?>... nativeClasses) {
+		for(Class<?> nativeClass : nativeClasses)
+			registerPropType(nativeClass, propType);
+
+		// Search for native types
+		if(propType.alternativeIds() == null)
+			for(Class<?> nativeClass : nativeClasses)
+				nativeTypes.add(nativeClass);
+	}
+
+	public static void registerPropType(Class<?> type, IPropertyType propType) {
+		registerPropType(type, new IFieldSpecs.SimpleSpecs(propType));
+	}
+
+	public static void registerPropType(Class<?> type, IFieldSpecs<IPropertyType> spec) {
+		leafProperties.put(type, spec);
+	}
+
+
+	public static void registerExpansion(Class<?> type, ITypeExpansion expansion) {
+		registerExpansion(type, new IFieldSpecs.SimpleSpecs(expansion));
+	}
+
+	public static void registerExpansion(Class<?> type, IFieldSpecs<ITypeExpansion> spec) {
+		expansions.put(type, spec);
+	}
 
 	/**
 	 * Read the config-nodes into the instance configuration.
@@ -23,11 +113,11 @@ public final class DCfgManager {
 			Object fieldValue = getFieldValue(field, instance);
 			DCfgFieldNode fieldNode = node.fieldNodeMap.get(field);
 
-			if((fieldValue == null && !fieldNode.isLeafParent()) || !fieldNode.isChanged())
+			if((fieldValue == null && !fieldNode.hasOneLeaf()) || !fieldNode.isChanged())
 				continue;
 
 			// Sets config node value and propagates this one.
-			ITypeExpansion expansion = DCfgManager.getExpansion(fieldNode);
+			ITypeExpansion expansion = fieldNode.getExpansion();
 
 			// Instances and Nodes should be synchronized till this point.
 			for(String key : fieldNode.keys()) {
@@ -64,10 +154,10 @@ public final class DCfgManager {
 			if(fieldNode.hasAnnotation(DynamicConfig.Dependence.class))
 				DCfgManager.applyDependence(instance, fieldValue, fieldNode);
 
-			if(fieldValue == null && !fieldNode.isLeafParent())
+			if(fieldValue == null && !fieldNode.hasOneLeaf())
 				continue;
 
-			ITypeExpansion expansion = DCfgManager.getExpansion(fieldNode);
+			ITypeExpansion expansion = fieldNode.getExpansion();
 
 			// Applies restrictions. Only leaf nodes can get these restrictions.
 			for(String key : fieldNode.keys()) {
@@ -78,7 +168,12 @@ public final class DCfgManager {
 				if(childNode.isLeafNode())
 					for(Class<? extends Annotation> annType : childNode.getAnnotationTypes()) {
 						Object newValue = restrictValue(expansion.getValue(fieldValue, key), annType, childNode.getAnnotation(annType));
-						expansion.setValue(fieldValue, key, newValue);
+						try {
+							field.set(instance,
+									expansion.setValue(fieldValue, key, newValue));
+						} catch(Exception exception) {
+							Throwables.propagate(exception);
+						}
 					}
 			}
 
@@ -109,7 +204,8 @@ public final class DCfgManager {
 		for(Field field : node.fieldsSet) {
 			Object fieldValue = getFieldValue(field, instance);
 			DCfgFieldNode fieldNode = node.fieldNodeMap.get(field);
-			ITypeExpansion expansion = DCfgManager.getExpansion(fieldNode);
+			ITypeExpansion<Object> expansion = fieldNode.getExpansion();
+			List<String> trackedOrder = Lists.newArrayList();
 
 			// Synchronizes the collections - direction depends on the mutability(configurability)
 			//  If the collection is configurable, requested changes are going to be applied.
@@ -120,6 +216,7 @@ public final class DCfgManager {
 				// Here, nothing actually changed so instance and node should match.
 
 				for(String key : fieldNode.keys()) {
+					trackedOrder.add(key);
 					if(fieldNode.requestedToRemove().contains(key))
 						continue;
 
@@ -131,19 +228,66 @@ public final class DCfgManager {
 					}
 				}
 
-				for(String keyToAdd : fieldNode.requestedToAdd()) { // Nodes are added here
-					Object childInstance = createInstance(instance, field, fieldValue, keyToAdd, fieldNode.isCollection());
-					String key = expansion.adaptiveKey(fieldValue, keyToAdd);
-					DCfgInstanceNode childNode = fieldNode.addRequested(instance, keyToAdd, key, childInstance);
-					expansion.setValue(fieldValue, key, childInstance);
-					if(!childNode.isLeafNode())
-						sync(childInstance.getClass(), childInstance, childNode);
-				}
+				if(!expansion.isOrderDependent()) {
+					for(String keyToAdd : fieldNode.requestedToAdd()) { // Nodes are added here
+						Map.Entry<String, Object> childPair = createInstance(instance, field, fieldValue, keyToAdd, fieldNode.isCollection());
+						Object childInstance = childPair.getValue();
+						String key = expansion.getValidKey(fieldValue, childPair.getKey(), -1);
+						DCfgInstanceNode childNode = fieldNode.addRequested(instance, fieldValue, keyToAdd, key, childInstance);
+						expansion.setValue(fieldValue, key, childInstance);
+						if(!childNode.isLeafNode())
+							childNode.setSyncNeeded(true);
+					}
 
-				for(String keyToRemove : fieldNode.requestedToRemove()) {
-					Object childInstance = expansion.getValue(fieldValue, keyToRemove);
-					fieldNode.removeRequested(keyToRemove);
-					removeInstance(instance, field, fieldValue, keyToRemove, childInstance, fieldNode.isCollection());
+					for(String keyToRemove : fieldNode.requestedToRemove()) {
+						Object childInstance = expansion.getValue(fieldValue, keyToRemove);
+						fieldNode.removeRequested(keyToRemove);
+						removeInstance(instance, field, fieldValue, keyToRemove, childInstance, fieldNode.isCollection());
+					}
+
+					for(Map.Entry<String, String> pairToChangeKey : fieldNode.requestedToChangeKey().entrySet()) {
+						String oldKey = pairToChangeKey.getKey();
+						String newKey = pairToChangeKey.getValue();
+
+						fieldNode.changeKeyRequested(oldKey, newKey);
+						expansion.changeKey(fieldValue, oldKey, newKey);
+					}
+				} else {
+					for(String keyToAdd : fieldNode.requestedToAdd()) { // Nodes are added here
+						Map.Entry<String, Object> childPair = createInstance(instance, field, fieldValue, keyToAdd, fieldNode.isCollection());
+						Object childInstance = childPair.getValue();
+						String key = expansion.getValidKey(fieldValue, childPair.getKey(), trackedOrder.size());
+						DCfgInstanceNode childNode = fieldNode.addRequested(instance, fieldValue, keyToAdd, key, childInstance);
+						expansion.setValue(fieldValue, key, childInstance);
+						trackedOrder.add(key);
+						if(!childNode.isLeafNode())
+							childNode.setSyncNeeded(true);
+							sync(childInstance.getClass(), childInstance, childNode);
+					}
+
+					Iterator<Map.Entry<String, Object>> instanceIte = expansion.preservedOrder(fieldValue).iterator();
+					ListIterator<String> orderIte = trackedOrder.listIterator();
+					while(!instanceIte.hasNext()) {
+						Map.Entry<String, Object> instanceEntry = instanceIte.next();
+						String orderKey = orderIte.next();
+						if(fieldNode.requestedToRemove().contains(orderKey)) {
+							Object childInstance = instanceEntry.getValue();
+							fieldNode.removeRequested(orderKey);
+							instanceIte.remove();
+							orderIte.remove();
+							removeInstance(instance, field, fieldValue, instanceEntry.getKey(), childInstance, fieldNode.isCollection());
+						}
+
+						if(fieldNode.requestedToChangeKey().containsKey(orderKey)) {
+							String newKey = fieldNode.requestedToChangeKey().get(orderKey);
+							int theIndex = trackedOrder.indexOf(newKey);
+							if(theIndex >= 0)
+								trackedOrder.set(theIndex, orderKey);
+
+							fieldNode.changeKeyRequested(orderKey, newKey);
+							orderIte.set(newKey);
+						}
+					}
 				}
 
 				// Refreshes the request and establishes the (new) order.
@@ -153,16 +297,16 @@ public final class DCfgManager {
 					Object childValue = expansion.getValue(fieldValue, key);
 
 					if(!fieldNode.hasKey(key)) { // Added instance
-						fieldNode.createNode(instance, key, childValue);
+						fieldNode.createNode(instance, fieldValue, key, childValue);
 						DCfgInstanceNode childNode = fieldNode.getNode(key);
 						if(!childNode.isLeafNode())
-							sync(childValue.getClass(), childValue, childNode);
-					} else if(!fieldNode.isLeafParent()) {
+							childNode.setSyncNeeded(true);
+					} else if(!fieldNode.getNode(key).isLeafNode()) {
 						DCfgInstanceNode childNode = fieldNode.getNode(key);
 						if(childValue != childNode.getInstance()) { // Reference changes
 							fieldNode.onRemove(key);
-							fieldNode.createNode(instance, key, childValue);
-							sync(childValue.getClass(), childValue, fieldNode.getNode(key));
+							fieldNode.createNode(instance, fieldValue, key, childValue);
+							fieldNode.getNode(key).setSyncNeeded(true);
 						} else finishNoutputConfig(childValue.getClass(), childValue, childNode);
 					}
 				}
@@ -182,11 +326,11 @@ public final class DCfgManager {
 			}
 
 			//Reorders the collection.
-			if(fieldNode.isCollection()) {
+			if(fieldNode.isCollection() && expansion.isOrdered()) {
 				if(fieldNode.isOrderConfigurable() && fieldNode.isChanged()) {
-					expansion.reorder(fieldValue, fieldNode.sortedKeys());
+					fieldNode.reorderInstanceField(expansion, fieldValue, trackedOrder);
 				} else {
-					fieldNode.reorder(ImmutableList.copyOf(expansion.getKeys(fieldValue)));
+					fieldNode.reorder(fieldValue, ImmutableList.copyOf(expansion.getKeys(fieldValue)));
 				}
 			}
 
@@ -198,6 +342,11 @@ public final class DCfgManager {
 				childNode.processChanged();
 				if(childNode.isLeafNode())
 					childNode.setValueFromInstance(expansion.getValue(fieldValue, key));
+				else if(childNode.isSyncNeeded()) {
+					Object childInstance = childNode.getInstance();
+					sync(childInstance.getClass(), childInstance, childNode);
+					childNode.setSyncNeeded(false);
+				}
 			}
 		}
 	}
@@ -224,6 +373,16 @@ public final class DCfgManager {
 	}
 
 	static boolean isCollection(Field field) {
+		if(field.isAnnotationPresent(DynamicConfig.CustomCollection.class))
+			return true;
+
+		if(isLeaf(field))
+			return false;
+
+		for(IFieldSpecs<ITypeExpansion> spec : expansions.get(field.getType()))
+			if(spec.accept(field))
+				return true;
+
 		return false;
 	}
 
@@ -234,22 +393,87 @@ public final class DCfgManager {
 	 *  gives Adaptive one which automatically converts the id.
 	 * */
 	static ITypeExpansion getExpansion(DCfgFieldNode fieldNode) {
+		// Check if this is custom collection.
 		if(fieldNode.hasAnnotation(DynamicConfig.CustomCollection.class)) {
-			
+			Class<? extends ITypeExpansion> handler = fieldNode.getAnnotation(DynamicConfig.CustomCollection.class).customHandler();
+
+			try {
+				return handler.newInstance();
+			} catch (Exception exception) {
+				throw new IllegalArgumentException("The custom handler class should have constructor without any parameters", exception);
+			}
 		}
 
-		//if()
+		// Query for the expansion.
+		ITypeExpansion expansion = null;
 
+		Field theField = fieldNode.getField();
+
+		// Leaf node won't get any collection expansion
+		if(isLeaf(theField))
+			return expansion.SINGLETON;
+
+		for(IFieldSpecs<ITypeExpansion> spec : expansions.get(fieldNode.getType())) {
+			if(spec.accept(theField)) {
+				expansion = spec.getObject(theField);
+				break;
+			}
+		}
+
+		// No expansion - Singleton case
+		if(expansion == null)
+			return expansion.SINGLETON;
+
+		// Entries with specific Orderings
+		if(fieldNode.hasAnnotation(DynamicConfig.Ordered.class)) {
+			if(fieldNode.isOrderConfigurable())
+				throw new IllegalStateException("Order-configurable collection can't have specific fixed order");
+
+			Class<? extends DynamicConfig.IComparatorFactory> factory = fieldNode.getAnnotation(DynamicConfig.Ordered.class).comparatorFactory();
+
+			try {
+				return new ITypeExpansion.OrderedExpansion(expansion, factory.newInstance().createComparator());
+			} catch (Exception exception) {
+				throw new IllegalArgumentException("The factory class should have constructor without any parameters", exception);
+			}
+		}
+
+		return expansion;
+	}
+
+	/** Check if this field is a leaf node. */
+	static boolean isLeaf(Field field) {
+		for(IFieldSpecs<IPropertyType> spec : leafProperties.get(field.getType()))
+			if(spec.accept(field))
+				return true;
+		return false;
+	}
+
+	/** Check if this type can be a leaf node. */
+	static boolean isLeaf(Class<?> valType) {
+		for(IFieldSpecs<IPropertyType> spec : leafProperties.get(valType))
+			if(spec.accept(null)) // This means it is leaf for any field.
+				return true;
+		return false;
+	}
+
+	static IPropertyType getPropertyType(Field field) {
+		for(IFieldSpecs<IPropertyType> spec : leafProperties.get(field.getType()))
+			if(spec.accept(field))
+				return spec.getObject(field);
 		return null;
 	}
 
-	static boolean isLeaf(Field field) {
-		return false;
+	static IPropertyType getPropertyType(Class<?> valType) {
+		for(IFieldSpecs<IPropertyType> spec : leafProperties.get(valType))
+			if(spec.accept(null)) // This means it is leaf for any field.
+				return spec.getObject(null); // So get it.
+		return null;
 	}
 
 
 	private static void applyDependence(Object instance, Object fieldValue, DCfgFieldNode fieldNode) {
-
+		// TODO fill in these reflective operations.
 		
 	}
 
@@ -269,7 +493,7 @@ public final class DCfgManager {
 		}
 	}
 
-	private static Object createInstance(Object instance, Field field, Object fieldValue, String keyWanted, boolean isCollection) {
+	private static Map.Entry<String, Object> createInstance(Object instance, Field field, Object fieldValue, String keyWanted, boolean isCollection) {
 		if(isCollection) {
 			
 		} else throw new IllegalStateException("Non-collection field can't be configurable");
@@ -283,13 +507,84 @@ public final class DCfgManager {
 	}
 
 
-	static boolean isElementAnnotation(Class<? extends Annotation> annotationType) {
-		
+	static boolean isFieldAnnotation(Class<? extends Annotation> annotationType) {
+
 		return false;
 	}
 
-	static boolean evaluateOnPhase(EnumConfigPhase creation, Class<? extends Annotation> annotationType) {
+	static boolean isElementAnnotation(Class<? extends Annotation> annotationType) {
 
 		return false;
+	}
+
+	static boolean evaluateOnPhase(EnumConfigPhase phase, Class<? extends Annotation> annotationType) {
+
+		return false;
+	}
+
+	// TODO Enums - how to handle those?
+	private static class FixedListPropertySpec implements IFieldSpecs<IPropertyType> {
+		private Class<?> elementType;
+		private IPropertyType listPropType;
+
+		private FixedListPropertySpec(Class<?> elementType) {
+			this.elementType = elementType;
+			// Search for the simple spec.
+			for(IFieldSpecs<IPropertyType> elementPropType : leafProperties.get(elementType)) {
+				if(elementPropType instanceof IFieldSpecs.SimpleSpecs) {
+					this.listPropType = new IPropertyType.FixedListType(elementType,
+							elementPropType.getObject(null));
+					return;
+				}
+			}
+		}
+
+		@Override
+		public boolean accept(Field field) {
+			if(field == null)
+				return false;
+
+			if(field.isAnnotationPresent(DynamicConfig.Collection.class))
+				if(field.getAnnotation(DynamicConfig.Collection.class).isConfigurable())
+					return false;
+			Type genType = field.getGenericType();
+			if(genType instanceof ParameterizedType) {
+				ParameterizedType parType = (ParameterizedType) genType;
+				Type[] arguments = parType.getActualTypeArguments();
+				if(arguments.length == 1)
+					return arguments.equals(this.elementType);
+			}
+
+			return false;
+		}
+
+		@Override
+		public IPropertyType getObject(Field field) {
+			return this.listPropType;
+		}
+	}
+
+	private static class MapExpansionSpec implements IFieldSpecs<ITypeExpansion> {
+
+		@Override
+		public boolean accept(Field field) {
+			if(field == null)
+				return false;
+
+			Type type = field.getGenericType();
+			if(type instanceof ParameterizedType) {
+				ParameterizedType parType = (ParameterizedType) type;
+				Type[] arguments = parType.getActualTypeArguments();
+				if(arguments.length == 2)
+					return arguments[0].equals(String.class);
+			}
+
+			return false;
+		}
+
+		@Override
+		public ITypeExpansion getObject(Field field) {
+			return ITypeExpansion.MAP;
+		}
 	}
 }

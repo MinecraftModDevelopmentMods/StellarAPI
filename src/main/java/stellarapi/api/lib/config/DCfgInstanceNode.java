@@ -3,14 +3,18 @@ package stellarapi.api.lib.config;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
@@ -18,7 +22,7 @@ import com.google.common.collect.Ordering;
  * Instance node which holds nodes storing the instance.
  * The instance is regarded as a value for leaf nodes.
  * */
-public class DCfgInstanceNode implements IDCfgNode {
+public class DCfgInstanceNode implements IDCfgNode, IDCfgProperty {
 
 	private static final Function<Field, Integer> priority = new Function<Field, Integer>() {
 		@Override
@@ -32,6 +36,8 @@ public class DCfgInstanceNode implements IDCfgNode {
 	private Class<?> type;
 	Object instance; // Only be able to be null for leaf nodes & root nodes.
 	private boolean isLeaf;
+	private IPropertyType propType;
+	private String altType;
 
 	final ImmutableSortedSet<Field> fieldsSet;
 	final ImmutableMap<Field, DCfgFieldNode> fieldNodeMap;
@@ -39,17 +45,19 @@ public class DCfgInstanceNode implements IDCfgNode {
 	private final Map<Class<? extends Annotation>, Annotation> elementAnnotations = Maps.newHashMap();
 
 	private boolean isChanged = false;
+	private boolean syncNeeded = false;
 
-	public DCfgInstanceNode(Class<?> superClass, Object instance, boolean isLeaf) {
+	public DCfgInstanceNode(Class<?> superClass, Object value, IPropertyType propType) {
+		this.type = superClass;
+		this.fieldsSet = null;
+		this.fieldNodeMap = null;
+		this.propType = propType;
+		this.isLeaf = true;
+	}
+
+	public DCfgInstanceNode(Class<?> superClass, Object instance) {
 		this.instance = instance;
-		this.isLeaf = isLeaf;
-
-		if(isLeaf) {
-			this.type = superClass;
-			this.fieldsSet = null;
-			this.fieldNodeMap = null;
-			return;
-		}
+		this.isLeaf = false;
 
 		this.type = instance != null? instance.getClass() : superClass;
 		ImmutableSortedSet.Builder<Field> setBuilder = ImmutableSortedSet.orderedBy(
@@ -91,21 +99,31 @@ public class DCfgInstanceNode implements IDCfgNode {
 				ite.remove();
 	}
 
+	boolean isSyncNeeded() {
+		return this.syncNeeded;
+	}
+
+	void setSyncNeeded(boolean syncNeeded) {
+		this.syncNeeded = syncNeeded;
+	}
+
 	@Override
 	public boolean isLeafNode() {
 		return this.isLeaf;
 	}
 
 	@Override
-	public Object getValue() {
+	public IDCfgProperty getProperty() {
 		if(!this.isLeaf)
-			throw new UnsupportedOperationException("Non-leaf node can't have a value");
-		return this.instance;
+			throw new UnsupportedOperationException("Non-leaf node can't be a property");
+
+		return this;
 	}
 
-	Object getInstance() {
-		if(this.isLeaf)
-			throw new UnsupportedOperationException("Leaf node can't have an instance");
+	// IDCfgProperty starts here
+
+	@Override
+	public Object getValue() {
 		return this.instance;
 	}
 
@@ -113,6 +131,48 @@ public class DCfgInstanceNode implements IDCfgNode {
 	public void setValue(Object value) {
 		this.isChanged = true;
 		setValueInternal(value);
+	}
+
+	@Override
+	public boolean isValid(String strValue) {
+		// TODO Restrictions
+		return propType.isValid(strValue);
+	}
+
+	@Override
+	public String toValidString(String incomplete) {
+		// TODO Restrictions
+		return propType.toValidString(incomplete);
+	}
+
+	@Override
+	public String getValueAsString() {
+		// TODO Restrictions
+		return propType.toString(this.instance);
+	}
+
+	@Override
+	public boolean setValue(String strValue) {
+		// TODO Restrictions
+		try {
+			setValue(propType.fromString(strValue));
+			return true;
+		} catch(Exception exception) {
+			return false;
+		}
+	}
+
+	@Override
+	public ITypeExpansion<?> alternative() {
+		return propType.alternative(this.altType); // TODO alternative type - how to support switchables?
+	}
+
+	// IDCfgProperty ends here
+
+	Object getInstance() {
+		if(this.isLeaf)
+			throw new UnsupportedOperationException("Leaf node can't have an instance");
+		return this.instance;
 	}
 
 	void setValueFromInstance(Object value) {
@@ -148,8 +208,8 @@ public class DCfgInstanceNode implements IDCfgNode {
 	}
 
 	@Override
-	public Annotation getAnnotation(Class<? extends Annotation> annotationType) {
-		return elementAnnotations.get(annotationType);
+	public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
+		return (T) elementAnnotations.get(annotationType);
 	}
 
 	@Override
@@ -162,107 +222,137 @@ public class DCfgInstanceNode implements IDCfgNode {
 		return this.type;
 	}
 
+	// Instance node is not a field, thus it doesn't have any generic type.
+	@Override
+	public Type getGenericType() {
+		return this.type;
+	}
+
 	@Override
 	public boolean isCollection() {
 		return false;
 	}
 
 	@Override
-	public boolean isConfigurable() {
-		throw new UnsupportedOperationException("Non-collection node can't be configurable");
+	public IDCfgCollection getCollection() {
+		throw new UnsupportedOperationException("Can't get collection from a non-collection node.");
 	}
 
 	@Override
-	public boolean isOrderConfigurable() {
-		throw new UnsupportedOperationException("Non-collection node can't be order-configurable");
-	}
-
-	@Override
-	public ICfgIterator<IDCfgNode> getChildNodeIte() {
+	public Iterable<Map.Entry<String, IDCfgNode>> getEntries() {
 		if(this.isLeaf)
 			return null;
-		return new ICfgIterator<IDCfgNode>() {
-			private Stack<DCfgInstanceNode> parents = new Stack();
-			private Stack<Iterator<Field>> parentIterators = new Stack();
 
-			private DCfgInstanceNode currentIterated = DCfgInstanceNode.this;
-			private Iterator<Field> iterator = fieldsSet.iterator();
-
-			private DCfgFieldNode expandedColNode = null;
-			private Iterator<String> iteratorCol = null;
-
-			// remove/add unsupported - cache this!
-			private IDCfgNode nextNode = this.calculateNext(); 
-
+		return new Iterable<Map.Entry<String, IDCfgNode>>() {
 			@Override
-			public boolean hasNext() {
-				return this.nextNode != null;
-			}
-
-			@Override
-			public IDCfgNode next() {
-				IDCfgNode nextOne = this.nextNode;
-				this.nextNode = this.calculateNext();
-				return nextOne;
-			}
-			
-			private IDCfgNode calculateNext() {
-				if(this.expandedColNode != null) {
-					if(iteratorCol.hasNext()) {
-						// Collection element node can't be expanded.
-						String key = iteratorCol.next();
-						return expandedColNode.getNode(key); 
-					} else {
-						expandedColNode = null;
-						iteratorCol = null;
-					}
-				}
-
-				while(iterator.hasNext()) {
-					Field field = iterator.next();
-					DCfgFieldNode fieldNode = currentIterated.fieldNodeMap.get(field);
-					if(fieldNode.keys().isEmpty())
-						continue;
-
-					if(fieldNode.hasAnnotation(DynamicConfig.Expand.class)) {
-						if(fieldNode.isCollection()) {
-							this.expandedColNode = fieldNode;
-							this.iteratorCol = fieldNode.sortedKeys().iterator();
-							return this.calculateNext();
-						} else {
-							parents.push(this.currentIterated);
-							parentIterators.push(this.iterator);
-
-							this.currentIterated = fieldNode.getNode("");
-							this.iterator = currentIterated.fieldsSet.iterator();
-							continue;
-						}
-					} else if(fieldNode.isCollection()) {
-						return fieldNode;
-					} else return fieldNode.getNode("");
-				}
-
-				if(!parents.isEmpty()) {
-					this.currentIterated = parents.pop();
-					this.iterator = parentIterators.pop();
-					return this.calculateNext();
-				}
-
-				return null;
-			}
-
-			@Override
-			public void add(String key) {
-				throw new UnsupportedOperationException(this.expandedColNode == null?
-						"Non-collection nodes does not support add operation" :
-							"Immutable collection can't be iterated.");
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException(
-						"Non-collection nodes does not support remove operation");
+			public Iterator<Map.Entry<String, IDCfgNode>> iterator() {
+				return new EntryIterator();
 			}
 		};
+	}
+
+	@Override
+	public Iterable<String> getKeys() {
+		if(this.isLeaf)
+			return null;
+
+		return Iterables.transform(this.getEntries(),
+				new Function<Map.Entry<String, IDCfgNode>, String>() {
+					@Override
+					public String apply(Map.Entry<String, IDCfgNode> input) {
+						return input.getKey();
+					}		
+		});
+	}
+
+	@Override
+	public Iterable<IDCfgNode> getChildNodes() {
+		if(this.isLeaf)
+			return null;
+
+		return Iterables.transform(this.getEntries(),
+				new Function<Map.Entry<String, IDCfgNode>, IDCfgNode>() {
+					@Override
+					public IDCfgNode apply(Map.Entry<String, IDCfgNode> input) {
+						return input.getValue();
+					}		
+		});
+	}
+
+	private class EntryIterator implements Iterator<Map.Entry<String, IDCfgNode>> {
+		private Stack<DCfgInstanceNode> parents = new Stack();
+		private Stack<Iterator<Field>> parentIterators = new Stack();
+
+		private DCfgInstanceNode currentIterated = DCfgInstanceNode.this;
+		private Iterator<Field> iterator = fieldsSet.iterator();
+
+		private DCfgFieldNode expandedColNode = null;
+		private Iterator<String> iteratorCol = null;
+
+		// remove/add unsupported - cache this!
+		private Map.Entry<String, IDCfgNode> nextEntry = this.calculateNext(); 
+
+		@Override
+		public boolean hasNext() {
+			return this.nextEntry != null;
+		}
+
+		@Override
+		public Map.Entry<String, IDCfgNode> next() {
+			Map.Entry<String, IDCfgNode> nextOne = this.nextEntry;
+			this.nextEntry = this.calculateNext();
+			return nextOne;
+		}
+
+		private Map.Entry<String, IDCfgNode> calculateNext() {
+			if(this.expandedColNode != null) {
+				if(iteratorCol.hasNext()) {
+					// Collection element node can't be expanded.
+					String key = iteratorCol.next();
+					return Pair.<String, IDCfgNode>of(key, expandedColNode.getNode(key)); 
+				} else {
+					expandedColNode = null;
+					iteratorCol = null;
+				}
+			}
+
+			while(iterator.hasNext()) {
+				Field field = iterator.next();
+				DCfgFieldNode fieldNode = currentIterated.fieldNodeMap.get(field);
+				if(fieldNode.keys().isEmpty())
+					continue;
+
+				if(fieldNode.hasAnnotation(DynamicConfig.Expand.class)) {
+					if(fieldNode.isCollection()) {
+						this.expandedColNode = fieldNode;
+						this.iteratorCol = fieldNode.sortedKeys().iterator();
+						return this.calculateNext();
+					} else {
+						parents.push(this.currentIterated);
+						parentIterators.push(this.iterator);
+
+						this.currentIterated = fieldNode.getNode("");
+						this.iterator = currentIterated.fieldsSet.iterator();
+						continue;
+					}
+				} else if(fieldNode.isCollection()) {
+					return Pair.<String, IDCfgNode>of(field.getName(), fieldNode);
+				} else return Pair.<String, IDCfgNode>of(field.getName(), fieldNode.getNode(""));
+			}
+
+			if(!parents.isEmpty()) {
+				this.currentIterated = parents.pop();
+				this.iterator = parentIterators.pop();
+				return this.calculateNext();
+			}
+
+			return null;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException(
+					"This iterator does not support remove operation");
+		}
 	}
 }
