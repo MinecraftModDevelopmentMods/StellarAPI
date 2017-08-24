@@ -18,12 +18,4 @@ public class CelestialType extends IForgeRegistryEntry.Impl<CelestialType> {
 		this.parent = parent;
 	}
 
-	//Category of this type.
-	private EnumCelestialCategory category = EnumCelestialCategory.UNKNOWN;
-
-	/**
-	 * Sets category.
-	 * */
-	void setCategory(EnumCelestialCategory category) { this.category = category; }
-
 }
