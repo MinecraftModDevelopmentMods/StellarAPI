@@ -5,6 +5,7 @@ import stellarapi.api.lib.math.Vector3;
 
 /**
  * Absolute periodic movement of the object, totally .
+ * TODO there could be many movements combined together
  * */
 public interface IPeriodicMovement {
 
