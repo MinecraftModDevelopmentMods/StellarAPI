@@ -1,11 +1,12 @@
 package stellarapi.api.lib.math;
 
 /**
- * 3*3 Mutable Matrix for double.
+ * 4*4 Mutable Matrix for double.
+ * TODO utility methods (Scale, Translation) & Initialize by rotMat & translation & scale.
  */
 public class Matrix4 {
 
-	private static final int DIM = 3;
+	private static final int DIM = 4;
 
 	private double value[][] = new double[DIM][DIM];
 
@@ -163,7 +164,7 @@ public class Matrix4 {
 		return this;
 	}
 
-	public Vector3 transform(Vector3 vec) {
+	public Vector4 transform(Vector4 vec) {
 		double[] cache = new double[DIM];
 
 		for (int i = 0; i < DIM; i++) {
@@ -188,6 +189,8 @@ public class Matrix4 {
 		double xz = ax * az;
 		double xy = ax * ay;
 		double yz = ay * az;
+
+		this.setIdentity();
 
 		value[0][0] = t * ax * ax + cosTheta;
 		value[0][1] = t * xy - sinTheta * az;

@@ -1,11 +1,11 @@
 package stellarapi.api.lib.math;
 
 /**
- * 3-dimension Mutable Euclidian Vector for double.
+ * 4-dimension Mutable Euclidian Vector for double.
  */
 public class Vector4 {
 
-	private static final int DIM = 3;
+	private static final int DIM = 4;
 	private double[] value = new double[DIM];
 
 	/**
@@ -29,6 +29,12 @@ public class Vector4 {
 			value[i] = vec.value[i];
 	}
 
+	public Vector4(Vector3 vec, double w) {
+		for (int i = 0; i < DIM-1; i++)
+			value[i] = vec.getCoord(i);
+		value[DIM-1] = w;
+	}
+
 	public Vector4 set(Vector4 val) {
 		for (int i = 0; i < DIM; i++)
 			value[i] = val.value[i];
@@ -38,6 +44,13 @@ public class Vector4 {
 	public Vector4 set(double... coords) {
 		for (int i = 0; i < DIM; i++)
 			value[i] = coords[i];
+		return this;
+	}
+
+	public Vector4 set(Vector3 vec, double w) {
+		for (int i = 0; i < DIM-1; i++)
+			value[i] = vec.getCoord(i);
+		value[DIM-1] = w;
 		return this;
 	}
 
@@ -59,6 +72,10 @@ public class Vector4 {
 
 	public double getZ() {
 		return value[2];
+	}
+
+	public double getW() {
+		return value[3];
 	}
 
 	public Vector4 add(Vector4 par) {
@@ -109,14 +126,6 @@ public class Vector4 {
 			ret += value[i] * vec.value[i];
 
 		return ret;
-	}
-
-	public Vector4 setCross(Vector4 par1, Vector4 par2) {
-		this.value[0] = par1.value[1] * par2.value[2] - par1.value[2] * par2.value[1];
-		this.value[1] = par1.value[2] * par2.value[0] - par1.value[0] * par2.value[2];
-		this.value[2] = par1.value[0] * par2.value[1] - par1.value[1] * par2.value[0];
-
-		return this;
 	}
 
 	public double size2() {

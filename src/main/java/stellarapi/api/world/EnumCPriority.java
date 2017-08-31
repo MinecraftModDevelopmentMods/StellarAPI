@@ -1,6 +1,6 @@
 package stellarapi.api.world;
 
-public enum CPriority {
+public enum EnumCPriority {
 	HIGHEST,
 	HIGH,
 	MODERATE,

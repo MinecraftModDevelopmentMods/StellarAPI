@@ -2,6 +2,7 @@ package stellarapi.api.lib.math;
 
 /**
  * 3*3 Mutable Matrix for double.
+ * TODO utility methods (Scale).
  */
 public class Matrix3 {
 
