@@ -1,5 +1,7 @@
 package stellarapi.api.lib.config;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -83,7 +85,7 @@ public interface ITypeExpansion<C> {
 	 * */
 	public boolean isOrderDependent();
 
-	/** Get the preserved order. */
+	/** Get the preserved order. Should implement remove operation. */
 	public Iterable<Map.Entry<String, Object>> preservedOrder(C collection);
 
 
@@ -243,6 +245,138 @@ public interface ITypeExpansion<C> {
 		}
 	}
 
+	static final ArrayExpansion ARRAY = new ArrayExpansion();
+	public static class ArrayExpansion implements ITypeExpansion<Object> {
+		@Override
+		public boolean hasKey(Object collection, String key) {
+			try {
+				int index = Integer.parseInt(key);
+				return index >= 0 && index < Array.getLength(collection);
+			} catch(NumberFormatException exception) {
+				return false;
+			}
+		}
+
+		@Override
+		public Iterable<String> getKeys(final Object collection) {
+			return new Iterable<String>() {
+				@Override
+				public Iterator<String> iterator() {
+					return new Iterator<String>() {
+						int index = 0;
+						final int size = Array.getLength(collection);
+
+						@Override
+						public boolean hasNext() { return index < size; }
+						@Override
+						public String next() {
+							return String.valueOf(this.index++);
+						}
+						@Override
+						public void remove() {
+					        throw new UnsupportedOperationException("can't remove from array");
+					    }
+					};
+				}
+			};
+		}
+
+		@Override
+		public Object getValue(Object collection, String key) {
+			return Array.get(collection, Integer.parseInt(key));
+		}
+
+		@Override
+		public Class<?> getValueType(Object collection, String key, Type type) {
+			return (Class<?>) ((GenericArrayType)type).getGenericComponentType();
+		}
+
+		@Override
+		public Object setValue(Object collection, String key, Object value) {
+			Array.set(collection, Integer.parseInt(key), value);
+			return collection;
+		}
+
+		@Override
+		public void remove(Object collection, String key) {
+			throw new UnsupportedOperationException("can't remove from array");
+		}
+
+		@Override
+		public String getValidKey(Object collection, String suggestedKey, int newOrder) {
+			return String.valueOf(newOrder);
+		}
+
+		@Override
+		public void changeKey(Object collection, String oldKey, String newKey) {
+			// Is not going to work well, but... implement swap only. 
+			int oldIndex = Integer.parseInt(oldKey);
+			int newIndex = Integer.parseInt(newKey);
+			int size = Array.getLength(collection);
+			if(0 <= oldIndex && oldIndex < size && 0 <= newIndex && newIndex < size) {
+				Object oldElement = Array.get(collection, oldIndex);
+				Array.set(collection, oldIndex, Array.get(collection,newIndex));
+				Array.set(collection, newIndex, oldElement);
+			}
+		}
+
+		@Override
+		public boolean isOrdered() {
+			return true;
+		}
+
+		@Override
+		public void reorder(Object collection, List<String> preOrder, List<String> postOrder) {
+			if(!preOrder.equals(postOrder)) {
+				if(preOrder.isEmpty()) {
+					throw new IllegalStateException("Order-dependent collection should have its order tracked");
+				} else {
+					List col2 = Lists.newArrayList(Array.getLength(collection));
+					int index = 0;
+					for(String key : postOrder)
+						col2.set(index++, Array.get(collection, preOrder.indexOf(key)));
+					index = 0;
+					for(Object object : col2)
+						Array.set(collection, index++, object);
+				}
+			}
+
+			// No need to rearrange keys. It's directly dependent to the order.
+		}
+
+		@Override
+		public boolean isOrderDependent() {
+			return true;
+		}
+
+		@Override
+		public Iterable<Map.Entry<String, Object>> preservedOrder(final Object collection) {
+			return new Iterable<Map.Entry<String, Object>> () {
+				@Override
+				public Iterator<Entry<String, Object>> iterator() {
+					return new Iterator<Entry<String, Object>> () {
+						int size = Array.getLength(collection);
+						int index = 0;
+
+						@Override
+						public boolean hasNext() {
+							return index < size;
+						}
+
+						@Override
+						public Map.Entry<String, Object> next() {
+							return Pair.of(String.valueOf(this.index), Array.get(collection, this.index++));
+						}
+
+						@Override
+						public void remove() {
+							throw new UnsupportedOperationException("can't remove from array");
+						}
+					};
+				}
+			};
+		}
+	}
 
 	static final ListExpansion LIST = new ListExpansion();
 	public static class ListExpansion implements ITypeExpansion<List> {
@@ -367,6 +501,9 @@ public interface ITypeExpansion<C> {
 						public Map.Entry<String, Object> next() {
 							return Pair.of(String.valueOf(this.index++), iterator.next());
 						}
+
+						@Override
+						public void remove() { iterator.remove(); }
 					};
 				}
 			};

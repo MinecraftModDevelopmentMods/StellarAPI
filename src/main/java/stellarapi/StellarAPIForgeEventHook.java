@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
@@ -25,13 +25,13 @@ public class StellarAPIForgeEventHook {
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void onStartUsingItem(LivingEntityUseItemEvent.Start event) {
-		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
+		IOpticalViewer optics = event.getEntity().getCapability(SAPICapabilities.VIEWER_CAPABILITY,
 				EnumFacing.DOWN);
 
 		if (optics instanceof OpticalViewerEventCallback
-				&& event.getItem().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				&& event.getItem().hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 			IOpticalProperties properties = event.getItem().getCapability(
-					StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+					SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 
 			ItemStack previous = event.getEntityLiving().getActiveItemStack();
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), event.getItem());
@@ -59,13 +59,13 @@ public class StellarAPIForgeEventHook {
 
 	@SuppressWarnings("deprecation")
 	private void onEndItemUse(LivingEntityUseItemEvent event) {
-		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
+		IOpticalViewer optics = event.getEntity().getCapability(SAPICapabilities.VIEWER_CAPABILITY,
 				EnumFacing.DOWN);
 
 		if (optics instanceof OpticalViewerEventCallback
-				&& event.getItem().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				&& event.getItem().hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 			IOpticalProperties properties = event.getItem().getCapability(
-					StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+					SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 
 			ItemStack previous = event.getEntityLiving().getActiveItemStack();
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), ItemStack.EMPTY);

@@ -24,8 +24,8 @@
  * Coordinates section of Stellar API.
  * @author Abastro
  */
-@API(apiVersion = "@VERSION@", owner = StellarAPI.modid, provides = StellarAPI.apiid)
+@API(apiVersion = "@VERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
 package stellarapi.api.coordinates;
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.api.SAPIReference;

@@ -21,7 +21,7 @@
  * */
 
 /**
- * World section of Stellar API.
+ * Celestial Collection section of Stellar API.
  * @author Abastro
  */
-package stellarapi.api.world;
+package stellarapi.api.celestials.collection;

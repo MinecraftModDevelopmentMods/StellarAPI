@@ -3,7 +3,7 @@ package stellarapi.reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import stellarapi.api.IUpdatedOpticalViewer;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
@@ -60,14 +60,14 @@ public final class OpticalViewerEventCallback implements IUpdatedOpticalViewer, 
 			boolean updateScope = false;
 			boolean updateFilter = false;
 
-			if (this.ridingEntity != null && ridingEntity.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
-				IOpticalProperties property = ridingEntity.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+			if (this.ridingEntity != null && ridingEntity.hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = ridingEntity.getCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				updateScope = updateScope || property.isScope();
 				updateFilter = updateFilter || property.isFilter();
 			}
 
-			if (entity.getRidingEntity() != null && entity.getRidingEntity().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
-				IOpticalProperties property = entity.getRidingEntity().getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+			if (entity.getRidingEntity() != null && entity.getRidingEntity().hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = entity.getRidingEntity().getCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				updateScope = updateScope || property.isScope();
 				updateFilter = updateFilter || property.isFilter();
 			}

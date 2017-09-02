@@ -1,4 +1,4 @@
-package stellarapi.api.world;
+package worldsets.api;
 
 import java.util.Map;
 
@@ -37,6 +37,10 @@ public abstract class WorldSet extends IForgeRegistryEntry.Impl<WorldSet> {
 	protected WorldSet set(String property, EnumFlag flag) {
 		flags.put(property, flag);
 		return this;
+	}
+
+	public EnumCPriority getPriority() {
+		return this.priority;
 	}
 
 	public DimensionType[] getExplicitTypes() {

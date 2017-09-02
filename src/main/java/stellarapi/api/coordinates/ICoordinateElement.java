@@ -18,15 +18,15 @@ public interface ICoordinateElement {
 
 	/**
 	 * Transforms the vector and returns the instance itself.
-	 * Create new vector if you want.
+	 * Create new vector if you want. (premult standard)
 	 * */
-	public Vector4 transform(Vector4 instance);
+	public Vector4 transform(CoordContext context, Vector4 instance);
 
 	/**
 	 * Inverse-transforms the vector and returns the instance itself.
-	 * Create new vector if you want.
+	 * Create new vector if you want. (premult standard)
 	 * */
-	public Vector4 inverseTransform(Vector4 isntance);
+	public Vector4 inverseTransform(CoordContext context, Vector4 instance);
 
 	/**
 	 * Gives set of required context types.

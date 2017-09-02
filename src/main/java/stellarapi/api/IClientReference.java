@@ -1,5 +1,6 @@
 package stellarapi.api;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 
@@ -12,5 +13,7 @@ public interface IClientReference {
 	public ICombinedProgressUpdate getLoadingProgress();
 
 	public World getClientWorld();
+
+	public EntityPlayer getClientPlayer();
 
 }

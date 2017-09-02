@@ -1,8 +1,12 @@
 package stellarapi.api.coordinates;
 
+import java.util.Set;
+
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import stellarapi.api.lib.math.Vector3;
+import stellarapi.api.SAPICapabilities;
+import stellarapi.api.patch.BasePatchHandler;
 
 /**
  * Context class to gain the coordinates.
@@ -11,13 +15,18 @@ public class CoordContext {
 	private final World world;
 	private long time;
 	private ICapabilityProvider theProvider = null;
-	private Vector3 worldPos = null;
+	private Vec3d worldPos = null;
+
+	public static ILocalCoordinates getEvaluator(CoordContext context) {
+		if(BasePatchHandler.isLocationSpecific() && context.theProvider != null)
+			return context.theProvider.getCapability(SAPICapabilities.LOCAL_COORDINATES, null);
+		else return context.world.getCapability(SAPICapabilities.LOCAL_COORDINATES, null);
+	}
 
 	/**
 	 * Creates the context with the current world.
-	 * TODO is +1 on time needed?
 	 * */
-	public CoordContext(World world) {
+	public CoordContext(World world, boolean offset) {
 		this.world = world;
 		this.time = world.getWorldTime();
 	}
@@ -30,7 +39,7 @@ public class CoordContext {
 		return this;
 	}
 
-	public CoordContext setPosition(ICapabilityProvider theProvider, Vector3 worldPos) {
+	public CoordContext setPosition(ICapabilityProvider theProvider, Vec3d worldPos) {
 		this.theProvider = theProvider;
 		this.worldPos = worldPos;
 		return this;
@@ -40,17 +49,23 @@ public class CoordContext {
 		return this.world;
 	}
 
-	public Object getMainSettings() {
-		// TODO stub
-		return null;
-	}
-
-	public Object getSpecificSettings(CCoordinates coordinates) {
-		return null;
-	}
-
 	public long getTime() {
 		return this.time;
+	}
+
+	public ICapabilityProvider getLocalProvider() {
+		return this.theProvider;
+	}
+
+	public Vec3d getWorldPos() {
+		return this.worldPos;
+	}
+
+	public boolean supportContext(Set<EnumContextType> typeSet) {
+		for(EnumContextType type : typeSet)
+			if(!this.supportContext(type))
+				return false;
+		return true;
 	}
 
 	public boolean supportContext(EnumContextType type) {

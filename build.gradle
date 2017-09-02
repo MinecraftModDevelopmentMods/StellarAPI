@@ -12,7 +12,8 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.6.5.1.1"
+stversion = "0.6.5.1.1"
+wsversion = "0.1.1.1"
 
 group= "stellarapi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Stellar API"
@@ -22,7 +23,8 @@ minecraft {
     runDir = "eclipse/assets"
 
     mappings = "stable_32"
-    replace "@VERSION@", project.version
+    replace "@STVERSION@", project.stversion
+    replace "@WSVERSION@", project.wsversion
 }
 
 
@@ -55,7 +57,8 @@ task srcJar(type: Jar) {
 processResources
 {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
+    inputs.property "stversion", project.stversion
+    inputs.property "wsversion", project.wsversion
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -63,7 +66,7 @@ processResources
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'stversion':project.stversion, 'wsversion':project.wsversion, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info

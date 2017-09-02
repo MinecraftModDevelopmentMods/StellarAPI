@@ -1,4 +1,4 @@
-package stellarapi.api.celestials;
+package stellarapi.api.celestials.collection;
 
 import java.util.List;
 

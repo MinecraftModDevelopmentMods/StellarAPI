@@ -17,7 +17,7 @@ import stellarapi.StellarAPI;
 import stellarapi.api.IClientReference;
 import stellarapi.api.IReference;
 import stellarapi.api.IUpdatedOpticalViewer;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.StellarAPIReference;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.interact.IOpticalProperties;
@@ -95,7 +95,7 @@ public class StellarAPIReferenceHandler implements IReference {
 
 	@Override
 	public IUpdatedOpticalViewer getUpdatedViewerSafe(Entity entity) {
-		IOpticalViewer viewer = entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
+		IOpticalViewer viewer = entity.getCapability(SAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
 		if (viewer instanceof IUpdatedOpticalViewer)
 			return (IUpdatedOpticalViewer) viewer;
 		else return null;

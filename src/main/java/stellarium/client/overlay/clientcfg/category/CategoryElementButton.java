@@ -89,7 +89,7 @@ public class CategoryElementButton implements IHierarchyElement {
 
 	@Override
 	public boolean needUpdate() {
-		// TODO update handling
+		// TODO GUI update handling
 		return false;
 	}
 

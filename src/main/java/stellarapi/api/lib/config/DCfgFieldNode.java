@@ -357,7 +357,7 @@ public class DCfgFieldNode implements IDCfgNode, IDCfgCollection {
 	}
 
 	void changeKeyRequested(String oldKey, String newKey) {
-		// TODO safety checks.
+		// TODO DynamicConfig safety checks.
 		DCfgInstanceNode oldValue = childNodes.get(oldKey);
 		int oldIndex = postOrder.indexOf(oldKey);
 

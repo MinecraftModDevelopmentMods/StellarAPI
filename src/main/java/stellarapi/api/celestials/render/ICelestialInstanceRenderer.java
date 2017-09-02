@@ -1,9 +1,9 @@
 package stellarapi.api.celestials.render;
 
-import stellarapi.api.celestials.CelestialInstance;
+import stellarapi.api.celestials.CelestialObject;
 
 public interface ICelestialInstanceRenderer {
 
-	public void upload(CelestialInstance instance, ICelestialVertexBuffer buffer);
+	public void upload(CelestialObject instance, ICelestialVertexBuffer buffer);
 
 }

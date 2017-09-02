@@ -133,8 +133,7 @@ public interface IPropertyType {
 
 		@Override
 		public ITypeExpansion<?> alternative(String altId) {
-			// TODO Array representation
-			return null;
+			return ITypeExpansion.LIST;
 		}
 	}
 
@@ -204,8 +203,7 @@ public interface IPropertyType {
 
 		@Override
 		public ITypeExpansion<?> alternative(String altId) {
-			// TODO Array representation
-			return null;
+			return ITypeExpansion.ARRAY;
 		}
 	}
 
@@ -245,7 +243,7 @@ public interface IPropertyType {
 	}
 
 	// TODO what does byte mean by default - number or character?
-	// I guess it's character, but just put a bit more thought on this.
+	// I guess it's character, but just need to put a bit more thought on this.
 	static final ByteType byteT = new ByteType();
 	static final ArrayType byteAT = new ArrayType(byteT, byte.class);
 	static final ArrayType ByteAT = new ArrayType(byteT, Byte.class);

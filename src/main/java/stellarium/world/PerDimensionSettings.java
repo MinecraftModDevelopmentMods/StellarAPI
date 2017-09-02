@@ -132,7 +132,7 @@ public class PerDimensionSettings {
 			}
 		}).toArray(new String[0]); // TODO Render Type Dynamic Valid Values
 
-       	
+       	// TODO migrate into dynamic config system
        	propAtmTotalHeight.setComment("Total Height of the atmosphere relative to the radius.\n"
        			+ "This determines the accuracy of the atmosphere, relative to the scale height.");
        	propAtmTotalHeight.setRequiresWorldRestart(true);

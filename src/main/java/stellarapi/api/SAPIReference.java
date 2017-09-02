@@ -6,9 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
-import stellarapi.api.celestials.CelestialCollectionManager;
-import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.optics.IOpticalFilter;
@@ -19,7 +16,11 @@ import stellarapi.api.perdimres.PerDimensionResourceManager;
 /**
  * Central reference for Stellar API.
  */
-public final class StellarAPIReference {
+public final class SAPIReference {
+
+	public static final String modid = "stellarapi";
+	public static final String version = "@STVERSION@";
+	public static final String apiid = "stellarapi|api";
 
 	private static IReference reference;
 
@@ -30,7 +31,7 @@ public final class StellarAPIReference {
 
 	private EventBus stellarEventBus = new EventBus();
 
-	private static StellarAPIReference INSTANCE = new StellarAPIReference();
+	private static SAPIReference INSTANCE = new SAPIReference();
 
 	/** Getter for the daytime checker. */
 	public static DaytimeChecker getDaytimeChecker() {

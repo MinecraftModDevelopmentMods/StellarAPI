@@ -2,22 +2,22 @@ package stellarapi.api.coordinates;
 
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.util.ResourceLocation;
 
-public class CCoordInstance implements Comparable {
+public class CCoordInstance {
+
 	private ResourceLocation name;
 	private CCoordInstance parent;
 
 	private CCoordinates origin = null;
 	private ICoordinateElement[] elements = null;
-	private boolean overriden = false;
+	private boolean settingsOverriden = false;
 
 	public CCoordInstance(CCoordinates origin, CCoordInstance parent) {
 		this(origin.getRegistryName(), parent);
 		this.origin = origin;
 		this.elements = origin.getDefaultElements();
+		this.parent = parent;
 	}
 
 	public CCoordInstance(ResourceLocation name, CCoordInstance parent) {
@@ -25,19 +25,48 @@ public class CCoordInstance implements Comparable {
 		this.parent = parent;
 	}
 
-	public static CCoordInstance of(CCoordinates origin, Map<ResourceLocation, CCoordInstance> instances) {
-		if(origin.equals(DefaultCoords.base))
-			return new CCoordInstance(origin, null);
+	/** Don't use this instance. */
+	@Deprecated
+	public static final CCoordInstance PLACEHOLDER = new CCoordInstance(new ResourceLocation(""), null);
 
-		if(instances.containsKey(origin.getDefaultParentID()))
+	/** Only to instantiate the placeholders, mainly for something to put on parents. */
+	public static CCoordInstance of(CCoordinates origin, Map<ResourceLocation, CCoordInstance> instances) {
+		if(origin.getDefaultParentID() == null)
+			return new CCoordInstance(origin, null);
+		else if(instances.containsKey(origin.getDefaultParentID()))
 			return new CCoordInstance(origin, instances.get(origin.getDefaultParentID()));
-		else throw new IllegalArgumentException("Parent not initialized");
+		else return new CCoordInstance(origin, PLACEHOLDER);
 	}
+
+
+	public ResourceLocation getID() {
+		return this.name;
+	}
+
+
+	public CCoordinates getOrigin() {
+		return this.origin;
+	}
+
 
 	public boolean isRoot() {
 		return this.parent == null;
 	}
 
+	public CCoordInstance getParent() {
+		return this.parent;
+	}
+
+	/** Internal method */
+	@Deprecated
+	public void setParent(CCoordInstance newParent) {
+		this.parent = newParent;
+	}
+
+	
+	public boolean hasCoordElements() {
+		return this.elements != null;
+	}
 
 	public ICoordinateElement[] getCoordElements() {
 		return this.elements;
@@ -53,7 +82,6 @@ public class CCoordInstance implements Comparable {
 
 	public CCoordInstance setCoordElements(ICoordinateElement[] newElements) {
 		this.elements = newElements;
-		this.overriden = true;
 		return this;
 	}
 
@@ -62,24 +90,31 @@ public class CCoordInstance implements Comparable {
 		return this;
 	}
 
+	public CCoordInstance overrideSettings() {
+		this.settingsOverriden = true;
+		return this;
+	}
 
-	@Nullable
+
+	// TODO CoordSystem generate settings from where?
+	/* @Nullable
 	public ICoordSettings generateSettings() {
-		if(this.origin == null || this.overriden)
+		if(this.origin == null || this.settingsOverriden)
 			return null;
+
 		for(ICoordinateElement element : this.elements)
 			if(element.requiredContextTypes().contains(EnumContextType.WORLD))
 				return origin.generateSettings();
-
+		
 		return null;
-	}
+	}*/
 
 
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof CCoordInstance) {
 			CCoordInstance other = (CCoordInstance) obj;
-			return name.equals(other.name) && parent.equals(other.parent);
+			return name.equals(other.name);
 		} else if(obj instanceof ResourceLocation) {
 			return name.equals(obj);
 		} else return false;
@@ -88,29 +123,5 @@ public class CCoordInstance implements Comparable {
 	@Override
 	public int hashCode() {
 		return name.hashCode();
-	}
-
-	@Override
-	public int compareTo(Object obj) {
-		if(obj instanceof CCoordInstance) {
-			CCoordInstance other = (CCoordInstance) obj;
-			if(this == other)
-				return 0;
-			else if(this.isDescendant(other))
-				return -1;
-			else if(other.isDescendant(this))
-				return 1;
-			return name.toString().compareTo(other.name.toString());
-		}
-
-		return 0;
-	}
-
-	private boolean isDescendant(CCoordInstance toCheck) {
-		if(toCheck == null)
-			return false;
-		if(toCheck == this)
-			return true;
-		return this.isDescendant(toCheck.parent);
 	}
 }

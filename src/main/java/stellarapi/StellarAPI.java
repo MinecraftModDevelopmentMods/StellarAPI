@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.DCfgManager;
 import stellarapi.example.item.ItemFilteredTelescopeExample;
@@ -31,20 +31,18 @@ import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 import stellarapi.impl.AlarmWakeHandler;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
+import stellarapi.internal.coordinates.CoordRegistry;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.StellarAPIReferenceHandler;
 
-@Mod(modid = StellarAPI.modid, version = StellarAPI.version,
+@Mod(modid = SAPIReference.modid, version = SAPIReference.version,
 acceptedMinecraftVersions="[1.11.0, 1.12.0)",
-guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
+guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory",
+dependencies = "required-after:worldsetapi")
 public final class StellarAPI {
 
-	public static final String modid = "stellarapi";
-	public static final String version = "@VERSION@";
-	public static final String apiid = "stellarapi|api";
-
 	// The instance of Stellarium
-	@Instance(StellarAPI.modid)
+	@Instance(SAPIReference.modid)
 	public static StellarAPI instance;
 
 	@SidedProxy(clientSide = "stellarapi.ClientProxy", serverSide = "stellarapi.CommonProxy")
@@ -122,7 +120,9 @@ public final class StellarAPI {
 	}
 
 	@EventHandler
-	public void load(FMLInitializationEvent event) throws IOException {
+	public void init(FMLInitializationEvent event) throws IOException {
+		CoordRegistry.onInit();
+
 		cfgManager.syncFromFile();
 
 		proxy.load(event);

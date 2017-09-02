@@ -13,6 +13,7 @@ import stellarapi.api.optics.Wavelength;
  * <p>
  * So this object is, indeed, per-dimensional.
  */
+@Deprecated
 public interface ICelestialObject {
 
 	/**
