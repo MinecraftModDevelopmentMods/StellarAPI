@@ -17,10 +17,18 @@ import stellarapi.api.perdimres.PerDimensionResourceManager;
  * Central reference for Stellar API.
  */
 public final class SAPIReference {
+	
+	// ********************************************* //
+	// ************** Mod Information ************** //
+	// ********************************************* //
 
 	public static final String modid = "stellarapi";
 	public static final String version = "@STVERSION@";
 	public static final String apiid = "stellarapi|api";
+
+	// ********************************************* //
+	// ************** Internal Fields ************** //
+	// ********************************************* //
 
 	private static IReference reference;
 

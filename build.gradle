@@ -12,8 +12,8 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-stversion = "0.6.5.1.1"
-wsversion = "0.1.1.1"
+stversion = "1.11.2-0.5.1.1"
+wsversion = "1.11.2-0.1.1"
 
 group= "stellarapi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Stellar API"

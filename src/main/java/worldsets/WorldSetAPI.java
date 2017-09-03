@@ -25,10 +25,19 @@ import worldsets.api.WorldSetInstance;
 acceptedMinecraftVersions="[1.11.0, 1.12.0)")
 public class WorldSetAPI {
 
+	// ********************************************* //
+	// ************** Mod Information ************** //
+	// ********************************************* //
+
 	public static final String modid = "worldsetapi";
 	public static final String version = "@WSVERSION@";
 
+	// ********************************************* //
+	// ************ WorldSet References ************ //
+	// ********************************************* //
+
 	public static final ResourceLocation WORLDSETS = new ResourceLocation(SAPIReference.modid, "worldsets");
+
 
 	@ObjectHolder("overworldtype")
 	public static final WorldSet overworldTypeSet = null;
@@ -38,7 +47,11 @@ public class WorldSetAPI {
 
 	@ObjectHolder("nethertype")
 	public static final WorldSet NetherTypeSet = null;
-	
+
+	// ********************************************* //
+	// ************** Process Section ************** //
+	// ********************************************* //
+
 	private static Map<WorldSet, WorldSetInstance> instanceMap = Maps.newHashMap();
 
 	private static IForgeRegistry<WorldSet> worldSetRegistry;
