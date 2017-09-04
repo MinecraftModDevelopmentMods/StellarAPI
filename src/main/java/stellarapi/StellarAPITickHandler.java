@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.helper.LivingItemAccessHelper;
 import stellarapi.api.interact.IOpticalProperties;
 
@@ -39,7 +39,7 @@ public class StellarAPITickHandler {
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void livingUpdate(LivingUpdateEvent event) {
-		if(!StellarAPIReference.isOpticalEntity(event.getEntityLiving()))
+		if(!SAPIReference.isOpticalEntity(event.getEntityLiving()))
 			return;
 
 		EnumHand hand = event.getEntityLiving().getActiveHand();
@@ -64,12 +64,12 @@ public class StellarAPITickHandler {
 
 			if(updateScope) {
 				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == ItemStack.EMPTY? ItemStack.EMPTY : itemstack);
-				StellarAPIReference.updateScope(event.getEntityLiving());
+				SAPIReference.updateScope(event.getEntityLiving());
 			}
 
 			if(updateFilter) {
 				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == ItemStack.EMPTY? ItemStack.EMPTY :  itemstack);
-				StellarAPIReference.updateFilter(event.getEntityLiving());
+				SAPIReference.updateFilter(event.getEntityLiving());
 			}
 		} else if(itemstack != itemInUse)
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemstack);
@@ -79,7 +79,7 @@ public class StellarAPITickHandler {
 	public void tickStart(TickEvent.WorldTickEvent e) {
 		if (e.phase == TickEvent.Phase.START) {
 			if (e.world != null) {
-				if (StellarAPIReference.getSleepWakeManager().isEnabled()) {
+				if (SAPIReference.getSleepWakeManager().isEnabled()) {
 					WorldServer world = (WorldServer) e.world;
 
 					world.updateAllPlayersSleepingFlag();
@@ -93,7 +93,7 @@ public class StellarAPITickHandler {
 	private void tryWakePlayers(WorldServer world) {
 		if (world.getGameRules().getBoolean("doDaylightCycle")) {
 			WorldInfo info = world.getWorldInfo();
-			info.setWorldTime(StellarAPIReference.getSleepWakeManager().getWakeTime(world,
+			info.setWorldTime(SAPIReference.getSleepWakeManager().getWakeTime(world,
 					(world.getWorldTime() / 24000L + 1L) * 24000L));
 		}
 

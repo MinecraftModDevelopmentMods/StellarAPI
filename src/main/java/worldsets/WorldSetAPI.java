@@ -1,13 +1,10 @@
 package worldsets;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +16,7 @@ import stellarapi.api.SAPIReference;
 import worldsets.api.EnumCPriority;
 import worldsets.api.EnumFlag;
 import worldsets.api.WorldSet;
-import worldsets.api.WorldSetInstance;
+import worldsets.api.event.WorldSetEvent;
 
 @Mod(modid = WorldSetAPI.modid, version = WorldSetAPI.version,
 acceptedMinecraftVersions="[1.11.0, 1.12.0)")
@@ -52,8 +49,6 @@ public class WorldSetAPI {
 	// ************** Process Section ************** //
 	// ********************************************* //
 
-	private static Map<WorldSet, WorldSetInstance> instanceMap = Maps.newHashMap();
-
 	private static IForgeRegistry<WorldSet> worldSetRegistry;
 
 	@SubscribeEvent
@@ -79,8 +74,13 @@ public class WorldSetAPI {
 				if(selectedSet == null  || selectedSet.getPriority().compareTo(worldSet.getPriority()) == -1)
 					selectedSet = worldSet;
 
+		MinecraftForge.EVENT_BUS.post(new WorldSetEvent.WorldInitializeEvent(world, selectedSet));
 		// TODO World Specifics
 	}
+
+	// ********************************************* //
+	// ****** WorldSet Implementation Section ****** //
+	// ********************************************* //
 
 	/** Those resembling overworld */
 	private static class OverworldSet extends WorldSet {

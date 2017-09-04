@@ -11,7 +11,6 @@ public class CCoordInstance {
 
 	private CCoordinates origin = null;
 	private ICoordinateElement[] elements = null;
-	private boolean settingsOverriden = false;
 
 	public CCoordInstance(CCoordinates origin, CCoordInstance parent) {
 		this(origin.getRegistryName(), parent);
@@ -89,26 +88,6 @@ public class CCoordInstance {
 		this.elements[index] = element;
 		return this;
 	}
-
-	public CCoordInstance overrideSettings() {
-		this.settingsOverriden = true;
-		return this;
-	}
-
-
-	// TODO CoordSystem generate settings from where?
-	/* @Nullable
-	public ICoordSettings generateSettings() {
-		if(this.origin == null || this.settingsOverriden)
-			return null;
-
-		for(ICoordinateElement element : this.elements)
-			if(element.requiredContextTypes().contains(EnumContextType.WORLD))
-				return origin.generateSettings();
-		
-		return null;
-	}*/
-
 
 	@Override
 	public boolean equals(Object obj) {

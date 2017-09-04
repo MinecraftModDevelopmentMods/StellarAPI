@@ -9,7 +9,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.PeriodHelper;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
@@ -73,7 +73,7 @@ public class OverlayTime implements IOverlayElement<PerOverlaySettings> {
 		}
 
 		descriptors.clear();
-		DaytimeChecker checker = StellarAPIReference.getDaytimeChecker();
+		DaytimeChecker checker = SAPIReference.getDaytimeChecker();
 
 		long dawnTime = checker.timeForCertainDescriptor(mc.world, EnumDaytimeDescriptor.DAWN, -1L);
 		long duskTime = checker.timeForCertainDescriptor(mc.world, EnumDaytimeDescriptor.DUSK, -1L);

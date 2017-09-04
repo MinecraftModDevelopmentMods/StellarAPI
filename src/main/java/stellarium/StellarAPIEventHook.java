@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
 import stellarapi.api.event.ResetCoordinateEvent;
@@ -30,11 +30,11 @@ public class StellarAPIEventHook {
 		StellarDimensionManager dimManager = StellarDimensionManager.get(event.getWorld());
 		if(dimManager != null) {
 			StellarSky.logger.info("Startng Construction of Celestial Images...");
-			StellarAPIReference.resetCoordinate(event.getWorld());
-			StellarAPIReference.resetSkyEffect(event.getWorld());
+			SAPIReference.resetCoordinate(event.getWorld());
+			SAPIReference.resetSkyEffect(event.getWorld());
 
-			ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(event.getWorld());
-			ISkyEffect sky = StellarAPIReference.getSkyEffect(event.getWorld());
+			ICelestialCoordinate coordinate = SAPIReference.getCoordinate(event.getWorld());
+			ISkyEffect sky = SAPIReference.getSkyEffect(event.getWorld());
 
 			event.getCollections().addAll(dimManager.constructCelestials(coordinate, sky));
 			event.getEffectors(IEffectorType.Light).addAll(dimManager.getSuns());
@@ -123,11 +123,11 @@ public class StellarAPIEventHook {
 	public static void setupDimension(World world, StellarManager manager, StellarDimensionManager dimManager) {
 		dimManager.setup();
 		
-		StellarAPIReference.constructCelestials(world);
-		StellarAPIReference.resetSkyEffect(world);
+		SAPIReference.constructCelestials(world);
+		SAPIReference.resetSkyEffect(world);
 		
-		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		ISkyEffect skyEffect = StellarAPIReference.getSkyEffect(world);
+		ICelestialCoordinate coordinate = SAPIReference.getCoordinate(world);
+		ISkyEffect skyEffect = SAPIReference.getSkyEffect(world);
 		
 		if(manager.getSettings().serverEnabled && dimManager.getSettings().doesPatchProvider()) {
 			DefaultCelestialHelper helper = new DefaultCelestialHelper((float)dimManager.getSettings().getSunlightMultiplier(), 1.0f,

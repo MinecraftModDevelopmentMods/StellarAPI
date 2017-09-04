@@ -14,4 +14,7 @@ public interface ICoordHandler {
 	 * */
 	public void instantiate(IForgeRegistry<CCoordinates> registry, Map<ResourceLocation, CCoordInstance> instancesToFill);
 
+	public Object generateSettings();
+	public boolean overrideSettings(CCoordinates coordinate);
+
 }

@@ -11,12 +11,12 @@ public class TypedModel implements ICapabilityProvider {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return false;
+		return this.capabilities != null? capabilities.hasCapability(capability, facing) : false;
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		return null;
+		return this.capabilities != null? capabilities.getCapability(capability, facing) : null;
 	}
 
 }

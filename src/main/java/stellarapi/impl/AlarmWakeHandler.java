@@ -8,7 +8,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IWakeHandler;
@@ -34,7 +34,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 	@Override
 	public long getWakeTime(World world, CelestialEffectors lightSources, ICelestialCoordinate coordinate,
 			long sleepTime) {
-		long nextMidnight = StellarAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
+		long nextMidnight = SAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
 				EnumDaytimeDescriptor.MIDNIGHT, sleepTime);
 		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod();
 		double currentOffset = period.getOffset(sleepTime, 0.0f);
@@ -49,7 +49,7 @@ public class AlarmWakeHandler implements IWakeHandler {
 	@Override
 	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSources,
 			ICelestialCoordinate coordinate, long sleepTime) {
-		long nextMidnight = StellarAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
+		long nextMidnight = SAPIReference.getDaytimeChecker().timeForCertainDescriptor(world,
 				EnumDaytimeDescriptor.MIDNIGHT, sleepTime);
 		CelestialPeriod period = lightSources.getPrimarySource().getHorizontalPeriod();
 		double currentOffset = period.getOffset(sleepTime, 0.0f);

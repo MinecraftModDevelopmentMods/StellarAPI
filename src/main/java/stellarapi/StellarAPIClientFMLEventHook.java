@@ -8,7 +8,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 
@@ -32,7 +32,7 @@ public class StellarAPIClientFMLEventHook {
 			if (checking && mc.world != null) {
 				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
 						StellarAPI.proxy.getLoadingProgress(), this.attempt);
-				if (!StellarAPIReference.getEventBus().post(loaded)) {
+				if (!SAPIReference.getEventBus().post(loaded)) {
 					Minecraft.getMinecraft().displayGuiScreen(null);
 					checking = false;
 					this.attempt = 1;

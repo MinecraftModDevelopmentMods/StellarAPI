@@ -2,7 +2,10 @@ package stellarapi.api.coordinates;
 
 import stellarapi.api.lib.math.Matrix4;
 
-public class CCoordinatesUtil {
+public class CCoordinateManager {
+
+
+
 	public static Matrix4 evaluate(Iterable<ICoordinateElement> elements, CoordContext context) {
 		Matrix4 evaluated = new Matrix4().setIdentity();
 		for(ICoordinateElement element : elements) {

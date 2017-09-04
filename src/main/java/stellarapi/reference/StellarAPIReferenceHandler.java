@@ -18,7 +18,7 @@ import stellarapi.api.IClientReference;
 import stellarapi.api.IReference;
 import stellarapi.api.IUpdatedOpticalViewer;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
@@ -27,7 +27,7 @@ import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.optics.NakedScope;
 
-public class StellarAPIReferenceHandler implements IReference {
+public class SAPIReferenceHandler implements IReference {
 
 	public void initialize() {
 		CapabilityManager.INSTANCE.register(IOpticalViewer.class, new Capability.IStorage<IOpticalViewer>() {
@@ -109,7 +109,7 @@ public class StellarAPIReferenceHandler implements IReference {
 	@SubscribeEvent
 	public void onGatherEntityCapability(AttachCapabilitiesEvent<Entity> event) {
 		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getObject());
-		StellarAPIReference.getEventBus().post(check);
+		SAPIReference.getEventBus().post(check);
 		if (check.isOpticalEntity())
 			event.addCapability(new ResourceLocation(StellarAPI.modid, "viewer"),
 					new PerEntityManager(event.getObject()));

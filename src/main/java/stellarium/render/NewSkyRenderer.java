@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.client.IRenderHandler;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReference;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.lib.render.IGenericRenderer;
@@ -30,10 +30,10 @@ public class NewSkyRenderer extends IRenderHandler {
 
 		Entity viewer = mc.getRenderViewEntity();
 
-		ICelestialCoordinate coordinate = StellarAPIReference.getCoordinate(world);
-		ISkyEffect sky = StellarAPIReference.getSkyEffect(world);
-		IViewScope scope = StellarAPIReference.getScope(viewer);
-		IOpticalFilter filter = StellarAPIReference.getFilter(viewer);
+		ICelestialCoordinate coordinate = SAPIReference.getCoordinate(world);
+		ISkyEffect sky = SAPIReference.getSkyEffect(world);
+		IViewScope scope = SAPIReference.getScope(viewer);
+		IOpticalFilter filter = SAPIReference.getFilter(viewer);
 		
 		SkyRenderInformation info = new SkyRenderInformation(mc, world, partialTicks,
 				new ViewerInfo(coordinate, sky, scope, filter, viewer));

@@ -33,7 +33,7 @@ import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.internal.coordinates.CoordRegistry;
 import stellarapi.lib.compat.CompatManager;
-import stellarapi.reference.StellarAPIReferenceHandler;
+import stellarapi.reference.SAPIReferenceHandler;
 
 @Mod(modid = SAPIReference.modid, version = SAPIReference.version,
 acceptedMinecraftVersions="[1.11.0, 1.12.0)",
@@ -79,9 +79,9 @@ public final class StellarAPI {
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 
-		StellarAPIReferenceHandler reference = new StellarAPIReferenceHandler();
+		SAPIReferenceHandler reference = new SAPIReferenceHandler();
 		reference.initialize();
-		StellarAPIReference.setReference(reference);
+		SAPIReference.setReference(reference);
 
 		MinecraftForge.EVENT_BUS.register(this.eventHook);
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
@@ -91,17 +91,17 @@ public final class StellarAPI {
 		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
 		this.cfgManager = new DCfgManager(this.config);
 
-		StellarAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
+		SAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
 
-		cfgManager.register(wakeCategory, StellarAPIReference.getSleepWakeManager());
+		cfgManager.register(wakeCategory, SAPIReference.getSleepWakeManager());
 
-		SleepWakeManager sleepWake = StellarAPIReference.getSleepWakeManager();
+		SleepWakeManager sleepWake = SAPIReference.getSleepWakeManager();
 		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
 		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
 
-		StellarAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.INSTANCE);
+		SAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.INSTANCE);
 
-		StellarAPIReference.getEventBus().register(new StellarAPIOwnEventHook());
+		SAPIReference.getEventBus().register(new StellarAPIOwnEventHook());
 
 		this.telescope = new ItemTelescopeExample().setUnlocalizedName("stellarapi.deftelescope")
 				.setCreativeTab(CreativeTabs.TOOLS).setMaxStackSize(1);
