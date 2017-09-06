@@ -25,7 +25,7 @@
  * @author Abastro
  */
 @API(apiVersion = "@VERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
-package stellarapi.api.area;
+package stellarapi.api.region;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.api.SAPIReference;

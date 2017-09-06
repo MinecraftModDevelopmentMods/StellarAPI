@@ -7,13 +7,18 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import stellarapi.api.coordinates.CCoordinates;
+import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.coordinates.ICoordSettings;
 import stellarapi.api.lib.config.DynamicConfig;
 
 public class WorldCoordSettings {
 
-	private transient CoordSettings parentSettings;
-	private transient IForgeRegistry<CCoordinates> registry;
+	private final transient CoordSettings parentSettings;
+	private final transient IForgeRegistry<CCoordinates> registry;
+
+	private transient ICoordProvider provider;
+	private transient boolean mainSettingsApplied = false;
+	private transient boolean spSettingsApplied = false;
 
 	@DynamicConfig.Expand
 	@DynamicConfig.Dependence(id = "mainSettings")
@@ -27,27 +32,46 @@ public class WorldCoordSettings {
 	public WorldCoordSettings(CoordSettings parentSettings) {
 		this.parentSettings = parentSettings;
 		this.registry = GameRegistry.findRegistry(CCoordinates.class);
+		this.provider = parentSettings.getCurrentProvider();
+
+		this.mainSettings = this.getMainSettings(null);
+		this.specificSettings = (Map)this.getSpSettings(null);
+	}
+
+	public void checkNupdateProvider() {
+		if(provider.getReadableName().equals(parentSettings.coordProviderName))
+			return;
+
+		this.provider = parentSettings.getCurrentProvider();
+		this.mainSettingsApplied = false;
+		this.spSettingsApplied = false;
 	}
 
 	@DynamicConfig.EvaluatorID("mainSettings")
 	public Object getMainSettings(Object previous) {
-		if(parentSettings.isCoordHandlerChanged)
-			return parentSettings.handler.generateSettings();
-		else return previous;
+		this.checkNupdateProvider();
+
+		if(!this.mainSettingsApplied) {
+			this.mainSettingsApplied = true;
+			return provider.generateSettings(parentSettings.theWorldSet);
+		} else return previous;
 	}
 
 	@DynamicConfig.EvaluatorID("spSettings")
 	public Object getSpSettings(Object previous) {
-		if(parentSettings.isCoordHandlerChanged) {
+		this.checkNupdateProvider();
+
+		if(!this.spSettingsApplied) {
+			this.spSettingsApplied = true;
+
 			ImmutableMap.Builder<String, ICoordSettings> builder = ImmutableMap.builder();
 			for(CCoordinates coordinates : registry.getValues()) {
 				ICoordSettings settings = coordinates.generateSettings();
-				if(settings != null && !parentSettings.handler.overrideSettings(coordinates))
+				if(settings != null && !provider.overrideSettings(parentSettings.theWorldSet, coordinates))
 					builder.put(settings.getName(), settings);
 			}
 			return builder.build();
-		}
-		else return previous;
+		} else return previous;
 	}
 
 }

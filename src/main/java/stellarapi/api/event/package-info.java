@@ -1,9 +1,9 @@
 /**
  * Event section of Stellar API.
  * */
-@API(apiVersion = "@VERSION@", owner = StellarAPI.modid, provides = StellarAPI.apiid)
+@API(apiVersion = "@VERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
 package stellarapi.api.event;
 
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.api.SAPIReference;

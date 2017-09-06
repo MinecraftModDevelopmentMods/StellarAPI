@@ -21,7 +21,7 @@
  * */
 
 /**
- * Settings section of Stellar API.
+ * Providers section of WorldSet API.
  * @author Abastro
  */
-package stellarapi.api.settings;
+package worldsets.api.provider;

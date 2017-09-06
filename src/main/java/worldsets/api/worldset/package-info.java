@@ -21,7 +21,7 @@
  * */
 
 /**
- * The APIs of WorldSet API.
+ * WorldSet section of WorldSet API.
  * @author Abastro
  */
-package worldsets.api;
+package worldsets.api.worldset;

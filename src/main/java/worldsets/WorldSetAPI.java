@@ -1,25 +1,30 @@
 package worldsets;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
 import stellarapi.api.SAPIReference;
-import worldsets.api.EnumCPriority;
-import worldsets.api.EnumFlag;
-import worldsets.api.WorldSet;
-import worldsets.api.event.WorldSetEvent;
+import worldsets.api.worldset.EnumCPriority;
+import worldsets.api.worldset.EnumFlag;
+import worldsets.api.worldset.WorldSet;
+import worldsets.api.worldset.WorldSetManager;
 
 @Mod(modid = WorldSetAPI.modid, version = WorldSetAPI.version,
 acceptedMinecraftVersions="[1.11.0, 1.12.0)")
+@Mod.EventBusSubscriber
 public class WorldSetAPI {
 
 	// ********************************************* //
@@ -51,6 +56,11 @@ public class WorldSetAPI {
 
 	private static IForgeRegistry<WorldSet> worldSetRegistry;
 
+	@EventHandler
+	public void onPreInit(FMLPreInitializationEvent event) {
+		WorldSetManager.INSTANCE.putReference(new WorldReference());
+	}
+
 	@SubscribeEvent
 	public static void onRegRegister(RegistryEvent.NewRegistry regRegEvent) {
 		worldSetRegistry = new RegistryBuilder<WorldSet>()
@@ -65,17 +75,16 @@ public class WorldSetAPI {
 		regEvent.getRegistry().register(new NetherSet().setRegistryName(new ResourceLocation("nethertype")));
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void attachWorldCaps(AttachCapabilitiesEvent<World> worldCapsEvent) {
 		World world = worldCapsEvent.getObject();
-		WorldSet selectedSet = null;
+		WorldSetData data = WorldSetData.getWorldSets(world);
+
+		ImmutableList.Builder<WorldSet> appliedWorldSets = ImmutableList.builder();
 		for(WorldSet worldSet : worldSetRegistry.getValues())
 			if(worldSet.containsWorld(world))
-				if(selectedSet == null  || selectedSet.getPriority().compareTo(worldSet.getPriority()) == -1)
-					selectedSet = worldSet;
-
-		MinecraftForge.EVENT_BUS.post(new WorldSetEvent.WorldInitializeEvent(world, selectedSet));
-		// TODO World Specifics
+				appliedWorldSets.add(worldSet);
+		data.populate(appliedWorldSets.build());
 	}
 
 	// ********************************************* //

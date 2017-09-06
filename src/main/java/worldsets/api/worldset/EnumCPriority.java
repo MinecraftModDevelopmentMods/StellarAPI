@@ -1,4 +1,4 @@
-package worldsets.api;
+package worldsets.api.worldset;
 
 public enum EnumCPriority {
 	HIGHEST,
