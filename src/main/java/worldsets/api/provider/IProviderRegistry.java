@@ -11,11 +11,15 @@ public interface IProviderRegistry<T extends IProvider> {
 
 	/**
 	 * Gets provider for certain registry name.
+	 * Does not available in registry phase.
+	 * One can't remove any elements with this provider.
 	 * */
 	public T getProvider(ResourceLocation registryName);
 
 	/**
 	 * Iterable for the keys in order.
+	 * Does not available in registry phase.
+	 * One can't remove any elements with this provider.
 	 * */
 	public Iterable<T> getKeys();
 

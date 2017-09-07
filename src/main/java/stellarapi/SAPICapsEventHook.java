@@ -9,7 +9,8 @@ import stellarapi.api.coordinates.ICoordHandler;
 import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.internal.coordinates.CCoordSystem;
 import stellarapi.internal.reference.CWorldReference;
-import worldsets.api.provider.ProviderRegistry;
+import stellarapi.internal.settings.CoordSettings;
+import stellarapi.internal.settings.MainSettings;
 import worldsets.api.worldset.WorldSet;
 import worldsets.api.worldset.WorldSetManager;
 
@@ -26,7 +27,9 @@ public class SAPICapsEventHook {
 		if(worldSet == null)
 			return;
 
-		ICoordProvider provider = null; // TODO load settings and fill in provider
+		// TODO Settings Reference cleanup
+		CoordSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet).coordinates;
+		ICoordProvider provider = settings.getCurrentProvider();
 		ICoordHandler handler = provider.provideCoordHandler(worldSet);
 		CCoordSystem system = new CCoordSystem();
 		system.setupSystem(handler);

@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.registry.RegistryBuilder;
 import stellarapi.api.SAPIReference;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.coordinates.CCoordinates;
+import worldsets.api.event.ProviderEvent;
 
 @Mod.EventBusSubscriber(modid = SAPIReference.modid)
 public class CoordRegistry {
@@ -33,6 +34,12 @@ public class CoordRegistry {
 				forName("equatorial"),
 				forName("celestial"));
 	}
+
+	@SubscribeEvent
+	public static void onProvRegistryEvent(ProviderEvent.NewRegistry pregRegEvent) {
+		// TODO CoordSystem build
+	}
+
 
 	public static void onInit() {
 		// TODO CoordSystem log

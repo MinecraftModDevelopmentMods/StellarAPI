@@ -9,6 +9,7 @@ public interface ICoordProvider extends IProvider {
 
 	/**
 	 * Gets the readable name for this provider.
+	 * Should be unique.
 	 * */
 	public String getReadableName();
 
