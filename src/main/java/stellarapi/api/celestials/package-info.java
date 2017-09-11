@@ -24,7 +24,7 @@
  * Celestial section of Stellar API.
  * @author Abastro
  */
-@API(apiVersion = "@VERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
+@API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
 package stellarapi.api.celestials;
 
 /**

@@ -1,9 +1,6 @@
 package worldsets;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -33,7 +30,7 @@ public class WorldSetData extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound nbt) { }
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) { return null; }
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) { return compound; }
 
 
 	WorldSet primaryWorldSet;

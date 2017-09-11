@@ -5,7 +5,7 @@
  * SAPIReferences contains majority of the references.
  * StellarAPICapabilities contains the capabilities.
  */
-@API(apiVersion = "@VERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
+@API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
 package stellarapi.api;
 
 import net.minecraftforge.fml.common.API;

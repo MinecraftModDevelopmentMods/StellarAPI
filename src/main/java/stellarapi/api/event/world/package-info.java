@@ -1,7 +1,7 @@
 /**
  * World load/unload subsection of the Event section of Stellar API.
  * */
-@API(apiVersion = "@VERSION@", owner = StellarAPI.modid, provides = StellarAPI.apiid)
+@API(apiVersion = "@STVERSION@", owner = StellarAPI.modid, provides = StellarAPI.apiid)
 package stellarapi.api.event.world;
 
 

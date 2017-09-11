@@ -10,28 +10,21 @@ import stellarapi.internal.coordinates.CLocalCoordinates;
 
 public class CWorldReference implements ICapabilityProvider {
 
-	private CCoordSystem system;
-	private CLocalCoordinates coordinates;
+	private final CLocalCoordinates coordinates;
 
-	public CWorldReference(World world, CCoordSystem system) {
+	public CWorldReference(World world) {
 		this.coordinates = new CLocalCoordinates(world, true);
-		this.system = system;
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if(capability == SAPICapabilities.LOCAL_COORDINATES && this.coordinates != null)
-			return true;
-		return capability == SAPICapabilities.COORDINATES_SYSTEM;
+		return capability == SAPICapabilities.LOCAL_COORDINATES;
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if(capability == SAPICapabilities.LOCAL_COORDINATES)
 			return SAPICapabilities.LOCAL_COORDINATES.cast(this.coordinates);
-		else if(capability == SAPICapabilities.COORDINATES_SYSTEM)
-			return SAPICapabilities.COORDINATES_SYSTEM.cast(this.system);
 		else return null;
 	}
-
 }

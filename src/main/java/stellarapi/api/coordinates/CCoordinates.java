@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 public class CCoordinates extends IForgeRegistryEntry.Impl<CCoordinates> {
 	private ResourceLocation parentID = null;
 	private CCoordinates parent = null;
-	private ICoordinateElement[] elements = null;
+	private ICoordElement[] elements = null;
 	private boolean parentAvailable = false;
 
 	/**
@@ -31,11 +31,11 @@ public class CCoordinates extends IForgeRegistryEntry.Impl<CCoordinates> {
 		this.parentID = defaultParentID;
 	}
 
-	public void setDefaultElements(ICoordinateElement[] elements) {
+	public void setDefaultElements(ICoordElement[] elements) {
 		this.elements = elements;
 	}
 
-	public ICoordinateElement[] getDefaultElements() {
+	public ICoordElement[] getDefaultElements() {
 		return this.elements;
 	}
 
@@ -52,9 +52,9 @@ public class CCoordinates extends IForgeRegistryEntry.Impl<CCoordinates> {
 
 
 	@Deprecated
-	public void injectParent(CCoordinates parent) {
+	public void injectParent(ResourceLocation parentID, CCoordinates parent) {
 		this.parent = parent;
-		this.parentID = parent != null? parent.getRegistryName() : null;
+		this.parentID = parentID;
 		this.parentAvailable = true;
 	}
 
@@ -64,5 +64,18 @@ public class CCoordinates extends IForgeRegistryEntry.Impl<CCoordinates> {
 	 * */
 	public ICoordSettings generateSettings() {
 		return null;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof CCoordinates)
+			return delegate.equals(((CCoordinates) obj).delegate);
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return delegate.hashCode();
 	}
 }

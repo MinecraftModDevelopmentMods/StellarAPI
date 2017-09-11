@@ -17,7 +17,7 @@ public class SAPIRegistries {
 	// **************** Coordinates **************** //
 	// ********************************************* //
 
-	public static final ResourceLocation COORDS = new ResourceLocation(SAPIReference.modid, "coords");
+	public static final ResourceLocation COORDS = new ResourceLocation(SAPIReference.modid, "coordinates");
 
 	private static IForgeRegistry<CCoordinates> registryCoords;
 	public IForgeRegistry<CCoordinates> getCoordRegistry() {

@@ -21,11 +21,11 @@
  * */
 
 /**
- * Celestial Capabilities subsection of Stellar API.
+ * Coordinates section of Stellar API.
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
-package stellarapi.api.celestials.capabilities;
+package stellarapi.api.atmosphere;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.api.SAPIReference;

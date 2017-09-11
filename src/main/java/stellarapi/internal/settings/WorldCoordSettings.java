@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import stellarapi.api.coordinates.CCoordinates;
+import stellarapi.api.coordinates.ICoordMainSettings;
 import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.coordinates.ICoordSettings;
 import stellarapi.api.lib.config.DynamicConfig;
@@ -17,12 +18,13 @@ public class WorldCoordSettings {
 	private final transient IForgeRegistry<CCoordinates> registry;
 
 	private transient ICoordProvider provider;
+	private transient ICoordMainSettings updatedMainSettings;
 	private transient boolean mainSettingsApplied = false;
 	private transient boolean spSettingsApplied = false;
 
 	@DynamicConfig.Expand
 	@DynamicConfig.Dependence(id = "mainSettings")
-	public Object mainSettings;
+	public ICoordMainSettings mainSettings;
 
 	@DynamicConfig.Expand
 	@DynamicConfig.Dependence(id = "spSettings")
@@ -34,7 +36,7 @@ public class WorldCoordSettings {
 		this.registry = GameRegistry.findRegistry(CCoordinates.class);
 		this.provider = parentSettings.getCurrentProvider();
 
-		this.mainSettings = this.getMainSettings(null);
+		this.mainSettings = (ICoordMainSettings) this.getMainSettings(null);
 		this.specificSettings = (Map)this.getSpSettings(null);
 	}
 
@@ -43,6 +45,7 @@ public class WorldCoordSettings {
 			return;
 
 		this.provider = parentSettings.getCurrentProvider();
+		this.updatedMainSettings = provider.generateSettings(parentSettings.theWorldSet);
 		this.mainSettingsApplied = false;
 		this.spSettingsApplied = false;
 	}
@@ -53,7 +56,7 @@ public class WorldCoordSettings {
 
 		if(!this.mainSettingsApplied) {
 			this.mainSettingsApplied = true;
-			return provider.generateSettings(parentSettings.theWorldSet);
+			return this.updatedMainSettings;
 		} else return previous;
 	}
 
@@ -67,7 +70,7 @@ public class WorldCoordSettings {
 			ImmutableMap.Builder<String, ICoordSettings> builder = ImmutableMap.builder();
 			for(CCoordinates coordinates : registry.getValues()) {
 				ICoordSettings settings = coordinates.generateSettings();
-				if(settings != null && !provider.overrideSettings(parentSettings.theWorldSet, coordinates))
+				if(settings != null && !updatedMainSettings.overrideSettings(parentSettings.theWorldSet, coordinates))
 					builder.put(settings.getName(), settings);
 			}
 			return builder.build();

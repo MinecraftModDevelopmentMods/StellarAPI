@@ -21,24 +21,54 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import stellarapi.api.coordinates.CCoordInstance;
 import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.coordinates.CoordContext;
+import stellarapi.api.coordinates.ICoordElement;
 import stellarapi.api.coordinates.ICoordHandler;
-import stellarapi.api.coordinates.ICoordinateElement;
-import stellarapi.api.coordinates.ICoordinateSystem;
+import stellarapi.api.coordinates.ICoordProvider;
+import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.lib.math.Matrix4;
+import worldsets.api.provider.IProviderRegistry;
+import worldsets.api.provider.ProviderRegistry;
+import worldsets.api.worldset.WorldSet;
 
-public class CCoordSystem implements ICoordinateSystem {
+public class CCoordSystem implements ICoordSystem {
+	private final WorldSet worldSet;
+
+	private final IForgeRegistry<CCoordinates> registry = GameRegistry.findRegistry(CCoordinates.class);
 	private List<CCoordInstance> builtInstances = null;
 	private Map<ResourceLocation, CCoordInstance> builtInstanceMap = null;
 
-	public void setupSystem(ICoordHandler handler) {
-		IForgeRegistry<CCoordinates> registry = GameRegistry.findRegistry(CCoordinates.class);
+	private final IProviderRegistry<ICoordProvider> coordProvRegistry = ProviderRegistry.findRegistry(ICoordProvider.class);
+	private ResourceLocation providerID = null;
+	private ICoordHandler handler = null;
+
+	public CCoordSystem(WorldSet worldSet) { this.worldSet = worldSet; }
+
+	@Override
+	public void setProviderID(ResourceLocation providerID) {
+		if(!coordProvRegistry.containsKey(providerID))
+			providerID = coordProvRegistry.getDefaultKey();
+
+		this.providerID = providerID;
+		this.handler = coordProvRegistry.getProvider(providerID).generateHandler(this.worldSet);
+	}
+	@Override
+	public ResourceLocation getProviderID() { return this.providerID; }
+	@Override
+	public <T extends ICoordHandler> T getHandler(Class<T> type) { return (T) this.handler; }
+
+	@Override
+	public void setupPartial() { this.setup(false); }
+	@Override
+	public void setupComplete() { this.setup(true); }
+
+	public void setup(boolean needComplete) {
 		Map<ResourceLocation, CCoordInstance> instances = Maps.newHashMap();
-		handler.instantiate(registry, instances);
+		handler.instantiate(this.registry, instances);
 
 		// Finds the missing instances.
 		for(ResourceLocation key : registry.getKeys())
 			if(!instances.containsKey(key))
-				instances.put(key, CCoordInstance.of(registry.getValue(key), instances));
+				instances.put(key, CCoordInstance.of(key, registry.getValue(key), instances));
  
 		List<CCoordInstance> lackCElements = Lists.newArrayList();
 		for(CCoordInstance coord : instances.values()) {
@@ -99,8 +129,8 @@ public class CCoordSystem implements ICoordinateSystem {
 					stack.push(next);
 			}
 		}
-		// TODO CoordSystem collect errors for instances lacking coordinate elements
-		// TODO CoordSystem compose errors if more than 1 root
+		// TODO CoordSystem collect errors for instances lacking coordinate elements (complete only)
+		// TODO CoordSystem compose errors if more than 1 root (complete only)
 		// TODO CoordSystem collect errors for loops
 
 		this.builtInstances = builder.build();
@@ -108,9 +138,9 @@ public class CCoordSystem implements ICoordinateSystem {
 	}
 
 	@Override
-	public Iterable<ICoordinateElement> getElements(CCoordinates coordinates) {
-		CCoordInstance instance = builtInstanceMap.get(coordinates.getRegistryName());
-		List<List<ICoordinateElement>> iterables = Lists.newArrayList();
+	public Iterable<ICoordElement> getElements(CCoordinates coordinates) {
+		CCoordInstance instance = builtInstanceMap.get(registry.getKey(coordinates));
+		List<List<ICoordElement>> iterables = Lists.newArrayList();
 		while(!instance.isRoot()) {
 			iterables.add(0, Arrays.asList(instance.getCoordElements()));
 			instance = instance.getParent();
@@ -121,8 +151,8 @@ public class CCoordSystem implements ICoordinateSystem {
 
 	@Override
 	public CCoordinates commonAncestor(CCoordinates coordA, CCoordinates coordB) {
-		CCoordInstance insA = builtInstanceMap.get(coordA.getRegistryName());
-		CCoordInstance insB = builtInstanceMap.get(coordB.getRegistryName());
+		CCoordInstance insA = builtInstanceMap.get(registry.getKey(coordA));
+		CCoordInstance insB = builtInstanceMap.get(registry.getKey(coordB));
 
 		List<CCoordInstance> insAList = Lists.newArrayList();
 		List<CCoordInstance> insBList = Lists.newArrayList();
@@ -153,8 +183,8 @@ public class CCoordSystem implements ICoordinateSystem {
 
 	@Override
 	public boolean isDescendant(CCoordinates ancestor, CCoordinates descendant) {
-		CCoordInstance insAnc = builtInstanceMap.get(ancestor.getRegistryName());
-		CCoordInstance insDes = builtInstanceMap.get(descendant.getRegistryName());
+		CCoordInstance insAnc = builtInstanceMap.get(registry.getKey(ancestor));
+		CCoordInstance insDes = builtInstanceMap.get(registry.getKey(descendant));
 
 		while(insDes != null) {
 			if(insAnc == insDes)
@@ -166,10 +196,10 @@ public class CCoordSystem implements ICoordinateSystem {
 	}
 
 	@Override
-	public Iterable<ICoordinateElement> between(CCoordinates ancestor, CCoordinates descendant) {
-		CCoordInstance insAnc = builtInstanceMap.get(ancestor.getRegistryName());
-		CCoordInstance insDes = builtInstanceMap.get(descendant.getRegistryName());
-		List<List<ICoordinateElement>> iterables = Lists.newArrayList();
+	public Iterable<ICoordElement> between(CCoordinates ancestor, CCoordinates descendant) {
+		CCoordInstance insAnc = builtInstanceMap.get(registry.getKey(ancestor));
+		CCoordInstance insDes = builtInstanceMap.get(registry.getKey(descendant));
+		List<List<ICoordElement>> iterables = Lists.newArrayList();
 		while(insAnc != insDes) {
 			if(insDes.isRoot())
 				return null;
@@ -189,7 +219,7 @@ public class CCoordSystem implements ICoordinateSystem {
 			}
 
 			Matrix4 current = new Matrix4(evaluatedMap.get(instance.getParent()));
-			for(ICoordinateElement element : instance.getCoordElements()) {
+			for(ICoordElement element : instance.getCoordElements()) {
 				if(!context.supportContext(element.requiredContextTypes()));
 					// TODO CoordSystem exception
 				current.preMult(element.transformMatrix(context));
@@ -202,6 +232,4 @@ public class CCoordSystem implements ICoordinateSystem {
 				mapBuilder.put(entry.getKey().getOrigin(), entry.getValue());
 		return mapBuilder.build();
 	}
-
-
 }

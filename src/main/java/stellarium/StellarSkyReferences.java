@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 public class StellarSkyReferences {
 	
 	public static final String modid = "stellarsky";
-	public static final String version = "@VERSION@";
+	public static final String version = "@STVERSION@";
 	
 	public static final String celestialSettings = "CelestialSettings.cfg";
 	public static final String guiSettings = "GuiSettings.cfg";

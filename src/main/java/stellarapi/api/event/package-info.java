@@ -1,7 +1,7 @@
 /**
  * Event section of Stellar API.
  * */
-@API(apiVersion = "@VERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
+@API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
 package stellarapi.api.event;
 
 

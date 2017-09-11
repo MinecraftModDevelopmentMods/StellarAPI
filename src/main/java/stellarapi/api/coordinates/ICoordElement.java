@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import stellarapi.api.lib.math.Matrix4;
 import stellarapi.api.lib.math.Vector4;
 
-public interface ICoordinateElement {
+public interface ICoordElement {
 	/**
 	 * Creates new instance of transformation Matrix.
 	 * */

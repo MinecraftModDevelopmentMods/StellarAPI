@@ -10,10 +10,10 @@ public class CCoordInstance {
 	private CCoordInstance parent;
 
 	private CCoordinates origin = null;
-	private ICoordinateElement[] elements = null;
+	private ICoordElement[] elements = null;
 
-	public CCoordInstance(CCoordinates origin, CCoordInstance parent) {
-		this(origin.getRegistryName(), parent);
+	public CCoordInstance(ResourceLocation originKey, CCoordinates origin, CCoordInstance parent) {
+		this(originKey, parent);
 		this.origin = origin;
 		this.elements = origin.getDefaultElements();
 		this.parent = parent;
@@ -29,12 +29,12 @@ public class CCoordInstance {
 	public static final CCoordInstance PLACEHOLDER = new CCoordInstance(new ResourceLocation(""), null);
 
 	/** Only to instantiate the placeholders, mainly for something to put on parents. */
-	public static CCoordInstance of(CCoordinates origin, Map<ResourceLocation, CCoordInstance> instances) {
+	public static CCoordInstance of(ResourceLocation originKey, CCoordinates origin, Map<ResourceLocation, CCoordInstance> instances) {
 		if(origin.getDefaultParentID() == null)
-			return new CCoordInstance(origin, null);
+			return new CCoordInstance(originKey, origin, null);
 		else if(instances.containsKey(origin.getDefaultParentID()))
-			return new CCoordInstance(origin, instances.get(origin.getDefaultParentID()));
-		else return new CCoordInstance(origin, PLACEHOLDER);
+			return new CCoordInstance(originKey, origin, instances.get(origin.getDefaultParentID()));
+		else return new CCoordInstance(originKey, origin, PLACEHOLDER);
 	}
 
 
@@ -67,11 +67,11 @@ public class CCoordInstance {
 		return this.elements != null;
 	}
 
-	public ICoordinateElement[] getCoordElements() {
+	public ICoordElement[] getCoordElements() {
 		return this.elements;
 	}
 
-	public ICoordinateElement getCoordElement(int index) {
+	public ICoordElement getCoordElement(int index) {
 		return this.elements[index];
 	}
 
@@ -79,12 +79,12 @@ public class CCoordInstance {
 		return elements.length;
 	}
 
-	public CCoordInstance setCoordElements(ICoordinateElement[] newElements) {
+	public CCoordInstance setCoordElements(ICoordElement[] newElements) {
 		this.elements = newElements;
 		return this;
 	}
 
-	public CCoordInstance setCoordElement(int index, ICoordinateElement element) {
+	public CCoordInstance setCoordElement(int index, ICoordElement element) {
 		this.elements[index] = element;
 		return this;
 	}
