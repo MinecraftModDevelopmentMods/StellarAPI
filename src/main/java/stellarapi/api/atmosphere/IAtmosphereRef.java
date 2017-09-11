@@ -1,5 +1,5 @@
 package stellarapi.api.atmosphere;
 
-public interface IAtmosphereLayer {
+public interface IAtmosphereRef {
 
 }

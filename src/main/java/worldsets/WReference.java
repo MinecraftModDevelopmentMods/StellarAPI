@@ -8,6 +8,7 @@ import worldsets.api.worldset.WorldSet;
 import worldsets.api.worldset.WorldSetInstance;
 
 public class WReference implements IReference {
+
 	@Override
 	public World getDefaultWorld() {
 		// TODO proxy

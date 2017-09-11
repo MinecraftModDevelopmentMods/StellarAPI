@@ -115,6 +115,7 @@ public class CoordRegistry {
 			if(completeEvent.forPlaceholder)
 				if(!system.getHandler(ICoordHandler.class).handleVanilla())
 					system.setProviderID(completeEvent.registry.getDefaultKey());
+			// TODO Also check for WorldProvider patch
 
 			system.setupComplete();
 		}

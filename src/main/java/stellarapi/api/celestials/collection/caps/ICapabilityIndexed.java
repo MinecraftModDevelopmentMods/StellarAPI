@@ -1,4 +1,4 @@
-package stellarapi.api.celestials.collection;
+package stellarapi.api.celestials.collection.caps;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;

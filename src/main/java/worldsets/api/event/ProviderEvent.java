@@ -53,6 +53,7 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	 * */
 	public static class Send<P extends IProvider> extends ProviderEvent<P> {
 		public final IProviderRegistry<P> registry;
+		/** The world to send data for */
 		public final World world;
 		public final NBTTagCompound compoundToSend;
 
@@ -72,6 +73,7 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	 * */
 	public static class Receive<P extends IProvider> extends ProviderEvent<P> {
 		public final IProviderRegistry<P> registry;
+		/** The world to receive this packet for */
 		public final World world;
 		public final NBTTagCompound receivedCompound;
 

@@ -16,9 +16,9 @@ public class SAPICapabilities {
 	public static final Capability<ICoordSystem> COORDINATES_SYSTEM = null;
 
 
-	@CapabilityInject(IOpticalViewer.class)
-	public static final Capability<IOpticalViewer> VIEWER_CAPABILITY = null;
+	//@CapabilityInject(IOpticalViewer.class)
+	//public static final Capability<IOpticalViewer> VIEWER_CAPABILITY = null;
 	
-	@CapabilityInject(IOpticalProperties.class)
-	public static final Capability<IOpticalProperties> OPTICAL_PROPERTY = null;
+	//@CapabilityInject(IOpticalProperties.class)
+	//public static final Capability<IOpticalProperties> OPTICAL_PROPERTY = null;
 }

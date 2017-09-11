@@ -1,9 +1,10 @@
 package stellarapi.api;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.coordinates.CCoordinates;
 
 /**
@@ -12,6 +13,16 @@ import stellarapi.api.coordinates.CCoordinates;
  *  so registration is impossible here.
  * */
 public class SAPIRegistries {
+	// ********************************************* //
+	// ************* Celestial Objects ************* //
+	// ********************************************* //
+
+	public static final ResourceLocation CELESTIALS = new ResourceLocation(SAPIReference.modid, "celestials");
+
+	private static IForgeRegistry<CelestialType> registryCelestialType;
+	public IForgeRegistry<CelestialType> getCelestialTypeRegistry() {
+		return registryCelestialType;
+	}
 
 	// ********************************************* //
 	// **************** Coordinates **************** //
@@ -49,6 +60,7 @@ public class SAPIRegistries {
 	// ********************************************* //
 
 	public static void onInit() {
+		registryCelestialType = GameRegistry.findRegistry(CelestialType.class);
 		registryCoords = GameRegistry.findRegistry(CCoordinates.class);
 	}
 }

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
 import worldsets.api.provider.IProviderRegistry;
 import worldsets.api.provider.ProviderRegistry;
@@ -20,7 +21,8 @@ public class NetworkHandler {
 		ImmutableMap<ResourceLocation, IProviderRegistry<?>> registryMap = ProviderRegistry.getProviderRegistryMap();
 
 		for(Map.Entry<ResourceLocation, IProviderRegistry<?>> entry : registryMap.entrySet()) {
-			ProviderEvent.Send<?> event = new ProviderEvent.Send(entry.getValue(),
+			ProviderEvent.Send<?> event = new ProviderEvent.Send(entry.getValue(), 
+					player.getEntityWorld(),
 					compoundToSend.getCompoundTag(entry.getKey().toString()));
 			MinecraftForge.EVENT_BUS.post(event);
 		}
@@ -34,6 +36,7 @@ public class NetworkHandler {
 
 		for(Map.Entry<ResourceLocation, IProviderRegistry<?>> entry : ProviderRegistry.getProviderRegistryMap().entrySet()) {
 			ProviderEvent.Receive<?> event = new ProviderEvent.Receive(entry.getValue(),
+					WAPIReference.getDefaultWorld(),
 					syncData.getCompoundTag(entry.getKey().toString()));
 			MinecraftForge.EVENT_BUS.post(event);
 		}

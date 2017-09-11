@@ -3,9 +3,9 @@ package stellarapi.api.atmosphere;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public interface IAtmosphereType {
+public abstract class AtmosphereType {
 	/**
 	 * Gets atmosphere ID.
 	 * */
-	public ResourceLocation atmosphereID(World world);
+	public abstract ResourceLocation atmosphereID(World world);
 }
