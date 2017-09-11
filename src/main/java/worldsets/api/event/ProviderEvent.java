@@ -1,8 +1,7 @@
 package worldsets.api.event;
 
-import java.util.Set;
-
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.GenericEvent;
 import worldsets.api.provider.IProvider;
@@ -35,7 +34,7 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	}
 
 	/**
-	 * Called on WorldEvent.Load to apply settings for each provider.
+	 * Called on WorldEvent.Load for default world to apply global settings for each provider.
 	 * Partial initiation for cross reference on provider-specific objects
 	 *  should be done here.
 	 * */
@@ -54,11 +53,13 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	 * */
 	public static class Send<P extends IProvider> extends ProviderEvent<P> {
 		public final IProviderRegistry<P> registry;
+		public final World world;
 		public final NBTTagCompound compoundToSend;
 
-		public Send(IProviderRegistry<P> registry, NBTTagCompound compToSend) {
+		public Send(IProviderRegistry<P> registry, World world, NBTTagCompound compToSend) {
 			super(registry.getProviderType());
 			this.registry = registry;
+			this.world = world;
 			this.compoundToSend = compToSend;
 		}
 	}
@@ -71,17 +72,19 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	 * */
 	public static class Receive<P extends IProvider> extends ProviderEvent<P> {
 		public final IProviderRegistry<P> registry;
+		public final World world;
 		public final NBTTagCompound receivedCompound;
 
-		public Receive(IProviderRegistry<P> registry, NBTTagCompound received) {
+		public Receive(IProviderRegistry<P> registry, World world, NBTTagCompound received) {
 			super(registry.getProviderType());
 			this.registry = registry;
+			this.world = world;
 			this.receivedCompound = received;
 		}
 	}
 
 	/**
-	 * Called to complete provider-specific objects for further reference.
+	 * Called to complete provider-specific global objects for further reference.
 	 * It's invoked twice on client, for pre-sync placeholder and synced object.
 	 * */
 	public static class Complete<P extends IProvider> extends ProviderEvent<P> {

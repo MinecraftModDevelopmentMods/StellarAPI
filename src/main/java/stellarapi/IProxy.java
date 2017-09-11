@@ -10,7 +10,7 @@ import stellarapi.api.IClientReference;
 /**
  * This extends client reference for the role of the proxy.
  */
-public interface IProxy extends IClientReference {
+public interface IProxy {
 
 	public void preInit(FMLPreInitializationEvent event);
 
