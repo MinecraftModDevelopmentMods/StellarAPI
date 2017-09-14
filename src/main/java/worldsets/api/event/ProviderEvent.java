@@ -40,10 +40,12 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	 * */
 	public static class ApplySettings<P extends IProvider> extends ProviderEvent<P> {
 		public final IProviderRegistry<P> registry;
+		public final boolean isRemote;
 
-		public ApplySettings(IProviderRegistry<P> registry) {
+		public ApplySettings(IProviderRegistry<P> registry, boolean isRemote) {
 			super(registry.getProviderType());
 			this.registry = registry;
+			this.isRemote = isRemote;
 		}
 	}
 
@@ -91,14 +93,16 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	 * */
 	public static class Complete<P extends IProvider> extends ProviderEvent<P> {
 		public final IProviderRegistry<P> registry;
+		public final boolean isRemote;
 		/**
 		 * True for placeholder when server-side provider does not exist.
 		 * */
 		public final boolean forPlaceholder;
 
-		public Complete(IProviderRegistry<P> registry, boolean placeholder) {
+		public Complete(IProviderRegistry<P> registry, boolean isRemote, boolean placeholder) {
 			super(registry.getProviderType());
 			this.registry = registry;
+			this.isRemote = isRemote;
 			this.forPlaceholder = placeholder;
 		}
 	} 

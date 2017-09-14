@@ -36,13 +36,13 @@ public class NetworkHandler {
 
 		for(Map.Entry<ResourceLocation, IProviderRegistry<?>> entry : ProviderRegistry.getProviderRegistryMap().entrySet()) {
 			ProviderEvent.Receive<?> event = new ProviderEvent.Receive(entry.getValue(),
-					WAPIReference.getDefaultWorld(),
+					WAPIReference.getDefaultWorld(true),
 					syncData.getCompoundTag(entry.getKey().toString()));
 			MinecraftForge.EVENT_BUS.post(event);
 		}
 
 		for(IProviderRegistry<?> registry : ProviderRegistry.getProviderRegistryMap().values()) {
-			ProviderEvent.Complete<?> event = new ProviderEvent.Complete(registry, true);
+			ProviderEvent.Complete<?> event = new ProviderEvent.Complete(registry, true, true);
 			MinecraftForge.EVENT_BUS.post(event);
 		}
 	}

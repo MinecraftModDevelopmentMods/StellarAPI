@@ -13,22 +13,22 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import worldsets.api.worldset.WorldSet;
 import worldsets.api.worldset.WorldSetInstance;
 
-public class GlobalWorldSetData extends WorldSavedData {
+public class GlobalData extends WorldSavedData {
 
 	private static final String ID = "global_worldset_data";
 
-	public static GlobalWorldSetData getWorldSets(World base) {
-		WorldSavedData data = base.getMapStorage().getOrLoadData(GlobalWorldSetData.class, ID);
-		if(data instanceof GlobalWorldSetData)
-			return (GlobalWorldSetData) data;
+	public static GlobalData getWorldSets(World base) {
+		WorldSavedData data = base.getMapStorage().getOrLoadData(GlobalData.class, ID);
+		if(data instanceof GlobalData)
+			return (GlobalData) data;
 		else {
-			GlobalWorldSetData wdata = new GlobalWorldSetData(ID);
+			GlobalData wdata = new GlobalData(ID);
 			base.getMapStorage().setData(ID, wdata);
 			return wdata;
 		}
 	}
 
-	public GlobalWorldSetData(String name) {
+	public GlobalData(String name) {
 		super(name);
 	}
 

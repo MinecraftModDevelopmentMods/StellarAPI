@@ -11,22 +11,21 @@ import worldsets.api.worldset.WorldSet;
 public interface ICoordSystem {
 
 	/**
-	 * Sets provider ID. Resets to the default ID if there's no mapping for the specified id.
+	 * Sets provider ID. Throws exception if there's no mapping for the specified id.
 	 * Also this re-evaluates the internal handler.
 	 * */
 	@Deprecated
-	public void setProviderID(@Nullable ResourceLocation providerID);
+	public void setProviderID(ResourceLocation providerID);
 
 	/**
-	 * Gets the provider ID. Can be null if it's never set.
+	 * Gets the provider ID. Can only be null if it's never set.
 	 * */
 	public @Nullable ResourceLocation getProviderID();
 
 	/**
 	 * Gets the coordinate handler. Can be null if it's never set.
-	 * Gives ClassCastException if the handler is not of the specified type.
 	 * */
-	public @Nullable <T extends ICoordHandler> T getHandler(Class<T> type);
+	public @Nullable ICoordHandler getHandler();
 
 	/**
 	 * Sets up this coordiantes system with the unfinished handler.

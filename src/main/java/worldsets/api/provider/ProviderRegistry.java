@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.util.ResourceLocation;
 import worldsets.api.provider.IProviderRegistry.AddCallback;
+import worldsets.api.provider.IProviderRegistry.ClearCallback;
 import worldsets.api.provider.IProviderRegistry.CreateCallback;
-import worldsets.api.provider.IProviderRegistry.MissingCallback;
 import worldsets.api.provider.IProviderRegistry.SubstitutionCallback;
 
 public class ProviderRegistry {
@@ -24,7 +24,12 @@ public class ProviderRegistry {
 
 	static <T extends IProvider> IProviderRegistry<T> createRegistry(ResourceLocation registryName, Class<T> registryType,
 			boolean addToFirst, Comparator<T> comparator, AddCallback<T> add, CreateCallback<T> create,
-			SubstitutionCallback<T> substitution, MissingCallback<T> missing) {
-		return registry.createRegistry(registryName, registryType, addToFirst, comparator, add, create, substitution, missing);
+			ClearCallback<T> clear, SubstitutionCallback<T> substitution) {
+		return registry.createRegistry(registryName, registryType, addToFirst, comparator, add, create, clear, substitution);
+	}
+
+	@Deprecated
+	public static void setHandler(IInternalProviderHandler handler) {
+		registry = handler;
 	}
 }

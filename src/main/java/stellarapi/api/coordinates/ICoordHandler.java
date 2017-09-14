@@ -7,11 +7,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
-public interface ICoordHandler extends INBTSerializable<NBTTagCompound> {
-
+public interface ICoordHandler {
 	/**
 	 * Handles the case where server-side object is absent. (e.g. vanila)
 	 * return false if this should be replaced with a default(vanilla) provider.
+	 * Those which fills additional coordinates should be able to handle vanilla on its own.
 	 * */
 	public boolean handleVanilla();
 

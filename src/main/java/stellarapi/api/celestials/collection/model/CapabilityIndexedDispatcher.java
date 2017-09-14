@@ -1,4 +1,4 @@
-package stellarapi.api.celestials.collection.caps;
+package stellarapi.api.celestials.collection.model;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;

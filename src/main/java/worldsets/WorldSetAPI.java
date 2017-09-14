@@ -26,6 +26,7 @@ import worldsets.api.provider.ProviderRegistry;
 import worldsets.api.worldset.EnumCPriority;
 import worldsets.api.worldset.EnumFlag;
 import worldsets.api.worldset.WorldSet;
+import worldsets.impl.provider.ProviderRegistries;
 
 @Mod(modid = WAPIReference.modid, version = WAPIReference.version,
 acceptedMinecraftVersions="[1.11.0, 1.12.0)")
@@ -42,6 +43,7 @@ public class WorldSetAPI {
 	@EventHandler
 	public void onPreInit(FMLPreInitializationEvent event) {
 		WAPIReference.INSTANCE.putReference(new WReference());
+		ProviderRegistry.setHandler(ProviderRegistries.ACTIVE);
 		netHandler = new NetworkHandler();
 	}
 
@@ -70,11 +72,11 @@ public class WorldSetAPI {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void attachWorldCaps(AttachCapabilitiesEvent<World> worldCapsEvent) {
 		World world = worldCapsEvent.getObject();
-		WorldSetData data = WorldSetData.getWorldSets(world);
+		PerWorldData data = PerWorldData.getWorldSets(world);
 
 		if(WAPIReference.isDefaultWorld(world)) {
 			// Loads the global world set data as the first.
-			GlobalWorldSetData.getWorldSets(world);
+			GlobalData.getWorldSets(world);
 		}
 
 		ImmutableList.Builder<WorldSet> appliedWorldSets = ImmutableList.builder();
@@ -90,13 +92,13 @@ public class WorldSetAPI {
 		if(WAPIReference.isDefaultWorld(world)) {
 			// fires apply settings event
 			for(IProviderRegistry<?> registry : ProviderRegistry.getProviderRegistryMap().values()) {
-				ProviderEvent.ApplySettings<?> event = new ProviderEvent.ApplySettings(registry);
+				ProviderEvent.ApplySettings<?> event = new ProviderEvent.ApplySettings(registry, world.isRemote);
 				MinecraftForge.EVENT_BUS.post(event);
 			}
 
 			// fires completion event
 			for(IProviderRegistry<?> registry : ProviderRegistry.getProviderRegistryMap().values()) {
-				ProviderEvent.Complete<?> event = new ProviderEvent.Complete(registry, true);
+				ProviderEvent.Complete<?> event = new ProviderEvent.Complete(registry, world.isRemote, true);
 				MinecraftForge.EVENT_BUS.post(event);
 			}
 		}

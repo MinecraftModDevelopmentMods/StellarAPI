@@ -1,9 +1,14 @@
 package stellarapi.api;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Ordering;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import stellarapi.api.atmosphere.AtmosphereType;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.coordinates.CCoordinates;
 
@@ -13,6 +18,7 @@ import stellarapi.api.coordinates.CCoordinates;
  *  so registration is impossible here.
  * */
 public class SAPIRegistries {
+
 	// ********************************************* //
 	// ************* Celestial Objects ************* //
 	// ********************************************* //
@@ -20,8 +26,19 @@ public class SAPIRegistries {
 	public static final ResourceLocation CELESTIALS = new ResourceLocation(SAPIReference.modid, "celestials");
 
 	private static IForgeRegistry<CelestialType> registryCelestialType;
-	public IForgeRegistry<CelestialType> getCelestialTypeRegistry() {
+	public static IForgeRegistry<CelestialType> getCelestialTypeRegistry() {
 		return registryCelestialType;
+	}
+
+	public static final Ordering<CelestialType> typeOrder = Ordering.<Integer>natural()
+			.onResultOf(new Function<CelestialType, Integer>() {
+				@Override
+				public Integer apply(CelestialType input) { return input.getLevel(); }
+			});
+
+	public static ImmutableSortedSet<CelestialType> getOrderedTypes() {
+		// TODO CelestialTypes store this as slave map
+		return ImmutableSortedSet.copyOf(SAPIRegistries.typeOrder, registryCelestialType.getValues());
 	}
 
 	// ********************************************* //
@@ -31,7 +48,7 @@ public class SAPIRegistries {
 	public static final ResourceLocation COORDS = new ResourceLocation(SAPIReference.modid, "coordinates");
 
 	private static IForgeRegistry<CCoordinates> registryCoords;
-	public IForgeRegistry<CCoordinates> getCoordRegistry() {
+	public static IForgeRegistry<CCoordinates> getCoordRegistry() {
 		return registryCoords;
 	}
 
@@ -54,6 +71,22 @@ public class SAPIRegistries {
 	@ObjectHolder("celestial")
 	public static final CCoordinates celestial = null;
 
+	// ********************************************* //
+	// **************** Atmosphere ***************** //
+	// ********************************************* //
+
+	public static final ResourceLocation ATMOSPHERES = new ResourceLocation(SAPIReference.modid, "coordinates");
+
+	private static IForgeRegistry<AtmosphereType> registryAtmType;
+	public static IForgeRegistry<AtmosphereType> getAtmTypeRegistry() {
+		return registryAtmType;
+	}
+
+	// ********************************************* //
+	// *************** Slavemap Keys *************** //
+	// ********************************************* //
+
+	public static final ResourceLocation READABLE_NAMES = new ResourceLocation(SAPIReference.modid, "readable_names");
 
 	// ********************************************* //
 	// ************** General Section ************** //

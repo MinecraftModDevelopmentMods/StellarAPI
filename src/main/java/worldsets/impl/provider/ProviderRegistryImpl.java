@@ -45,12 +45,22 @@ public class ProviderRegistryImpl<P extends IProvider> implements IProviderRegis
 		else this.listIDs = Lists.newArrayList();
 	}
 
+	public void set(ProviderRegistryImpl<P> target) {
+		
+	}
+
 	@Override
 	public void register(ResourceLocation key, P provider) {
 		// TODO Providers check key duplication
+		// TODO time check
 		if(this.comparator == null && this.addToFirst)
 			((List<ResourceLocation>)listIDs).add(0, key);
 		else listIDs.add(key);
+	}
+
+	@Override
+	public boolean containsKey(ResourceLocation key) {
+		return providers.containsKey(key);
 	}
 
 	@Override
@@ -90,8 +100,7 @@ public class ProviderRegistryImpl<P extends IProvider> implements IProviderRegis
 
 	@Override
 	public Iterator<P> iterator() {
-		Iterators.unmodifiableIterator(
+		return Iterators.unmodifiableIterator(
 				Iterators.transform(listIDs.iterator(), Functions.forMap(this.providers)));
-		return null;
 	}
 }

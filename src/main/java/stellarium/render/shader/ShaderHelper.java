@@ -68,7 +68,7 @@ public class ShaderHelper {
 		
 		//Check if link is done correctly
 		if (OpenGlHelper.glGetProgrami(programObject, OpenGlHelper.GL_LINK_STATUS) == GL11.GL_FALSE) {
-			throw new RuntimeException();
+			throw new RuntimeException(getLogInfo(programObject));
 		}
 	 
 		/*ARBShaderObjects.glValidateProgramARB(programObject);

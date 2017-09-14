@@ -1,13 +1,21 @@
 package stellarapi.internal.settings;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import stellarapi.api.SAPIRegistries;
+import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.lib.config.DynamicConfig;
-import stellarapi.internal.coordinates.CoordRegistry;
 import worldsets.api.provider.IProviderRegistry;
 import worldsets.api.provider.ProviderRegistry;
 import worldsets.api.worldset.WorldSet;
@@ -17,27 +25,37 @@ public class CoordSettings {
 
 	public final transient WorldSet theWorldSet;
 	private final transient IProviderRegistry<ICoordProvider> coordProvRegistry;
-	private final transient Map<String, ResourceLocation> nameMap;
+	private final transient BiMap<String, ResourceLocation> nameMap;
 	private final transient String[] names;
 
-	public CoordSettings(WorldSet worldSet) {
+	public CoordSettings(final WorldSet worldSet) {
 		this.theWorldSet = worldSet;
 		this.coordProvRegistry = ProviderRegistry.findRegistry(ICoordProvider.class);
-		this.nameMap = coordProvRegistry.getSlaveMap(CoordRegistry.READABLE_NAMES, HashMap.class);
-		this.names = nameMap.keySet().toArray(new String[0]);
+		this.nameMap = coordProvRegistry.getSlaveMap(SAPIRegistries.READABLE_NAMES, HashBiMap.class);
+		this.names = Iterables.toArray(Iterables.transform(
+				Iterables.filter(coordProvRegistry.keys(), new Predicate<ResourceLocation>() {
+					@Override
+					public boolean apply(ResourceLocation input) {
+						ICoordProvider provider = coordProvRegistry.getProvider(input);
+						for(CCoordinates coords : SAPIRegistries.getCoordRegistry())
+							if(coords.getDefaultParentID() == null && !provider.overrideSettings(worldSet, coords))
+								return false;
+						return true;
+					}
+				}), Functions.forMap(nameMap.inverse())), String.class);
 
 		this.coordProviderName = this.names[0];
-		this.defaultSettings = new WorldCoordSettings(this);
+		this.defaultSettings = new CoordWorldSettings(this);
 	}
 
 	@DynamicConfig.DynamicElementProperty(
 			affected = { DynamicConfig.StringCycle.class }, id = "coordProvider")
 	public String coordProviderName;
 
-	public WorldCoordSettings defaultSettings;
+	public CoordWorldSettings defaultSettings;
 
 	@DynamicConfig.Collection(isConfigurable = true, id = "additionals")
-	public Map<String, WorldCoordSettings> additionalSettings;
+	public Map<String, CoordWorldSettings> additionalSettings;
 
 	@DynamicConfig.EvaluatorID("coordProvider")
 	public DynamicConfig.StringCycle getStringCycle() {

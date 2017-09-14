@@ -60,8 +60,8 @@ public enum WAPIReference {
 	/**
 	 * Get one of the default worlds.
 	 * */
-	public static World getDefaultWorld() {
-		return INSTANCE.reference.getDefaultWorld();
+	public static World getDefaultWorld(boolean isRemote) {
+		return INSTANCE.reference.getDefaultWorld(isRemote);
 	}
 
 

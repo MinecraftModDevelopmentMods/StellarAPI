@@ -112,7 +112,7 @@ public class ProviderBuilder<P extends IProvider> {
 	public IProviderRegistry<P> create()
 	{
 		return ProviderRegistry.createRegistry(this.registryName, this.registryType,
-				this.addToLast, this.providerComparator, getAdd(), getCreate(), getSubstitution(), getMissing());
+				this.addToLast, this.providerComparator, getAdd(), getCreate(), getClear(), getSubstitution());
 	}
 
 	@Nullable
@@ -173,7 +173,7 @@ public class ProviderBuilder<P extends IProvider> {
 	}
 
 	@Nullable
-	private ClearCallback<P> getMissing()
+	private ClearCallback<P> getClear()
 	{
 		if (this.clearCallback.isEmpty())
 			return null;

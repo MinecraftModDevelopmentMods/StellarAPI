@@ -1,9 +1,8 @@
 package stellarapi;
 
-import java.util.concurrent.Callable;
-
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -11,13 +10,19 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.SAPIReference;
-import stellarapi.api.coordinates.ICoordHandler;
+import stellarapi.api.SAPIRegistries;
+import stellarapi.api.atmosphere.IAtmSystem;
+import stellarapi.api.atmosphere.IAtmosphere;
+import stellarapi.api.celestials.CelestialType;
+import stellarapi.api.celestials.ICelestialScene;
+import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.coordinates.ILocalCoordinates;
+import stellarapi.internal.atmosphere.CAtmSystem;
+import stellarapi.internal.atmosphere.CAtmosphere;
+import stellarapi.internal.celestial.CelestialScene;
+import stellarapi.internal.celestial.CelestialSystem;
 import stellarapi.internal.coordinates.CCoordSystem;
 import stellarapi.internal.coordinates.CLocalCoordinates;
 import stellarapi.internal.reference.CWorldReference;
@@ -32,19 +37,15 @@ public class SAPICapsHook {
 			new ResourceLocation(SAPIReference.modid, "capabilities");
 
 	public void registerCapabilities() {
-		// TODO default implementations; they are not right for now
+		// TODO default implementations & some save/load. they are not right for now
 		CapabilityManager.INSTANCE.register(ILocalCoordinates.class,
 				new IStorage<ILocalCoordinates>() {
 					@Override
 					public NBTBase writeNBT(Capability<ILocalCoordinates> capability, ILocalCoordinates instance, EnumFacing side) {
-						// TODO Auto-generated method stub
 						return null;
 					}
-
 					@Override
 					public void readNBT(Capability<ILocalCoordinates> capability, ILocalCoordinates instance, EnumFacing side, NBTBase nbt) {
-						// TODO Auto-generated method stub
-						
 					}
 		}, CLocalCoordinates.class);
 
@@ -52,21 +53,80 @@ public class SAPICapsHook {
 				new IStorage<ICoordSystem>() {
 			@Override
 			public NBTBase writeNBT(Capability<ICoordSystem> capability, ICoordSystem instance, EnumFacing side) {
-				NBTTagCompound compound = new NBTTagCompound();
-				compound.setString("providerID", instance.getProviderID().toString());
-				compound.setTag("provider", instance.getHandler(ICoordHandler.class).serializeNBT());
-				return compound;
+				return new NBTTagString(instance.getProviderID().toString());
 			}
 			@Override
 			public void readNBT(Capability<ICoordSystem> capability, ICoordSystem instance, EnumFacing side, NBTBase nbt) {
-				NBTTagCompound compound = (NBTTagCompound) nbt;
-				if(compound.hasKey("providerID")) {
-					instance.setProviderID(new ResourceLocation(compound.getString("providerID")));
-					if(compound.hasKey("provider"))
-						instance.getHandler(ICoordHandler.class).deserializeNBT(compound.getCompoundTag("provider"));
+				if(nbt instanceof NBTTagString) {
+					NBTTagString property = (NBTTagString) nbt;
+					instance.setProviderID(new ResourceLocation(property.getString()));
 				}
 			}
 		}, CCoordSystem.class);
+	
+
+		CapabilityManager.INSTANCE.register(ICelestialScene.class,
+				new IStorage<ICelestialScene>() {
+			@Override
+			public NBTBase writeNBT(Capability<ICelestialScene> capability, ICelestialScene instance, EnumFacing side) {
+				return null;
+			}
+			@Override
+			public void readNBT(Capability<ICelestialScene> capability, ICelestialScene instance, EnumFacing side, NBTBase nbt) {
+			}
+		}, CelestialScene.class);
+
+		CapabilityManager.INSTANCE.register(ICelestialSystem.class,
+				new IStorage<ICelestialSystem>() {
+			@Override
+			public NBTBase writeNBT(Capability<ICelestialSystem> capability, ICelestialSystem instance, EnumFacing side) {
+				NBTTagCompound comp = new NBTTagCompound();
+				for(CelestialType type : SAPIRegistries.getCelestialTypeRegistry()) {
+					if(instance.isAbsent(type))
+						continue;
+					NBTTagCompound subComp = instance.getCollection(type).serializeNBT();
+					subComp.setString("theProviderID", instance.getProviderID(type).toString());
+					comp.setTag(type.delegate.name().toString(), subComp);
+				}
+				return comp;
+			}
+			@Override
+			public void readNBT(Capability<ICelestialSystem> capability, ICelestialSystem instance, EnumFacing side, NBTBase nbt) {
+				NBTTagCompound comp = (NBTTagCompound) nbt;
+				for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
+					if(!comp.hasKey(type.delegate.name().toString(), comp.getId())) {
+						instance.validateNset(type, null);
+						continue;
+					}
+					NBTTagCompound subComp = comp.getCompoundTag(type.delegate.name().toString());
+					instance.validateNset(type, new ResourceLocation(subComp.getString("theProviderID")));
+					instance.getCollection(type).deserializeNBT(subComp);
+				}
+			}
+		}, CelestialSystem.class);
+
+
+		CapabilityManager.INSTANCE.register(IAtmosphere.class,
+				new IStorage<IAtmosphere>() {
+			@Override
+			public NBTBase writeNBT(Capability<IAtmosphere> capability, IAtmosphere instance, EnumFacing side) {
+				return null;
+			}
+			@Override
+			public void readNBT(Capability<IAtmosphere> capability, IAtmosphere instance, EnumFacing side, NBTBase nbt) {
+			}
+		}, CAtmosphere.class);
+
+		CapabilityManager.INSTANCE.register(IAtmSystem.class,
+				new IStorage<IAtmSystem>() {
+			@Override
+			public NBTBase writeNBT(Capability<IAtmSystem> capability, IAtmSystem instance, EnumFacing side) {
+				return null;
+			}
+			@Override
+			public void readNBT(Capability<IAtmSystem> capability, IAtmSystem instance, EnumFacing side, NBTBase nbt) {
+			}
+		}, CAtmSystem.class);
 	}
 
 

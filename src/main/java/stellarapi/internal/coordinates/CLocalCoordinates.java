@@ -28,6 +28,7 @@ public class CLocalCoordinates implements ILocalCoordinates {
 	private long offsetLastTracked;
 	private Map<CCoordinates, Matrix4> offsetLastResultCache;
 
+	// TODO remove these params for default implementation?
 	public CLocalCoordinates(ICapabilityProvider provider, boolean isForWorld) {
 		this.provider = provider;
 		this.isForWorld = isForWorld;

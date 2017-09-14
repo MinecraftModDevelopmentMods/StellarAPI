@@ -7,22 +7,22 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import worldsets.api.worldset.WorldSet;
 
-public class WorldSetData extends WorldSavedData {
+public class PerWorldData extends WorldSavedData {
 
 	private static final String ID = "worldset_data";
 
-	public static WorldSetData getWorldSets(World world) {
-		WorldSavedData data = world.getPerWorldStorage().getOrLoadData(WorldSetData.class, ID);
-		if(data instanceof WorldSetData)
-			return (WorldSetData) data;
+	public static PerWorldData getWorldSets(World world) {
+		WorldSavedData data = world.getPerWorldStorage().getOrLoadData(PerWorldData.class, ID);
+		if(data instanceof PerWorldData)
+			return (PerWorldData) data;
 		else {
-			WorldSetData wdata = new WorldSetData(ID);
+			PerWorldData wdata = new PerWorldData(ID);
 			world.getPerWorldStorage().setData(ID, wdata);
 			return wdata;
 		}
 	}
 
-	public WorldSetData(String name) {
+	public PerWorldData(String name) {
 		super(name);
 	}
 

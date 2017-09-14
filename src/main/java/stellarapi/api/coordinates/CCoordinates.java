@@ -1,6 +1,9 @@
 package stellarapi.api.coordinates;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
 /**
@@ -18,10 +21,9 @@ public class CCoordinates extends IForgeRegistryEntry.Impl<CCoordinates> {
 	private boolean parentAvailable = false;
 
 	/**
-	 * For those which will be overriden.
-	 * Don't call this!
+	 * For coordinates which will be overriden.
+	 * This limits the possible selection of coordinates handler.
 	 * */
-	@Deprecated
 	public CCoordinates() { }
 
 	/**
@@ -62,9 +64,12 @@ public class CCoordinates extends IForgeRegistryEntry.Impl<CCoordinates> {
 	 * Generates the settings.
 	 * Only viable if there's world-specific element.
 	 * */
-	public ICoordSettings generateSettings() {
-		return null;
-	}
+	public @Nullable ICoordSettings generateSettings() { return null; }
+
+	/**
+	 * Apply the given settings to the specified world.
+	 * */
+	public void applySettings(ICoordSettings settings, World world) { }
 
 
 	@Override

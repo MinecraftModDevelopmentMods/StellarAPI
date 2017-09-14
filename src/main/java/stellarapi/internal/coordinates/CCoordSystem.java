@@ -18,6 +18,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import stellarapi.api.SAPIRegistries;
 import stellarapi.api.coordinates.CCoordInstance;
 import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.coordinates.CoordContext;
@@ -33,7 +34,7 @@ import worldsets.api.worldset.WorldSet;
 public class CCoordSystem implements ICoordSystem {
 	private final WorldSet worldSet;
 
-	private final IForgeRegistry<CCoordinates> registry = GameRegistry.findRegistry(CCoordinates.class);
+	private final IForgeRegistry<CCoordinates> registry = SAPIRegistries.getCoordRegistry();
 	private List<CCoordInstance> builtInstances = null;
 	private Map<ResourceLocation, CCoordInstance> builtInstanceMap = null;
 
@@ -46,7 +47,7 @@ public class CCoordSystem implements ICoordSystem {
 	@Override
 	public void setProviderID(ResourceLocation providerID) {
 		if(!coordProvRegistry.containsKey(providerID))
-			providerID = coordProvRegistry.getDefaultKey();
+			throw new IllegalArgumentException(String.format("There's no provider for providerID %s", providerID));
 
 		this.providerID = providerID;
 		this.handler = coordProvRegistry.getProvider(providerID).generateHandler(this.worldSet);
@@ -54,7 +55,7 @@ public class CCoordSystem implements ICoordSystem {
 	@Override
 	public ResourceLocation getProviderID() { return this.providerID; }
 	@Override
-	public <T extends ICoordHandler> T getHandler(Class<T> type) { return (T) this.handler; }
+	public ICoordHandler getHandler() { return this.handler; }
 
 	@Override
 	public void setupPartial() { this.setup(false); }

@@ -5,15 +5,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.internal.coordinates.CCoordSystem;
+import stellarapi.internal.celestial.CelestialScene;
 import stellarapi.internal.coordinates.CLocalCoordinates;
 
 public class CWorldReference implements ICapabilityProvider {
 
 	private final CLocalCoordinates coordinates;
+	private final CelestialScene scene;
 
 	public CWorldReference(World world) {
 		this.coordinates = new CLocalCoordinates(world, true);
+		this.scene = new CelestialScene();
 	}
 
 	@Override

@@ -31,6 +31,7 @@ import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 import stellarapi.impl.AlarmWakeHandler;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
+import stellarapi.internal.celestial.CelestialRegistry;
 import stellarapi.internal.coordinates.CoordRegistry;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.SAPIReferenceHandler;
@@ -122,8 +123,9 @@ public final class StellarAPI {
 	@EventHandler
 	public void init(FMLInitializationEvent event) throws IOException {
 		CoordRegistry.onInit();
+		CelestialRegistry.onInit();
 
-		cfgManager.syncFromFile();
+		//cfgManager.syncFromFile();
 
 		proxy.load(event);
 

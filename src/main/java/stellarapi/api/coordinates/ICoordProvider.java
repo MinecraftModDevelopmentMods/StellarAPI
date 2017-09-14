@@ -27,6 +27,12 @@ public interface ICoordProvider extends IProvider {
 
 	/**
 	 * Generates the coordinates settings for this handler.
+	 * This process should be computationally cheap.
 	 * */
-	public ICoordMainSettings generateSettings(WorldSet worldSet);
+	public Object generateSettings(WorldSet worldSet);
+
+	/**
+	 * Overrides certain settings.
+	 * */
+	public boolean overrideSettings(WorldSet worldSet, CCoordinates coordinate);
 }

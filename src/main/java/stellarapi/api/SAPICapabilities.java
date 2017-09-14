@@ -2,12 +2,17 @@ package stellarapi.api;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import stellarapi.api.atmosphere.IAtmosphere;
+import stellarapi.api.atmosphere.IAtmSystem;
+import stellarapi.api.celestials.ICelestialScene;
+import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.coordinates.ILocalCoordinates;
-import stellarapi.api.interact.IOpticalProperties;
-import stellarapi.api.optics.IOpticalViewer;
 
 public class SAPICapabilities {
+	// ********************************************* //
+	// ********* Coordinates Capabilities ********** //
+	// ********************************************* //
 
 	@CapabilityInject(ILocalCoordinates.class)
 	public static final Capability<ILocalCoordinates> LOCAL_COORDINATES = null;
@@ -15,6 +20,25 @@ public class SAPICapabilities {
 	@CapabilityInject(ICoordSystem.class)
 	public static final Capability<ICoordSystem> COORDINATES_SYSTEM = null;
 
+	// ********************************************* //
+	// ********** Celestial Capabilities *********** //
+	// ********************************************* //
+	
+	@CapabilityInject(ICelestialScene.class)
+	public static final Capability<ICelestialScene> CELESTIAL_SCENE = null;
+	
+	@CapabilityInject(ICelestialSystem.class)
+	public static final Capability<ICelestialSystem> CELESTIAL_SYSTEM = null;
+
+	// ********************************************* //
+	// ********** Atmosphere Capabilities ********** //
+	// ********************************************* //
+
+	@CapabilityInject(IAtmosphere.class)
+	public static final Capability<IAtmosphere> ATMOSPHERE_REFERENCE = null;
+	
+	@CapabilityInject(IAtmSystem.class)
+	public static final Capability<IAtmSystem> ATMOSPHERE_SYSTEM = null;
 
 	//@CapabilityInject(IOpticalViewer.class)
 	//public static final Capability<IOpticalViewer> VIEWER_CAPABILITY = null;

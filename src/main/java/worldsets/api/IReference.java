@@ -8,7 +8,7 @@ import worldsets.api.worldset.WorldSetInstance;
 
 @Deprecated
 public interface IReference {
-	public World getDefaultWorld();
+	public World getDefaultWorld(boolean isRemote);
 
 	public WorldSetInstance getWorldInstance(World base, WorldSet worldSet);
 
