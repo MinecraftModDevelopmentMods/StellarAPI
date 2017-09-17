@@ -1,30 +1,16 @@
 package stellarapi.api.atmosphere;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import javax.annotation.Nullable;
+
+import com.google.gson.JsonObject;
+
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
 public abstract class AtmosphereType extends IForgeRegistryEntry.Impl<AtmosphereType> {
-
 	/**
-	 * Gets atmosphere ID for certain world.
+	 * Creates generic atmosphere with the json settings.
+	 * If the settings is empty, this will generate the atmosphere as empty.
+	 * It will be filled with the saved data.
 	 * */
-	public abstract ResourceLocation atmosphereID(World world);
-
-	/**
-	 * Generates actual local atmosphere for certain world.
-	 * This creates atmosphere from world regardless of the settings.
-	 * */
-	public abstract ILocalAtmosphere generateLocalAtmosphere(World world);
-
-	/**
-	 * Generates atmosphere settings.
-	 * */
-	public abstract Object generateSettings();
-
-	/**
-	 * Creates generic atmosphere.
-	 * This should be populated later.
-	 * */
-	//public abstract IAtmosphere generateAtmosphere();
+	public abstract Atmosphere generateAtmosphere(@Nullable JsonObject settings);
 }

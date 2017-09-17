@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import stellarapi.api.celestials.collection.ICPartitionType;
+import stellarapi.api.celestials.collection.model.TypeModel;
 import stellarapi.api.coordinates.CCoordinates;
 
 /**

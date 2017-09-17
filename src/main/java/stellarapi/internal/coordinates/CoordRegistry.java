@@ -91,7 +91,7 @@ public class CoordRegistry {
 
 	@SubscribeEvent
 	public static void onApplySettingsEvent(ProviderEvent.ApplySettings<ICoordProvider> applySettingsEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(applySettingsEvent.isRemote);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
@@ -107,7 +107,7 @@ public class CoordRegistry {
 
 	@SubscribeEvent
 	public static void onCompleteEvent(ProviderEvent.Complete<ICoordProvider> completeEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(completeEvent.isRemote);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
@@ -150,7 +150,7 @@ public class CoordRegistry {
 
 	@SubscribeEvent
 	public static void onSendEvent(ProviderEvent.Send<ICoordProvider> sendEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(false);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
@@ -161,7 +161,7 @@ public class CoordRegistry {
 
 	@SubscribeEvent
 	public static void onReceiveEvent(ProviderEvent.Receive<ICoordProvider> receiveEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(true);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			NBTBase worldSetData = receiveEvent.receivedCompound.getTag(
 					worldSet.delegate.name().toString());

@@ -93,7 +93,7 @@ public class ProviderRegistryImpl<P extends IProvider> implements IProviderRegis
 
 	@Override
 	public <T> T getSlaveMap(ResourceLocation slaveMapName, Class<T> type) {
-		// TODO Auto-generated method stub
+		// TODO Get the slave map
 		return null;
 	}
 

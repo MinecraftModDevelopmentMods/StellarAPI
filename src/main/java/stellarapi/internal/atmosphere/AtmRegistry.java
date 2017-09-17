@@ -8,28 +8,19 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
-import net.minecraftforge.fml.common.registry.RegistryDelegate;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.AtmosphereType;
 import stellarapi.api.atmosphere.IAtmProvider;
 import stellarapi.api.atmosphere.IAtmSystem;
-import stellarapi.api.coordinates.CCoordinates;
-import stellarapi.api.coordinates.ICoordHandler;
 import stellarapi.api.coordinates.ICoordProvider;
-import stellarapi.api.coordinates.ICoordSettings;
-import stellarapi.api.coordinates.ICoordSystem;
-import stellarapi.api.event.settings.ApplyWorldSettingsEvent;
 import stellarapi.internal.settings.AtmSettings;
-import stellarapi.internal.settings.CoordSettings;
-import stellarapi.internal.settings.CoordWorldSettings;
 import stellarapi.internal.settings.MainSettings;
 import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
@@ -64,22 +55,21 @@ public class AtmRegistry {
 
 	@SubscribeEvent
 	public static void onApplySettingsEvent(ProviderEvent.ApplySettings<ICoordProvider> applySettingsEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(applySettingsEvent.isRemote);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
 
-			if(system.getWorldAtmType() == null) {
+			if(system.getProviderID() == null) {
 				AtmSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).atmosphere;
-				IAtmProvider provider = settings.getCurrentProvider();
-				system.setWorldAtmType(provider.getAtmosphereType(worldSet));
+				system.setProviderID(settings.getCurrentProviderID());
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public static void onCompleteEvent(ProviderEvent.Complete<ICoordProvider> completeEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(completeEvent.isRemote);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
@@ -124,7 +114,7 @@ public class AtmRegistry {
 
 	@SubscribeEvent
 	public static void onSendEvent(ProviderEvent.Send<ICoordProvider> sendEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(false);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
@@ -135,7 +125,7 @@ public class AtmRegistry {
 
 	@SubscribeEvent
 	public static void onReceiveEvent(ProviderEvent.Receive<ICoordProvider> receiveEvent) {
-		World world = WAPIReference.getDefaultWorld();
+		World world = WAPIReference.getDefaultWorld(true);
 		for(WorldSet worldSet : WAPIReference.worldSetList()) {
 			NBTBase worldSetData = receiveEvent.receivedCompound.getTag(
 					worldSet.delegate.name().toString());

@@ -5,29 +5,31 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.lib.math.SpCoord;
 
-public class Atmosphere implements INBTSerializable<NBTTagCompound> {
+public abstract class Atmosphere implements INBTSerializable<NBTTagCompound> {
 
 	public static enum EnumAtmosphereType {
 		PLANE, SPHERE;
 	}
 
-	public static class BoundaryData {
+	public static class LayerBoundaryData {
 		private double height;
 		private double density;
 	}
 
-	private BoundaryData[] data;
-	private AtmosphereLayer[] layers;
-	// TODO fill in these
-	private EnumAtmosphereType type;
+	// TODO Atmosphere fill in these
 
-	@Override
-	public NBTTagCompound serializeNBT() {
-		return null;
-	}
+	private AtmosphereType<?> theType;
 
-	@Override
-	public void deserializeNBT(NBTTagCompound nbt) {
-		
+	/** Layer Boundary data - should have one more entry than layers */
+	private LayerBoundaryData[] data;
+
+	/** Layer data */
+	private IAtmosphereLayer[] layers;
+
+	/** Atmosphere type */
+	private EnumAtmosphereType atmType;
+
+	public AtmosphereType<?> getType() {
+		return this.theType;
 	}
 }

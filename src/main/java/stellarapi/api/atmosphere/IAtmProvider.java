@@ -18,5 +18,5 @@ public interface IAtmProvider extends IProvider {
 	/**
 	 * Gets the atmosphere type for the specified world set.
 	 * */
-	public AtmosphereType getAtmosphereType(WorldSet worldset);
+	public IAtmSetProvider perSetProvider(WorldSet worldset);
 }
