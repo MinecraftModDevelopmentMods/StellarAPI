@@ -2,6 +2,9 @@ package stellarapi.api.celestials;
 
 import stellarapi.api.celestials.collection.ICollectionAdaption;
 
+/**
+ * World Capability of celestial objects and the scene of them.
+ * */
 public interface ICelestialScene {
 	/** Sets up this scene */
 	public void setupComplete(ICelestialSystem system);

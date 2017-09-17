@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import stellarapi.api.celestials.collection.CelestialCollection;
 
 /**
- * Celestial system - this does not mean planetary system.
+ * World capability of Celestial system - this does not mean planetary system.
  * Bound on certain WorldSetInstance, TODO fill in these descriptions
  * */
 public interface ICelestialSystem {

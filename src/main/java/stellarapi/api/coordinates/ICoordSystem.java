@@ -8,6 +8,10 @@ import net.minecraft.util.ResourceLocation;
 import stellarapi.api.lib.math.Matrix4;
 import worldsets.api.worldset.WorldSet;
 
+/**
+ * WorldSet capability of Coordinates system.
+ * This manages coordinates and provides operations on coordinates.
+ * */
 public interface ICoordSystem {
 
 	/**

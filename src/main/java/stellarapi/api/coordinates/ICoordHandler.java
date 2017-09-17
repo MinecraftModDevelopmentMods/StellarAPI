@@ -7,6 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
+/**
+ * Coordinates handler.
+ * */
 public interface ICoordHandler {
 	/**
 	 * Handles the case where server-side object is absent. (e.g. vanila)
