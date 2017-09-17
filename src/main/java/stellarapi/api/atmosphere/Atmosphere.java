@@ -18,7 +18,7 @@ public abstract class Atmosphere implements INBTSerializable<NBTTagCompound> {
 
 	// TODO Atmosphere fill in these
 
-	private AtmosphereType<?> theType;
+	private AtmosphereType theType;
 
 	/** Layer Boundary data - should have one more entry than layers */
 	private LayerBoundaryData[] data;
@@ -29,7 +29,7 @@ public abstract class Atmosphere implements INBTSerializable<NBTTagCompound> {
 	/** Atmosphere type */
 	private EnumAtmosphereType atmType;
 
-	public AtmosphereType<?> getType() {
+	public AtmosphereType getType() {
 		return this.theType;
 	}
 }

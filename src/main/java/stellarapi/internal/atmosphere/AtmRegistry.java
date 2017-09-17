@@ -8,19 +8,26 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
+import net.minecraftforge.fml.common.registry.RegistryDelegate;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.AtmosphereType;
 import stellarapi.api.atmosphere.IAtmProvider;
 import stellarapi.api.atmosphere.IAtmSystem;
+import stellarapi.api.coordinates.CCoordinates;
+import stellarapi.api.coordinates.ICoordHandler;
 import stellarapi.api.coordinates.ICoordProvider;
+import stellarapi.api.coordinates.ICoordSettings;
+import stellarapi.api.event.settings.ApplyWorldSettingsEvent;
 import stellarapi.internal.settings.AtmSettings;
+import stellarapi.internal.settings.AtmWorldSettings;
 import stellarapi.internal.settings.MainSettings;
 import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
@@ -94,22 +101,24 @@ public class AtmRegistry {
 		WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 		IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
 
-		AtmSettings coords = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).atmosphere;
+		AtmSettings atms = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).atmosphere;
+
+		AtmWorldSettings worldAtm = atms.defaultSettings;
+		String worldName = world.provider.getDimensionType().getName();
+
+		if(atms.additionalSettings.containsKey(worldName))
+			worldAtm = atms.additionalSettings.get(worldName);
 
 		// TODO AtmSystem fill in this settings handling part
 
-		/*CoordWorldSettings worldCoords = coords.defaultSettings;
-		String worldName = world.provider.getDimensionType().getName();
-
-		if(coords.additionalSettings.containsKey(worldName))
-			worldCoords = coords.additionalSettings.get(worldName);
-
-		MinecraftForge.EVENT_BUS.post(
+		/*MinecraftForge.EVENT_BUS.post(
 				new ApplyWorldSettingsEvent<ICoordHandler>(
 						ICoordHandler.class, system.getHandler(), worldCoords.mainSettings, world));
 
 		for(Map.Entry<RegistryDelegate<CCoordinates>, ICoordSettings> entry : worldCoords.specificSettings.entrySet())
 			entry.getKey().get().applySettings(entry.getValue(), world);*/
+
+		
 	}
 
 	@SubscribeEvent

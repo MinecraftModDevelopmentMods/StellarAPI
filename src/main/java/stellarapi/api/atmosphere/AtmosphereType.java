@@ -11,6 +11,8 @@ public abstract class AtmosphereType extends IForgeRegistryEntry.Impl<Atmosphere
 	 * Creates generic atmosphere with the json settings.
 	 * If the settings is empty, this will generate the atmosphere as empty.
 	 * It will be filled with the saved data.
+	 * @throws IllegalFormatException when the format of the settings does not match
+	 *   the required format for this type
 	 * */
 	public abstract Atmosphere generateAtmosphere(@Nullable JsonObject settings);
 }

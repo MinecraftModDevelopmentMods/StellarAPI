@@ -36,8 +36,7 @@ public interface IAtmSystem {
 	public @Nullable Atmosphere getAtmosphere(ResourceLocation atmId);
 
 	/**
-	 * Puts atmosphere for specified id.
-	 * @throws IllegalArgumentException if atmosphere for certain ID exists.
+	 * Puts atmosphere for specified id, replacing the existing one if necessary.
 	 * */
 	public boolean putAtmosphere(ResourceLocation atmId, Atmosphere atmosphere);
 
