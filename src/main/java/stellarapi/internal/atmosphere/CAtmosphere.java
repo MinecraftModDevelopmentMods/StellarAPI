@@ -1,7 +1,7 @@
 package stellarapi.internal.atmosphere;
 
-import stellarapi.api.atmosphere.IAtmosphere;
+import stellarapi.api.atmosphere.IWorldAtmosphere;
 
-public class CAtmosphere implements IAtmosphere {
+public class CAtmosphere implements IWorldAtmosphere {
 
 }

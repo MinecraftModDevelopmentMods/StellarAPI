@@ -7,17 +7,22 @@ import com.google.common.collect.Lists;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import stellarapi.api.celestials.collection.handler.IRecognizer;
+import stellarapi.api.celestials.CelestialType;
+import stellarapi.api.celestials.collection.ISegment;
 
-public class TypedModel implements ICapabilityProvider {
+public abstract class TypeModel implements ICapabilityProvider {
+
+	private final CelestialType celType;
 
 	// TODO custom dispatcher & event
 	private CapabilityIndexedDispatcher capabilities = null;
 	private List<IRecognizer> recognizers = Lists.newArrayList();
 
-	public TypedModel() {
-		
+	public TypeModel(CelestialType type) {
+		this.celType = type;
 	}
+
+	public abstract void process(ISegment segment);
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

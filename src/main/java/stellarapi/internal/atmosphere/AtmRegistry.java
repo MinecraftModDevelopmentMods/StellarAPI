@@ -26,7 +26,7 @@ import stellarapi.api.coordinates.ICoordHandler;
 import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.coordinates.ICoordSettings;
 import stellarapi.api.coordinates.ICoordSystem;
-import stellarapi.api.event.ApplyWorldSettingsEvent;
+import stellarapi.api.event.settings.ApplyWorldSettingsEvent;
 import stellarapi.internal.settings.AtmSettings;
 import stellarapi.internal.settings.CoordSettings;
 import stellarapi.internal.settings.CoordWorldSettings;

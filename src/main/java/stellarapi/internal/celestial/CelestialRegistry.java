@@ -25,7 +25,7 @@ import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.celestials.collection.CelestialCollection;
 import stellarapi.api.celestials.collection.ICelestialProvider;
 import stellarapi.api.coordinates.ICoordHandler;
-import stellarapi.api.event.ApplyGlobalSettingsEvent;
+import stellarapi.api.event.settings.ApplyGlobalSettingsEvent;
 import stellarapi.internal.settings.CelestialSettings;
 import stellarapi.internal.settings.MainSettings;
 import worldsets.api.WAPIReference;

@@ -13,7 +13,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import stellarapi.api.SAPIReference;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.IAtmSystem;
-import stellarapi.api.atmosphere.IAtmosphere;
+import stellarapi.api.atmosphere.IWorldAtmosphere;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialScene;
 import stellarapi.api.celestials.ICelestialSystem;
@@ -106,14 +106,14 @@ public class SAPICapsHook {
 		}, CelestialSystem.class);
 
 
-		CapabilityManager.INSTANCE.register(IAtmosphere.class,
-				new IStorage<IAtmosphere>() {
+		CapabilityManager.INSTANCE.register(IWorldAtmosphere.class,
+				new IStorage<IWorldAtmosphere>() {
 			@Override
-			public NBTBase writeNBT(Capability<IAtmosphere> capability, IAtmosphere instance, EnumFacing side) {
+			public NBTBase writeNBT(Capability<IWorldAtmosphere> capability, IWorldAtmosphere instance, EnumFacing side) {
 				return null;
 			}
 			@Override
-			public void readNBT(Capability<IAtmosphere> capability, IAtmosphere instance, EnumFacing side, NBTBase nbt) {
+			public void readNBT(Capability<IWorldAtmosphere> capability, IWorldAtmosphere instance, EnumFacing side, NBTBase nbt) {
 			}
 		}, CAtmosphere.class);
 

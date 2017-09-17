@@ -11,19 +11,23 @@ public class Atmosphere implements INBTSerializable<NBTTagCompound> {
 		PLANE, SPHERE;
 	}
 
-	private double[] heights;
+	public static class BoundaryData {
+		private double height;
+		private double density;
+	}
+
+	private BoundaryData[] data;
+	private AtmosphereLayer[] layers;
 	// TODO fill in these
 	private EnumAtmosphereType type;
 
 	@Override
 	public NBTTagCompound serializeNBT() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		// TODO Auto-generated method stub
 		
 	}
 }

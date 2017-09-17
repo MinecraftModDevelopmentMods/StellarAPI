@@ -9,25 +9,25 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
-import stellarapi.api.celestials.collection.ICollectionPartition;
+import stellarapi.api.celestials.collection.ICPartitionType;
 import stellarapi.api.coordinates.CCoordinates;
 
 /**
  * Certain celestial type.
  * */
-public class CelestialType<P> extends IForgeRegistryEntry.Impl<CelestialType<P>> {
+public abstract class CelestialType extends IForgeRegistryEntry.Impl<CelestialType> {
 
 	private ResourceLocation parentID;
 	private CelestialType parent;
 	private List<CelestialType> children = Lists.newArrayList();
 
-	private ICollectionPartition<P> partition;
+	private ICPartitionType<?> partition;
 	private CCoordinates coordinates;
 
 	private int level;
 
 	/** Initiates root celestial type. */
-	public CelestialType(ICollectionPartition<P> partition) {
+	public CelestialType(ICPartitionType<?> partition) {
 		this.parentID = null;
 		this.partition = partition;
 
@@ -67,6 +67,7 @@ public class CelestialType<P> extends IForgeRegistryEntry.Impl<CelestialType<P>>
 			this.coordinates = coordinates;
 	}
 
+	public abstract TypeModel generateTypeModel();
 
 	/** Just gets internal level */
 	@Deprecated

@@ -1,7 +1,10 @@
 package stellarapi.api.atmosphere;
 
-/** Stores local atmosphere */
-public interface IAtmosphere {
+/**
+ * World Capabilities.
+ * Stores local atmosphere
+ * */
+public interface IWorldAtmosphere {
 	/**
 	 * Sets up this atmosphere.
 	 * */

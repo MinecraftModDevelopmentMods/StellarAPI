@@ -20,6 +20,7 @@ public abstract class CelestialCollection<P> implements INBTSerializable<NBTTagC
 		STELLAR, PLANETARY, LOCALSTAR
 	}
 
+	/** Gets the adaption on world */
 	public abstract ICollectionAdaption<P> adaption(World world);
 
 	public void setupPartial() { }

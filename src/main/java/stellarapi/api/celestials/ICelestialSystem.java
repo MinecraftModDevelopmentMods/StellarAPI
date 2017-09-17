@@ -14,7 +14,7 @@ public interface ICelestialSystem {
 	public boolean isAbsent(CelestialType type);
 
 	/** Gets the collection, null for absent */
-	public @Nullable CelestialCollection getCollection(CelestialType type);
+	public @Nullable CelestialCollection<?> getCollection(CelestialType type);
 
 	/** Gets the provider ID. null for absent */
 	public @Nullable ResourceLocation getProviderID(CelestialType type);

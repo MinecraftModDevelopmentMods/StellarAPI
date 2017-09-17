@@ -21,11 +21,11 @@
  * */
 
 /**
- * Handler subsection of Celestial Collection section of Stellar API.
+ * Dispatcher subsection of Celestial section of Stellar API.
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
-package stellarapi.api.celestials.collection.handler;
+package stellarapi.api.celestials.dispatcher;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.api.SAPIReference;
