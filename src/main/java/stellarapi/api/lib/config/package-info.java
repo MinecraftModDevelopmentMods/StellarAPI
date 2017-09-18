@@ -24,9 +24,9 @@
  * Configuration Utility section of Stellar API.
  * @author Abastro
  * */
-@API(apiVersion = "@STVERSION@", owner = StellarAPI.modid, provides = StellarAPI.apiid)
+@API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
 package stellarapi.api.lib.config;
 
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;
+import stellarapi.api.SAPIReference;

@@ -15,7 +15,7 @@ import stellarapi.api.SAPIReference;
 import stellarapi.api.lib.config.DynamicConfig;
 
 public class SleepWakeManager {
-
+	// TODO Remove this placeholder example - not needed anymore.
 	@Config.Name("Custom_Wake_Enabled")
 	@Config.LangKey("config.property.wakeenable")
 	@Config.Comment("Enable/Disable wake system provided by Stellar API")
