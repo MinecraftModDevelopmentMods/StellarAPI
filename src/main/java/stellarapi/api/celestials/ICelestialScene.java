@@ -1,5 +1,7 @@
 package stellarapi.api.celestials;
 
+import com.google.common.collect.ImmutableList;
+
 import stellarapi.api.celestials.collection.ICollectionAdaption;
 
 /**
@@ -14,4 +16,7 @@ public interface ICelestialScene {
 
 	/** Gets adaption */
 	public ICollectionAdaption getAdaption(CelestialType type);
+
+	/** Gets the layers */
+	public ImmutableList<CelestialLayer> getLayers();
 }

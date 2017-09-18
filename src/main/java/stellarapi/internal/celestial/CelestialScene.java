@@ -1,12 +1,9 @@
 package stellarapi.internal.celestial;
 
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.RegistryDelegate;
 import stellarapi.api.celestials.CelestialLayer;
 import stellarapi.api.celestials.CelestialType;
@@ -16,8 +13,8 @@ import stellarapi.api.celestials.collection.ICollectionAdaption;
 
 public class CelestialScene implements ICelestialScene {
 
-	private Map<RegistryDelegate<CelestialType>, ICollectionAdaption> adaptionMap = Maps.newHashMap();
-	private List<CelestialLayer> layers = Lists.newArrayList();
+	private ImmutableMap<RegistryDelegate<CelestialType>, ICollectionAdaption> adaptionMap;
+	private ImmutableList<CelestialLayer> layers;
 
 	public CelestialScene() { }
 
@@ -34,6 +31,11 @@ public class CelestialScene implements ICelestialScene {
 	@Override
 	public ICollectionAdaption getAdaption(CelestialType type) {
 		return adaptionMap.get(type.delegate);
+	}
+
+	@Override
+	public ImmutableList<CelestialLayer> getLayers() {
+		return this.layers;
 	}
 
 }

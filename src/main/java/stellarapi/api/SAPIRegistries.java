@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import stellarapi.api.atmosphere.AtmosphereType;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.coordinates.CCoordinates;
 
@@ -70,17 +69,6 @@ public class SAPIRegistries {
 	 * */
 	@ObjectHolder("celestial")
 	public static final CCoordinates celestial = null;
-
-	// ********************************************* //
-	// **************** Atmosphere ***************** //
-	// ********************************************* //
-
-	public static final ResourceLocation ATMOSPHERES = new ResourceLocation(SAPIReference.modid, "coordinates");
-
-	private static IForgeRegistry<AtmosphereType> registryAtmType;
-	public static IForgeRegistry<AtmosphereType> getAtmTypeRegistry() {
-		return registryAtmType;
-	}
 
 	// ********************************************* //
 	// *************** Slavemap Keys *************** //

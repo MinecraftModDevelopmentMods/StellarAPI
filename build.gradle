@@ -12,17 +12,22 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-stversion = "1.11.2-0.5.1.1"
-wsversion = "1.11.2-0.1.1"
+ext.config = parseConfig(file('build.properties'))
 
-group= "stellarapi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Stellar API"
+ext.stModVersion = "${config.version.stellarapi.major}.${config.version.stellarapi.minor}.${config.version.stellarapi.revis}.${config.version.stellarapi.patch}"
+ext.wsModVersion = "${config.version.worldsets.major}.${config.version.worldsets.minor}.${config.worldsets.stellarapi.revis}"
+
+stversion = "${config.version.minecraft}-${stModVersion}"
+wsversion = "${config.version.minecraft}-${wsModVersion}"
+
+group= "${config.group}"
+archivesBaseName = "${config.archive}"
 
 minecraft {
-    version = "1.11.2-13.20.1.2386"
-    runDir = "eclipse/assets"
+    version = "${config.version.minecraft}-${config.version.forge}"
+    runDir = "run"
+    mappings = "${config.version.mcpmappings}"
 
-    mappings = "stable_32"
     replace "@STVERSION@", project.stversion
     replace "@WSVERSION@", project.wsversion
 }
