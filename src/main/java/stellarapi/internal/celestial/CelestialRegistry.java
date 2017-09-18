@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialScene;
@@ -35,7 +35,7 @@ import worldsets.api.provider.ProviderBuilder;
 import worldsets.api.worldset.WorldSet;
 import worldsets.api.worldset.WorldSetInstance;
 
-@Mod.EventBusSubscriber(modid = SAPIReference.modid)
+@Mod.EventBusSubscriber(modid = SAPIReferences.modid)
 public class CelestialRegistry {
 
 	private static IForgeRegistry<CelestialType> typeRegistry;

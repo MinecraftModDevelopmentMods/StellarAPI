@@ -18,7 +18,7 @@ public class PeriodHelper {
 	 *         nothing like day period
 	 */
 	public static CelestialPeriod getDayPeriod(World world) {
-		CelestialEffectors effectors = SAPIReference.getEffectors(world, IEffectorType.Light);
+		CelestialEffectors effectors = SAPIReferences.getEffectors(world, IEffectorType.Light);
 		return effectors == null ? null : effectors.getPrimarySource().getHorizontalPeriod();
 	}
 
@@ -31,7 +31,7 @@ public class PeriodHelper {
 	 *         there is nothing like lunar month period
 	 */
 	public static CelestialPeriod getLunarPeriod(World world) {
-		CelestialEffectors effectors = SAPIReference.getEffectors(world, IEffectorType.Tide);
+		CelestialEffectors effectors = SAPIReferences.getEffectors(world, IEffectorType.Tide);
 		return effectors == null ? null : effectors.getPrimarySource().getAbsolutePeriod();
 	}
 
@@ -44,7 +44,7 @@ public class PeriodHelper {
 	 *         is nothing like year period
 	 */
 	public static CelestialPeriod getYearPeriod(World world) {
-		CelestialEffectors effectors = SAPIReference.getEffectors(world, IEffectorType.Light);
+		CelestialEffectors effectors = SAPIReferences.getEffectors(world, IEffectorType.Light);
 		return effectors == null ? null : effectors.getPrimarySource().getAbsolutePeriod();
 	}
 

@@ -11,7 +11,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.DynamicConfig;
 
 public class SleepWakeManager {
@@ -108,8 +108,8 @@ public class SleepWakeManager {
 	 *            the default wake time
 	 */
 	public long getWakeTime(World world, long defaultWakeTime) {
-		ICelestialCoordinate coordinate = SAPIReference.getCoordinate(world);
-		CelestialEffectors lightSources = SAPIReference.getEffectors(world, IEffectorType.Light);
+		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
+		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		long wakeTime;
 		boolean accepted = false;
@@ -153,8 +153,8 @@ public class SleepWakeManager {
 	 *         {@code EntityPlayer.SleepResult.NOT_POSSIBLE_HERE}
 	 */
 	public EntityPlayer.SleepResult getSleepPossibility(World world, EntityPlayer.SleepResult defaultStatus) {
-		ICelestialCoordinate coordinate = SAPIReference.getCoordinate(world);
-		CelestialEffectors lightSources = SAPIReference.getEffectors(world, IEffectorType.Light);
+		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
+		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		EntityPlayer.SleepResult status = EntityPlayer.SleepResult.OK;
 		boolean accepted = false;

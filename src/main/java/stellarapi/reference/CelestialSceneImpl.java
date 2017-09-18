@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import net.minecraft.world.World;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
@@ -27,7 +27,7 @@ public class CelestialSceneImpl implements ICelestialUniverse {
 	 * */
 	public static CelestialSceneImpl constructCelestialScene(World world) {
 		ConstructCelestialsEvent construct = new ConstructCelestialsEvent(world);
-		if (SAPIReference.getEventBus().post(construct))
+		if (SAPIReferences.getEventBus().post(construct))
 			return null;
 
 		ImmutableSet<IEffectorType> effectorTypes = construct.getEffectorTypes();
@@ -37,7 +37,7 @@ public class CelestialSceneImpl implements ICelestialUniverse {
 
 		SortCelestialsEvent sort = new SortCelestialsEvent(world, collectionOrdering, construct.getCollections(),
 				effectors);
-		SAPIReference.getEventBus().post(sort);
+		SAPIReferences.getEventBus().post(sort);
 
 		CelestialCollectionManager collectionManager =
 				new CelestialCollectionManager(sort.getSortedCollections());

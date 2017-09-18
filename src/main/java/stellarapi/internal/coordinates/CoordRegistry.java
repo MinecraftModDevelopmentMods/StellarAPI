@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
 import net.minecraftforge.fml.common.registry.RegistryDelegate;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.coordinates.ICoordHandler;
@@ -36,7 +36,7 @@ import worldsets.api.provider.ProviderBuilder;
 import worldsets.api.worldset.WorldSet;
 import worldsets.api.worldset.WorldSetInstance;
 
-@Mod.EventBusSubscriber(modid = SAPIReference.modid)
+@Mod.EventBusSubscriber(modid = SAPIReferences.modid)
 public class CoordRegistry {
 
 	public static final String DEFAULT_NAME = "celestial";

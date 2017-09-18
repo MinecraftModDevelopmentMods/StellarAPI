@@ -24,10 +24,10 @@
  * Examples of Stellar API, free to use these implementations.
  * @author Abastro
  * */
-@API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
+@API(apiVersion = "@STVERSION@", owner = SAPIReferences.modid, provides = SAPIReferences.apiid)
 package stellarapi.example;
 
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 

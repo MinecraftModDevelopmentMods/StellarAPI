@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import worldsets.api.worldset.WorldSet;
 import worldsets.api.worldset.WorldSetInstance;
 
@@ -27,7 +27,7 @@ public enum WAPIReference {
 	// ************ WorldSet References ************ //
 	// ********************************************* //
 
-	public static final ResourceLocation WORLDSETS = new ResourceLocation(SAPIReference.modid, "worldsets");
+	public static final ResourceLocation WORLDSETS = new ResourceLocation(SAPIReferences.modid, "worldsets");
 
 
 	@ObjectHolder("overworldtype")

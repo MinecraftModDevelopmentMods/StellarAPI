@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.DCfgManager;
 import stellarium.api.DefaultSkyType;
 import stellarium.api.SkyRenderTypeSurface;
@@ -71,7 +71,7 @@ public class StellarSky {
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
 		MinecraftForge.EVENT_BUS.register(this.fmlEventHook);
 
-		SAPIReference.getEventBus().register(new StellarAPIEventHook());
+		SAPIReferences.getEventBus().register(new StellarAPIEventHook());
 
 		StellarSkyAPI.setDefaultReplacer(new DefaultWorldProviderReplacer());
 		StellarSkyAPI.registerWorldProviderReplacer(new EndReplacer());

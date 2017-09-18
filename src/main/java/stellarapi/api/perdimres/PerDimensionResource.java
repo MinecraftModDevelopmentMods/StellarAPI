@@ -1,7 +1,7 @@
 package stellarapi.api.perdimres;
 
 import net.minecraft.util.ResourceLocation;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 
 /**
  * Per dimension resource.
@@ -22,7 +22,7 @@ public class PerDimensionResource {
 	}
 
 	public ResourceLocation getLocation() {
-		return SAPIReference.getLocation(this.resourceId, this.defaultLocation);
+		return SAPIReferences.getLocation(this.resourceId, this.defaultLocation);
 	}
 
 }

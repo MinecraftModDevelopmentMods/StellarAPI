@@ -24,4 +24,8 @@
  * Patch section of Stellar API.
  * @author Abastro
  */
+@API(apiVersion = "@STVERSION@", owner = SAPIReferences.modid, provides = SAPIReferences.apiid)
 package stellarapi.api.patch;
+
+import net.minecraftforge.fml.common.API;
+import stellarapi.api.SAPIReferences;

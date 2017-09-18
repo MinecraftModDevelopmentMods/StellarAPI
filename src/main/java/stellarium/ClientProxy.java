@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.ISkyEffect;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.gui.overlay.OverlayRegistry;
 import stellarapi.api.lib.config.DCfgManager;
 import stellarapi.api.optics.IOpticalFilter;
@@ -169,10 +169,10 @@ public class ClientProxy extends CommonProxy implements IProxy {
 			throw new IllegalStateException("Illegal access to field " + fieldLightUpdateSet.getName() + ", Unexpected.");
 		}
 
-		ICelestialCoordinate coordinate = SAPIReference.getCoordinate(world);
-		ISkyEffect sky = SAPIReference.getSkyEffect(world);
-		IViewScope scope = SAPIReference.getScope(viewer);
-		IOpticalFilter filter = SAPIReference.getFilter(viewer);
+		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
+		ISkyEffect sky = SAPIReferences.getSkyEffect(world);
+		IViewScope scope = SAPIReferences.getScope(viewer);
+		IOpticalFilter filter = SAPIReferences.getFilter(viewer);
 
 		skyModel.onTick(this.getDefWorld(), new ViewerInfo(coordinate, sky, scope, filter, viewer));
 	}

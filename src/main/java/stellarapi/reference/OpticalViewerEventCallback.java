@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import stellarapi.api.IUpdatedOpticalViewer;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.event.UpdateFilterEvent;
 import stellarapi.api.event.UpdateScopeEvent;
 import stellarapi.api.interact.IOpticalProperties;
@@ -33,13 +33,13 @@ public final class OpticalViewerEventCallback implements IUpdatedOpticalViewer, 
 
 	public void updateScope(Object... additionalParams) {
 		UpdateScopeEvent scopeEvent = new UpdateScopeEvent(this.entity, new NakedScope(), additionalParams);
-		SAPIReference.getEventBus().post(scopeEvent);
+		SAPIReferences.getEventBus().post(scopeEvent);
 		this.scope = scopeEvent.getScope();
 	}
 
 	public void updateFilter(Object... additionalParams) {
 		UpdateFilterEvent filterEvent = new UpdateFilterEvent(this.entity, new NakedFilter(), additionalParams);
-		SAPIReference.getEventBus().post(filterEvent);
+		SAPIReferences.getEventBus().post(filterEvent);
 		this.filter = filterEvent.getFilter();
 	}
 

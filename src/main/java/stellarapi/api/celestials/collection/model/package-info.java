@@ -24,8 +24,8 @@
  * Model subsection of Celestial Collection section of Stellar API.
  * @author Abastro
  */
-@API(apiVersion = "@STVERSION@", owner = SAPIReference.modid, provides = SAPIReference.apiid)
+@API(apiVersion = "@STVERSION@", owner = SAPIReferences.modid, provides = SAPIReferences.apiid)
 package stellarapi.api.celestials.collection.model;
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;

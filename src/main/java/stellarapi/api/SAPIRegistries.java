@@ -22,7 +22,7 @@ public class SAPIRegistries {
 	// ************* Celestial Objects ************* //
 	// ********************************************* //
 
-	public static final ResourceLocation CELESTIALS = new ResourceLocation(SAPIReference.modid, "celestials");
+	public static final ResourceLocation CELESTIALS = new ResourceLocation(SAPIReferences.modid, "celestials");
 
 	private static IForgeRegistry<CelestialType> registryCelestialType;
 	public static IForgeRegistry<CelestialType> getCelestialTypeRegistry() {
@@ -44,7 +44,7 @@ public class SAPIRegistries {
 	// **************** Coordinates **************** //
 	// ********************************************* //
 
-	public static final ResourceLocation COORDS = new ResourceLocation(SAPIReference.modid, "coordinates");
+	public static final ResourceLocation COORDS = new ResourceLocation(SAPIReferences.modid, "coordinates");
 
 	private static IForgeRegistry<CCoordinates> registryCoords;
 	public static IForgeRegistry<CCoordinates> getCoordRegistry() {
@@ -74,7 +74,7 @@ public class SAPIRegistries {
 	// *************** Slavemap Keys *************** //
 	// ********************************************* //
 
-	public static final ResourceLocation READABLE_NAMES = new ResourceLocation(SAPIReference.modid, "readable_names");
+	public static final ResourceLocation READABLE_NAMES = new ResourceLocation(SAPIReferences.modid, "readable_names");
 
 	// ********************************************* //
 	// ************** General Section ************** //

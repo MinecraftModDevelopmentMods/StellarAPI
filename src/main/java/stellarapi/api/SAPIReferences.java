@@ -16,7 +16,7 @@ import stellarapi.api.perdimres.PerDimensionResourceManager;
 /**
  * Central reference for Stellar API.
  */
-public enum SAPIReference {
+public enum SAPIReferences {
 	@Deprecated
 	INSTANCE;
 	

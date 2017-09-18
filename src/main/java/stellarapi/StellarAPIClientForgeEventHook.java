@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.optics.EyeDetector;
 import stellarapi.api.optics.IOpticalFilter;
@@ -54,10 +54,10 @@ public class StellarAPIClientForgeEventHook {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onUpdateFOV(EntityViewRenderEvent.FOVModifier event) {
-		if(!SAPIReference.hasOpticalInformation(event.getEntity()))
+		if(!SAPIReferences.hasOpticalInformation(event.getEntity()))
 			return;
 
-		IViewScope scope = SAPIReference.getScope(event.getEntity());
+		IViewScope scope = SAPIReferences.getScope(event.getEntity());
 
 		if (scope.forceChange())
 			event.setFOV(70.0F / (float) scope.getMP());
@@ -69,11 +69,11 @@ public class StellarAPIClientForgeEventHook {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
-		if(!SAPIReference.hasOpticalInformation(event.getEntity()))
+		if(!SAPIReferences.hasOpticalInformation(event.getEntity()))
 			return;
 
-		IViewScope scope = SAPIReference.getScope(event.getEntity());
-		IOpticalFilter filter = SAPIReference.getFilter(event.getEntity());
+		IViewScope scope = SAPIReferences.getScope(event.getEntity());
+		IOpticalFilter filter = SAPIReferences.getFilter(event.getEntity());
 
 		double multiplier = scope.getLGP() / (scope.getMP() * scope.getMP());
 
@@ -128,7 +128,7 @@ public class StellarAPIClientForgeEventHook {
 				if(mc.world != null) {
 					ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
 							StellarAPI.proxy.getLoadingProgress());
-					if (SAPIReference.getEventBus().post(loaded))
+					if (SAPIReferences.getEventBus().post(loaded))
 						event.setCanceled(true);
 				}
 

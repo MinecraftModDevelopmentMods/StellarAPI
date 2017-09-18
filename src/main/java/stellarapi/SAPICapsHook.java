@@ -10,7 +10,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.Atmosphere;
 import stellarapi.api.atmosphere.IAtmHolder;
@@ -36,7 +36,7 @@ import worldsets.api.worldset.WorldSetInstance;
 public class SAPICapsHook {
 
 	private static final ResourceLocation CAPS =
-			new ResourceLocation(SAPIReference.modid, "capabilities");
+			new ResourceLocation(SAPIReferences.modid, "capabilities");
 
 	public void registerCapabilities() {
 		// TODO default implementations & some save/load. they are not right for now

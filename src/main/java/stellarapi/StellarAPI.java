@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.DCfgManager;
 import stellarapi.example.item.ItemFilteredTelescopeExample;
@@ -36,14 +36,14 @@ import stellarapi.internal.coordinates.CoordRegistry;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.SAPIReferenceHandler;
 
-@Mod(modid = SAPIReference.modid, version = SAPIReference.version,
+@Mod(modid = SAPIReferences.modid, version = SAPIReferences.version,
 acceptedMinecraftVersions="[1.11.0, 1.12.0)",
 guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory",
 dependencies = "required-after:worldsetapi")
 public final class StellarAPI {
 
 	// The instance of Stellarium
-	@Instance(SAPIReference.modid)
+	@Instance(SAPIReferences.modid)
 	public static StellarAPI instance;
 
 	@SidedProxy(clientSide = "stellarapi.ClientProxy", serverSide = "stellarapi.CommonProxy")
@@ -82,7 +82,7 @@ public final class StellarAPI {
 
 		SAPIReferenceHandler reference = new SAPIReferenceHandler();
 		reference.initialize();
-		SAPIReference.INSTANCE.setReference(reference);
+		SAPIReferences.INSTANCE.setReference(reference);
 
 		MinecraftForge.EVENT_BUS.register(this.eventHook);
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
@@ -92,17 +92,17 @@ public final class StellarAPI {
 		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
 		this.cfgManager = new DCfgManager(this.config);
 
-		SAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
+		SAPIReferences.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
 
-		cfgManager.register(wakeCategory, SAPIReference.getSleepWakeManager());
+		cfgManager.register(wakeCategory, SAPIReferences.getSleepWakeManager());
 
-		SleepWakeManager sleepWake = SAPIReference.getSleepWakeManager();
+		SleepWakeManager sleepWake = SAPIReferences.getSleepWakeManager();
 		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
 		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
 
-		SAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.INSTANCE);
+		SAPIReferences.registerPerDimResourceHandler(PerDimensionResourceRegistry.INSTANCE);
 
-		SAPIReference.getEventBus().register(new StellarAPIOwnEventHook());
+		SAPIReferences.getEventBus().register(new StellarAPIOwnEventHook());
 
 		this.telescope = new ItemTelescopeExample().setUnlocalizedName("stellarapi.deftelescope")
 				.setCreativeTab(CreativeTabs.TOOLS).setMaxStackSize(1);

@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.world.World;
 import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 
@@ -44,8 +44,8 @@ public class DaytimeChecker {
 	 */
 	public boolean isDescriptorApply(World world, EnumDaytimeDescriptor descriptor, long time, int tolerance,
 			boolean defaultApply) {
-		ICelestialCoordinate coordinate = SAPIReference.getCoordinate(world);
-		CelestialEffectors lightSources = SAPIReference.getEffectors(world, IEffectorType.Light);
+		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
+		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		for (IDaytimeChecker checker : this.daytimeCheckers) {
 			if (checker.accept(world, lightSources, coordinate, descriptor))
@@ -67,8 +67,8 @@ public class DaytimeChecker {
 	 *            stellar settings is invalid to check daytime settings
 	 */
 	public long timeForCertainDescriptor(World world, EnumDaytimeDescriptor descriptor, long defaultValue) {
-		ICelestialCoordinate coordinate = SAPIReference.getCoordinate(world);
-		CelestialEffectors lightSources = SAPIReference.getEffectors(world, IEffectorType.Light);
+		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
+		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		for (IDaytimeChecker checker : this.daytimeCheckers) {
 			if (checker.accept(world, lightSources, coordinate, descriptor))

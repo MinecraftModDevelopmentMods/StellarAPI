@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.PeriodHelper;
-import stellarapi.api.SAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 
@@ -87,14 +87,14 @@ public class FixedCommandTime extends CommandTime {
 	public long getDay(World world) {
 		long defaultValue = 1000L;
 
-		DaytimeChecker checker = SAPIReference.getDaytimeChecker();
+		DaytimeChecker checker = SAPIReferences.getDaytimeChecker();
 		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.MORNING, defaultValue);
 	}
 
 	public long getNight(World world) {
 		long defaultValue = 13000L;
 
-		DaytimeChecker checker = SAPIReference.getDaytimeChecker();
+		DaytimeChecker checker = SAPIReferences.getDaytimeChecker();
 		return checker.timeForCertainDescriptor(world, EnumDaytimeDescriptor.EVENING, defaultValue);
 	}
 	
@@ -108,7 +108,7 @@ public class FixedCommandTime extends CommandTime {
 	}
 	
 	public long getTime(World world, EnumDaytimeDescriptor descriptor) {
-		DaytimeChecker checker = SAPIReference.getDaytimeChecker();
+		DaytimeChecker checker = SAPIReferences.getDaytimeChecker();
 		return checker.timeForCertainDescriptor(world, descriptor, 0);
 	}
 
