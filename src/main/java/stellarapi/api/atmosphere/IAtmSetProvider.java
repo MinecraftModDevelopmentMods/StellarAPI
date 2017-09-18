@@ -1,5 +1,6 @@
 package stellarapi.api.atmosphere;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.World;
@@ -27,6 +28,11 @@ public interface IAtmSetProvider {
 	 * <code>null</code> means absence of atmosphere, i.e. vacuum.
 	 * */
 	public @Nullable Atmosphere generateAtmosphere(World world, Object settings);
+
+	/**
+	 * Generates blank atmosphere, which will read the data saved to world.
+	 * */
+	public @Nonnull Atmosphere genBlankAtmosphere(World world);
 
 	/**
 	 * Generates atmosphere settings.

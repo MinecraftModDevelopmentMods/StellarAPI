@@ -138,14 +138,14 @@ public class SAPICapsHook {
 			@Override
 			public void readNBT(Capability<IAtmHolder> capability, IAtmHolder instance, EnumFacing side, NBTBase nbt) {
 				NBTTagCompound compound = (NBTTagCompound) nbt;
+				instance.reevaluateAtmosphere(null);
+
 				if(compound.hasKey("atmosphere")) {
-					Atmosphere readAtm = new Atmosphere();
+					Atmosphere readAtm = instance.getAtmosphere();
 					readAtm.deserializeNBT(compound.getCompoundTag("atmosphere"));
-					instance.setAtmosphere(readAtm);
 				} else if(!compound.hasNoTags())
 					instance.setAtmosphere(null);
 
-				instance.reevaluateLocalAtmosphere();
 				if(instance.getLocalAtmosphere() != null)
 					instance.getLocalAtmosphere().deserializeNBT(compound.getCompoundTag("local"));
 			}

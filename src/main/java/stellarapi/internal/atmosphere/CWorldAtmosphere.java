@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.atmosphere.Atmosphere;
 import stellarapi.api.atmosphere.IAtmHolder;
+import stellarapi.api.atmosphere.IAtmSetProvider;
 import stellarapi.api.atmosphere.IAtmSystem;
 import stellarapi.api.atmosphere.ILocalAtmosphere;
 import worldsets.api.WAPIReference;
@@ -22,6 +23,7 @@ public class CWorldAtmosphere implements IAtmHolder {
 	private Atmosphere atmosphere = null;
 	private ILocalAtmosphere local = null;
 	private ResourceLocation currentProviderID = null;
+	private boolean atmosphereSetup = false;
 
 	public CWorldAtmosphere(World world, WorldSet worldSet) {
 		this.world = world;
@@ -31,19 +33,31 @@ public class CWorldAtmosphere implements IAtmHolder {
 	@Override
 	public Atmosphere getAtmosphere() { return this.atmosphere; }
 	@Override
-	public void setAtmosphere(Atmosphere atm) { this.atmosphere = atm; }
+	public void setAtmosphere(Atmosphere atm) { this.atmosphere = atm; this.atmosphereSetup = true; }
+	@Override
+	public boolean isAtmosphereSetup() { return this.atmosphereSetup; }
 
 	@Override
 	public ILocalAtmosphere getLocalAtmosphere() { return this.local; }
+
 	@Override
-	public void reevaluateLocalAtmosphere() {
+	public void reevaluateAtmosphere(Object atmSettings) {
 		WorldSetInstance instance = WAPIReference.getWorldSetInstance(this.world, this.worldSet);
 		IAtmSystem system = instance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
 		ResourceLocation newProviderID = system.getProviderID();
 		if(this.currentProviderID != newProviderID && newProviderID != null) {
-			this.local = system.getSetProvider().generateLocalAtmosphere(this.world);
+			IAtmSetProvider provider = system.getSetProvider();
+			this.local = provider.generateLocalAtmosphere(this.world);
+			this.atmosphere = atmSettings == null?
+					provider.genBlankAtmosphere(this.world)
+					: provider.generateAtmosphere(this.world, atmSettings);
+
 			this.currentProviderID = newProviderID;
+			this.atmosphereSetup = true;
+		} else if(newProviderID != null) {
+			IAtmSetProvider provider = system.getSetProvider();
+			if(provider.replaceWithSettings(this.world, atmSettings))
+				this.atmosphere = provider.generateAtmosphere(this.world, atmSettings);
 		}
 	}
-
 }

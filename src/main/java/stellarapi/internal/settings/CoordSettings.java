@@ -9,6 +9,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.sun.prism.image.Coords;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -37,6 +38,8 @@ public class CoordSettings {
 					@Override
 					public boolean apply(ResourceLocation input) {
 						ICoordProvider provider = coordProvRegistry.getProvider(input);
+						if(!provider.appliedWorldSets().contains(worldSet))
+							return false;
 						for(CCoordinates coords : SAPIRegistries.getCoordRegistry())
 							if(coords.getDefaultParentID() == null && !provider.overrideSettings(worldSet, coords))
 								return false;

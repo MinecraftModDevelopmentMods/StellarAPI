@@ -2,18 +2,24 @@ package stellarapi.api.atmosphere;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class Atmosphere implements INBTSerializable<NBTTagCompound> {
+public final class Atmosphere implements INBTSerializable<NBTTagCompound> {
 
 	public static enum EnumAtmosphereType {
 		PLANE, SPHERE;
 	}
 
 	public static class LayerBoundary {
+		/** Relative-scale Height from the origin point */
 		private double height;
+
+		/** Density, 1.0 is the default */
 		private double density;
 	
 		public LayerBoundary(double height, double density) {
@@ -36,9 +42,12 @@ public class Atmosphere implements INBTSerializable<NBTTagCompound> {
 		this.layers = layers.toArray(new IAtmosphereLayer[0]);
 	}
 
-	/** Dummy constructor to read atmosphere */
-	@Deprecated
-	public Atmosphere() {}
+	/**
+	 * Creates empty atmosphere. Deserialization routine will be run on here.
+	 * */
+	public Atmosphere(Callable<IAtmosphereLayer> layerInit) {
+		this.layerInitializer = layerInit;
+	}
 
 	/** Layer Boundary data - should have one more entry than layers */
 	private LayerBoundary[] boundaries;
@@ -49,15 +58,36 @@ public class Atmosphere implements INBTSerializable<NBTTagCompound> {
 	/** Atmosphere type */
 	private EnumAtmosphereType atmType = EnumAtmosphereType.PLANE;
 
+	private Callable<IAtmosphereLayer> layerInitializer = null;
+
 	@Override
 	public NBTTagCompound serializeNBT() {
-		// TODO Atmosphere Serialize routine
-		return null;
+		NBTTagCompound nbt = new NBTTagCompound();
+
+		nbt.setInteger("type", atmType.ordinal());
+
+		NBTTagList heights = new NBTTagList();
+		NBTTagList densities = new NBTTagList();
+		for(LayerBoundary boundary : this.boundaries) {
+			heights.appendTag(new NBTTagDouble(boundary.height));
+			densities.appendTag(new NBTTagDouble(boundary.density));
+		}
+		nbt.setTag("heights", heights);
+		nbt.setTag("densities", densities);
+
+		NBTTagList layers = new NBTTagList();
+		for(IAtmosphereLayer layer : this.layers) {
+			layers.appendTag(layer.serializeNBT());
+		}
+		nbt.setTag("layers", layers);
+
+		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
 		// TODO Atmosphere Deserialize routine
+		
 	}
 
 	/** Value equality check */

@@ -18,16 +18,24 @@ public interface IAtmHolder {
 	public @Nullable ILocalAtmosphere getLocalAtmosphere();
 
 	/**
-	 * Semi-internal method setting the atmosphere.
-	 * Can be set by apply settings event.
+	 * Checks if atmosphere setup is done.
+	 * Internal method.
 	 * */
 	@Deprecated
-	public void setAtmosphere(Atmosphere atm);
+	public boolean isAtmosphereSetup();
 
 	/**
-	 * Internal method for evaluation of local atmosphere.
-	 * Only available for atmosphere holder on world.
+	 * Internal method settings the atmosphere.
 	 * */
 	@Deprecated
-	public void reevaluateLocalAtmosphere();
+	public void setAtmosphere(@Nullable Atmosphere atmosphere);
+
+	/**
+	 * Internal method for re-evaluation of atmospheres.
+	 * Only available for world atmosphere.
+	 * @param atmSettings the settings,
+	 *  <code>null</code> for loading of the atmosphere (read from save)
+	 * */
+	@Deprecated
+	public void reevaluateAtmosphere(@Nullable Object atmSettings);
 }

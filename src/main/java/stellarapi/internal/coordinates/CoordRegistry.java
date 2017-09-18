@@ -100,6 +100,7 @@ public class CoordRegistry {
 				CoordSettings coords = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).coordinates;
 				system.setProviderID(coords.getCurrentProviderID());
 			}
+			// TODO CProviders Settings -> ID force?
 
 			system.setupPartial();
 		}

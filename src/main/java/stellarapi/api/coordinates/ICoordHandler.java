@@ -9,6 +9,9 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 /**
  * Coordinates handler.
+ * 
+ * Also identifier of main coordinates settings which is applied on the coordinates.
+ *  (The event puts data to the world, which is consumed by the coord instances)
  * */
 public interface ICoordHandler {
 	/**

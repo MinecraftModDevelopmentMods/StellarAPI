@@ -85,6 +85,7 @@ public class CelestialRegistry {
 					system.validateNset(type, settings.celestialMap.get(type.delegate).getCurrentProviderID());
 				}
 			}
+			// TODO CProviders Settings -> ID force?
 
 			for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
 				if(!system.isAbsent(type)) {

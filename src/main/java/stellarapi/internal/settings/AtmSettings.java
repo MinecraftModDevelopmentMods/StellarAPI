@@ -12,7 +12,6 @@ import com.google.common.collect.Iterables;
 import net.minecraft.util.ResourceLocation;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.IAtmProvider;
-import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.lib.config.DynamicConfig;
 import worldsets.api.provider.IProviderRegistry;
@@ -30,7 +29,13 @@ public class AtmSettings {
 		this.atmProvRegistry = ProviderRegistry.findRegistry(IAtmProvider.class);
 		this.nameMap = atmProvRegistry.getSlaveMap(SAPIRegistries.READABLE_NAMES, HashBiMap.class);
 		this.names = Iterables.toArray(Iterables.transform(
-				atmProvRegistry.keys(), Functions.forMap(nameMap.inverse())), String.class);
+				Iterables.filter(atmProvRegistry.keys(), new Predicate<ResourceLocation>() {
+					@Override
+					public boolean apply(ResourceLocation input) {
+						IAtmProvider provider = atmProvRegistry.getProvider(input);
+						return provider.appliedWorldSets().contains(worldSet);
+					}
+				} ), Functions.forMap(nameMap.inverse())), String.class);
 
 		this.atmProviderName = this.names[0];
 		this.defaultSettings = new AtmWorldSettings(this);

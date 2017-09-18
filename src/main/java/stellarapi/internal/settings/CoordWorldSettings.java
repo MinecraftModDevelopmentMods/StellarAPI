@@ -30,6 +30,7 @@ public class CoordWorldSettings {
 	@DynamicConfig.Expand
 	@DynamicConfig.Dependence(id = "spSettings")
 	@DynamicConfig.Collection
+	// TODO DynamicConfig handle map with key as registry delegate
 	public Map<RegistryDelegate<CCoordinates>, ICoordSettings> specificSettings;
 
 	public CoordWorldSettings(CoordSettings parentSettings) {
@@ -55,6 +56,7 @@ public class CoordWorldSettings {
 		this.checkNupdateProvider();
 
 		if(!this.mainSettingsApplied) {
+			this.mainSettingsApplied = true;
 			return provider.generateSettings(parentSettings.theWorldSet);
 		} else return previous;
 	}
@@ -75,7 +77,4 @@ public class CoordWorldSettings {
 			return builder.build();
 		} else return previous;
 	}
-
-	// TODO CoordSettings 
-
 }

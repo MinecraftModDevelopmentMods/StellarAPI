@@ -58,6 +58,7 @@ public class AtmRegistry {
 				AtmSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).atmosphere;
 				system.setProviderID(settings.getCurrentProviderID());
 			}
+			// TODO CProviders Settings -> ID force?
 		}
 	}
 
@@ -69,13 +70,8 @@ public class AtmRegistry {
 			IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
 
 			// Client Placeholder Handling
-			if(completeEvent.forPlaceholder) {
+			if(completeEvent.forPlaceholder)
 				system.setProviderID(completeEvent.registry.getDefaultKey());
-
-				IAtmHolder holder = world.getCapability(SAPICapabilities.ATMOSPHERE_HOLDER, null);
-				if(holder != null)
-					holder.reevaluateLocalAtmosphere();
-			}
 			// TODO Also check for WorldProvider patch - on world load event
 		}
 	}
@@ -102,9 +98,7 @@ public class AtmRegistry {
 		if(atms.additionalSettings.containsKey(worldName))
 			worldAtm = atms.additionalSettings.get(worldName);
 
-		holder.reevaluateLocalAtmosphere();
-		if(system.getSetProvider().replaceWithSettings(world, worldAtm.atmSettings))
-			holder.setAtmosphere(system.getSetProvider().generateAtmosphere(world, worldAtm.atmSettings));
+		holder.reevaluateAtmosphere(worldAtm.atmSettings);
 
 		MinecraftForge.EVENT_BUS.post(
 				new ApplyWorldSettingsEvent<IAtmSetProvider>(

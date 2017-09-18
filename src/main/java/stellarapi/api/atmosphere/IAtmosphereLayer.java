@@ -2,9 +2,11 @@ package stellarapi.api.atmosphere;
 
 import java.util.Map;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.optics.Wavelength;
 
-public interface IAtmosphereLayer {
+public interface IAtmosphereLayer extends INBTSerializable<NBTTagCompound> {
 	// TODO Atmosphere Correctly define each layer.
 
 	/**
