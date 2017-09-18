@@ -38,6 +38,7 @@ public interface ICelestialProvider extends IProvider {
 
 	/**
 	 * Dependency on parent provider for the collection on specified type and worldset.
+	 * TODO isn't this too simple? Predicate on collection.
 	 * */
 	public Predicate<ResourceLocation> parentDependency(CelestialType type, WorldSet worldSet);
 }

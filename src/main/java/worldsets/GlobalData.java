@@ -34,6 +34,7 @@ public class GlobalData extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		this.setupIfNeeded();
 		for(String key : nbt.getKeySet()) {
 			ResourceLocation resKey = new ResourceLocation(key);
 			if(worldSetInstanceMap.containsKey(resKey)) {
@@ -58,7 +59,7 @@ public class GlobalData extends WorldSavedData {
 	private IForgeRegistry<WorldSet> registry = GameRegistry.findRegistry(WorldSet.class);
 	private Map<ResourceLocation, WorldSetInstance> worldSetInstanceMap = Maps.newHashMap();
 
-	void setupIfNeeded(World base) {
+	void setupIfNeeded() {
 		if(worldSetInstanceMap.isEmpty()) {
 			for(WorldSet worldSet : this.registry) {
 				worldSetInstanceMap.put(worldSet.delegate.name(), new WorldSetInstance(worldSet));

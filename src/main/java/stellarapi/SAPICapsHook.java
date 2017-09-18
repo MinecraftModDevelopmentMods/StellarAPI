@@ -12,15 +12,17 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import stellarapi.api.SAPIReference;
 import stellarapi.api.SAPIRegistries;
+import stellarapi.api.atmosphere.Atmosphere;
+import stellarapi.api.atmosphere.IAtmHolder;
 import stellarapi.api.atmosphere.IAtmSystem;
-import stellarapi.api.atmosphere.IWorldAtmosphere;
+import stellarapi.api.atmosphere.ILocalAtmosphere;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialScene;
 import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.coordinates.ILocalCoordinates;
 import stellarapi.internal.atmosphere.CAtmSystem;
-import stellarapi.internal.atmosphere.CAtmosphere;
+import stellarapi.internal.atmosphere.CGenericAtmosphere;
 import stellarapi.internal.celestial.CelestialScene;
 import stellarapi.internal.celestial.CelestialSystem;
 import stellarapi.internal.coordinates.CCoordSystem;
@@ -106,27 +108,48 @@ public class SAPICapsHook {
 		}, CelestialSystem.class);
 
 
-		CapabilityManager.INSTANCE.register(IWorldAtmosphere.class,
-				new IStorage<IWorldAtmosphere>() {
-			@Override
-			public NBTBase writeNBT(Capability<IWorldAtmosphere> capability, IWorldAtmosphere instance, EnumFacing side) {
-				return null;
-			}
-			@Override
-			public void readNBT(Capability<IWorldAtmosphere> capability, IWorldAtmosphere instance, EnumFacing side, NBTBase nbt) {
-			}
-		}, CAtmosphere.class);
-
 		CapabilityManager.INSTANCE.register(IAtmSystem.class,
 				new IStorage<IAtmSystem>() {
 			@Override
 			public NBTBase writeNBT(Capability<IAtmSystem> capability, IAtmSystem instance, EnumFacing side) {
-				return null;
+				return new NBTTagString(instance.getProviderID().toString());
 			}
 			@Override
 			public void readNBT(Capability<IAtmSystem> capability, IAtmSystem instance, EnumFacing side, NBTBase nbt) {
+				NBTTagString tag = (NBTTagString) nbt;
+				instance.setProviderID(new ResourceLocation(tag.getString()));
 			}
 		}, CAtmSystem.class);
+
+		CapabilityManager.INSTANCE.register(IAtmHolder.class,
+				new IStorage<IAtmHolder>() {
+			@Override
+			public NBTBase writeNBT(Capability<IAtmHolder> capability, IAtmHolder instance, EnumFacing side) {
+				NBTTagCompound compound = new NBTTagCompound();
+				Atmosphere atmosphere = instance.getAtmosphere();
+				ILocalAtmosphere local = instance.getLocalAtmosphere();
+				if(atmosphere != null)
+					compound.setTag("atmosphere", atmosphere.serializeNBT());
+				else compound.removeTag("atmosphere");
+
+				compound.setTag("local", local.serializeNBT());
+				return compound;
+			}
+			@Override
+			public void readNBT(Capability<IAtmHolder> capability, IAtmHolder instance, EnumFacing side, NBTBase nbt) {
+				NBTTagCompound compound = (NBTTagCompound) nbt;
+				if(compound.hasKey("atmosphere")) {
+					Atmosphere readAtm = new Atmosphere();
+					readAtm.deserializeNBT(compound.getCompoundTag("atmosphere"));
+					instance.setAtmosphere(readAtm);
+				} else if(!compound.hasNoTags())
+					instance.setAtmosphere(null);
+
+				instance.reevaluateLocalAtmosphere();
+				if(instance.getLocalAtmosphere() != null)
+					instance.getLocalAtmosphere().deserializeNBT(compound.getCompoundTag("local"));
+			}
+		}, CGenericAtmosphere.class);
 	}
 
 
@@ -136,7 +159,7 @@ public class SAPICapsHook {
 		if(worldSet == null)
 			return;
 
-		worldCaps.addCapability(CAPS, new CWorldReference(world));
+		worldCaps.addCapability(CAPS, new CWorldReference(world, worldSet));
 	}
 
 	public void attachWorldSetCaps(AttachCapabilitiesEvent<WorldSetInstance> worldSetCaps) {
@@ -144,17 +167,4 @@ public class SAPICapsHook {
 		WorldSet worldSet = worldSetInstance.getWorldSet();
 		worldSetCaps.addCapability(CAPS, new CWorldSetReference(worldSetInstance));
 	}
-
-	/*@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void onWorldLoad(WorldEvent.Load loadEvent) {
-		World world = loadEvent.getWorld();
-
-		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
-
-		if(worldSet == null)
-			return;
-
-		WorldSetInstance instance = WAPIReference.getWorldSetInstance(world, worldSet);
-	}*/
-
 }

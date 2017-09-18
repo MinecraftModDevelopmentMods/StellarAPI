@@ -3,6 +3,7 @@ package stellarapi.api.coordinates;
 import stellarapi.api.lib.math.Matrix4;
 
 /**
+ * Generic capability of local coordinates for various (positioned) objects.
  * This effectively transforms context and fetches the matrix for the coordinates.
  * Note: World should have position-specific defaults.
  * */

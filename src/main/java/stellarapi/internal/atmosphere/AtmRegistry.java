@@ -9,22 +9,17 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.RegistryBuilder;
-import net.minecraftforge.fml.common.registry.RegistryDelegate;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIRegistries;
-import stellarapi.api.atmosphere.AtmosphereType;
+import stellarapi.api.atmosphere.IAtmHolder;
 import stellarapi.api.atmosphere.IAtmProvider;
+import stellarapi.api.atmosphere.IAtmSetProvider;
 import stellarapi.api.atmosphere.IAtmSystem;
-import stellarapi.api.coordinates.CCoordinates;
-import stellarapi.api.coordinates.ICoordHandler;
 import stellarapi.api.coordinates.ICoordProvider;
-import stellarapi.api.coordinates.ICoordSettings;
 import stellarapi.api.event.settings.ApplyWorldSettingsEvent;
 import stellarapi.internal.settings.AtmSettings;
 import stellarapi.internal.settings.AtmWorldSettings;
@@ -39,16 +34,7 @@ import worldsets.api.worldset.WorldSetInstance;
 public class AtmRegistry {
 	public static final ResourceLocation DEFAULT_ID = new ResourceLocation("overworld_atmosphere");
 
-	private static IForgeRegistry<AtmosphereType> atmTypeRegistry;
 	private static IProviderRegistry<IAtmProvider> providerRegistry;
-
-	@SubscribeEvent
-	public static void onRegistryEvent(RegistryEvent.NewRegistry regRegEvent) {
-		atmTypeRegistry = new RegistryBuilder<AtmosphereType>()
-				.setName(SAPIRegistries.ATMOSPHERES).setType(AtmosphereType.class).setIDRange(0, Integer.MAX_VALUE)
-				.setDefaultKey(DEFAULT_ID)
-				.create();
-	}
 
 	@SubscribeEvent
 	public static void onProvRegistryEvent(ProviderEvent.NewRegistry pregRegEvent) {
@@ -59,6 +45,7 @@ public class AtmRegistry {
 				.add(new SubstitutionCallback()).add(new ClearCallback())
 				.create();
 	}
+
 
 	@SubscribeEvent
 	public static void onApplySettingsEvent(ProviderEvent.ApplySettings<ICoordProvider> applySettingsEvent) {
@@ -83,16 +70,22 @@ public class AtmRegistry {
 
 			// Client Placeholder Handling
 			if(completeEvent.forPlaceholder) {
-				IAtmProvider provider = providerRegistry.getProvider(completeEvent.registry.getDefaultKey());
-				system.setWorldAtmType(provider.getAtmosphereType(worldSet));
+				system.setProviderID(completeEvent.registry.getDefaultKey());
+
+				IAtmHolder holder = world.getCapability(SAPICapabilities.ATMOSPHERE_HOLDER, null);
+				if(holder != null)
+					holder.reevaluateLocalAtmosphere();
 			}
-			// TODO Also check for WorldProvider patch
+			// TODO Also check for WorldProvider patch - on world load event
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onWorldLoad(WorldEvent.Load worldLoadEvent) {
-		World world = worldLoadEvent.getWorld();
+		onSetupWorldSpecific(worldLoadEvent.getWorld());
+	}
+
+	public static void onSetupWorldSpecific(World world) {
 		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
 
 		if(worldSet == null)
@@ -100,25 +93,23 @@ public class AtmRegistry {
 
 		WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 		IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
+		IAtmHolder holder = world.getCapability(SAPICapabilities.ATMOSPHERE_HOLDER, null);
 
 		AtmSettings atms = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).atmosphere;
 
 		AtmWorldSettings worldAtm = atms.defaultSettings;
 		String worldName = world.provider.getDimensionType().getName();
-
 		if(atms.additionalSettings.containsKey(worldName))
 			worldAtm = atms.additionalSettings.get(worldName);
 
-		// TODO AtmSystem fill in this settings handling part
+		holder.reevaluateLocalAtmosphere();
+		if(system.getSetProvider().replaceWithSettings(world, worldAtm.atmSettings))
+			holder.setAtmosphere(system.getSetProvider().generateAtmosphere(world, worldAtm.atmSettings));
 
-		/*MinecraftForge.EVENT_BUS.post(
-				new ApplyWorldSettingsEvent<ICoordHandler>(
-						ICoordHandler.class, system.getHandler(), worldCoords.mainSettings, world));
-
-		for(Map.Entry<RegistryDelegate<CCoordinates>, ICoordSettings> entry : worldCoords.specificSettings.entrySet())
-			entry.getKey().get().applySettings(entry.getValue(), world);*/
-
-		
+		MinecraftForge.EVENT_BUS.post(
+				new ApplyWorldSettingsEvent<IAtmSetProvider>(
+						IAtmSetProvider.class, system.getSetProvider(),
+						worldAtm.atmSettings, world));
 	}
 
 	@SubscribeEvent
@@ -130,6 +121,13 @@ public class AtmRegistry {
 			sendEvent.compoundToSend.setTag(worldSet.delegate.name().toString(),
 					SAPICapabilities.ATMOSPHERE_SYSTEM.writeNBT(system, null));
 		}
+
+		world = sendEvent.world;
+		IAtmHolder holder = world.getCapability(SAPICapabilities.ATMOSPHERE_HOLDER, null);
+		if(holder == null)
+			return;
+		sendEvent.compoundToSend.setTag("atmosphere",
+				SAPICapabilities.ATMOSPHERE_HOLDER.writeNBT(holder, null));
 	}
 
 	@SubscribeEvent
@@ -142,6 +140,12 @@ public class AtmRegistry {
 			IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
 			SAPICapabilities.ATMOSPHERE_SYSTEM.readNBT(system, null, worldSetData);
 		}
+
+		IAtmHolder holder = world.getCapability(SAPICapabilities.ATMOSPHERE_HOLDER, null);
+		if(holder == null)
+			return;
+		SAPICapabilities.ATMOSPHERE_HOLDER.readNBT(holder, null,
+				receiveEvent.receivedCompound.getTag("atmosphere"));
 	}
 
 	public static class CreateCallback implements IProviderRegistry.CreateCallback<IAtmProvider> {

@@ -21,7 +21,7 @@ public class WReference implements IReference {
 	@Override
 	public WorldSetInstance getWorldInstance(World base, WorldSet worldSet) {
 		GlobalData data = GlobalData.getWorldSets(base);
-		data.setupIfNeeded(base);
+		data.setupIfNeeded();
 		return data.getInstance(worldSet);
 	}
 

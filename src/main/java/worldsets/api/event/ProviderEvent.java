@@ -34,7 +34,7 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	}
 
 	/**
-	 * Called on WorldEvent.Load for default world to apply global settings for each provider.
+	 * Fired on WorldEvent.Load for default world to apply global settings for each provider.
 	 * Partial initiation for cross reference on provider-specific objects
 	 *  should be done here.
 	 * */
@@ -88,7 +88,7 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	}
 
 	/**
-	 * Called to complete provider-specific global objects for further reference.
+	 * Fired to complete provider-specific global objects for further reference.
 	 * It's invoked twice on client, for pre-sync placeholder and synced object.
 	 * */
 	public static class Complete<P extends IProvider> extends ProviderEvent<P> {
@@ -96,6 +96,7 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 		public final boolean isRemote;
 		/**
 		 * True for placeholder when server-side provider does not exist.
+		 * Can only be true on client side.
 		 * */
 		public final boolean forPlaceholder;
 

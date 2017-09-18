@@ -76,7 +76,7 @@ public class WorldSetAPI {
 
 		if(WAPIReference.isDefaultWorld(world)) {
 			// Loads the global world set data as the first.
-			GlobalData.getWorldSets(world);
+			GlobalData globalData = GlobalData.getWorldSets(world);
 		}
 
 		ImmutableList.Builder<WorldSet> appliedWorldSets = ImmutableList.builder();

@@ -1,10 +1,16 @@
 package stellarapi.api.atmosphere;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;
 
-public interface ILocalAtmosphere {
+/**
+ * Local atmosphere.
+ * Settings can be applied directly, and can read from nbt.
+ * */
+public interface ILocalAtmosphere extends INBTSerializable<NBTTagCompound> {
 	/** Gets refracted direction of specified direction */
 	public SpCoord applyRefraction(Vec3d loc, SpCoord dir, Wavelength wave);
 

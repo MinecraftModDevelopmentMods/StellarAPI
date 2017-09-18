@@ -124,7 +124,10 @@ public class CoordRegistry {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onWorldLoad(WorldEvent.Load worldLoadEvent) {
-		World world = worldLoadEvent.getWorld();
+		onSetupWorldSpecific(worldLoadEvent.getWorld());
+	}
+
+	private static void onSetupWorldSpecific(World world) {
 		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
 
 		if(worldSet == null)

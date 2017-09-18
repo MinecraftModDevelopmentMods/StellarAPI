@@ -133,8 +133,7 @@ public class CelestialRegistry {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onWorldLoad(WorldEvent.Load worldLoadEvent) {
-		World world = worldLoadEvent.getWorld();
-		onSetupWorldSpecific(world);
+		onSetupWorldSpecific(worldLoadEvent.getWorld());
 	}
 
 	private static void onSetupWorldSpecific(World world) {

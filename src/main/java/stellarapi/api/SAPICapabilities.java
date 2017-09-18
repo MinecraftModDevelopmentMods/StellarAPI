@@ -2,7 +2,7 @@ package stellarapi.api;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import stellarapi.api.atmosphere.IWorldAtmosphere;
+import stellarapi.api.atmosphere.IAtmHolder;
 import stellarapi.api.atmosphere.IAtmSystem;
 import stellarapi.api.celestials.ICelestialScene;
 import stellarapi.api.celestials.ICelestialSystem;
@@ -33,9 +33,8 @@ public class SAPICapabilities {
 	// ********************************************* //
 	// ********** Atmosphere Capabilities ********** //
 	// ********************************************* //
-
-	@CapabilityInject(IWorldAtmosphere.class)
-	public static final Capability<IWorldAtmosphere> ATMOSPHERE_REFERENCE = null;
+	@CapabilityInject(IAtmHolder.class)
+	public static final Capability<IAtmHolder> ATMOSPHERE_HOLDER = null;
 	
 	@CapabilityInject(IAtmSystem.class)
 	public static final Capability<IAtmSystem> ATMOSPHERE_SYSTEM = null;

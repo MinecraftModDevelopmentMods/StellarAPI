@@ -23,4 +23,12 @@ public interface IAtmosphereLayer {
 	 * Gets the scatter rate for specific wavelength and angle.
 	 * */
 	public double getScatterRate(Wavelength wave, double angle);
+
+	/** Should implement equals to compare atmospheres */
+	@Override
+	public boolean equals(Object o);
+
+	/** Should implement hash to compare atmospheres */
+	@Override
+	public int hashCode();
 }

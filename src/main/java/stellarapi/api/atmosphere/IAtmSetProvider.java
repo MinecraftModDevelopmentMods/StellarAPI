@@ -1,16 +1,15 @@
 package stellarapi.api.atmosphere;
 
-import com.google.gson.JsonObject;
+import javax.annotation.Nullable;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+/**
+ * Atmospheric provider for each WorldSet.
+ * 
+ * Also used as identifier of atmosphere settings for the local atmosphere.
+ * */
 public interface IAtmSetProvider {
-	/**
-	 * Gets atmosphere ID for certain world.
-	 * */
-	public ResourceLocation atmosphereID(World world);
-
 	/**
 	 * Generates actual local atmosphere for certain world.
 	 * This creates atmosphere from world regardless of the settings.
@@ -18,15 +17,16 @@ public interface IAtmSetProvider {
 	public ILocalAtmosphere generateLocalAtmosphere(World world);
 
 	/**
-	 * Gets the atmosphere type for certain world.
+	 * Decides whether the atmosphere should be replaced
+	 *  with the generated one for the specified settings.
 	 * */
-	public AtmosphereType getAtmosphereType(World world);
+	public boolean replaceWithSettings(World world, Object settings);
 
 	/**
-	 * Gets the atmosphere settings from the type and existing settings.
-	 * Only need to handle the types for this provider.
+	 * Generates certain atmosphere with settings.
+	 * <code>null</code> means absence of atmosphere, i.e. vacuum.
 	 * */
-	public JsonObject getAtmSettings(AtmosphereType type, Object atmSettings);
+	public @Nullable Atmosphere generateAtmosphere(World world, Object settings);
 
 	/**
 	 * Generates atmosphere settings.
