@@ -3,15 +3,10 @@ package stellarium.world;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.lib.config.DynamicConfig;
-import stellarapi.api.lib.config.property.ConfigPropertyBoolean;
-import stellarapi.api.lib.config.property.ConfigPropertyDouble;
-import stellarapi.api.lib.config.property.ConfigPropertyDoubleList;
-import stellarapi.api.lib.config.property.ConfigPropertyString;
 import stellarium.api.EnumSkyProperty;
 import stellarium.api.ISkyRenderType;
 import stellarium.api.ISkyType;

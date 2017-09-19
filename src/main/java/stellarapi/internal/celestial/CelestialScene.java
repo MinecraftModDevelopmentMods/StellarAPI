@@ -2,9 +2,8 @@ package stellarapi.internal.celestial;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 
-import net.minecraftforge.fml.common.registry.RegistryDelegate;
+import net.minecraftforge.registries.IRegistryDelegate;
 import stellarapi.api.celestials.CelestialLayer;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialScene;
@@ -13,13 +12,13 @@ import stellarapi.api.celestials.collection.ICollectionAdaption;
 
 public class CelestialScene implements ICelestialScene {
 
-	private ImmutableMap<RegistryDelegate<CelestialType>, ICollectionAdaption> adaptionMap;
+	private ImmutableMap<IRegistryDelegate<CelestialType>, ICollectionAdaption> adaptionMap;
 	private ImmutableList<CelestialLayer> layers;
 
 	public CelestialScene() { }
 
 	@Override
-	public void setupComplete(ICelestialSystem system) {
+	public void setupComplete(ICelestialSystem system, boolean isVanilla) {
 		// TODO CelestialScene setup complete
 	}
 

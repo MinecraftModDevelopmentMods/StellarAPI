@@ -2,8 +2,6 @@ package stellarapi.impl;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IDaytimeChecker;
 import stellarapi.api.lib.math.Vector3;

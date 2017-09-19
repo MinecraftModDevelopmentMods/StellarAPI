@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import stellarapi.lib.render.IGenericRenderer;
 import stellarium.StellarSkyResources;
 import stellarium.client.ClientSettings;
 import stellarium.render.sky.SkyRenderInformation;

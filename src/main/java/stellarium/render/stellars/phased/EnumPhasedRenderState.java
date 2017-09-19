@@ -3,11 +3,6 @@ package stellarium.render.stellars.phased;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
-import stellarapi.lib.render.RendererRegistry;
-import stellarapi.lib.render.hierarchy.IDistributionConfigurable;
-import stellarapi.lib.render.hierarchy.IRenderState;
-import stellarapi.lib.render.hierarchy.IRenderTransition;
-import stellarapi.lib.render.hierarchy.IRenderedCollection;
 import stellarium.render.stellars.access.EnumStellarPass;
 import stellarium.render.stellars.layer.LayerRenderInformation;
 import stellarium.render.stellars.layer.StellarLayerModel;

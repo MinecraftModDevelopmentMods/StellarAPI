@@ -17,10 +17,7 @@ import com.google.gson.JsonParser;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stellarapi.api.celestials.EnumCelestialCollectionType;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.api.lib.config.INBTConfig;
 import stellarapi.api.lib.math.SpCoord;
 import stellarium.StellarSky;
 import stellarium.stellars.layer.IStellarLayerType;

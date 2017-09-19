@@ -9,4 +9,3 @@
 package stellarapi.api;
 
 import net.minecraftforge.fml.common.API;
-import stellarapi.StellarAPI;

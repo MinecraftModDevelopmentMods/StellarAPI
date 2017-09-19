@@ -1,10 +1,6 @@
 package stellarium.render.stellars;
 
 import net.minecraft.world.World;
-import stellarapi.lib.hierarchy.EnumIDEvaluator;
-import stellarapi.lib.hierarchy.Hierarchy;
-import stellarapi.lib.hierarchy.HierarchyDistributor;
-import stellarapi.lib.hierarchy.HierarchyElement;
 import stellarium.client.ClientSettings;
 import stellarium.render.stellars.atmosphere.AtmosphereModel;
 import stellarium.render.stellars.phased.StellarRenderModel;

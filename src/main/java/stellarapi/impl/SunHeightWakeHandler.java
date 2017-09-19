@@ -3,12 +3,7 @@ package stellarapi.impl;
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.daywake.IWakeHandler;
 
 /**

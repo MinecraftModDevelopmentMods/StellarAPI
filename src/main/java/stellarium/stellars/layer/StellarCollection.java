@@ -17,13 +17,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ISkyEffect;
-import stellarapi.api.celestials.EnumCelestialCollectionType;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.api.lib.config.INBTConfig;
 import stellarapi.api.lib.math.SpCoord;
 import stellarium.stellars.layer.query.ILayerTempManager;
 import stellarium.stellars.layer.query.MetadataQueryCache;

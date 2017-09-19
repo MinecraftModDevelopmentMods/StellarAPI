@@ -14,18 +14,14 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.StellarAPI;
-import stellarapi.api.IClientReference;
-import stellarapi.api.IReference;
-import stellarapi.api.IUpdatedOpticalViewer;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
-import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.optics.NakedScope;
+import worldsets.api.IReference;
 
 public class SAPIReferenceHandler implements IReference {
 

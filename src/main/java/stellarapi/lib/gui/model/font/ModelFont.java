@@ -9,7 +9,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import stellarapi.lib.gui.IFontHelper;
 import stellarapi.lib.gui.IRectangleBound;

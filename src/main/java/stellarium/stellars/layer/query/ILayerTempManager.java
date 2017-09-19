@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import com.google.common.cache.LoadingCache;
 
-import stellarapi.api.ISkyEffect;
 import stellarapi.api.lib.math.Matrix3;
 import stellarium.render.stellars.layer.IObjRenderCache;
 import stellarium.stellars.layer.IPerWorldImage;

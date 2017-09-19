@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import stellarapi.api.celestials.collection.ICPartitionType;
 import stellarapi.api.celestials.collection.model.TypeModel;
 import stellarapi.api.coordinates.CCoordinates;
@@ -22,13 +22,13 @@ public abstract class CelestialType extends IForgeRegistryEntry.Impl<CelestialTy
 	private CelestialType parent;
 	private List<CelestialType> children = Lists.newArrayList();
 
-	private ICPartitionType<?> partition;
+	private ICPartitionType<?, ?> partition;
 	private CCoordinates coordinates;
 
 	private int level;
 
 	/** Initiates root celestial type. */
-	public CelestialType(ICPartitionType<?> partition) {
+	public CelestialType(ICPartitionType<?, ?> partition) {
 		this.parentID = null;
 		this.partition = partition;
 

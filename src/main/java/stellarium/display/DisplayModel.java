@@ -5,8 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.world.World;
-import stellarapi.api.lib.config.SimpleHierarchicalConfig;
-import stellarapi.lib.hierarchy.Hierarchy;
 import stellarium.client.ClientSettings;
 import stellarium.stellars.StellarManager;
 import stellarium.view.ViewerInfo;

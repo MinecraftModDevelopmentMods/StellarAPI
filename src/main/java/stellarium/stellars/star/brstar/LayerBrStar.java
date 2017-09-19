@@ -7,9 +7,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import stellarapi.api.celestials.EnumCelestialCollectionType;
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.api.lib.config.INBTConfig;
 import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;

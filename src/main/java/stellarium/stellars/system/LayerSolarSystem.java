@@ -8,8 +8,6 @@ import com.google.common.base.Predicate;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stellarapi.api.celestials.EnumCelestialCollectionType;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 import stellarium.StellarSky;
 import stellarium.stellars.layer.IStellarLayerType;

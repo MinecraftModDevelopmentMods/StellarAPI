@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public abstract class WorldSet extends IForgeRegistryEntry.Impl<WorldSet> {
 

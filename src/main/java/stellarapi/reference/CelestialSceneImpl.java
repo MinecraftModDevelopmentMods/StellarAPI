@@ -1,24 +1,14 @@
 package stellarapi.reference;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 
 import net.minecraft.world.World;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.celestials.CelestialCollectionManager;
-import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
-import stellarapi.api.celestials.ICelestialUniverse;
-import stellarapi.api.celestials.IEffectorType;
-import stellarapi.api.event.ConstructCelestialsEvent;
-import stellarapi.api.event.SortCelestialsEvent;
 
 public class CelestialSceneImpl implements ICelestialUniverse {
 

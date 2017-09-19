@@ -1,6 +1,5 @@
 package stellarapi.impl;
 
-import stellarapi.api.ISkyEffect;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;
 

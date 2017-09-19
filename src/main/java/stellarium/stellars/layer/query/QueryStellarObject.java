@@ -2,7 +2,6 @@ package stellarium.stellars.layer.query;
 
 import com.google.common.base.Predicate;
 
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 
 public class QueryStellarObject implements Predicate<ICelestialObject> {

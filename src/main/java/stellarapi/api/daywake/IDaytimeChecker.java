@@ -1,8 +1,6 @@
 package stellarapi.api.daywake;
 
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.celestials.CelestialEffectors;
 
 /**
  * Daytime checker which checks relation with world time in tick and daytime

@@ -7,7 +7,7 @@ import com.google.common.collect.Ordering;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.coordinates.CCoordinates;
 

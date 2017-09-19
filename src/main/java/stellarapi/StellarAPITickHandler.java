@@ -17,7 +17,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.helper.LivingItemAccessHelper;
-import stellarapi.api.interact.IOpticalProperties;
 
 public class StellarAPITickHandler {
 

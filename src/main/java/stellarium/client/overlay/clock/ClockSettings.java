@@ -2,9 +2,6 @@ package stellarium.client.overlay.clock;
 
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
-import stellarapi.api.lib.config.property.ConfigPropertyBoolean;
-import stellarapi.api.lib.config.property.ConfigPropertyDouble;
-import stellarapi.api.lib.config.property.ConfigPropertyString;
 
 public class ClockSettings extends PerOverlaySettings {
 	

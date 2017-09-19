@@ -3,9 +3,6 @@ package stellarapi.impl;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.world.World;
-import stellarapi.api.celestials.EnumCelestialCollectionType;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 
 public class DefaultCollectionVanilla implements ICelestialCollection {

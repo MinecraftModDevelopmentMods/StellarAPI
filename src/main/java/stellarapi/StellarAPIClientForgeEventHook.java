@@ -2,7 +2,6 @@ package stellarapi;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 import com.google.common.base.Throwables;
 
@@ -19,7 +18,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.optics.EyeDetector;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;

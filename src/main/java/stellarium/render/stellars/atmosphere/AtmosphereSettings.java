@@ -1,9 +1,6 @@
 package stellarium.render.stellars.atmosphere;
 
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.lib.config.SimpleConfigHandler;
-import stellarapi.api.lib.config.property.ConfigPropertyBoolean;
-import stellarapi.api.lib.config.property.ConfigPropertyInteger;
 
 public class AtmosphereSettings extends SimpleConfigHandler {
 	

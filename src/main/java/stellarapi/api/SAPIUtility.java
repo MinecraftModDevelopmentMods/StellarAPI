@@ -1,9 +1,7 @@
 package stellarapi.api;
 
-import java.util.List;
-
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class SAPIUtility {
 	/**

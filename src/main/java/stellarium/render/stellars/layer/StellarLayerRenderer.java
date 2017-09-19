@@ -1,6 +1,5 @@
 package stellarium.render.stellars.layer;
 
-import stellarapi.lib.render.IGenericRenderer;
 import stellarium.render.stellars.access.EnumStellarPass;
 import stellarium.stellars.layer.StellarObject;
 import stellarium.stellars.render.ICelestialLayerRenderer;

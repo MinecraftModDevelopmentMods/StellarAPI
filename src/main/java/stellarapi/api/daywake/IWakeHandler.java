@@ -2,9 +2,6 @@ package stellarapi.api.daywake;
 
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.lib.config.IConfigHandler;
 
 /**
  * Determine player's sleep availability and wake time.

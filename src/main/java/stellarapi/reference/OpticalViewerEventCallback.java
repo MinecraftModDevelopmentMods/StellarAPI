@@ -2,12 +2,8 @@ package stellarapi.reference;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
-import stellarapi.api.IUpdatedOpticalViewer;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.event.UpdateFilterEvent;
-import stellarapi.api.event.UpdateScopeEvent;
-import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;

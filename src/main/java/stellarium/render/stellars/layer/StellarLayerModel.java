@@ -9,7 +9,6 @@ import com.google.common.collect.Maps;
 
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.lib.hierarchy.Hierarchy;
 import stellarium.client.ClientSettings;
 import stellarium.render.stellars.access.IStellarChecker;
 import stellarium.stellars.layer.IStellarLayerType;

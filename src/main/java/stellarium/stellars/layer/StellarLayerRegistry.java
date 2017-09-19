@@ -9,7 +9,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.api.lib.config.INBTConfig;
 import stellarium.client.ClientSettings;
 import stellarium.common.ServerSettings;
 import stellarium.stellars.deepsky.LayerDeepSky;

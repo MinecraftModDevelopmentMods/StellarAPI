@@ -1,9 +1,6 @@
 package stellarapi.example;
 
 import net.minecraft.util.math.MathHelper;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ISkyEffect;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.Wavelength;

@@ -7,11 +7,6 @@ import com.google.common.base.Predicates;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import stellarapi.lib.render.RendererRegistry;
-import stellarapi.lib.render.hierarchy.IDistributionConfigurable;
-import stellarapi.lib.render.hierarchy.IRenderState;
-import stellarapi.lib.render.hierarchy.IRenderTransition;
-import stellarapi.lib.render.hierarchy.IRenderedCollection;
 import stellarium.display.DisplayModel;
 import stellarium.display.DisplayRenderer;
 import stellarium.render.sky.SkyModel.EnumSkyRenderable;

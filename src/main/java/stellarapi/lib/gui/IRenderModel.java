@@ -1,7 +1,6 @@
 package stellarapi.lib.gui;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 
 public interface IRenderModel {

@@ -1,8 +1,5 @@
 package stellarium.stellars;
 
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ISkyEffect;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.example.CelestialHelperExample;
 import stellarium.api.ICelestialHelper;
 

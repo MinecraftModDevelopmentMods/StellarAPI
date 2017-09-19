@@ -2,7 +2,6 @@ package worldsets;
 
 import com.google.common.collect.ImmutableList;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
@@ -17,8 +16,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.RegistryBuilder;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
 import worldsets.api.provider.IProviderRegistry;
@@ -29,7 +28,7 @@ import worldsets.api.worldset.WorldSet;
 import worldsets.impl.provider.ProviderRegistries;
 
 @Mod(modid = WAPIReference.modid, version = WAPIReference.version,
-acceptedMinecraftVersions="[1.11.0, 1.12.0)")
+acceptedMinecraftVersions="[1.12.0, 1.13.0)")
 @Mod.EventBusSubscriber
 public class WorldSetAPI {
 

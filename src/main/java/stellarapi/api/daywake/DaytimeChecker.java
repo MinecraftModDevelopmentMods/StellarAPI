@@ -5,10 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.IEffectorType;
 
 public class DaytimeChecker {
 

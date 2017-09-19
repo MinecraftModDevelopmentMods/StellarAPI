@@ -5,9 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.RegistryDelegate;
-import stellarapi.StellarAPI;
+import net.minecraftforge.registries.IRegistryDelegate;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.celestials.collection.CelestialCollection;
@@ -21,8 +19,8 @@ public class CelestialSystem implements ICelestialSystem {
 	private final WorldSet worldSet;
 	private final IProviderRegistry<ICelestialProvider> providerRegistry;
 
-	private Map<RegistryDelegate<CelestialType>, ResourceLocation> providerMap = Maps.newHashMap();
-	private Map<RegistryDelegate<CelestialType>, CelestialCollection> collectionMap = Maps.newHashMap();
+	private Map<IRegistryDelegate<CelestialType>, ResourceLocation> providerMap = Maps.newHashMap();
+	private Map<IRegistryDelegate<CelestialType>, CelestialCollection> collectionMap = Maps.newHashMap();
 
 	public CelestialSystem(WorldSet worldSet) {
 		this.worldSet = worldSet;

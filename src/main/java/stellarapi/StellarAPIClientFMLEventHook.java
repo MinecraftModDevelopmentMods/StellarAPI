@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 
 public class StellarAPIClientFMLEventHook {

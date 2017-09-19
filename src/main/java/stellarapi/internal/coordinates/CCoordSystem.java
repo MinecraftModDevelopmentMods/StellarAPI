@@ -16,8 +16,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.coordinates.CCoordInstance;
 import stellarapi.api.coordinates.CCoordinates;

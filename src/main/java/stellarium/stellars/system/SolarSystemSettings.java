@@ -1,9 +1,6 @@
 package stellarium.stellars.system;
 
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.lib.config.INBTConfig;
-import stellarapi.api.lib.config.SimpleNBTConfig;
-import stellarapi.api.lib.config.property.ConfigPropertyDouble;
 
 public class SolarSystemSettings extends SimpleNBTConfig {
 		

@@ -1,7 +1,6 @@
 package stellarium.render.stellars.phased;
 
 import net.minecraft.world.World;
-import stellarapi.api.ISkyEffect;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;

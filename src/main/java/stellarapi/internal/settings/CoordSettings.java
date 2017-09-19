@@ -8,11 +8,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.sun.prism.image.Coords;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.coordinates.ICoordProvider;

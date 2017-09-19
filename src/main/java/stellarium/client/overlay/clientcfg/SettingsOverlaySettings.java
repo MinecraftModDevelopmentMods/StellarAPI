@@ -2,7 +2,6 @@ package stellarium.client.overlay.clientcfg;
 
 import net.minecraftforge.common.config.Configuration;
 import stellarapi.api.gui.overlay.PerOverlaySettings;
-import stellarapi.api.lib.config.property.ConfigPropertyBoolean;
 
 /**Naming is somewhat screwed ={*/
 public class SettingsOverlaySettings extends PerOverlaySettings {

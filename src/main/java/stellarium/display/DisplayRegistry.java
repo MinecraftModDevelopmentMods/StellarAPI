@@ -2,7 +2,6 @@ package stellarium.display;
 
 import com.google.common.collect.ImmutableList;
 
-import stellarapi.api.lib.config.SimpleHierarchicalConfig;
 import stellarium.client.ClientSettings;
 import stellarium.display.ecgrid.EcGridType;
 import stellarium.display.eqgrid.EqGridType;

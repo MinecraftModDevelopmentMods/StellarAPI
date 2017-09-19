@@ -1,8 +1,6 @@
 package stellarapi.api;
 
 import net.minecraft.world.World;
-import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.IEffectorType;
 
 /**
  * Helper for getting conventional periods.

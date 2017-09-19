@@ -4,9 +4,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import stellarapi.api.atmosphere.Atmosphere.EnumAtmosphereType;
-import stellarapi.api.atmosphere.Atmosphere.LayerBoundary;
-
 public class AtmosphereBuilder {
 
 	private List<Atmosphere.LayerBoundary> boundaries = Lists.newArrayList();

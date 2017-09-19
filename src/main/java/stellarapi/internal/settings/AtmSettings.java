@@ -12,7 +12,6 @@ import com.google.common.collect.Iterables;
 import net.minecraft.util.ResourceLocation;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.IAtmProvider;
-import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.lib.config.DynamicConfig;
 import worldsets.api.provider.IProviderRegistry;
 import worldsets.api.provider.ProviderRegistry;

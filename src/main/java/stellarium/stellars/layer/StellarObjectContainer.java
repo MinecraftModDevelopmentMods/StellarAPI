@@ -10,7 +10,6 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.api.lib.config.INBTConfig;
 import stellarium.render.stellars.layer.IObjRenderCache;
 import stellarium.render.stellars.layer.StellarLayerModel;
 

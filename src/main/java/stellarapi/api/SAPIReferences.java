@@ -1,17 +1,13 @@
 package stellarapi.api;
 
-import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.EventBus;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
+import worldsets.api.IReference;
 
 /**
  * Central reference for Stellar API.

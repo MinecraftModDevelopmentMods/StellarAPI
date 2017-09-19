@@ -9,9 +9,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
-import scala.reflect.internal.Trees.This;
 import worldsets.api.provider.IInternalProviderHandler;
 import worldsets.api.provider.IProvider;
 import worldsets.api.provider.IProviderRegistry;

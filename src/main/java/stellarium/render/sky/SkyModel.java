@@ -1,10 +1,6 @@
 package stellarium.render.sky;
 
 import net.minecraft.world.World;
-import stellarapi.lib.hierarchy.EnumIDEvaluator;
-import stellarapi.lib.hierarchy.Hierarchy;
-import stellarapi.lib.hierarchy.HierarchyDistributor;
-import stellarapi.lib.hierarchy.HierarchyElement;
 import stellarium.client.ClientSettings;
 import stellarium.display.DisplayModel;
 import stellarium.render.stellars.StellarModel;

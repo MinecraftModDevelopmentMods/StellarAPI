@@ -1,8 +1,6 @@
 package stellarium.stellars;
 
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.lib.config.SimpleConfigHandler;
-import stellarapi.api.lib.config.property.ConfigPropertyDouble;
 import stellarapi.api.lib.math.Spmath;
 import stellarium.util.math.CachedGaussianRandom;
 import stellarium.util.math.PowerCache;

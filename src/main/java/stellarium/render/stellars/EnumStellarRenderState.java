@@ -6,11 +6,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 
 import net.minecraft.client.renderer.GlStateManager;
-import stellarapi.lib.render.RendererRegistry;
-import stellarapi.lib.render.hierarchy.IDistributionConfigurable;
-import stellarapi.lib.render.hierarchy.IRenderState;
-import stellarapi.lib.render.hierarchy.IRenderTransition;
-import stellarapi.lib.render.hierarchy.IRenderedCollection;
 import stellarium.client.ClientSettings;
 import stellarium.render.shader.ShaderHelper;
 import stellarium.render.sky.SkyRenderInformation;

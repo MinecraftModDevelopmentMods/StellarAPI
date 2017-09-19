@@ -14,9 +14,9 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.RegistryBuilder;
-import net.minecraftforge.fml.common.registry.RegistryDelegate;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IRegistryDelegate;
+import net.minecraftforge.registries.RegistryBuilder;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.SAPIRegistries;
@@ -152,7 +152,7 @@ public class CoordRegistry {
 				new ApplyWorldSettingsEvent<ICoordHandler>(
 						ICoordHandler.class, system.getHandler(), worldCoords.mainSettings, world));
 
-		for(Map.Entry<RegistryDelegate<CCoordinates>, ICoordSettings> entry : worldCoords.specificSettings.entrySet())
+		for(Map.Entry<IRegistryDelegate<CCoordinates>, ICoordSettings> entry : worldCoords.specificSettings.entrySet())
 			entry.getKey().get().applySettings(entry.getValue(), world);
 	}
 

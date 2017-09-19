@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;
-import stellarapi.lib.hierarchy.Hierarchy;
 import stellarium.client.ClientSettings;
 import stellarium.render.stellars.access.ICheckedAtmModel;
 import stellarium.view.ViewerInfo;

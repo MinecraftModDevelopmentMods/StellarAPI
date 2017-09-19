@@ -5,7 +5,6 @@ import java.io.IOException;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import stellarapi.api.IClientReference;
 
 /**
  * This extends client reference for the role of the proxy.

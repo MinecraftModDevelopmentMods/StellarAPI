@@ -37,7 +37,7 @@ import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.SAPIReferenceHandler;
 
 @Mod(modid = SAPIReferences.modid, version = SAPIReferences.version,
-acceptedMinecraftVersions="[1.11.0, 1.12.0)",
+acceptedMinecraftVersions="[1.12.0, 1.13.0)",
 guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory",
 dependencies = "required-after:worldsetapi")
 public final class StellarAPI {

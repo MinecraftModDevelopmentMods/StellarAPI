@@ -1,6 +1,5 @@
 package stellarapi.api.daywake;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -9,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.DynamicConfig;
 

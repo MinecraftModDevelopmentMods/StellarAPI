@@ -2,7 +2,7 @@ package stellarapi.reference;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 /**
  * Per server manager to contain the per-server objects.

@@ -2,8 +2,6 @@ package stellarium.view;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCoordinate;
-import stellarapi.api.ISkyEffect;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;

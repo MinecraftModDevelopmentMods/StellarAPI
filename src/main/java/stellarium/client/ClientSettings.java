@@ -1,8 +1,6 @@
 package stellarium.client;
 
 import net.minecraftforge.common.config.Configuration;
-import stellarapi.api.lib.config.SimpleHierarchicalConfig;
-import stellarapi.api.lib.config.property.ConfigPropertyDouble;
 
 public class ClientSettings extends SimpleHierarchicalConfig {
 

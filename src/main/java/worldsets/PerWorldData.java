@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import worldsets.api.worldset.WorldSet;
 
 public class PerWorldData extends WorldSavedData {

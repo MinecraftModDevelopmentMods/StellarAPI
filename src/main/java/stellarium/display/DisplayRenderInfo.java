@@ -2,7 +2,6 @@ package stellarium.display;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import stellarium.render.EnumRenderPass;
 
 

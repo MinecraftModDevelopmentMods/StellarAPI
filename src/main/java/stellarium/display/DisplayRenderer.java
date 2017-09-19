@@ -1,6 +1,5 @@
 package stellarium.display;
 
-import stellarapi.lib.render.IGenericRenderer;
 import stellarium.client.ClientSettings;
 import stellarium.render.sky.SkyRenderInformation;
 

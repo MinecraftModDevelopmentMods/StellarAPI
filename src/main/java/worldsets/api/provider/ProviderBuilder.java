@@ -3,14 +3,16 @@ package worldsets.api.provider;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.util.ResourceLocation;
-import worldsets.api.provider.IProviderRegistry.*;
+import worldsets.api.provider.IProviderRegistry.AddCallback;
+import worldsets.api.provider.IProviderRegistry.ClearCallback;
+import worldsets.api.provider.IProviderRegistry.CreateCallback;
+import worldsets.api.provider.IProviderRegistry.SubstitutionCallback;
 
 public class ProviderBuilder<P extends IProvider> {
 	private ResourceLocation registryName;
@@ -126,10 +128,9 @@ public class ProviderBuilder<P extends IProvider> {
 		return new AddCallback<P>()
 		{
 			@Override
-			public void onAdd(P obj, Map<ResourceLocation, ?> slaveset)
-			{
+			public void onAdd(ResourceLocation key, P provider, Map<ResourceLocation, ?> slaveset) {
 				for (AddCallback<P> cb : ProviderBuilder.this.addCallback)
-					cb.onAdd(obj, slaveset);
+					cb.onAdd(key, provider, slaveset);
 			}
 		};
 	}
@@ -164,10 +165,10 @@ public class ProviderBuilder<P extends IProvider> {
 		return new SubstitutionCallback<P>()
 		{
 			@Override
-			public void onSubstitution(Map<ResourceLocation, ?> slaveset, P original, P replacement)
-			{
+			public void onSubstitution(Map<ResourceLocation, ?> slaveset, ResourceLocation key, P original,
+					P replacement) {
 				for (SubstitutionCallback<P> cb : ProviderBuilder.this.substitutionCallback)
-					cb.onSubstitution(slaveset, original, replacement);
+					cb.onSubstitution(slaveset, key, original, replacement);
 			}
 		};
 	}
@@ -183,11 +184,9 @@ public class ProviderBuilder<P extends IProvider> {
 		return new ClearCallback<P>()
 		{
 			@Override
-			public boolean missingOnServer(Map<ResourceLocation, ?> slaveset, Set<P> missingOnServer, List<P> providers) {
-				boolean result = false;
-				for (MissingCallback<P> cb : ProviderBuilder.this.clearCallback)
-					result = result || cb.missingOnServer(slaveset, missingOnServer, providers);
-				return result;
+			public void onClear(IProviderRegistry<P> registry, Map<ResourceLocation, ?> slaveset) {
+				for (ClearCallback<P> cb : ProviderBuilder.this.clearCallback)
+					cb.onClear(registry, slaveset);
 			}
 		};
 	}

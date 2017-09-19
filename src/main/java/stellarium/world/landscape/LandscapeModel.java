@@ -2,7 +2,6 @@ package stellarium.world.landscape;
 
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.lib.hierarchy.Hierarchy;
 import stellarium.client.ClientSettings;
 import stellarium.util.math.Allocator;
 import stellarium.world.StellarDimensionManager;

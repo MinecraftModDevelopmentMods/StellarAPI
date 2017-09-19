@@ -1,7 +1,6 @@
 package stellarium.client.overlay.clientcfg;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 import stellarapi.lib.gui.IRectangleBound;

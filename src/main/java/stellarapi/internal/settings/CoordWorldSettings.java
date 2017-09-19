@@ -4,15 +4,13 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.RegistryDelegate;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IRegistryDelegate;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.coordinates.ICoordSettings;
 import stellarapi.api.lib.config.DynamicConfig;
-import worldsets.api.worldset.WorldSet;
 
 public class CoordWorldSettings {
 
@@ -31,7 +29,7 @@ public class CoordWorldSettings {
 	@DynamicConfig.Dependence(id = "spSettings")
 	@DynamicConfig.Collection
 	// TODO DynamicConfig handle map with key as registry delegate
-	public Map<RegistryDelegate<CCoordinates>, ICoordSettings> specificSettings;
+	public Map<IRegistryDelegate<CCoordinates>, ICoordSettings> specificSettings;
 
 	public CoordWorldSettings(CoordSettings parentSettings) {
 		this.parentSettings = parentSettings;
@@ -68,7 +66,7 @@ public class CoordWorldSettings {
 		if(!this.spSettingsApplied) {
 			this.spSettingsApplied = true;
 
-			ImmutableMap.Builder<RegistryDelegate<CCoordinates>, ICoordSettings> builder = ImmutableMap.builder();
+			ImmutableMap.Builder<IRegistryDelegate<CCoordinates>, ICoordSettings> builder = ImmutableMap.builder();
 			for(CCoordinates coordinates : registry.getValues()) {
 				ICoordSettings settings = coordinates.generateSettings();
 				if(settings != null && !provider.overrideSettings(parentSettings.theWorldSet, coordinates))
