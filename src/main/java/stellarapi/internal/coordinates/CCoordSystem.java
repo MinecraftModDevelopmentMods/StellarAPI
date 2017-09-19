@@ -48,9 +48,17 @@ public class CCoordSystem implements ICoordSystem {
 	public void setProviderID(ResourceLocation providerID) {
 		if(!coordProvRegistry.containsKey(providerID))
 			throw new IllegalArgumentException(String.format("There's no provider for providerID %s", providerID));
+		ICoordProvider provider = coordProvRegistry.getProvider(providerID);
+
+		int cnt = 0;
+		for(CCoordinates coords : this.registry)
+			if(coords.getDefaultParentID() == null && !provider.overrideSettings(this.worldSet, coords))
+				cnt++;
+		if(cnt != 1)
+			return;
 
 		this.providerID = providerID;
-		this.handler = coordProvRegistry.getProvider(providerID).generateHandler(this.worldSet);
+		this.handler = provider.generateHandler(this.worldSet);
 	}
 	@Override
 	public ResourceLocation getProviderID() { return this.providerID; }

@@ -16,6 +16,7 @@ public interface ICoordSystem {
 
 	/**
 	 * Sets provider ID. Throws exception if there's no mapping for the specified id.
+	 * This only sets the provider ID when it's valid.
 	 * Also this re-evaluates the internal handler.
 	 * */
 	@Deprecated

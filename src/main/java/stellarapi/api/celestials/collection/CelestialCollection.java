@@ -7,7 +7,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 /**
  * Celestial Collection containing the data of celestial objects.
  * Serializable version should be distinct for each worldset.
- * TODO what would this contain.
  * */
 public abstract class CelestialCollection<P> implements INBTSerializable<NBTTagCompound> {
 
@@ -21,13 +20,13 @@ public abstract class CelestialCollection<P> implements INBTSerializable<NBTTagC
 	}
 
 	/** Gets the adaption on world */
-	public abstract ICollectionAdaption<P> adaption(World world);
+	public abstract ICollectionAdaption<P> adaption(World world, boolean forVanilla);
 
 	public void setupPartial() { }
 	public void setupComplete() { }
 
 	/**
-	 * Handles vanilla case.  if this collection is not capable of that.
+	 * Handles vanilla case. returns false if this collection is not capable of that.
 	 * */
 	public boolean handleVanilla() {
 		return false;

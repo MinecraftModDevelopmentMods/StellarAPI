@@ -7,13 +7,13 @@ public class MessageJoinSync implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		// TODO Auto-generated method stub
+		// TODO Send join sync messages
 
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		// TODO Auto-generated method stub
+		// TODO Receive join sync messages
 
 	}
 

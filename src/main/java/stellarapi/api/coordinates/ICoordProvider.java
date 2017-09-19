@@ -32,7 +32,8 @@ public interface ICoordProvider extends IProvider {
 	public Object generateSettings(WorldSet worldSet);
 
 	/**
-	 * Overrides certain settings.
+	 * Overrides certain coordinates with its settings.
+	 * This should be true for all non-specified coordinates.
 	 * */
 	public boolean overrideSettings(WorldSet worldSet, CCoordinates coordinate);
 }

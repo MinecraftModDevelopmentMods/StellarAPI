@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.RegistryDelegate;
+import stellarapi.StellarAPI;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.celestials.collection.CelestialCollection;

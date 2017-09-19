@@ -2,9 +2,8 @@ package stellarapi.api.coordinates;
 
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 /**
@@ -16,10 +15,11 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 public interface ICoordHandler {
 	/**
 	 * Handles the case where server-side object is absent. (e.g. vanila)
+	 * This is for specific world, to reset values used on coordinates to match with vanilla case.
 	 * return false if this should be replaced with a default(vanilla) provider.
 	 * Those which fills additional coordinates should be able to handle vanilla on its own.
 	 * */
-	public boolean handleVanilla();
+	public boolean handleVanilla(World world);
 
 	/**
 	 * Instantiate the coordinates, adding a few if necessary.

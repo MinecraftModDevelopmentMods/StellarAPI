@@ -25,6 +25,7 @@ import stellarapi.api.coordinates.ICoordHandler;
 import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.coordinates.ICoordSettings;
 import stellarapi.api.coordinates.ICoordSystem;
+import stellarapi.api.event.settings.ApplyProviderIDEvent;
 import stellarapi.api.event.settings.ApplyWorldSettingsEvent;
 import stellarapi.internal.settings.CoordSettings;
 import stellarapi.internal.settings.CoordWorldSettings;
@@ -96,11 +97,14 @@ public class CoordRegistry {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
 
-			if(system.getProviderID() == null) {
-				CoordSettings coords = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).coordinates;
-				system.setProviderID(coords.getCurrentProviderID());
+			ResourceLocation settingsID = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).coordinates.getCurrentProviderID();
+			ResourceLocation prevID = system.getProviderID() != null? system.getProviderID() : settingsID;
+			
+			ApplyProviderIDEvent.Coordinates event = new ApplyProviderIDEvent.Coordinates(worldSet, prevID, settingsID);
+			MinecraftForge.EVENT_BUS.post(event);
+			if(system.getProviderID() == null || prevID != event.resultID) {
+				system.setProviderID(event.resultID);
 			}
-			// TODO CProviders Settings -> ID force?
 
 			system.setupPartial();
 		}
@@ -115,7 +119,7 @@ public class CoordRegistry {
 
 			// Client Placeholder Handling
 			if(completeEvent.forPlaceholder)
-				if(!system.getHandler().handleVanilla())
+				if(!system.getHandler().handleVanilla(world))
 					system.setProviderID(completeEvent.registry.getDefaultKey());
 			// TODO Also check for WorldProvider patch
 

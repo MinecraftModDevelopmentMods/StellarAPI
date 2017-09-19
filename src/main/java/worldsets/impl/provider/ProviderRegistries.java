@@ -55,7 +55,7 @@ public enum ProviderRegistries implements IInternalProviderHandler {
 	public <T extends IProvider> IProviderRegistry<T> createRegistry(ResourceLocation registryName,
 			Class<T> registryType, boolean addToFirst, Comparator<T> comparator, AddCallback<T> add,
 			CreateCallback<T> create, ClearCallback<T> clear, SubstitutionCallback<T> substitution) {
-		// TODO Create registry
+		// TODO Create registry here
 		return null;
 	}
 

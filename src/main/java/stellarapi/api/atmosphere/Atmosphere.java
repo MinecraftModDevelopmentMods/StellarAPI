@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import com.google.common.base.Throwables;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
@@ -86,8 +88,26 @@ public final class Atmosphere implements INBTSerializable<NBTTagCompound> {
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		// TODO Atmosphere Deserialize routine
-		
+		this.atmType = EnumAtmosphereType.values()[nbt.getInteger("type")];
+
+		int dId = new NBTTagDouble(0.0).getId();
+		NBTTagList heights = nbt.getTagList("heights", dId);
+		NBTTagList densities = nbt.getTagList("densities", dId);
+		this.boundaries = new LayerBoundary[heights.tagCount()];
+		for(int i = 0; i < heights.tagCount(); i++) {
+			this.boundaries[i] = new LayerBoundary(heights.getDoubleAt(i), densities.getDoubleAt(i));
+		}
+
+		NBTTagList layersNBT = nbt.getTagList("layers", nbt.getId());
+		this.layers = new IAtmosphereLayer[layersNBT.tagCount()];
+		try {
+			for(int i = 0; i < layersNBT.tagCount(); i++) {
+				this.layers[i] = layerInitializer.call();
+				layers[i].deserializeNBT(layersNBT.getCompoundTagAt(i));
+			}
+		} catch(Exception exc) {
+			Throwables.propagate(exc);
+		}
 	}
 
 	/** Value equality check */

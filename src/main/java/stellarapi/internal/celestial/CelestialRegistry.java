@@ -26,6 +26,7 @@ import stellarapi.api.celestials.collection.CelestialCollection;
 import stellarapi.api.celestials.collection.ICelestialProvider;
 import stellarapi.api.coordinates.ICoordHandler;
 import stellarapi.api.event.settings.ApplyGlobalSettingsEvent;
+import stellarapi.api.event.settings.ApplyProviderIDEvent;
 import stellarapi.internal.settings.CelestialSettings;
 import stellarapi.internal.settings.MainSettings;
 import worldsets.api.WAPIReference;
@@ -80,12 +81,15 @@ public class CelestialRegistry {
 			ICelestialSystem system = setInstance.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
 
 			for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
-				if(system.isAbsent(type)) {
-					CelestialSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).celestials;
-					system.validateNset(type, settings.celestialMap.get(type.delegate).getCurrentProviderID());
-				}
+				CelestialSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).celestials;
+				ResourceLocation settingsID = settings.celestialMap.get(type.delegate).getCurrentProviderID();
+				ResourceLocation prevID = system.isAbsent(type)? settingsID : system.getProviderID(type);
+
+				ApplyProviderIDEvent.Celestials event = new ApplyProviderIDEvent.Celestials(worldSet, type, prevID, settingsID);
+				MinecraftForge.EVENT_BUS.post(event);
+				if(system.isAbsent(type) || prevID != event.resultID)
+					system.validateNset(type, event.resultID);
 			}
-			// TODO CProviders Settings -> ID force?
 
 			for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
 				if(!system.isAbsent(type)) {
@@ -129,15 +133,15 @@ public class CelestialRegistry {
 		}
 
 		if(completeEvent.isRemote && !completeEvent.forPlaceholder)
-			onSetupWorldSpecific(world);
+			onSetupWorldSpecific(world, true);
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onWorldLoad(WorldEvent.Load worldLoadEvent) {
-		onSetupWorldSpecific(worldLoadEvent.getWorld());
+		onSetupWorldSpecific(worldLoadEvent.getWorld(), false);
 	}
 
-	private static void onSetupWorldSpecific(World world) {
+	private static void onSetupWorldSpecific(World world, boolean manualCall) {
 		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
 
 		if(worldSet == null)
@@ -147,7 +151,7 @@ public class CelestialRegistry {
 
 		ICelestialSystem system = setInstance.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
 		ICelestialScene scene = world.getCapability(SAPICapabilities.CELESTIAL_SCENE, null);
-		scene.setupComplete(system);
+		scene.setupComplete(system, world.isRemote && !manualCall);
 	}
 
 	@SubscribeEvent

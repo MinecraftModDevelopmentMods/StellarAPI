@@ -20,6 +20,7 @@ import stellarapi.api.atmosphere.IAtmProvider;
 import stellarapi.api.atmosphere.IAtmSetProvider;
 import stellarapi.api.atmosphere.IAtmSystem;
 import stellarapi.api.coordinates.ICoordProvider;
+import stellarapi.api.event.settings.ApplyProviderIDEvent;
 import stellarapi.api.event.settings.ApplyWorldSettingsEvent;
 import stellarapi.internal.settings.AtmSettings;
 import stellarapi.internal.settings.AtmWorldSettings;
@@ -54,11 +55,14 @@ public class AtmRegistry {
 			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
 			IAtmSystem system = setInstance.getCapability(SAPICapabilities.ATMOSPHERE_SYSTEM, null);
 
-			if(system.getProviderID() == null) {
-				AtmSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).atmosphere;
-				system.setProviderID(settings.getCurrentProviderID());
+			ResourceLocation settingsID = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).atmosphere.getCurrentProviderID();
+			ResourceLocation prevID = system.getProviderID() != null? system.getProviderID() : settingsID;
+
+			ApplyProviderIDEvent.Atmosphere event = new ApplyProviderIDEvent.Atmosphere(worldSet, prevID, settingsID);
+			MinecraftForge.EVENT_BUS.post(event);
+			if(system.getProviderID() == null || prevID != event.resultID) {
+				system.setProviderID(event.resultID);
 			}
-			// TODO CProviders Settings -> ID force?
 		}
 	}
 

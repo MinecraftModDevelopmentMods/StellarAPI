@@ -69,6 +69,7 @@ public class CelestialTypeSettings {
 			affected = { DynamicConfig.StringCycle.class }, id = "celestialProvider")
 	public String celestialProviderName;
 
+	@DynamicConfig.Expand
 	public Object collectionSettings;
 
 	@DynamicConfig.EvaluatorID("celestialProvider")

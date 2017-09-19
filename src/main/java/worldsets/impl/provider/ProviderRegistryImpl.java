@@ -82,7 +82,7 @@ public class ProviderRegistryImpl<P extends IProvider> implements IProviderRegis
 
 	@Override
 	public void substitute(ResourceLocation key, P replacement) {
-		// TODO Auto-generated method stub
+		// TODO ProviderRegistry substitution?
 		
 	}
 

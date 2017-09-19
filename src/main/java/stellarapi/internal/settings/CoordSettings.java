@@ -40,9 +40,14 @@ public class CoordSettings {
 						ICoordProvider provider = coordProvRegistry.getProvider(input);
 						if(!provider.appliedWorldSets().contains(worldSet))
 							return false;
+
+						int cnt = 0;
 						for(CCoordinates coords : SAPIRegistries.getCoordRegistry())
 							if(coords.getDefaultParentID() == null && !provider.overrideSettings(worldSet, coords))
-								return false;
+								cnt++;
+						if(cnt != 1)
+							return false;
+
 						return true;
 					}
 				}), Functions.forMap(nameMap.inverse())), String.class);

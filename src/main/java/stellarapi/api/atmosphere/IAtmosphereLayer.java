@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.optics.Wavelength;
 
 public interface IAtmosphereLayer extends INBTSerializable<NBTTagCompound> {
-	// TODO Atmosphere Correctly define each layer.
+	// TODO Atmosphere Revise.
 
 	/**
 	 * Density characteristics in specific data points.
