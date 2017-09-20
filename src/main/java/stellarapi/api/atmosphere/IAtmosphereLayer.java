@@ -7,8 +7,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.optics.Wavelength;
 
 public interface IAtmosphereLayer extends INBTSerializable<NBTTagCompound> {
-	// TODO Atmosphere Revise.
-
 	/**
 	 * Density characteristics in specific data points.
 	 * This is multiplied to the general exponential curve.

@@ -13,8 +13,8 @@ public class PrepareTypeModelEvent {
 		this.theModel = model;
 	}
 
-	/** Registers recognizer */
-	public void registerRecognizer(IRecognizer recognizer) {
+	/** Adds recognizer */
+	public void addRecognizer(IRecognizer recognizer) {
 		recognizers.add(recognizer);
 	}
 	// TODO fill in this prepare typed model event

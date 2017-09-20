@@ -1,9 +1,11 @@
 package stellarapi.api.celestials;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityDispatcher;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 /**
  * Actual instance for certain celestial object.
@@ -11,11 +13,14 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public class CelestialObject implements ICapabilityProvider {
 
 	private final CelestialType type;
-	private final CapabilityDispatcher capabilities = null;
+	private final CapabilityDispatcher capabilities;
 
 	protected CelestialObject(CelestialType type) {
 		this.type = type;
-		// TODO dispatch capabilities
+
+		AttachCapabilitiesEvent<CelestialObject> event = new AttachCapabilitiesEvent(CelestialObject.class, this);
+		MinecraftForge.EVENT_BUS.post(event);
+		this.capabilities = event.getCapabilities().size() > 0? new CapabilityDispatcher(event.getCapabilities(), null) : null;
 	}
 
 	@Override

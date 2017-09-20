@@ -5,7 +5,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.internal.atmosphere.CAtmSystem;
 import stellarapi.internal.atmosphere.CWorldAtmosphere;
 import stellarapi.internal.celestial.CelestialScene;
 import stellarapi.internal.celestial.CelestialSystem;
@@ -23,7 +22,6 @@ public class CWorldReference implements ICapabilityProvider {
 	// Systems
 	private final CelestialSystem celSystem;
 	private final CCoordSystem coordSystem;
-	private final CAtmSystem atmSystem;
 
 	public CWorldReference(World world, WorldSet worldSet) {
 		this.coordinates = new CLocalCoordinates(world, true);
@@ -32,7 +30,6 @@ public class CWorldReference implements ICapabilityProvider {
 
 		this.celSystem = new CelestialSystem(worldSet);
 		this.coordSystem = new CCoordSystem(worldSet);
-		this.atmSystem = new CAtmSystem(worldSet);
 	}
 
 	@Override
