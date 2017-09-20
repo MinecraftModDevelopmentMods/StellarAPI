@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 import stellarapi.api.SAPIReferences;
 import worldsets.api.worldset.WorldSet;
-import worldsets.api.worldset.WorldSetInstance;
 
 public enum WAPIReference {
 	@Deprecated
@@ -67,14 +66,6 @@ public enum WAPIReference {
 
 	public static ImmutableList<WorldSet> worldSetList() {
 		return ImmutableList.copyOf(INSTANCE.registry);
-	}
-
-	/**
-	 * Gets the corresponding world set instance for the world set.
-	 * Specified world is only used for the reference.
-	 * */
-	public static WorldSetInstance getWorldSetInstance(World base, WorldSet worldSet) {
-		return INSTANCE.reference.getWorldInstance(base, worldSet);
 	}
 
 	/**

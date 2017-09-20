@@ -15,7 +15,7 @@ public class CelestialDispatcher {
 		
 	}
 
-	private void iterate(ICollectionAdaption<?> adaption,
+	private void iterate(ICollectionAdaption<?,?> adaption,
 			Predicate<ISegment> procSegmentOnly,
 			Consumer<DispatchEntry> entryConsumer) {
 		

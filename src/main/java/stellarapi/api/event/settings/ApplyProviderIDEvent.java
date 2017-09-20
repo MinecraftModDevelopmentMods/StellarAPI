@@ -3,6 +3,7 @@ package stellarapi.api.event.settings;
 import javax.annotation.Nonnull;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import stellarapi.api.celestials.CelestialType;
 import worldsets.api.worldset.WorldSet;
@@ -12,7 +13,8 @@ import worldsets.api.worldset.WorldSet;
  * */
 public class ApplyProviderIDEvent extends Event {
 
-	public final WorldSet theWorldSet;
+	public final World world;
+	public final WorldSet worldSet;
 
 	/**
 	 * Previous ID which is either stored in the save, or ID from settings if it's invalid.
@@ -24,8 +26,10 @@ public class ApplyProviderIDEvent extends Event {
 	 * */
 	public @Nonnull ResourceLocation resultID;
 
-	public ApplyProviderIDEvent(WorldSet worldSet, ResourceLocation current, ResourceLocation settingsID) {
-		this.theWorldSet = worldSet;
+	public ApplyProviderIDEvent(World world, WorldSet worldSet,
+			ResourceLocation current, ResourceLocation settingsID) {
+		this.world = world;
+		this.worldSet = worldSet;
 
 		this.previousID = current;
 		this.resultID = settingsID;
@@ -33,8 +37,9 @@ public class ApplyProviderIDEvent extends Event {
 
 	/** Coordinates case */
 	public static class Coordinates extends ApplyProviderIDEvent {
-		public Coordinates(WorldSet worldSet, ResourceLocation current, ResourceLocation settingsID) {
-			super(worldSet, current, settingsID);
+		public Coordinates(World world, WorldSet worldSet,
+				ResourceLocation current, ResourceLocation settingsID) {
+			super(world, worldSet, current, settingsID);
 		}
 	}
 
@@ -42,16 +47,18 @@ public class ApplyProviderIDEvent extends Event {
 	public static class Celestials extends ApplyProviderIDEvent {
 		/** The celestial type */
 		public final CelestialType celType;
-		public Celestials(WorldSet worldSet, CelestialType type, ResourceLocation current, ResourceLocation settingsID) {
-			super(worldSet, current, settingsID);
+		public Celestials(World world, WorldSet worldSet, CelestialType type,
+				ResourceLocation current, ResourceLocation settingsID) {
+			super(world, worldSet, current, settingsID);
 			this.celType = type;
 		}
 	}
 
 	/** Atmosphere case */
 	public static class Atmosphere extends ApplyProviderIDEvent {
-		public Atmosphere(WorldSet worldSet, ResourceLocation current, ResourceLocation settingsID) {
-			super(worldSet, current, settingsID);
+		public Atmosphere(World world, WorldSet worldSet,
+				ResourceLocation current, ResourceLocation settingsID) {
+			super(world, worldSet, current, settingsID);
 		}
 	}
 }

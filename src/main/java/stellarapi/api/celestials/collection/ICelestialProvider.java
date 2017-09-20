@@ -27,9 +27,10 @@ public interface ICelestialProvider extends IProvider {
 	public ImmutableSet<WorldSet> appliedWorldSets(CelestialType type);
 
 	/**
-	 * Generates the collection for the specified type and worldset.
+	 * Gets the collection for the specified type and worldset.
+	 * This might not be generated, instead it could be cached and returned.
 	 * */
-	public CelestialCollection generateCollection(CelestialType type, WorldSet worldSet);
+	public CelestialCollection getCollection(CelestialType type, WorldSet worldSet);
 
 	/**
 	 * Generates the collection settings for the specified type and worldset.

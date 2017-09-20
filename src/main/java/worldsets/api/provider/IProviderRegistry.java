@@ -43,12 +43,6 @@ public interface IProviderRegistry<P extends IProvider> extends Iterable<P> {
 	public @Nullable ResourceLocation getDefaultKey();
 
 	/**
-	 * Substitutes the provider on the key.
-	 * Before substitution, ensure that the original provider is registered.
-	 * */
-	public void substitute(@Nonnull ResourceLocation key,@Nonnull P replacement);
-
-	/**
 	 * Retrieve the slave map of type T from the registry.
 	 * Slave maps are maps which are dependent on registry content in some way.
 	 * @param slaveMapName The name of the slavemap

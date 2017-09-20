@@ -5,14 +5,11 @@ import java.util.Map;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -24,16 +21,16 @@ import stellarapi.api.celestials.ICelestialScene;
 import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.celestials.collection.CelestialCollection;
 import stellarapi.api.celestials.collection.ICelestialProvider;
-import stellarapi.api.event.settings.ApplyGlobalSettingsEvent;
 import stellarapi.api.event.settings.ApplyProviderIDEvent;
+import stellarapi.api.event.settings.ApplySettingsEvent;
 import stellarapi.internal.settings.CelestialSettings;
 import stellarapi.internal.settings.MainSettings;
+import stellarapi.internal.world.WorldRegistry;
 import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
 import worldsets.api.provider.IProviderRegistry;
 import worldsets.api.provider.ProviderBuilder;
 import worldsets.api.worldset.WorldSet;
-import worldsets.api.worldset.WorldSetInstance;
 
 @Mod.EventBusSubscriber(modid = SAPIReferences.modid)
 public class CelestialRegistry {
@@ -74,111 +71,108 @@ public class CelestialRegistry {
 
 	@SubscribeEvent
 	public static void onApplySettingsEvent(ProviderEvent.ApplySettings<ICelestialProvider> applySettingsEvent) {
-		World world = WAPIReference.getDefaultWorld(applySettingsEvent.isRemote);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICelestialSystem system = setInstance.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
+		World world = applySettingsEvent.world;
+		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
+		if(worldSet == null)
+			return;
 
-			for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
-				CelestialSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).celestials;
-				ResourceLocation settingsID = settings.celestialMap.get(type.delegate).getCurrentProviderID();
-				ResourceLocation prevID = system.isAbsent(type)? settingsID : system.getProviderID(type);
+		ICelestialSystem system = world.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
 
-				ApplyProviderIDEvent.Celestials event = new ApplyProviderIDEvent.Celestials(worldSet, type, prevID, settingsID);
-				MinecraftForge.EVENT_BUS.post(event);
-				if(system.isAbsent(type) || prevID != event.resultID)
-					system.validateNset(type, event.resultID);
-			}
+		// Determine ID from settings
+		for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
+			CelestialSettings settings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).celestials;
+			ResourceLocation settingsID = settings.celestialMap.get(type.delegate).getCurrentProviderID();
+			ResourceLocation prevID = system.isAbsent(type)? settingsID : system.getProviderID(type);
 
-			for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
-				if(!system.isAbsent(type)) {
-					CelestialCollection collection = system.getCollection(type);
-
-					CelestialSettings celSettings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).celestials;
-					Object settings = celSettings.celestialMap.get(type.delegate).collectionSettings;
-
-					MinecraftForge.EVENT_BUS.post(
-							new ApplyGlobalSettingsEvent<CelestialCollection>(
-									CelestialCollection.class, collection, settings));
-				}
-			}
-
-
-			for(CelestialType type : SAPIRegistries.getOrderedTypes())
-				if(!system.isAbsent(type))
-					system.getCollection(type).setupPartial();
+			ApplyProviderIDEvent.Celestials event = new ApplyProviderIDEvent.Celestials(world, worldSet, type, prevID, settingsID);
+			MinecraftForge.EVENT_BUS.post(event);
+			if(system.isAbsent(type) || prevID != event.resultID)
+				system.validateNset(type, event.resultID);
 		}
+
+		// Determine system ID, and handle vanilla
+		// Client Placeholder || Unpatched WorldProvider Handling
+		if(world.isRemote || !WorldRegistry.customApplicable(world)) {
+			for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
+				if(!system.isAbsent(type) && !system.getCollection(type).canHandleVanilla(world))
+					system.validateNset(type, applySettingsEvent.registry.getDefaultKey());
+				// Handles vanilla
+				if(!system.isAbsent(type))
+					system.handleVanilla(type, world);
+			}
+		}
+
+		// Apply settings to the collection. This can happen multiple times on worlds of same worldset.
+		// Though the result should be consistent as the settings is constant for those worlds.
+		for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
+			if(!system.isAbsent(type)) {
+				CelestialCollection collection = system.getCollection(type);
+
+				CelestialSettings celSettings = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).celestials;
+				Object settings = celSettings.celestialMap.get(type.delegate).collectionSettings;
+
+				MinecraftForge.EVENT_BUS.post(
+						new ApplySettingsEvent<CelestialCollection>(
+								CelestialCollection.class, collection, settings, world));
+			}
+		}
+
+		// Partial Setup
+		for(CelestialType type : SAPIRegistries.getOrderedTypes())
+			if(!system.isAbsent(type))
+				system.getCollection(type).setupPartial();
 	}
 
 	@SubscribeEvent
 	public static void onCompleteEvent(ProviderEvent.Complete<ICelestialProvider> completeEvent) {
-		World world = WAPIReference.getDefaultWorld(completeEvent.isRemote);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICelestialSystem system = setInstance.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
-
-			// Client Placeholder Handling
-			if(completeEvent.forPlaceholder) {
-				for(CelestialType type : SAPIRegistries.getOrderedTypes()) {
-					if(!system.isAbsent(type) && !system.getCollection(type).handleVanilla())
-						system.validateNset(type, completeEvent.registry.getDefaultKey());
-				}
-			}
-			// TODO Also check for WorldProvider patch
-
-			for(CelestialType type : SAPIRegistries.getOrderedTypes())
-				if(!system.isAbsent(type))
-					system.getCollection(type).setupComplete();
-		}
-
-		if(completeEvent.isRemote && !completeEvent.forPlaceholder)
-			onSetupWorldSpecific(world, true);
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void onWorldLoad(WorldEvent.Load worldLoadEvent) {
-		onSetupWorldSpecific(worldLoadEvent.getWorld(), false);
-	}
-
-	private static void onSetupWorldSpecific(World world, boolean manualCall) {
+		World world = completeEvent.world;
 		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
-
 		if(worldSet == null)
 			return;
 
-		WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
+		ICelestialSystem system = world.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
 
-		ICelestialSystem system = setInstance.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
+		// Complete Setup
+		for(CelestialType type : SAPIRegistries.getOrderedTypes())
+			if(!system.isAbsent(type))
+				system.getCollection(type).setupComplete();
+
+		// Complete setup of celestial scene
 		ICelestialScene scene = world.getCapability(SAPICapabilities.CELESTIAL_SCENE, null);
-		scene.setupComplete(system, world.isRemote && !manualCall);
+		scene.setupComplete(system);
 	}
 
 	@SubscribeEvent
 	public static void onSendEvent(ProviderEvent.Send<ICelestialProvider> sendEvent) {
-		World world = WAPIReference.getDefaultWorld(false);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICelestialSystem system = setInstance.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
-			sendEvent.compoundToSend.setTag(worldSet.delegate.name().toString(),
-					SAPICapabilities.CELESTIAL_SYSTEM.writeNBT(system, null));
-		}
+		World world = sendEvent.world;
+		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
+		if(worldSet == null)
+			return;
+
+		// Write ID and celestial system information
+		ICelestialSystem system = world.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
+		sendEvent.compoundToSend.setTag("celestialSystem",
+				SAPICapabilities.CELESTIAL_SYSTEM.writeNBT(system, null));
 	}
 
 	@SubscribeEvent
 	public static void onReceiveEvent(ProviderEvent.Receive<ICelestialProvider> receiveEvent) {
-		World world = WAPIReference.getDefaultWorld(true);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			NBTTagCompound worldSetData = receiveEvent.receivedCompound.getCompoundTag(
-					worldSet.delegate.name().toString());
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICelestialSystem system = setInstance.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
-			SAPICapabilities.CELESTIAL_SYSTEM.readNBT(system, null, worldSetData);
+		World world = receiveEvent.world;
+		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
+		if(worldSet == null)
+			return;
 
-			for(CelestialType type : SAPIRegistries.getOrderedTypes())
-				if(!system.isAbsent(type))
-					system.getCollection(type).setupPartial();
-		}
+		// Read ID and celestial system information
+		ICelestialSystem system = world.getCapability(SAPICapabilities.CELESTIAL_SYSTEM, null);
+		SAPICapabilities.CELESTIAL_SYSTEM.readNBT(system, null,
+				receiveEvent.receivedCompound.getTag("celestialSystem"));
+
+		// Partial setup
+		for(CelestialType type : SAPIRegistries.getOrderedTypes())
+			if(!system.isAbsent(type))
+				system.getCollection(type).setupPartial();
 	}
+
 
 	public static class CreateCallback implements IProviderRegistry.CreateCallback<ICelestialProvider> {
 		@Override

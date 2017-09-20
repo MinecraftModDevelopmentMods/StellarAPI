@@ -2,6 +2,8 @@ package stellarapi.api.atmosphere;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
+
 /** Generic capability holding the atmosphere. */
 public interface IAtmHolder {
 	/**
@@ -18,17 +20,17 @@ public interface IAtmHolder {
 	public @Nullable ILocalAtmosphere getLocalAtmosphere();
 
 	/**
-	 * Checks if atmosphere setup is done.
-	 * Internal method.
-	 * */
-	@Deprecated
-	public boolean isAtmosphereSetup();
-
-	/**
 	 * Internal method settings the atmosphere.
 	 * */
 	@Deprecated
 	public void setAtmosphere(@Nullable Atmosphere atmosphere);
+
+	/**
+	 * Sets the provider name. Throws exception when unavailable.
+	 * Internal method.
+	 * */
+	@Deprecated
+	public void setProviderID(ResourceLocation providerID);
 
 	/**
 	 * Internal method for re-evaluation of atmospheres.
@@ -37,5 +39,18 @@ public interface IAtmHolder {
 	 *  <code>null</code> for loading of the atmosphere (read from save)
 	 * */
 	@Deprecated
-	public void reevaluateAtmosphere(@Nullable Object atmSettings);
+	public void evaluateAtmosphere(@Nullable Object atmSettings);
+
+	/**
+	 * Gets the provider ID. Can only be null if it's never set.
+	 * Throws exception when unavailable.
+	 * */
+	public @Nullable ResourceLocation getProviderID();
+
+	/**
+	 * Gets the set-specific provider. Can only be null if id is never set.
+	 * Throws exception when unavailable.
+	 * */
+	public @Nullable IAtmSetProvider getSetProvider();
+
 }

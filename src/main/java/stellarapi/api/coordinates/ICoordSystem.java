@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import stellarapi.api.lib.math.Matrix4;
 
 /**
- * WorldSet capability of Coordinates system.
+ * World capability of Coordinates system.
  * This manages coordinates and provides operations on coordinates.
  * */
 public interface ICoordSystem {

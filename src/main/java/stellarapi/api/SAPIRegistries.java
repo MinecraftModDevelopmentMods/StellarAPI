@@ -71,6 +71,19 @@ public class SAPIRegistries {
 	public static final CCoordinates celestial = null;
 
 	// ********************************************* //
+	// **************** Atmospheres **************** //
+	// ********************************************* //
+
+	public static final ResourceLocation ATMOSPHERE = new ResourceLocation(SAPIReferences.modid, "atmosphere");
+
+	// ********************************************* //
+	// ****************** Worlds ******************* //
+	// ********************************************* //
+
+	public static final ResourceLocation PROVIDER_REPLACER = new ResourceLocation(SAPIReferences.modid, "provider_replacer");
+
+
+	// ********************************************* //
 	// *************** Slavemap Keys *************** //
 	// ********************************************* //
 

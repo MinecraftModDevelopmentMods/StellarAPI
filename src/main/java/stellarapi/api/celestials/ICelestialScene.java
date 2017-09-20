@@ -9,7 +9,7 @@ import stellarapi.api.celestials.collection.ICollectionAdaption;
  * */
 public interface ICelestialScene {
 	/** Sets up this scene */
-	public void setupComplete(ICelestialSystem system, boolean isVanilla);
+	public void setupComplete(ICelestialSystem system);
 
 	/** Check if adaption for certain type is absent */
 	public boolean isAbsent(CelestialType type);

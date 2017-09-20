@@ -18,7 +18,7 @@ public class CelestialScene implements ICelestialScene {
 	public CelestialScene() { }
 
 	@Override
-	public void setupComplete(ICelestialSystem system, boolean isVanilla) {
+	public void setupComplete(ICelestialSystem system) {
 		// TODO CelestialScene setup complete
 	}
 

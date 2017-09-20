@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.registries.IRegistryDelegate;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialSystem;
@@ -58,7 +59,7 @@ public class CelestialSystem implements ICelestialSystem {
 
 		if(providerMap.containsKey(type.delegate)) {
 			ICelestialProvider provider = providerRegistry.getProvider(providerMap.get(type.delegate));
-			collectionMap.put(type.delegate, provider.generateCollection(type, this.worldSet));
+			collectionMap.put(type.delegate, provider.getCollection(type, this.worldSet));
 		}
 	}
 
@@ -75,5 +76,11 @@ public class CelestialSystem implements ICelestialSystem {
 
 		for(CelestialType childType : startingType.getChildren())
 			this.validate(childType);
+	}
+
+	@Override
+	public void handleVanilla(CelestialType type, World world) {
+		collectionMap.put(type.delegate, collectionMap.get(type.delegate).getVanillaCollection(world));
+		// TODO CelestialSystem log here
 	}
 }

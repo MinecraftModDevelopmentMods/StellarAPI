@@ -2,7 +2,6 @@ package stellarapi;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -14,24 +13,20 @@ import stellarapi.api.SAPIReferences;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.Atmosphere;
 import stellarapi.api.atmosphere.IAtmHolder;
-import stellarapi.api.atmosphere.IAtmSystem;
 import stellarapi.api.atmosphere.ILocalAtmosphere;
 import stellarapi.api.celestials.CelestialType;
 import stellarapi.api.celestials.ICelestialScene;
 import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.coordinates.ILocalCoordinates;
-import stellarapi.internal.atmosphere.CAtmSystem;
 import stellarapi.internal.atmosphere.CGenericAtmosphere;
 import stellarapi.internal.celestial.CelestialScene;
 import stellarapi.internal.celestial.CelestialSystem;
 import stellarapi.internal.coordinates.CCoordSystem;
 import stellarapi.internal.coordinates.CLocalCoordinates;
 import stellarapi.internal.reference.CWorldReference;
-import stellarapi.internal.reference.CWorldSetReference;
 import worldsets.api.WAPIReference;
 import worldsets.api.worldset.WorldSet;
-import worldsets.api.worldset.WorldSetInstance;
 
 public class SAPICapsHook {
 
@@ -55,13 +50,18 @@ public class SAPICapsHook {
 				new IStorage<ICoordSystem>() {
 			@Override
 			public NBTBase writeNBT(Capability<ICoordSystem> capability, ICoordSystem instance, EnumFacing side) {
-				return new NBTTagString(instance.getProviderID().toString());
+				NBTTagCompound compound = new NBTTagCompound();
+				compound.setString("providerID", instance.getProviderID().toString());
+				compound.setTag("handler", instance.getHandler().serializeNBT());
+
+				return compound;
 			}
 			@Override
 			public void readNBT(Capability<ICoordSystem> capability, ICoordSystem instance, EnumFacing side, NBTBase nbt) {
-				if(nbt instanceof NBTTagString) {
-					NBTTagString property = (NBTTagString) nbt;
-					instance.setProviderID(new ResourceLocation(property.getString()));
+				if(nbt instanceof NBTTagCompound) {
+					NBTTagCompound compound = (NBTTagCompound) nbt;
+					instance.setProviderID(new ResourceLocation(compound.getString("providerID")));
+					instance.getHandler().deserializeNBT(compound.getCompoundTag("handler"));
 				}
 			}
 		}, CCoordSystem.class);
@@ -108,24 +108,14 @@ public class SAPICapsHook {
 		}, CelestialSystem.class);
 
 
-		CapabilityManager.INSTANCE.register(IAtmSystem.class,
-				new IStorage<IAtmSystem>() {
-			@Override
-			public NBTBase writeNBT(Capability<IAtmSystem> capability, IAtmSystem instance, EnumFacing side) {
-				return new NBTTagString(instance.getProviderID().toString());
-			}
-			@Override
-			public void readNBT(Capability<IAtmSystem> capability, IAtmSystem instance, EnumFacing side, NBTBase nbt) {
-				NBTTagString tag = (NBTTagString) nbt;
-				instance.setProviderID(new ResourceLocation(tag.getString()));
-			}
-		}, CAtmSystem.class);
-
 		CapabilityManager.INSTANCE.register(IAtmHolder.class,
 				new IStorage<IAtmHolder>() {
 			@Override
 			public NBTBase writeNBT(Capability<IAtmHolder> capability, IAtmHolder instance, EnumFacing side) {
 				NBTTagCompound compound = new NBTTagCompound();
+
+				compound.setString("providerID", instance.getProviderID().toString());
+
 				Atmosphere atmosphere = instance.getAtmosphere();
 				ILocalAtmosphere local = instance.getLocalAtmosphere();
 				if(atmosphere != null)
@@ -137,17 +127,21 @@ public class SAPICapsHook {
 			}
 			@Override
 			public void readNBT(Capability<IAtmHolder> capability, IAtmHolder instance, EnumFacing side, NBTBase nbt) {
-				NBTTagCompound compound = (NBTTagCompound) nbt;
-				instance.reevaluateAtmosphere(null);
+				if(nbt instanceof NBTTagCompound) {
+					NBTTagCompound compound = (NBTTagCompound) nbt;
 
-				if(compound.hasKey("atmosphere")) {
-					Atmosphere readAtm = instance.getAtmosphere();
-					readAtm.deserializeNBT(compound.getCompoundTag("atmosphere"));
-				} else if(!compound.hasNoTags())
-					instance.setAtmosphere(null);
+					instance.setProviderID(new ResourceLocation(compound.getString("providerID")));
+					instance.evaluateAtmosphere(null);
 
-				if(instance.getLocalAtmosphere() != null)
-					instance.getLocalAtmosphere().deserializeNBT(compound.getCompoundTag("local"));
+					if(compound.hasKey("atmosphere")) {
+						Atmosphere readAtm = instance.getAtmosphere();
+						readAtm.deserializeNBT(compound.getCompoundTag("atmosphere"));
+					} else if(!compound.hasNoTags())
+						instance.setAtmosphere(null);
+
+					if(instance.getLocalAtmosphere() != null)
+						instance.getLocalAtmosphere().deserializeNBT(compound.getCompoundTag("local"));
+				}
 			}
 		}, CGenericAtmosphere.class);
 	}
@@ -160,11 +154,5 @@ public class SAPICapsHook {
 			return;
 
 		worldCaps.addCapability(CAPS, new CWorldReference(world, worldSet));
-	}
-
-	public void attachWorldSetCaps(AttachCapabilitiesEvent<WorldSetInstance> worldSetCaps) {
-		WorldSetInstance worldSetInstance = worldSetCaps.getObject();
-		WorldSet worldSet = worldSetInstance.getWorldSet();
-		worldSetCaps.addCapability(CAPS, new CWorldSetReference(worldSetInstance));
 	}
 }

@@ -7,9 +7,9 @@ import stellarapi.api.celestials.CelestialType;
 /**
  * Adaption on world.
  * */
-public interface ICollectionAdaption<P> {
+public interface ICollectionAdaption<P, Pn> {
 	/** Gets the parent collection */
-	public CelestialCollection<P> getCollection();
+	public CelestialCollection<P, Pn> getCollection();
 
 	/** Gets the segments */
 	public Iterable<ISegment> getSegments(List<P> parts);
@@ -19,8 +19,5 @@ public interface ICollectionAdaption<P> {
 	 *  the one with detailed description from child type matches
 	 * */
 	public boolean checkEqual(ISegment rough, CelestialType detailedType, ISegment detailed);
-
-	//public boolean accept(CSegment prop)?
-
 	
 }

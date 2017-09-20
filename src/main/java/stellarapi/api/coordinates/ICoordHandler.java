@@ -2,22 +2,27 @@ package stellarapi.api.coordinates;
 
 import java.util.Map;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /**
  * Coordinates handler.
  * 
  * Also identifier of main coordinates settings which is applied on the coordinates.
- *  (The event puts data to the world, which is consumed by the coord instances)
+ * It is advised to apply changes on this handler, otherwise things need to be synchronized manually.
  * */
-public interface ICoordHandler {
+public interface ICoordHandler extends INBTSerializable<NBTTagCompound> {
 	/**
 	 * Handles the case where server-side object is absent. (e.g. vanila)
-	 * This is for specific world, to reset values used on coordinates to match with vanilla case.
-	 * return false if this should be replaced with a default(vanilla) provider.
+	 * This changes this handler and world-based objects to fit in vanilla case.
 	 * Those which fills additional coordinates should be able to handle vanilla on its own.
+	 * 
+	 * This is called before apply settings event on coordinates, so take care of it.
+	 * @param world the world this handler is on
+	 * @return <code>false</code> iff. this should be replaced with a default(vanilla) provider.
 	 * */
 	public boolean handleVanilla(World world);
 

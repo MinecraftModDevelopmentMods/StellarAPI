@@ -114,20 +114,20 @@ public class StellarAPIEventHook {
 
 	public static void setupDimension(World world, StellarManager manager, StellarDimensionManager dimManager) {
 		dimManager.setup();
-		
+
 		SAPIReferences.constructCelestials(world);
 		SAPIReferences.resetSkyEffect(world);
-		
+
 		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
 		ISkyEffect skyEffect = SAPIReferences.getSkyEffect(world);
-		
+
 		if(manager.getSettings().serverEnabled && dimManager.getSettings().doesPatchProvider()) {
 			DefaultCelestialHelper helper = new DefaultCelestialHelper((float)dimManager.getSettings().getSunlightMultiplier(), 1.0f,
 					dimManager.getSuns().get(0), dimManager.getMoons().get(0), coordinate, skyEffect);
 			WorldProvider newProvider = StellarSkyAPI.getReplacedWorldProvider(world, world.provider, helper);
 			WorldProviderReplaceHelper.patchWorldProviderWith(world, newProvider);
 		}
-		
+
 		if(world.isRemote)
 			StellarSky.proxy.setupSkyRenderer(world.provider, dimManager.getSettings().getSkyRendererType());
 	}

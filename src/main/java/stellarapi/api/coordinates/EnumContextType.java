@@ -3,6 +3,7 @@ package stellarapi.api.coordinates;
 public enum EnumContextType {
 	/**
 	 * For world-specific ones.
+	 * Usually always contained in the context.
 	 * */
 	WORLD,
 

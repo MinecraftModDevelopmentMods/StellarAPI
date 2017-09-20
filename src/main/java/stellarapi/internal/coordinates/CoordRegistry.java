@@ -5,7 +5,6 @@ import java.util.Map;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,16 +25,16 @@ import stellarapi.api.coordinates.ICoordProvider;
 import stellarapi.api.coordinates.ICoordSettings;
 import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.event.settings.ApplyProviderIDEvent;
-import stellarapi.api.event.settings.ApplyWorldSettingsEvent;
+import stellarapi.api.event.settings.ApplySettingsEvent;
 import stellarapi.internal.settings.CoordSettings;
 import stellarapi.internal.settings.CoordWorldSettings;
 import stellarapi.internal.settings.MainSettings;
+import stellarapi.internal.world.WorldRegistry;
 import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
 import worldsets.api.provider.IProviderRegistry;
 import worldsets.api.provider.ProviderBuilder;
 import worldsets.api.worldset.WorldSet;
-import worldsets.api.worldset.WorldSetInstance;
 
 @Mod.EventBusSubscriber(modid = SAPIReferences.modid)
 public class CoordRegistry {
@@ -87,99 +86,103 @@ public class CoordRegistry {
 				// TODO CoordRegistry .setDefaultKey(key)
 				.add(new CreateCallback()).add(new AddCallback())
 				.add(new SubstitutionCallback()).add(new ClearCallback())
+				.addDependencies(SAPIRegistries.CELESTIALS)
 				.create();
 	}
 
 	@SubscribeEvent
 	public static void onApplySettingsEvent(ProviderEvent.ApplySettings<ICoordProvider> applySettingsEvent) {
-		World world = WAPIReference.getDefaultWorld(applySettingsEvent.isRemote);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
+		World world = applySettingsEvent.world;
+		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
+		if(worldSet == null)
+			return;
 
-			ResourceLocation settingsID = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).coordinates.getCurrentProviderID();
-			ResourceLocation prevID = system.getProviderID() != null? system.getProviderID() : settingsID;
-			
-			ApplyProviderIDEvent.Coordinates event = new ApplyProviderIDEvent.Coordinates(worldSet, prevID, settingsID);
-			MinecraftForge.EVENT_BUS.post(event);
-			if(system.getProviderID() == null || prevID != event.resultID) {
-				system.setProviderID(event.resultID);
+		ICoordSystem system = world.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
+
+		ResourceLocation settingsID = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).coordinates.getCurrentProviderID();
+		ResourceLocation prevID = system.getProviderID() != null? system.getProviderID() : settingsID;
+
+		// Determine ID from settings
+		ApplyProviderIDEvent.Coordinates event = new ApplyProviderIDEvent.Coordinates(world, worldSet, prevID, settingsID);
+		MinecraftForge.EVENT_BUS.post(event);
+		if(system.getProviderID() == null || prevID != event.resultID) {
+			system.setProviderID(event.resultID);
+		}
+
+		// Determine system ID, and handle vanilla
+		// Client Placeholder || Unpatched WorldProvider Handling
+		if(world.isRemote || !WorldRegistry.customApplicable(world))
+			if(!system.getHandler().handleVanilla(world)) {
+				system.setProviderID(applySettingsEvent.registry.getDefaultKey());
+				system.getHandler().handleVanilla(world);
 			}
 
-			system.setupPartial();
-		}
+		CoordWorldSettings worldCoords = getWorldSettings(world, worldSet);
+
+		// Apply independent settings to each coordinates
+		for(Map.Entry<IRegistryDelegate<CCoordinates>, ICoordSettings> entry : worldCoords.specificSettings.entrySet())
+			entry.getKey().get().applySettings(entry.getValue(), world);
+
+		// Apply dependent settings on the world & coordinates handler
+		MinecraftForge.EVENT_BUS.post(
+				new ApplySettingsEvent<ICoordHandler>(
+						ICoordHandler.class, system.getHandler(), worldCoords.mainSettings, world));
+
+		// Sets up everything partially
+		system.setupPartial();
 	}
 
 	@SubscribeEvent
 	public static void onCompleteEvent(ProviderEvent.Complete<ICoordProvider> completeEvent) {
-		World world = WAPIReference.getDefaultWorld(completeEvent.isRemote);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
-
-			// Client Placeholder Handling
-			if(completeEvent.forPlaceholder)
-				if(!system.getHandler().handleVanilla(world))
-					system.setProviderID(completeEvent.registry.getDefaultKey());
-			// TODO Also check for WorldProvider patch
-
-			system.setupComplete();
-		}
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void onWorldLoad(WorldEvent.Load worldLoadEvent) {
-		onSetupWorldSpecific(worldLoadEvent.getWorld());
-	}
-
-	private static void onSetupWorldSpecific(World world) {
+		World world = completeEvent.world;
 		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
-
 		if(worldSet == null)
 			return;
 
-		WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-		ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
+		ICoordSystem system = world.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
 
+		// Sets up everything completely - using data from partial setup
+		system.setupComplete();
+	}
+
+	private static CoordWorldSettings getWorldSettings(World world, WorldSet worldSet) {
 		CoordSettings coords = MainSettings.INSTANCE.perWorldSetMap.get(worldSet.delegate).coordinates;
 		CoordWorldSettings worldCoords = coords.defaultSettings;
 		String worldName = world.provider.getDimensionType().getName();
-
 		if(coords.additionalSettings.containsKey(worldName))
 			worldCoords = coords.additionalSettings.get(worldName);
-
-		MinecraftForge.EVENT_BUS.post(
-				new ApplyWorldSettingsEvent<ICoordHandler>(
-						ICoordHandler.class, system.getHandler(), worldCoords.mainSettings, world));
-
-		for(Map.Entry<IRegistryDelegate<CCoordinates>, ICoordSettings> entry : worldCoords.specificSettings.entrySet())
-			entry.getKey().get().applySettings(entry.getValue(), world);
+		return worldCoords;
 	}
 
 	@SubscribeEvent
 	public static void onSendEvent(ProviderEvent.Send<ICoordProvider> sendEvent) {
-		World world = WAPIReference.getDefaultWorld(false);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
-			sendEvent.compoundToSend.setTag(worldSet.delegate.name().toString(),
-					SAPICapabilities.COORDINATES_SYSTEM.writeNBT(system, null));
-		}
+		World world = sendEvent.world;
+		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
+		if(worldSet == null)
+			return;
+
+		// Write ID and handler information
+		ICoordSystem system = world.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
+		sendEvent.compoundToSend.setTag("coordinatesSystem",
+				SAPICapabilities.COORDINATES_SYSTEM.writeNBT(system, null));
 	}
 
 	@SubscribeEvent
 	public static void onReceiveEvent(ProviderEvent.Receive<ICoordProvider> receiveEvent) {
-		World world = WAPIReference.getDefaultWorld(true);
-		for(WorldSet worldSet : WAPIReference.worldSetList()) {
-			NBTBase worldSetData = receiveEvent.receivedCompound.getTag(
-					worldSet.delegate.name().toString());
-			WorldSetInstance setInstance = WAPIReference.getWorldSetInstance(world, worldSet);
-			ICoordSystem system = setInstance.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
-			SAPICapabilities.COORDINATES_SYSTEM.readNBT(system, null, worldSetData);
+		World world = receiveEvent.world;
+		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
+		if(worldSet == null)
+			return;
 
-			system.setupPartial();
-		}
+		// Read ID and handler information
+		ICoordSystem system = world.getCapability(SAPICapabilities.COORDINATES_SYSTEM, null);
+		SAPICapabilities.COORDINATES_SYSTEM.readNBT(system, null,
+				receiveEvent.receivedCompound.getTag("coordinatesSystem"));
+
+		// Sets up everything partially
+		system.setupPartial();
 	}
+
 
 	public static class CreateCallback implements IProviderRegistry.CreateCallback<ICoordProvider> {
 		@Override

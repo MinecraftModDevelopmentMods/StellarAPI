@@ -34,20 +34,41 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 	}
 
 	/**
-	 * Fired on WorldEvent.Load for default world to apply global settings for each provider.
+	 * Fired on WorldEvent.Load for each world to apply settings for each provider.
 	 * Partial initiation for cross reference on provider-specific objects
 	 *  should be done here.
 	 * */
 	public static class ApplySettings<P extends IProvider> extends ProviderEvent<P> {
 		public final IProviderRegistry<P> registry;
-		public final boolean isRemote;
+		public final World world;
 
-		public ApplySettings(IProviderRegistry<P> registry, boolean isRemote) {
+		public ApplySettings(IProviderRegistry<P> registry, World world) {
 			super(registry.getProviderType());
 			this.registry = registry;
-			this.isRemote = isRemote;
+			this.world = world;
 		}
 	}
+
+	/**
+	 * Fired on each world to complete provider-specific objects for further reference.
+	 * It's invoked twice on client, for pre-sync placeholder and synced object.
+	 * */
+	public static class Complete<P extends IProvider> extends ProviderEvent<P> {
+		public final IProviderRegistry<P> registry;
+		public final World world;
+		/**
+		 * True for placeholder when server-side provider does not exist.
+		 * Can only be true on client side.
+		 * */
+		public final boolean forPlaceholder;
+
+		public Complete(IProviderRegistry<P> registry, World world, boolean placeholder) {
+			super(registry.getProviderType());
+			this.registry = registry;
+			this.world = world;
+			this.forPlaceholder = placeholder;
+		}
+	} 
 
 	/**
 	 * Gathers the information to NBT for the sync packet.
@@ -86,25 +107,4 @@ public class ProviderEvent<P extends IProvider> extends GenericEvent<P> {
 			this.receivedCompound = received;
 		}
 	}
-
-	/**
-	 * Fired to complete provider-specific global objects for further reference.
-	 * It's invoked twice on client, for pre-sync placeholder and synced object.
-	 * */
-	public static class Complete<P extends IProvider> extends ProviderEvent<P> {
-		public final IProviderRegistry<P> registry;
-		public final boolean isRemote;
-		/**
-		 * True for placeholder when server-side provider does not exist.
-		 * Can only be true on client side.
-		 * */
-		public final boolean forPlaceholder;
-
-		public Complete(IProviderRegistry<P> registry, boolean isRemote, boolean placeholder) {
-			super(registry.getProviderType());
-			this.registry = registry;
-			this.isRemote = isRemote;
-			this.forPlaceholder = placeholder;
-		}
-	} 
 }

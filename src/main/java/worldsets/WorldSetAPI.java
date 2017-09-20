@@ -73,11 +73,6 @@ public class WorldSetAPI {
 		World world = worldCapsEvent.getObject();
 		PerWorldData data = PerWorldData.getWorldSets(world);
 
-		if(WAPIReference.isDefaultWorld(world)) {
-			// Loads the global world set data as the first.
-			GlobalData globalData = GlobalData.getWorldSets(world);
-		}
-
 		ImmutableList.Builder<WorldSet> appliedWorldSets = ImmutableList.builder();
 		for(WorldSet worldSet : worldSetRegistry.getValues())
 			if(worldSet.containsWorld(world))
@@ -88,18 +83,17 @@ public class WorldSetAPI {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void loadWorld(WorldEvent.Load worldLoadEvent) {
 		World world = worldLoadEvent.getWorld();
-		if(WAPIReference.isDefaultWorld(world)) {
-			// fires apply settings event
-			for(IProviderRegistry<?> registry : ProviderRegistry.getProviderRegistryMap().values()) {
-				ProviderEvent.ApplySettings<?> event = new ProviderEvent.ApplySettings(registry, world.isRemote);
-				MinecraftForge.EVENT_BUS.post(event);
-			}
 
-			// fires completion event
-			for(IProviderRegistry<?> registry : ProviderRegistry.getProviderRegistryMap().values()) {
-				ProviderEvent.Complete<?> event = new ProviderEvent.Complete(registry, world.isRemote, true);
-				MinecraftForge.EVENT_BUS.post(event);
-			}
+		// fires apply settings event
+		for(IProviderRegistry<?> registry : ProviderRegistry.getProviderRegistryMap().values()) {
+			ProviderEvent.ApplySettings<?> event = new ProviderEvent.ApplySettings(registry, world);
+			MinecraftForge.EVENT_BUS.post(event);
+		}
+
+		// fires completion event
+		for(IProviderRegistry<?> registry : ProviderRegistry.getProviderRegistryMap().values()) {
+			ProviderEvent.Complete<?> event = new ProviderEvent.Complete(registry, world, world.isRemote);
+			MinecraftForge.EVENT_BUS.post(event);
 		}
 	}
 
