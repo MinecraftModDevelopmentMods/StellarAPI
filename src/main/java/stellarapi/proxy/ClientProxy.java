@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.proxy;
 
 import java.io.IOException;
 
@@ -10,6 +10,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import stellarapi.SAPIClientEventHook;
+import stellarapi.StellarAPI;
 import stellarapi.api.gui.overlay.OverlayRegistry;
 import stellarapi.api.lib.config.DCfgManager;
 import stellarapi.feature.gui.overlay.OverlayHandler;
@@ -29,7 +31,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 
 		this.overlay = new OverlayHandler();
 
-		MinecraftForge.EVENT_BUS.register(new StellarAPIClientForgeEventHook(this.overlay));
+		MinecraftForge.EVENT_BUS.register(new SAPIClientEventHook(this.overlay));
 		MinecraftForge.EVENT_BUS.register(new StellarAPIClientFMLEventHook(this.overlay));
 
 		this.guiConfig = new DCfgManager(

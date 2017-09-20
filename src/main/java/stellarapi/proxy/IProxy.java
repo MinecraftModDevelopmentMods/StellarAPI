@@ -1,4 +1,4 @@
-package stellarapi;
+package stellarapi.proxy;
 
 import java.io.IOException;
 

@@ -3,6 +3,8 @@ package stellarapi;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import org.lwjgl.input.Keyboard;
+
 import com.google.common.base.Throwables;
 
 import net.minecraft.client.Minecraft;
@@ -10,12 +12,15 @@ import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.optics.EyeDetector;
@@ -24,7 +29,7 @@ import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 
-public class StellarAPIClientForgeEventHook {
+public class SAPIClientEventHook {
 
 	private static final Field lightMapField = ReflectionHelper.findField(EntityRenderer.class,
 			ObfuscationReflectionHelper.remapFieldNames(EntityRenderer.class.getName(), "lightmapTexture",
@@ -45,9 +50,18 @@ public class StellarAPIClientForgeEventHook {
 	}
 
 	private OverlayHandler overlay;
+	private KeyBinding focusGuiKey = new KeyBinding("key.stellarapi.focusgui.description", Keyboard.KEY_U,
+			"key.stellarapi");
 
-	public StellarAPIClientForgeEventHook(OverlayHandler overlay) {
+	public SAPIClientEventHook(OverlayHandler overlay) {
 		this.overlay = overlay;
+		ClientRegistry.registerKeyBinding(this.focusGuiKey);
+	}
+
+	@SubscribeEvent
+	public void onKeyInput(KeyInputEvent event) {
+		if (focusGuiKey.isPressed())
+			overlay.openGui(Minecraft.getMinecraft(), this.focusGuiKey);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -116,22 +130,5 @@ public class StellarAPIClientForgeEventHook {
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS)
 			overlay.renderGameOverlay(event.getResolution(), event.getPartialTicks());
-	}
-
-	@SubscribeEvent
-	public void onClientWorldLoadFinish(GuiOpenEvent event) {
-		if (event.getGui() == null) {
-			Minecraft mc = Minecraft.getMinecraft();
-			if (mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
-				if(mc.world != null) {
-					ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
-							StellarAPI.proxy.getLoadingProgress());
-					if (SAPIReferences.getEventBus().post(loaded))
-						event.setCanceled(true);
-				}
-
-				StellarAPIClientFMLEventHook.startChecking();
-			}
-		}
 	}
 }

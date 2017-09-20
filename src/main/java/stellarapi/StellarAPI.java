@@ -34,6 +34,7 @@ import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.internal.celestial.CelestialRegistry;
 import stellarapi.internal.coordinates.CoordRegistry;
 import stellarapi.lib.compat.CompatManager;
+import stellarapi.proxy.IProxy;
 import stellarapi.reference.SAPIReferenceHandler;
 
 @Mod(modid = SAPIReferences.modid, version = SAPIReferences.version,
@@ -46,7 +47,7 @@ public final class StellarAPI {
 	@Instance(SAPIReferences.modid)
 	public static StellarAPI instance;
 
-	@SidedProxy(clientSide = "stellarapi.ClientProxy", serverSide = "stellarapi.CommonProxy")
+	@SidedProxy(clientSide = "stellarapi.proxy.ClientProxy", serverSide = "stellarapi.proxy.CommonProxy")
 	public static IProxy proxy;
 
 	public static Logger logger;
@@ -57,7 +58,7 @@ public final class StellarAPI {
 
 	private static final String wakeCategory = "wake";
 
-	private StellarAPIForgeEventHook eventHook = new StellarAPIForgeEventHook();
+	private SAPIEventHook eventHook = new SAPIEventHook();
 	private StellarAPITickHandler tickHandler = new StellarAPITickHandler();
 	private StellarAPIFMLEventHook fmlEventHook = new StellarAPIFMLEventHook();
 	private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();

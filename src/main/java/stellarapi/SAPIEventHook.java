@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.SAPICapabilities;
@@ -17,7 +18,7 @@ import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.reference.OpticalViewerEventCallback;
 import stellarapi.reference.PerServerManager;
 
-public class StellarAPIForgeEventHook {
+public class SAPIEventHook {
 
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
@@ -123,5 +124,11 @@ public class StellarAPIForgeEventHook {
 			event.getEntityPlayer().world.updateAllPlayersSleepingFlag();
 			event.setResult((SleepResult) null);
 		}
+	}
+
+	@SubscribeEvent
+	public void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.getModID().equals(StellarAPI.modid))
+			StellarAPI.instance.getCfgManager().syncFromGUI();
 	}
 }

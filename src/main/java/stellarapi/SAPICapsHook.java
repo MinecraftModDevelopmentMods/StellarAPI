@@ -28,6 +28,9 @@ import stellarapi.internal.reference.CWorldReference;
 import worldsets.api.WAPIReference;
 import worldsets.api.worldset.WorldSet;
 
+/**
+ * Hooks related with capabilities
+ * */
 public class SAPICapsHook {
 
 	private static final ResourceLocation CAPS =
