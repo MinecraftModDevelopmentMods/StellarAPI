@@ -2,6 +2,7 @@ package worldsets;
 
 import com.google.common.collect.ImmutableList;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
@@ -12,6 +13,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -36,6 +38,9 @@ public class WorldSetAPI {
 	// **************** Mod Section **************** //
 	// ********************************************* //
 
+	@SidedProxy(clientSide = "worldsets.ClientProxy", serverSide = "worldsets.CommonProxy")
+	public static CommonProxy proxy;
+
 	private static IForgeRegistry<WorldSet> worldSetRegistry;
 	private static NetworkHandler netHandler;
 
@@ -44,6 +49,10 @@ public class WorldSetAPI {
 		WAPIReference.INSTANCE.putReference(new WReference());
 		ProviderRegistry.setHandler(ProviderRegistries.ACTIVE);
 		netHandler = new NetworkHandler();
+	}
+
+	public static NetworkHandler getNetHandler() {
+		return netHandler;
 	}
 
 	// ********************************************* //
@@ -99,11 +108,11 @@ public class WorldSetAPI {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent loggedInEvent) {
-		netHandler.onPlayerSync(loggedInEvent.player);
+		netHandler.onPlayerSync((EntityPlayerMP)loggedInEvent.player);
 	}
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent dimChangeEvent) {
-		netHandler.onPlayerSync(dimChangeEvent.player);
+		netHandler.onPlayerSync((EntityPlayerMP)dimChangeEvent.player);
 	}
 
 	// ********************************************* //

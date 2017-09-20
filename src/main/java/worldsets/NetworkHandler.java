@@ -4,11 +4,14 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
 import worldsets.api.provider.IProviderRegistry;
@@ -16,8 +19,17 @@ import worldsets.api.provider.ProviderRegistry;
 
 public class NetworkHandler {
 
+	private final SimpleNetworkWrapper wrapper;
+
+	public NetworkHandler() {
+		this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(WAPIReference.modid);
+
+		wrapper.registerMessage(MessageSync.MessageSyncHandler.class,
+				MessageSync.class, 0, Side.CLIENT);
+	}
+
 	/** Server sending the packet */
-	public void onPlayerSync(EntityPlayer player) {
+	public void onPlayerSync(EntityPlayerMP player) {
 		NBTTagCompound compoundToSend = new NBTTagCompound();
 		ImmutableMap<ResourceLocation, IProviderRegistry<?>> registryMap = ProviderRegistry.getProviderRegistryMap();
 
@@ -28,7 +40,7 @@ public class NetworkHandler {
 			MinecraftForge.EVENT_BUS.post(event);
 		}
 
-		// TODO send sync packet
+		wrapper.sendTo(new MessageSync(compoundToSend), player);
 	}
 
 	/** Client receiving the packet */

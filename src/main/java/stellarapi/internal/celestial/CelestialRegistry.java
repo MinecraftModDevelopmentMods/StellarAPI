@@ -186,7 +186,8 @@ public class CelestialRegistry {
 		public void onAdd(ResourceLocation key, ICelestialProvider obj, Map<ResourceLocation, ?> slaveset) {
 			BiMap<String, ResourceLocation> nameMap = (BiMap<String, ResourceLocation>) slaveset.get(SAPIRegistries.READABLE_NAMES);
 			if(nameMap.containsKey(obj.getReadableName())) {
-				// TODO CelestialSystem illegal arguments exception - duplication
+				throw new IllegalArgumentException(
+						String.format("Registered with duplicate name : %s", obj.getReadableName()));
 			}
 
 			nameMap.put(obj.getReadableName(), key);
@@ -210,7 +211,8 @@ public class CelestialRegistry {
 			nameMap.inverse().remove(key);
 
 			if(nameMap.containsKey(replacement.getReadableName())) {
-				// TODO CelestialSystem illegal arguments exception - duplication
+				throw new IllegalArgumentException(
+						String.format("Registered with duplicate name : %s", replacement.getReadableName()));
 			}
 
 			nameMap.put(replacement.getReadableName(), key);

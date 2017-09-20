@@ -11,9 +11,8 @@ public class WReference implements IReference {
 
 	@Override
 	public World getDefaultWorld(boolean isRemote) {
-		// TODO proxy
 		if(isRemote)
-			return null;
+			return WorldSetAPI.proxy.getDefaultWorld();
 		else return DimensionManager.getWorld(0);
 	}
 

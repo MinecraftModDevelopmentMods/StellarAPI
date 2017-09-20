@@ -6,6 +6,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityDispatcher;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import stellarapi.api.celestials.collection.model.TypeModel;
 
 /**
  * Actual instance for certain celestial object.
@@ -13,10 +14,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 public class CelestialObject implements ICapabilityProvider {
 
 	private final CelestialType type;
+	private final TypeModel internalTypeModel;
 	private final CapabilityDispatcher capabilities;
 
-	protected CelestialObject(CelestialType type) {
+	protected CelestialObject(CelestialType type, TypeModel internal) {
 		this.type = type;
+		this.internalTypeModel = internal;
 
 		AttachCapabilitiesEvent<CelestialObject> event = new AttachCapabilitiesEvent(CelestialObject.class, this);
 		MinecraftForge.EVENT_BUS.post(event);
