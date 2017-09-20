@@ -2,6 +2,7 @@ package stellarapi.api.celestials.collection;
 
 import java.util.List;
 
+import stellarapi.api.celestials.CRequest;
 import stellarapi.api.celestials.CelestialType;
 
 /**
@@ -19,5 +20,9 @@ public interface ICollectionAdaption<P, Pn> {
 	 *  the one with detailed description from child type matches
 	 * */
 	public boolean checkEqual(ISegment rough, CelestialType detailedType, ISegment detailed);
-	
+
+	/**
+	 * Appropriate partition for this collection adaption on certain request.
+	 * */
+	public Pn partitionFor(CRequest request);
 }

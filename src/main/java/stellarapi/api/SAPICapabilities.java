@@ -3,11 +3,11 @@ package stellarapi.api;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import stellarapi.api.atmosphere.IAtmHolder;
-import stellarapi.api.atmosphere.IAtmSystem;
 import stellarapi.api.celestials.ICelestialScene;
 import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.coordinates.ILocalCoordinates;
+import stellarapi.api.world.IWorldEffectHandler;
 
 public class SAPICapabilities {
 	// ********************************************* //
@@ -33,11 +33,16 @@ public class SAPICapabilities {
 	// ********************************************* //
 	// ********** Atmosphere Capabilities ********** //
 	// ********************************************* //
+
 	@CapabilityInject(IAtmHolder.class)
 	public static final Capability<IAtmHolder> ATMOSPHERE_HOLDER = null;
-	
-	@CapabilityInject(IAtmSystem.class)
-	public static final Capability<IAtmSystem> ATMOSPHERE_SYSTEM = null;
+
+	// ********************************************* //
+	// ********* World Effect Capabilities ********* //
+	// ********************************************* //
+
+	@CapabilityInject(IAtmHolder.class)
+	public static final Capability<IWorldEffectHandler> WORLD_EFFECT_HANDLER = null;
 
 	//@CapabilityInject(IOpticalViewer.class)
 	//public static final Capability<IOpticalViewer> VIEWER_CAPABILITY = null;

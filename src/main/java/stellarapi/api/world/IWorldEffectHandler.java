@@ -10,5 +10,5 @@ public interface IWorldEffectHandler {
 
 	/** Gets lunar phase. Usually, second brightest object is served as a moon. */
 	public double getMoonPhase(CoordContext context);
-	
+
 }

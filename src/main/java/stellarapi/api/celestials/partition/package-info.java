@@ -21,11 +21,11 @@
  * */
 
 /**
- * Celestial Collection section of Stellar API.
+ * Celestial Partition section of Stellar API.
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReferences.modid, provides = SAPIReferences.apiid)
-package stellarapi.api.celestials.collection;
+package stellarapi.api.celestials.partition;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.api.SAPIReferences;

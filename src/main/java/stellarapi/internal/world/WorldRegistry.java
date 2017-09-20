@@ -7,9 +7,11 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.helper.WorldProviderReplaceHelper;
+import stellarapi.api.world.IWorldEffectHandler;
 import stellarapi.api.world.IWorldProviderReplacer;
 import worldsets.api.WAPIReference;
 import worldsets.api.event.ProviderEvent;
@@ -54,11 +56,11 @@ public class WorldRegistry {
 	private static WorldProvider customWorldProvider(World world) {
 		WorldProvider wrapped = world.provider;
 		for(IWorldProviderReplacer replacer : providerRegistry) {
-			if(replacer.accept(world, wrapped))
-				// TODO WorldProvider determine handler
+			if(replacer.accept(world, wrapped)) {
+				IWorldEffectHandler handler = world.getCapability(SAPICapabilities.WORLD_EFFECT_HANDLER, null);
 				return replacer.createWorldProvider(world, wrapped, null);
+			}
 		}
-
 		return null;
 	}
 

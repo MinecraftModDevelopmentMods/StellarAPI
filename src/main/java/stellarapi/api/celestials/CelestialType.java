@@ -9,8 +9,8 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import stellarapi.api.celestials.collection.ICPartitionType;
 import stellarapi.api.celestials.collection.model.TypeModel;
+import stellarapi.api.celestials.partition.ICPartitionType;
 import stellarapi.api.coordinates.CCoordinates;
 
 /**
@@ -66,6 +66,10 @@ public abstract class CelestialType extends IForgeRegistryEntry.Impl<CelestialTy
 	public void setCoordinates(CCoordinates coordinates) {
 		if(!this.hasParent())
 			this.coordinates = coordinates;
+	}
+
+	public ICPartitionType<?, ?> getPartition() {
+		return this.partition;
 	}
 
 	public abstract TypeModel generateTypeModel();
