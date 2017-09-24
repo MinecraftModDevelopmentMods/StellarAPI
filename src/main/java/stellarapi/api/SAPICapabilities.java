@@ -7,6 +7,8 @@ import stellarapi.api.celestials.ICelestialScene;
 import stellarapi.api.celestials.ICelestialSystem;
 import stellarapi.api.coordinates.ICoordSystem;
 import stellarapi.api.coordinates.ILocalCoordinates;
+import stellarapi.api.viewer.IOpticalViewer;
+import stellarapi.api.viewer.IPlayerView;
 import stellarapi.api.world.IWorldEffectHandler;
 
 public class SAPICapabilities {
@@ -44,6 +46,15 @@ public class SAPICapabilities {
 	@CapabilityInject(IAtmHolder.class)
 	public static final Capability<IWorldEffectHandler> WORLD_EFFECT_HANDLER = null;
 
+	// ********************************************* //
+	// ************ Viewer Capabilities ************ //
+	// ********************************************* //
+	@CapabilityInject(IPlayerView.class)
+	public static final Capability<IPlayerView> PLAYER_VIEW = null;
+
+	@CapabilityInject(IOpticalViewer.class)
+	public static final Capability<IOpticalViewer> OPTICAL_VIEWER = null;
+	
 	//@CapabilityInject(IOpticalViewer.class)
 	//public static final Capability<IOpticalViewer> VIEWER_CAPABILITY = null;
 	

@@ -2,6 +2,9 @@ package stellarapi.proxy;
 
 import java.io.IOException;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -17,6 +20,10 @@ public interface IProxy {
 
 	public void postInit(FMLPostInitializationEvent event);
 
-	void registerTask(Runnable runnable);
+	void registerClientTask(Runnable runnable);
+
+	public World getClientWorld();
+	public EntityPlayer getClientPlayer();
+	public Entity getRenderViewEntity();
 
 }

@@ -8,7 +8,7 @@ import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.client.ClientSettings;
 import stellarium.render.stellars.access.IStellarChecker;
 import stellarium.render.stellars.layer.IObjRenderCache;
@@ -65,7 +65,7 @@ public class DeepSkyObjectCache implements IObjRenderCache<DeepSkyObject, DeepSk
 		}
 		
 		double airmass = info.sky.calculateAirmass(image.getCurrentHorizontalPos());
-		double magnitude = object.magnitude + airmass * info.sky.getExtinctionRate(Wavelength.visible);
+		double magnitude = object.magnitude + airmass * info.sky.getExtinctionRate(WaveFilterType.visible);
 		this.alpha = OpticsHelper.getBrightnessFromMagnitude(magnitude) * (float)(Spmath.sqr(0.015f) / object.getSurfaceSize());
 
 		checker.startDescription();

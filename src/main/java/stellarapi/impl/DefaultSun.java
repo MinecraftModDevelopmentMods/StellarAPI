@@ -4,7 +4,7 @@ import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 public class DefaultSun implements ICelestialObject {
 
@@ -36,7 +36,7 @@ public class DefaultSun implements ICelestialObject {
 	}
 
 	@Override
-	public double getCurrentBrightness(Wavelength wavelength) {
+	public double getCurrentBrightness(WaveFilterType wavelength) {
 		return 1.0;
 	}
 

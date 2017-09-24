@@ -1,4 +1,4 @@
-package stellarapi.feature.network;
+package stellarapi.internal.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,14 +9,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import stellarapi.StellarAPI;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 
-public class MessageSync implements IMessage {
+public class MessageSyncPerDimData implements IMessage {
 
 	private NBTTagCompound compoundInfo;
 
-	public MessageSync() {
+	public MessageSyncPerDimData() {
 	}
 
-	public MessageSync(NBTTagCompound commonInfo) {
+	public MessageSyncPerDimData(NBTTagCompound commonInfo) {
 		this.compoundInfo = commonInfo;
 	}
 
@@ -30,11 +30,11 @@ public class MessageSync implements IMessage {
 		ByteBufUtils.writeTag(buf, this.compoundInfo);
 	}
 
-	public static class MessageSyncCommonHandler implements IMessageHandler<MessageSync, IMessage> {
+	public static class MessageSyncPerDimHandler implements IMessageHandler<MessageSyncPerDimData, IMessage> {
 
 		@Override
-		public IMessage onMessage(final MessageSync message, MessageContext ctx) {
-			StellarAPI.proxy.registerTask(new Runnable() {
+		public IMessage onMessage(final MessageSyncPerDimData message, MessageContext ctx) {
+			StellarAPI.proxy.registerClientTask(new Runnable() {
 				@Override
 				public void run() {
 					PerDimensionResourceData data = PerDimensionResourceData.getData(StellarAPI.proxy.getClientWorld());

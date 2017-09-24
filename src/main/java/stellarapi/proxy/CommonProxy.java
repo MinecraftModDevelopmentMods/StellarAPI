@@ -2,7 +2,10 @@ package stellarapi.proxy;
 
 import java.io.IOException;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -28,17 +31,18 @@ public class CommonProxy implements IProxy {
 	}
 
 	@Override
+	public void registerClientTask(Runnable runnable) { }
+
+	@Override
 	public World getClientWorld() {
 		return null;
 	}
-
 	@Override
-	public ICombinedProgressUpdate getLoadingProgress() {
+	public EntityPlayer getClientPlayer() {
 		return null;
 	}
-
 	@Override
-	public void registerTask(Runnable runnable) {
-		// MinecraftServer.getServer().addScheduledTask(runnable);
+	public Entity getRenderViewEntity() {
+		return null;
 	}
 }

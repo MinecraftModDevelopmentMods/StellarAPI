@@ -9,7 +9,7 @@ import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.world.IStellarSkySet;
 
 public final class StellarCacheInfo {
@@ -38,7 +38,7 @@ public final class StellarCacheInfo {
 		this.resolution = Maps.newEnumMap(EnumRGBA.class);
 		
 		for(EnumRGBA color : EnumRGBA.values()) {
-			Wavelength wavelength = Wavelength.colorWaveMap.get(color);
+			WaveFilterType wavelength = WaveFilterType.colorWaveMap.get(color);
 			extinctionRate.put(color, (double)sky.getExtinctionRate(wavelength));
 			resolution.put(color, scope.getResolution(wavelength));
 		}

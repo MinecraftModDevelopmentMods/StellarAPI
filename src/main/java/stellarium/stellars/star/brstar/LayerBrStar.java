@@ -11,7 +11,7 @@ import stellarapi.api.lib.config.IConfigHandler;
 import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.StellarSky;
 import stellarium.stellars.layer.StellarObjectContainer;
 import stellarium.stellars.layer.query.ILayerTempManager;
@@ -110,11 +110,11 @@ public class LayerBrStar extends LayerBgStar<IConfigHandler, INBTConfig> {
 			{
 				mag = V;
 				V = StellarMath.LumToMagWithoutSize(
-						Wavelength.V.getWidth() / Wavelength.visible.getWidth()
+						WaveFilterType.V.getWidth() / WaveFilterType.visible.getWidth()
 						* StellarMath.MagToLumWithoutSize(mag));
 			} else {
 				mag = StellarMath.LumToMagWithoutSize(
-						Wavelength.visible.getWidth() / Wavelength.V.getWidth()
+						WaveFilterType.visible.getWidth() / WaveFilterType.V.getWidth()
 						* StellarMath.MagToLumWithoutSize(V));
 			}
 			

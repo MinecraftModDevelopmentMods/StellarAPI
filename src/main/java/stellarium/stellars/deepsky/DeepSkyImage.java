@@ -4,7 +4,7 @@ import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.stellars.layer.IPerWorldImage;
 
 public class DeepSkyImage implements IPerWorldImage<DeepSkyObject> {
@@ -44,7 +44,7 @@ public class DeepSkyImage implements IPerWorldImage<DeepSkyObject> {
 	}
 
 	@Override
-	public double getCurrentBrightness(Wavelength arg0) {
+	public double getCurrentBrightness(WaveFilterType arg0) {
 		return 1.0;
 	}
 

@@ -12,7 +12,7 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public IThreadListener getListener() {
+	public IThreadListener getClientListener() {
 		return Minecraft.getMinecraft();
 	}
 }

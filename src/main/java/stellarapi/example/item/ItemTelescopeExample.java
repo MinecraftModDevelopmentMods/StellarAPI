@@ -17,7 +17,7 @@ import stellarapi.api.SAPICapabilities;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedScope;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 /**
  * Example for telescope item which gets activated any time the player press the
@@ -93,7 +93,7 @@ public class ItemTelescopeExample extends Item {
 		}
 
 		@Override
-		public double getResolution(Wavelength wl) {
+		public double getResolution(WaveFilterType wl) {
 			return NakedScope.DEFAULT_RESOLUTION / 3.0;
 		}
 

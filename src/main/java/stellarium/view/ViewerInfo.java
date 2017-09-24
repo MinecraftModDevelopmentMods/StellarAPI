@@ -7,7 +7,7 @@ import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 public class ViewerInfo {
 	
@@ -45,20 +45,20 @@ public class ViewerInfo {
 		this.currentFOVRadius = Spmath.Radians(70.0) / this.multiplyingPower;
 		
 		
-		this.brightnessMultiplier = scope.getLGP() * filter.getFilterEfficiency(Wavelength.visible);
+		this.brightnessMultiplier = scope.getLGP() * filter.getFilterEfficiency(WaveFilterType.visible);
 		colorMultiplier.set(
-				scope.getLGP() * filter.getFilterEfficiency(Wavelength.red),
-				scope.getLGP() * filter.getFilterEfficiency(Wavelength.V),
-				scope.getLGP() * filter.getFilterEfficiency(Wavelength.B)
+				scope.getLGP() * filter.getFilterEfficiency(WaveFilterType.red),
+				scope.getLGP() * filter.getFilterEfficiency(WaveFilterType.V),
+				scope.getLGP() * filter.getFilterEfficiency(WaveFilterType.B)
 				);
 		
 		
 		resolutionColor.set(
-				Spmath.Radians(Math.max(scope.getResolution(Wavelength.red), sky.getSeeing(Wavelength.red))),
-				Spmath.Radians(Math.max(scope.getResolution(Wavelength.V), sky.getSeeing(Wavelength.V))),
-				Spmath.Radians(Math.max(scope.getResolution(Wavelength.B), sky.getSeeing(Wavelength.B)))
+				Spmath.Radians(Math.max(scope.getResolution(WaveFilterType.red), sky.getSeeing(WaveFilterType.red))),
+				Spmath.Radians(Math.max(scope.getResolution(WaveFilterType.V), sky.getSeeing(WaveFilterType.V))),
+				Spmath.Radians(Math.max(scope.getResolution(WaveFilterType.B), sky.getSeeing(WaveFilterType.B)))
 				);
-		this.resolutionGeneral = Spmath.Radians(Math.max(scope.getResolution(Wavelength.visible), sky.getSeeing(Wavelength.visible)));
+		this.resolutionGeneral = Spmath.Radians(Math.max(scope.getResolution(WaveFilterType.visible), sky.getSeeing(WaveFilterType.visible)));
  	}
 
 	public float getHeight(World world) {

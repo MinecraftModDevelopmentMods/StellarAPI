@@ -1,6 +1,6 @@
 package stellarapi.api.celestials.capabilities;
 
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 /**
  * Optical properties of the celestial object.
@@ -17,6 +17,6 @@ public interface ICelestialOptics {
 	 * 
 	 * @param wavelength the wavelength to get certain brightness on
 	 */
-	public double getCurrentBrightness(Wavelength wavelength);
+	public double getCurrentBrightness(WaveFilterType wavelength);
 
 }

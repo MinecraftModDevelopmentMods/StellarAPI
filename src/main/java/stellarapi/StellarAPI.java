@@ -26,16 +26,15 @@ import stellarapi.example.item.ItemFilteredTelescopeExample;
 import stellarapi.example.item.ItemTelescopeExample;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
-import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 import stellarapi.impl.AlarmWakeHandler;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.internal.celestial.CelestialRegistry;
 import stellarapi.internal.coordinates.CoordRegistry;
+import stellarapi.internal.network.SAPINetworkManager;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.proxy.IProxy;
-import stellarapi.reference.SAPIReferenceHandler;
 
 @Mod(modid = SAPIReferences.modid, version = SAPIReferences.version,
 acceptedMinecraftVersions="[1.12.0, 1.13.0)",
@@ -59,16 +58,15 @@ public final class StellarAPI {
 	private static final String wakeCategory = "wake";
 
 	private SAPIEventHook eventHook = new SAPIEventHook();
-	private StellarAPITickHandler tickHandler = new StellarAPITickHandler();
-	private StellarAPIFMLEventHook fmlEventHook = new StellarAPIFMLEventHook();
-	private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
+	private SAPITickHandler tickHandler = new SAPITickHandler();
+	private SAPINetworkManager networkManager = new SAPINetworkManager();
 
 	private Configuration config;
 	private DCfgManager cfgManager;
 
 	public Item telescope, filteredTelescope;
 
-	public StellarAPINetworkManager getNetworkManager() {
+	public SAPINetworkManager getNetworkManager() {
 		return this.networkManager;
 	}
 

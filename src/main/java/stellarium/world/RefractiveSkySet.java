@@ -1,7 +1,7 @@
 package stellarium.world;
 
 import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.stellars.util.ExtinctionRefraction;
 
 public class RefractiveSkySet extends NonRefractiveSkySet implements IStellarSkySet {
@@ -26,7 +26,7 @@ public class RefractiveSkySet extends NonRefractiveSkySet implements IStellarSky
 	}
 	
 	@Override
-	public double getSeeing(Wavelength wavelength) {
+	public double getSeeing(WaveFilterType wavelength) {
 		return 0.002;
 	}
 

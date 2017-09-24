@@ -9,8 +9,7 @@ public enum EnumRGBA {
 	Red(Color.RED), Green(Color.GREEN), Blue(Color.BLUE),
 
 	/**
-	 * Alpha for overall brightness, avoid duplication with colors when using
-	 * this.
+	 * Alpha for overall brightness, or the one which determines the visibility.
 	 */
 	Alpha(Color.WHITE);
 

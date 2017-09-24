@@ -4,7 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.client.ClientSettings;
 import stellarium.render.stellars.access.IStellarChecker;
 import stellarium.render.stellars.layer.IObjRenderCache;
@@ -51,7 +51,7 @@ public class MoonRenderCache implements IObjRenderCache<Moon, MoonImage, SolarSy
 		appCoord.y = currentPos.y;
 
 		double airmass = info.sky.calculateAirmass(this.appCoord);
-		double appMag = object.currentMag + airmass * info.sky.getExtinctionRate(Wavelength.visible);
+		double appMag = object.currentMag + airmass * info.sky.getExtinctionRate(WaveFilterType.visible);
 		this.domination = OpticsHelper.getDominationFromMagnitude(appMag);
 
 		this.size = (float) (object.radius / object.earthPos.size());

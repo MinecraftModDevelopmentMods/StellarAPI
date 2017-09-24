@@ -22,7 +22,7 @@ public class MessageSync implements IMessage {
 	public static class MessageSyncHandler implements IMessageHandler<MessageSync, IMessage> {
 		@Override
 		public IMessage onMessage(MessageSync message, MessageContext ctx) {
-			WorldSetAPI.proxy.getListener().addScheduledTask(new Runnable() {
+			WorldSetAPI.proxy.getClientListener().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
 					WorldSetAPI.getNetHandler().onSyncPacket(message.content);

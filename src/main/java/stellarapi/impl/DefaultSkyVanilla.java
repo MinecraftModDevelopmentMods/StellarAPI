@@ -1,7 +1,7 @@
 package stellarapi.impl;
 
 import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 /**
  * Default implementation of sky.
@@ -24,12 +24,12 @@ public class DefaultSkyVanilla implements ISkyEffect {
 	}
 
 	@Override
-	public float getExtinctionRate(Wavelength wavelength) {
+	public float getExtinctionRate(WaveFilterType wavelength) {
 		return 0.0f;
 	}
 
 	@Override
-	public double getSeeing(Wavelength wl) {
+	public double getSeeing(WaveFilterType wl) {
 		return 0.0f;
 	}
 
@@ -39,12 +39,12 @@ public class DefaultSkyVanilla implements ISkyEffect {
 	}
 
 	@Override
-	public float getDispersionFactor(Wavelength wavelength, float partialTicks) {
+	public float getDispersionFactor(WaveFilterType wavelength, float partialTicks) {
 		return 1.0f;
 	}
 
 	@Override
-	public float getLightPollutionFactor(Wavelength wavelength, float partialTicks) {
+	public float getLightPollutionFactor(WaveFilterType wavelength, float partialTicks) {
 		return 0.0f;
 	}
 

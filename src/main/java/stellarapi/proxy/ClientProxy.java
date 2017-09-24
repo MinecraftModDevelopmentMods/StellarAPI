@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -62,21 +64,23 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	}
 
 	@Override
+	public void registerClientTask(Runnable runnable) {
+		Minecraft.getMinecraft().addScheduledTask(runnable);
+	}
+
+	@Override
 	public World getClientWorld() {
 		return Minecraft.getMinecraft().world;
 	}
 
 	@Override
-	public ICombinedProgressUpdate getLoadingProgress() {
-		Minecraft mc = Minecraft.getMinecraft();
-		if (!(mc.loadingScreen instanceof CombinedLoadingScreenRenderer))
-			mc.loadingScreen = new CombinedLoadingScreenRenderer(mc);
-		return (CombinedLoadingScreenRenderer) mc.loadingScreen;
+	public EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().player;
 	}
 
 	@Override
-	public void registerTask(Runnable runnable) {
-		Minecraft.getMinecraft().addScheduledTask(runnable);
+	public Entity getRenderViewEntity() {
+		Entity renderViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+		return renderViewEntity != null? renderViewEntity : this.getClientPlayer();
 	}
-
 }

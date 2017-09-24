@@ -5,7 +5,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.client.ClientSettings;
 import stellarium.render.stellars.access.ICheckedAtmModel;
 import stellarium.view.ViewerInfo;
@@ -49,13 +49,13 @@ public class AtmosphereModel implements ICheckedAtmModel {
 		this.skygreen = (float)(l >> 8 & 255) / 255.0F;
 		this.skyblue = (float)(l & 255) / 255.0F;
 
-		this.skyDispRed = update.sky.getDispersionFactor(Wavelength.red, 0.0f);
-		this.skyDispGreen = update.sky.getDispersionFactor(Wavelength.V, 0.0f);
-		this.skyDispBlue = update.sky.getDispersionFactor(Wavelength.B, 0.0f);
+		this.skyDispRed = update.sky.getDispersionFactor(WaveFilterType.red, 0.0f);
+		this.skyDispGreen = update.sky.getDispersionFactor(WaveFilterType.V, 0.0f);
+		this.skyDispBlue = update.sky.getDispersionFactor(WaveFilterType.B, 0.0f);
 		
-		this.skyExtRed = update.sky.getExtinctionRate(Wavelength.red);
-		this.skyExtGreen = update.sky.getExtinctionRate(Wavelength.V);
-		this.skyExtBlue = update.sky.getExtinctionRate(Wavelength.B);
+		this.skyExtRed = update.sky.getExtinctionRate(WaveFilterType.red);
+		this.skyExtGreen = update.sky.getExtinctionRate(WaveFilterType.V);
+		this.skyExtBlue = update.sky.getExtinctionRate(WaveFilterType.B);
 
 		this.height = this.heightOffset + update.getHeight(world) * this.heightIncScale;
 		

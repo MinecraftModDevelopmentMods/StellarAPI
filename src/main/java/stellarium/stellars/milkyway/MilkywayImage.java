@@ -3,7 +3,7 @@ package stellarium.stellars.milkyway;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.stellars.layer.IPerWorldImage;
 
 public class MilkywayImage implements IPerWorldImage<Milkyway> {
@@ -41,7 +41,7 @@ public class MilkywayImage implements IPerWorldImage<Milkyway> {
 	}
 
 	@Override
-	public double getCurrentBrightness(Wavelength wavelength) {
+	public double getCurrentBrightness(WaveFilterType wavelength) {
 		return 1.0;
 	}
 

@@ -19,7 +19,7 @@ import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedScope;
 import stellarapi.api.optics.RGBFilter;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 /**
  * Example for filtered telescope item.
@@ -34,7 +34,7 @@ public class ItemFilteredTelescopeExample extends Item {
 		}
 
 		@Override
-		public double getResolution(Wavelength wl) {
+		public double getResolution(WaveFilterType wl) {
 			return NakedScope.DEFAULT_RESOLUTION / 3.0;
 		}
 

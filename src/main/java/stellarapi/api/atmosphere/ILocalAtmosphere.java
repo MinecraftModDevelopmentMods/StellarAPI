@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 /**
  * Local atmosphere.
@@ -12,13 +12,13 @@ import stellarapi.api.optics.Wavelength;
  * */
 public interface ILocalAtmosphere extends INBTSerializable<NBTTagCompound> {
 	/** Gets refracted direction of specified direction */
-	public SpCoord applyRefraction(Vec3d loc, SpCoord dir, Wavelength wave);
+	public SpCoord applyRefraction(Vec3d loc, SpCoord dir, WaveFilterType wave);
 
 	/** Gets rate of resulted intensity from the extinction */
-	public double extincted(Vec3d loc, SpCoord dir, Wavelength wave);
+	public double extincted(Vec3d loc, SpCoord dir, WaveFilterType wave);
 
 	/** Seeing in radians */
-	public double seeing(Vec3d loc, SpCoord dir, Wavelength wave);
+	public double seeing(Vec3d loc, SpCoord dir, WaveFilterType wave);
 
 
 	/** Height of the location */

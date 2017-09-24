@@ -4,7 +4,7 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 public interface IAtmosphereLayer extends INBTSerializable<NBTTagCompound> {
 	/**
@@ -17,12 +17,12 @@ public interface IAtmosphereLayer extends INBTSerializable<NBTTagCompound> {
 	/**
 	 * Gets the absorption rate for specific wavelength.
 	 * */
-	public double getAbsorption(Wavelength wave);
+	public double getAbsorption(WaveFilterType wave);
 
 	/**
 	 * Gets the scatter rate for specific wavelength and angle.
 	 * */
-	public double getScatterRate(Wavelength wave, double angle);
+	public double getScatterRate(WaveFilterType wave, double angle);
 
 	/** Should implement equals to compare atmospheres */
 	@Override

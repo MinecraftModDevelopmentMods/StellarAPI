@@ -1,5 +1,8 @@
-package stellarapi.feature.network;
+package stellarapi.internal.network;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -10,15 +13,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 
-public class StellarAPINetworkManager {
+public class SAPINetworkManager {
 
 	private SimpleNetworkWrapper wrapper;
 	protected String id = "stellarapichannel";
 
-	public StellarAPINetworkManager() {
+	public SAPINetworkManager() {
 		this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(this.id);
 
-		wrapper.registerMessage(MessageSync.MessageSyncCommonHandler.class, MessageSync.class, 0, Side.CLIENT);
+		wrapper.registerMessage(MessageSyncPerDimData.MessageSyncPerDimHandler.class,
+				MessageSyncPerDimData.class, 0, Side.CLIENT);
 	}
 
 	public void onSyncToAll(World world) {
@@ -27,7 +31,7 @@ public class StellarAPINetworkManager {
 		NBTTagCompound compound = new NBTTagCompound();
 		data.writeToNBT(compound);
 
-		wrapper.sendToDimension(new MessageSync(compound), world.provider.getDimension());
+		wrapper.sendToDimension(new MessageSyncPerDimData(compound), world.provider.getDimension());
 	}
 
 	public void onSync(EntityPlayerMP player, World world) {
@@ -36,7 +40,7 @@ public class StellarAPINetworkManager {
 		NBTTagCompound compound = new NBTTagCompound();
 		data.writeToNBT(compound);
 
-		wrapper.sendTo(new MessageSync(compound), player);
+		wrapper.sendTo(new MessageSyncPerDimData(compound), player);
 	}
 
 	@SubscribeEvent

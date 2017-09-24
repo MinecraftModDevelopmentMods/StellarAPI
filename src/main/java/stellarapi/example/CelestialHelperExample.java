@@ -3,7 +3,7 @@ package stellarapi.example;
 import net.minecraft.util.math.MathHelper;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.optics.EnumRGBA;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 
 /**
  * Helper for WorldProvider.
@@ -76,7 +76,7 @@ public class CelestialHelperExample {
 	 */
 	public float getSunlightFactor(EnumRGBA color, float partialTicks) {
 		return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.5f, 0.0f, 1.0f)
-				* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color)) * this.relativeMultiplierSun;
+				* (float) sun.getCurrentBrightness(WaveFilterType.colorWaveMap.get(color)) * this.relativeMultiplierSun;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class CelestialHelperExample {
 	 */
 	public float getSunlightRenderBrightnessFactor(float partialTicks) {
 		return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.2f, 0.0f, 1.0f)
-				* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(EnumRGBA.Alpha))
+				* (float) sun.getCurrentBrightness(WaveFilterType.colorWaveMap.get(EnumRGBA.Alpha))
 				* this.relativeMultiplierSun;
 	}
 
@@ -110,7 +110,7 @@ public class CelestialHelperExample {
 	 *            the partial tick
 	 */
 	public float calculateSunriseSunsetFactor(EnumRGBA color, float partialTicks) {
-		return (float) (sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color))) * this.relativeMultiplierSun;
+		return (float) (sun.getCurrentBrightness(WaveFilterType.colorWaveMap.get(color))) * this.relativeMultiplierSun;
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class CelestialHelperExample {
 	 *            the partial tick
 	 */
 	public float getDispersionFactor(EnumRGBA color, float partialTicks) {
-		return sky.getDispersionFactor(Wavelength.colorWaveMap.get(color), partialTicks);
+		return sky.getDispersionFactor(WaveFilterType.colorWaveMap.get(color), partialTicks);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class CelestialHelperExample {
 	 *            the partial tick
 	 */
 	public float getLightPollutionFactor(EnumRGBA color, float partialTicks) {
-		return sky.getLightPollutionFactor(Wavelength.colorWaveMap.get(color), partialTicks);
+		return sky.getLightPollutionFactor(WaveFilterType.colorWaveMap.get(color), partialTicks);
 	}
 
 	/**

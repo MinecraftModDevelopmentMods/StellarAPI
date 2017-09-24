@@ -3,7 +3,7 @@ package stellarium.stellars.star;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.WaveFilterType;
 import stellarium.stellars.layer.IPerWorldImage;
 
 public class StarImage implements IPerWorldImage<BgStar> {
@@ -70,7 +70,7 @@ public class StarImage implements IPerWorldImage<BgStar> {
 	}
 
 	@Override
-	public double getCurrentBrightness(Wavelength wavelength) {
+	public double getCurrentBrightness(WaveFilterType wavelength) {
 		return 1.0;
 	}
 

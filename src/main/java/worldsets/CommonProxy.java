@@ -9,7 +9,7 @@ public class CommonProxy {
 		return null;
 	}
 
-	public IThreadListener getListener() {
-		return FMLCommonHandler.instance().getMinecraftServerInstance();
+	public IThreadListener getClientListener() {
+		return null;
 	}
 }

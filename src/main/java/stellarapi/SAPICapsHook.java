@@ -1,5 +1,7 @@
 package stellarapi;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -9,6 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.SAPIRegistries;
 import stellarapi.api.atmosphere.Atmosphere;
@@ -24,6 +27,8 @@ import stellarapi.internal.celestial.CelestialScene;
 import stellarapi.internal.celestial.CelestialSystem;
 import stellarapi.internal.coordinates.CCoordSystem;
 import stellarapi.internal.coordinates.CLocalCoordinates;
+import stellarapi.internal.reference.CPlayerReference;
+import stellarapi.internal.reference.CPlayerViewReference;
 import stellarapi.internal.reference.CWorldReference;
 import worldsets.api.WAPIReference;
 import worldsets.api.worldset.WorldSet;
@@ -35,6 +40,10 @@ public class SAPICapsHook {
 
 	private static final ResourceLocation CAPS =
 			new ResourceLocation(SAPIReferences.modid, "capabilities");
+	private static final ResourceLocation CAPS_PLAYER =
+			new ResourceLocation(SAPIReferences.modid, "player_capabilities");
+	private static final ResourceLocation CAPS_PLAYER_VIEW =
+			new ResourceLocation(SAPIReferences.modid, "player_view_capabilities");
 
 	public void registerCapabilities() {
 		// TODO default implementations & some save/load. they are not right for now
@@ -149,7 +158,7 @@ public class SAPICapsHook {
 		}, CGenericAtmosphere.class);
 	}
 
-
+	@SubscribeEvent
 	public void attachWorldCaps(AttachCapabilitiesEvent<World> worldCaps) {
 		World world = worldCaps.getObject();
 		WorldSet worldSet = WAPIReference.getPrimaryWorldSet(world);
@@ -157,5 +166,18 @@ public class SAPICapsHook {
 			return;
 
 		worldCaps.addCapability(CAPS, new CWorldReference(world, worldSet));
+	}
+
+	@SubscribeEvent
+	public void attachEntityCaps(AttachCapabilitiesEvent<Entity> entityCaps) {
+		if(entityCaps.getObject() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entityCaps.getObject();
+			entityCaps.addCapability(CAPS_PLAYER, new CPlayerReference(player));
+
+			if(player.world.isRemote && StellarAPI.proxy.getClientPlayer() != player)
+				return;
+
+			entityCaps.addCapability(CAPS_PLAYER_VIEW, new CPlayerViewReference(player));
+		}
 	}
 }

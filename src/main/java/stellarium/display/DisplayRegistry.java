@@ -11,7 +11,6 @@ public enum DisplayRegistry {
 	INSTANCE;
 
 	DisplayRegistry() {
-		// TODO Interaction with existing objects
 		register(new HorGridType());
 		register(new EqGridType());
 		register(new EcGridType());
