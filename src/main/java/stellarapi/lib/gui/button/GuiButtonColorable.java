@@ -28,8 +28,10 @@ public class GuiButtonColorable extends GuiButton {
 			FontRenderer fontrenderer = p_146112_1_.fontRenderer;
 			p_146112_1_.getTextureManager().bindTexture(BUTTON_TEXTURES);
 			GlStateManager.color(red, green, blue, alpha);
+
 			this.hovered = mouseX >= this.x && mouseY >= this.y
 					&& mouseX < this.x + this.width && mouseY < this.y + this.height;
+
 			int k = this.getHoverState(this.hovered);
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
