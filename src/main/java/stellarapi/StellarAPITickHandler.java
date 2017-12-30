@@ -62,12 +62,12 @@ public class StellarAPITickHandler {
 			}
 
 			if(updateScope) {
-				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == ItemStack.EMPTY? ItemStack.EMPTY : itemstack);
+				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse.isEmpty()? ItemStack.EMPTY : itemstack);
 				StellarAPIReference.updateScope(event.getEntityLiving());
 			}
 
 			if(updateFilter) {
-				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse == ItemStack.EMPTY? ItemStack.EMPTY :  itemstack);
+				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse.isEmpty()? ItemStack.EMPTY :  itemstack);
 				StellarAPIReference.updateFilter(event.getEntityLiving());
 			}
 		} else if(itemstack != itemInUse)
