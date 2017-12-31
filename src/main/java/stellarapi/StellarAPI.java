@@ -73,7 +73,7 @@ public final class StellarAPI {
 
 		StellarAPIReferenceHandler reference = new StellarAPIReferenceHandler();
 		reference.initialize();
-		SAPIReferences.setReference(reference);
+		SAPIReferences.putReference(reference);
 
 		MinecraftForge.EVENT_BUS.register(this.eventHook);
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);

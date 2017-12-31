@@ -32,8 +32,6 @@ public final class SAPIReferences {
 	// *********** StellarAPI References *********** //
 	// ********************************************* //
 
-	private static IReference reference;
-
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
 
@@ -41,7 +39,7 @@ public final class SAPIReferences {
 
 	private EventBus stellarEventBus = new EventBus();
 
-	private static SAPIReferences INSTANCE = new SAPIReferences();
+	private static final SAPIReferences INSTANCE = new SAPIReferences();
 
 	/** Getter for the daytime checker. */
 	public static DaytimeChecker getDaytimeChecker() {
@@ -236,9 +234,14 @@ public final class SAPIReferences {
 			return defaultLocation;
 	}
 
-	/** For internal use */
+	// ********************************************* //
+	// ****************** Internal ***************** //
+	// ********************************************* //
+
+	private static IReference reference;
+
 	@Deprecated
-	public static void setReference(IReference base) {
+	public static void putReference(IReference base) {
 		reference = base;
 	}
 }

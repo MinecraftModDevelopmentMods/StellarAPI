@@ -11,9 +11,10 @@ import net.minecraftforge.registries.IForgeRegistry;
 import stellarapi.api.SAPIReferences;
 import worldsets.api.worldset.WorldSet;
 
-public enum WAPIReferences {
-	@Deprecated
-	INSTANCE;
+/**
+ * Central reference for WorldSet API.
+ * */
+public final class WAPIReferences {
 
 	// ********************************************* //
 	// ************** Mod Information ************** //
@@ -41,9 +42,7 @@ public enum WAPIReferences {
 	// ********************************************* //
 	// ************* WorldSet API Calls ************ //
 	// ********************************************* //
-
-	private IReference reference;
-	private IForgeRegistry<WorldSet> registry;
+	private static final WAPIReferences INSTANCE = new WAPIReferences();
 
 	/**
 	 * Checks if this world is default.
@@ -63,9 +62,11 @@ public enum WAPIReferences {
 		return INSTANCE.reference.getDefaultWorld(isRemote);
 	}
 
-
-	public static ImmutableList<WorldSet> worldSetList() {
-		return ImmutableList.copyOf(INSTANCE.registry);
+	/**
+	 * Gets the list of the world sets.
+	 * */
+	public static ImmutableList<WorldSet> getAllWorldSets() {
+		return reference.getAllWorldSets();
 	}
 
 	/**
@@ -86,8 +87,10 @@ public enum WAPIReferences {
 	// ****************** Internal ***************** //
 	// ********************************************* //
 
+	private static IReference reference;
+
 	@Deprecated
-	public void putReference(IReference reference) {
-		this.reference = reference;
+	public static void putReference(IReference base) {
+		reference = base;
 	}
 }

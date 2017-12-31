@@ -37,7 +37,7 @@ public class WorldSetAPI {
 
 	@EventHandler
 	public void onPreInit(FMLPreInitializationEvent event) {
-		WAPIReferences.INSTANCE.putReference(new WReference());
+		WAPIReferences.putReference(new WReference());
 	}
 
 	// ********************************************* //
@@ -53,9 +53,12 @@ public class WorldSetAPI {
 
 	@SubscribeEvent
 	public static void onRegister(RegistryEvent.Register<WorldSet> regEvent) {
-		regEvent.getRegistry().register(new OverworldSet().setRegistryName(new ResourceLocation("overworldtype")));
-		regEvent.getRegistry().register(new EndSet().setRegistryName(new ResourceLocation("endtype")));
-		regEvent.getRegistry().register(new NetherSet().setRegistryName(new ResourceLocation("nethertype")));
+		IForgeRegistry<WorldSet> registry = regEvent.getRegistry();
+
+		registry.register(new ExactOverworldSet().setRegistryName(new ResourceLocation("overworld")));
+		registry.register(new OverworldSet().setRegistryName(new ResourceLocation("overworldtype")));
+		registry.register(new EndSet().setRegistryName(new ResourceLocation("endtype")));
+		registry.register(new NetherSet().setRegistryName(new ResourceLocation("nethertype")));
 	}
 
 	// ********************************************* //
@@ -89,7 +92,6 @@ public class WorldSetAPI {
 
 		@Override
 		public boolean containsWorld(World world) {
-			// TODO correct detection of overworld
 			return world.provider.getDimension() == 0
 					&& world.provider.hasSkyLight()
 					&& !world.provider.isNether()

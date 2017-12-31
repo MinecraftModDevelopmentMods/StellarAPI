@@ -9,6 +9,7 @@ import worldsets.api.worldset.WorldSet;
 public interface IReference {
 	public World getDefaultWorld(boolean isRemote);
 
+	public ImmutableList<WorldSet> getAllWorldSets();
 	public WorldSet getPrimaryWorldSet(World world);
 	public ImmutableList<WorldSet> appliedWorldSets(World world);
 }
