@@ -5,7 +5,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalViewer;
 
-public class StellarAPICapabilities {
+public class SAPICapabilities {
 	@CapabilityInject(IOpticalViewer.class)
 	public static final Capability<IOpticalViewer> VIEWER_CAPABILITY = null;
 	

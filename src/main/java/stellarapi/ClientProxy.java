@@ -31,8 +31,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 
 		this.overlay = new OverlayHandler();
 
-		MinecraftForge.EVENT_BUS.register(new StellarAPIClientForgeEventHook(this.overlay));
-		MinecraftForge.EVENT_BUS.register(new StellarAPIClientFMLEventHook(this.overlay));
+		MinecraftForge.EVENT_BUS.register(new SAPIClientForgeEventHook(this.overlay));
 
 		this.guiConfig = new ConfigManager(
 				StellarAPI.getConfiguration(event.getModConfigurationDirectory(), "GuiConfig.cfg"));
@@ -45,9 +44,9 @@ public class ClientProxy extends CommonProxy implements IProxy {
 
 	@Override
 	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(StellarRegistries.INSTANCE.telescope, 0,
+		ModelLoader.setCustomModelResourceLocation(SAPIRegistries.INSTANCE.telescope, 0,
 				new ModelResourceLocation("stellarapi:deftelescope", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(StellarRegistries.INSTANCE.filteredTelescope, 0,
+		ModelLoader.setCustomModelResourceLocation(SAPIRegistries.INSTANCE.filteredTelescope, 0,
 				new ModelResourceLocation("stellarapi:deffilteredtelescope", "inventory"));
 	}
 

@@ -14,12 +14,12 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.helper.LivingItemAccessHelper;
 import stellarapi.api.interact.IOpticalProperties;
 
-public class StellarAPITickHandler {
+public class SAPITickHandler {
 
 	private Method wakeAllPlayers = null;
 	
@@ -49,14 +49,14 @@ public class StellarAPITickHandler {
 			boolean updateScope = false;
 			boolean updateFilter = false;
 
-			if (itemstack.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
-				IOpticalProperties property = itemstack.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+			if (itemstack.hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = itemstack.getCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				updateScope = updateScope || property.isScope();
 				updateFilter = updateFilter || property.isFilter();
 			}
 
-			if (itemInUse.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
-				IOpticalProperties property = itemInUse.getCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+			if (itemInUse.hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				IOpticalProperties property = itemInUse.getCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				updateScope = updateScope || property.isScope();
 				updateFilter = updateFilter || property.isFilter();
 			}

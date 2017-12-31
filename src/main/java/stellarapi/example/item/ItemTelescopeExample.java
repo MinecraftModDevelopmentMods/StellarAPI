@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
@@ -76,13 +76,13 @@ public class ItemTelescopeExample extends Item {
 
 		@Override
 		public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-			return capability == StellarAPICapabilities.OPTICAL_PROPERTY;
+			return capability == SAPICapabilities.OPTICAL_PROPERTY;
 		}
 
 		@Override
 		public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-			if(capability == StellarAPICapabilities.OPTICAL_PROPERTY) {
-				return StellarAPICapabilities.OPTICAL_PROPERTY.cast(this);
+			if(capability == SAPICapabilities.OPTICAL_PROPERTY) {
+				return SAPICapabilities.OPTICAL_PROPERTY.cast(this);
 			} else return null;
 		}
 	}

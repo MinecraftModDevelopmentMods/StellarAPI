@@ -9,7 +9,7 @@ import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.ConstructCelestialsEvent;
 import stellarapi.api.event.ResetCoordinateEvent;
@@ -25,7 +25,7 @@ import stellarapi.impl.DefaultCoordinateVanilla;
 import stellarapi.impl.DefaultSkyVanilla;
 import stellarapi.reference.PerWorldManager;
 
-public class StellarAPIOwnEventHook {
+public class SAPIOwnEventHook {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onConstructCelestials(ConstructCelestialsEvent event) {
@@ -64,16 +64,16 @@ public class StellarAPIOwnEventHook {
 			ItemStack itemToCheck = viewer.getActiveItemStack();
 			
 
-			if (itemToCheck != null && itemToCheck.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			if (itemToCheck != null && itemToCheck.hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 				IOpticalProperties property = itemToCheck.getCapability(
-						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+						SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				if(property.isScope())
 					event.setScope(property.getScope(viewer));
 			}
 
-			if (viewer.getRidingEntity() != null && viewer.getRidingEntity().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			if (viewer.getRidingEntity() != null && viewer.getRidingEntity().hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 				IOpticalProperties property = viewer.getRidingEntity().getCapability(
-						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+						SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				if(property.isScope())
 					event.setScope(property.getScope(viewer));
 			}
@@ -86,16 +86,16 @@ public class StellarAPIOwnEventHook {
 			EntityLivingBase viewer = (EntityLivingBase) event.getEntity();
 			ItemStack itemToCheck = viewer.getActiveItemStack();
 
-			if (itemToCheck != null && itemToCheck.hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			if (itemToCheck != null && itemToCheck.hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 				IOpticalProperties property = itemToCheck.getCapability(
-						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+						SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				if(property.isFilter())
 					event.setFilter(property.getFilter(viewer));
 			}
 
-			if (viewer.getRidingEntity() != null && viewer.getRidingEntity().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+			if (viewer.getRidingEntity() != null && viewer.getRidingEntity().hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 				IOpticalProperties property = viewer.getRidingEntity().getCapability(
-						StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+						SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 				if(property.isFilter())
 					event.setFilter(property.getFilter(viewer));
 			}

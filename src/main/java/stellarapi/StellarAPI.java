@@ -50,9 +50,8 @@ public final class StellarAPI {
 
 	private static final String wakeCategory = "wake";
 
-	private StellarAPIForgeEventHook eventHook = new StellarAPIForgeEventHook();
-	private StellarAPITickHandler tickHandler = new StellarAPITickHandler();
-	private StellarAPIFMLEventHook fmlEventHook = new StellarAPIFMLEventHook();
+	private SAPIForgeEventHook eventHook = new SAPIForgeEventHook();
+	private SAPITickHandler tickHandler = new SAPITickHandler();
 	private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
 
 	private Configuration config;
@@ -77,9 +76,8 @@ public final class StellarAPI {
 
 		MinecraftForge.EVENT_BUS.register(this.eventHook);
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
-		MinecraftForge.EVENT_BUS.register(this.fmlEventHook);
 		MinecraftForge.EVENT_BUS.register(this.networkManager);
-		MinecraftForge.EVENT_BUS.register(StellarRegistries.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(SAPIRegistries.INSTANCE);
 
 		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
 		this.cfgManager = new ConfigManager(this.config);
@@ -94,7 +92,7 @@ public final class StellarAPI {
 
 		SAPIReferences.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
 
-		SAPIReferences.getEventBus().register(new StellarAPIOwnEventHook());
+		SAPIReferences.getEventBus().register(new SAPIOwnEventHook());
 
 		PROXY.preInit(event);
 

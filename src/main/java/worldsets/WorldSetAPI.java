@@ -47,7 +47,7 @@ public class WorldSetAPI {
 	@SubscribeEvent
 	public static void onRegRegister(RegistryEvent.NewRegistry regRegEvent) {
 		worldSetRegistry = new RegistryBuilder<WorldSet>()
-				.setName(WAPIReferences.WORLDSETS).setType(WorldSet.class).setIDRange(0, Integer.MAX_VALUE)
+				.setName(WAPIReferences.WORLDSETS).setType(WorldSet.class).setIDRange(0, Integer.MAX_VALUE - 1)
 				.create();
 	}
 

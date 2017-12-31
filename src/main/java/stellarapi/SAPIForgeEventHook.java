@@ -8,9 +8,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
@@ -20,18 +21,18 @@ import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.reference.OpticalViewerEventCallback;
 import stellarapi.reference.PerServerManager;
 
-public class StellarAPIForgeEventHook {
+public class SAPIForgeEventHook {
 
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public void onStartUsingItem(LivingEntityUseItemEvent.Start event) {
-		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
+		IOpticalViewer optics = event.getEntity().getCapability(SAPICapabilities.VIEWER_CAPABILITY,
 				EnumFacing.DOWN);
 
 		if (optics instanceof OpticalViewerEventCallback
-				&& event.getItem().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				&& event.getItem().hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 			IOpticalProperties properties = event.getItem().getCapability(
-					StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+					SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 
 			ItemStack previous = event.getEntityLiving().getActiveItemStack();
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), event.getItem());
@@ -59,13 +60,13 @@ public class StellarAPIForgeEventHook {
 
 	@SuppressWarnings("deprecation")
 	private void onEndItemUse(LivingEntityUseItemEvent event) {
-		IOpticalViewer optics = event.getEntity().getCapability(StellarAPICapabilities.VIEWER_CAPABILITY,
+		IOpticalViewer optics = event.getEntity().getCapability(SAPICapabilities.VIEWER_CAPABILITY,
 				EnumFacing.DOWN);
 
 		if (optics instanceof OpticalViewerEventCallback
-				&& event.getItem().hasCapability(StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
+				&& event.getItem().hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
 			IOpticalProperties properties = event.getItem().getCapability(
-					StellarAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
+					SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
 
 			ItemStack previous = event.getEntityLiving().getActiveItemStack();
 			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), ItemStack.EMPTY);
@@ -126,5 +127,12 @@ public class StellarAPIForgeEventHook {
 			event.getEntityPlayer().world.updateAllPlayersSleepingFlag();
 			event.setResult((SleepResult) null);
 		}
+	}
+
+
+	@SubscribeEvent
+	public void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.getModID().equals(SAPIReferences.MODID))
+			StellarAPI.INSTANCE.getCfgManager().syncFromGUI();
 	}
 }

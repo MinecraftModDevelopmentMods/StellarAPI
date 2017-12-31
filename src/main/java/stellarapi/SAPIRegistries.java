@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.example.item.ItemFilteredTelescopeExample;
 import stellarapi.example.item.ItemTelescopeExample;
 
-public enum StellarRegistries {
+public enum SAPIRegistries {
 	INSTANCE;
 
 	public Item telescope, filteredTelescope;

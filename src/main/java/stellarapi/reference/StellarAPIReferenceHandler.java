@@ -18,7 +18,7 @@ import stellarapi.api.IPerClientReference;
 import stellarapi.api.IPerEntityReference;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.IReference;
-import stellarapi.api.StellarAPICapabilities;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.interact.IOpticalProperties;
@@ -101,7 +101,7 @@ public class StellarAPIReferenceHandler implements IReference {
 
 	@Override
 	public IPerEntityReference getPerEntityReference(Entity entity) {
-		IOpticalViewer viewer = entity.getCapability(StellarAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
+		IOpticalViewer viewer = entity.getCapability(SAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
 		if (viewer instanceof IPerEntityReference)
 			return (IPerEntityReference) viewer;
 		else

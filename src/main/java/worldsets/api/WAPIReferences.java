@@ -29,14 +29,16 @@ public final class WAPIReferences {
 
 	public static final ResourceLocation WORLDSETS = new ResourceLocation(SAPIReferences.MODID, "worldsets");
 
+	@ObjectHolder("minecraft:overworld")
+	public static final WorldSet overworld = null;
 
-	@ObjectHolder("overworldtype")
+	@ObjectHolder("minecraft:overworldtype")
 	public static final WorldSet overworldTypeSet = null;
 
-	@ObjectHolder("endtype")
+	@ObjectHolder("minecraft:endtype")
 	public static final WorldSet endTypeSet = null;
 
-	@ObjectHolder("nethertype")
+	@ObjectHolder("minecraft:nethertype")
 	public static final WorldSet NetherTypeSet = null;
 
 	// ********************************************* //
