@@ -110,27 +110,7 @@ public class SAPIOwnEventHook {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onClientWorldLoad(ClientWorldEvent.Load event) {
-		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
-		progress.resetProgressAndMessage(I18n.format("progress.stellarapi.loading.main"));
-		progress.displayLoadingString(I18n.format("progress.stellarapi.loading.worldhook"));
 		PerWorldManager.initiatePerWorldManager(event.getWorld());
-		progress.displayLoadingString("");
-	}
-
-	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
-	public void onClientWorldLoadedPre(ClientWorldEvent.Loaded event) {
-		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
-		progress.resetProgressAndMessage(I18n.format("progress.stellarapi.pending.main", event.getAttemptNumber()));
-		progress.displayLoadingString(I18n.format("progress.stellarapi.pending.text", event.getAttemptNumber()));
-	}
-
-	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.LOWEST)
-	public void onClientWorldLoadedPost(ClientWorldEvent.Loaded event) {
-		IProgressUpdate progress = event.getProgressUpdate("StellarAPI");
-		if (event.isCanceled()) {
-			progress.displayLoadingString(I18n.format("progress.stellarapi.other.pending.text"));
-		} else
-			progress.displayLoadingString("");
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

@@ -11,9 +11,7 @@ public interface IReference {
 
 	public IPerEntityReference getPerEntityReference(Entity entity);
 
-	public IPerClientReference getPerClientReference();
-
+	public World getClientWorld();
 	public IViewScope getDefaultScope();
 	public IOpticalFilter getDefaultFilter();
-
 }

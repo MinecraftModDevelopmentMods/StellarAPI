@@ -14,7 +14,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.StellarAPI;
-import stellarapi.api.IPerClientReference;
 import stellarapi.api.IPerEntityReference;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.IReference;
@@ -108,11 +107,6 @@ public class StellarAPIReferenceHandler implements IReference {
 			return null;
 	}
 
-	@Override
-	public IPerClientReference getPerClientReference() {
-		return StellarAPI.PROXY;
-	}
-
 	@SubscribeEvent
 	public void onGatherEntityCapability(AttachCapabilitiesEvent<Entity> event) {
 		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getObject());
@@ -130,6 +124,11 @@ public class StellarAPIReferenceHandler implements IReference {
 	@Override
 	public IOpticalFilter getDefaultFilter() {
 		return new NakedFilter();
+	}
+
+	@Override
+	public World getClientWorld() {
+		return StellarAPI.PROXY.getClientWorld();
 	}
 
 }

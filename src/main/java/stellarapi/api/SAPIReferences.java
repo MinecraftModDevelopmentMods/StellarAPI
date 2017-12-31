@@ -227,7 +227,7 @@ public final class SAPIReferences {
 	 *            the default resource location
 	 */
 	public static ResourceLocation getLocation(String resourceId, ResourceLocation defaultLocation) {
-		World world = reference.getPerClientReference().getClientWorld();
+		World world = reference.getClientWorld();
 		if (world != null)
 			return INSTANCE.resourceManager.getLocation(world, resourceId, defaultLocation);
 		else

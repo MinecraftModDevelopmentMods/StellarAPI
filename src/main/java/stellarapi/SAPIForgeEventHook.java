@@ -86,7 +86,7 @@ public class SAPIForgeEventHook {
 	public void onWorldLoad(WorldEvent.Load event) {
 		if (event.getWorld().isRemote)
 			SAPIReferences.getEventBus()
-					.post(new ClientWorldEvent.Load(event.getWorld(), StellarAPI.PROXY.getLoadingProgress()));
+					.post(new ClientWorldEvent.Load(event.getWorld()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
 			if (!PerServerManager.isInitiated(server)) {
@@ -102,7 +102,7 @@ public class SAPIForgeEventHook {
 	public void onWorldUnload(WorldEvent.Unload event) {
 		if (event.getWorld().isRemote)
 			SAPIReferences.getEventBus()
-					.post(new ClientWorldEvent.Unload(event.getWorld(), StellarAPI.PROXY.getLoadingProgress()));
+					.post(new ClientWorldEvent.Unload(event.getWorld()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
 			SAPIReferences.getEventBus().post(new ServerWorldEvent.Unload(server, event.getWorld()));

@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import stellarapi.api.gui.loading.ICombinedProgressUpdate;
 import stellarapi.api.lib.math.Spmath;
 
 public class CommonProxy implements IProxy {
@@ -30,11 +29,6 @@ public class CommonProxy implements IProxy {
 
 	@Override
 	public World getClientWorld() {
-		return null;
-	}
-
-	@Override
-	public ICombinedProgressUpdate getLoadingProgress() {
 		return null;
 	}
 

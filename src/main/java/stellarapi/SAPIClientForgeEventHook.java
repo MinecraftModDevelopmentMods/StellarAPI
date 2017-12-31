@@ -131,39 +131,9 @@ public class SAPIClientForgeEventHook {
 	}
 
 	@SubscribeEvent
-	public void onClientWorldLoadFinish(GuiOpenEvent event) {
-		if (event.getGui() == null) {
-			Minecraft mc = Minecraft.getMinecraft();
-			if (mc.currentScreen instanceof GuiMainMenu || mc.currentScreen instanceof GuiDownloadTerrain) {
-				if(mc.world != null) {
-					ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
-							StellarAPI.PROXY.getLoadingProgress());
-					if (SAPIReferences.getEventBus().post(loaded))
-						event.setCanceled(true);
-				}
-
-				startChecking();
-			}
-		}
-	}
-
-
-	private int attempt = 1;
-
-	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
 			Minecraft mc = Minecraft.getMinecraft();
-			if (checking && mc.world != null) {
-				ClientWorldEvent.Loaded loaded = new ClientWorldEvent.Loaded(mc.world,
-						StellarAPI.PROXY.getLoadingProgress(), this.attempt);
-				if (!SAPIReferences.getEventBus().post(loaded)) {
-					Minecraft.getMinecraft().displayGuiScreen(null);
-					checking = false;
-					this.attempt = 1;
-				} else
-					this.attempt++;
-			}
 			overlay.updateOverlay();
 		}
 	}
@@ -172,11 +142,5 @@ public class SAPIClientForgeEventHook {
 	public void onKeyInput(KeyInputEvent event) {
 		if (focusGuiKey.isPressed())
 			overlay.openGui(Minecraft.getMinecraft(), this.focusGuiKey);
-	}
-
-	private static boolean checking = false;
-
-	public static void startChecking() {
-		checking = true;
 	}
 }
