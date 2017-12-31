@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -18,12 +16,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
-import stellarapi.example.item.ItemFilteredTelescopeExample;
-import stellarapi.example.item.ItemTelescopeExample;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
@@ -34,17 +29,14 @@ import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.StellarAPIReferenceHandler;
 
-@Mod(modid = StellarAPI.MODID, version = StellarAPI.VERSION,
+@Mod(modid = SAPIReferences.MODID, version = SAPIReferences.VERSION,
 acceptedMinecraftVersions="[1.12.0, 1.13.0)",
 guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
-
-	public static final String MODID = "stellarapi";
-	public static final String VERSION = "@VERSION@";
-	public static final String APIID = "stellarapi|api";
+	// FIXME License change
 
 	// The instance of Stellarium
-	@Instance(StellarAPI.MODID)
+	@Instance(SAPIReferences.MODID)
 	public static StellarAPI INSTANCE;
 
 	@SidedProxy(clientSide = "stellarapi.ClientProxy", serverSide = "stellarapi.CommonProxy")
@@ -81,7 +73,7 @@ public final class StellarAPI {
 
 		StellarAPIReferenceHandler reference = new StellarAPIReferenceHandler();
 		reference.initialize();
-		StellarAPIReference.setReference(reference);
+		SAPIReferences.setReference(reference);
 
 		MinecraftForge.EVENT_BUS.register(this.eventHook);
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
@@ -92,17 +84,17 @@ public final class StellarAPI {
 		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
 		this.cfgManager = new ConfigManager(this.config);
 
-		StellarAPIReference.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
+		SAPIReferences.getDaytimeChecker().registerDaytimeChecker(new DefaultDaytimeChecker());
 
-		cfgManager.register(wakeCategory, StellarAPIReference.getSleepWakeManager());
+		cfgManager.register(wakeCategory, SAPIReferences.getSleepWakeManager());
 
-		SleepWakeManager sleepWake = StellarAPIReference.getSleepWakeManager();
+		SleepWakeManager sleepWake = SAPIReferences.getSleepWakeManager();
 		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
 		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
 
-		StellarAPIReference.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
+		SAPIReferences.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
 
-		StellarAPIReference.getEventBus().register(new StellarAPIOwnEventHook());
+		SAPIReferences.getEventBus().register(new StellarAPIOwnEventHook());
 
 		PROXY.preInit(event);
 

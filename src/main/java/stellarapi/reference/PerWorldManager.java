@@ -15,7 +15,7 @@ import net.minecraft.world.storage.WorldSavedData;
 import stellarapi.api.ICelestialCoordinate;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.ISkyEffect;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
@@ -70,7 +70,7 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 
 	public void constructCollections() {
 		ConstructCelestialsEvent construct = new ConstructCelestialsEvent(this.world);
-		if (StellarAPIReference.getEventBus().post(construct))
+		if (SAPIReferences.getEventBus().post(construct))
 			return;
 
 		ImmutableSet<IEffectorType> effectorTypes = construct.getEffectorTypes();
@@ -80,7 +80,7 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 
 		SortCelestialsEvent sort = new SortCelestialsEvent(this.world, collectionOrdering, construct.getCollections(),
 				effectors);
-		StellarAPIReference.getEventBus().post(sort);
+		SAPIReferences.getEventBus().post(sort);
 
 		this.collectionManager = new CelestialCollectionManager(sort.getSortedCollections());
 
@@ -92,7 +92,7 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 
 	public void resetCoordinate() {
 		ResetCoordinateEvent coord = new ResetCoordinateEvent(this.world);
-		if (StellarAPIReference.getEventBus().post(coord))
+		if (SAPIReferences.getEventBus().post(coord))
 			return;
 		this.coordinate = coord.getCoordinate();
 		this.isCoordinateEstablished = true;
@@ -100,7 +100,7 @@ public class PerWorldManager extends WorldSavedData implements IPerWorldReferenc
 
 	public void resetSkyEffect() {
 		ResetSkyEffectEvent sky = new ResetSkyEffectEvent(this.world);
-		if (StellarAPIReference.getEventBus().post(sky))
+		if (SAPIReferences.getEventBus().post(sky))
 			return;
 		this.skyEffect = sky.getSkyEffect();
 		this.isSkyEffectEstablished = true;

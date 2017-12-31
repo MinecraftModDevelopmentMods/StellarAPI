@@ -19,7 +19,18 @@ import stellarapi.api.perdimres.PerDimensionResourceManager;
 /**
  * Central reference for Stellar API.
  */
-public final class StellarAPIReference {
+public final class SAPIReferences {
+
+	// ********************************************* //
+	// ************** Mod Information ************** //
+	// ********************************************* //
+	public static final String MODID = "stellarapi";
+	public static final String VERSION = "@STVERSION@";
+	public static final String APIID = "stellarapi|api";
+
+	// ********************************************* //
+	// *********** StellarAPI References *********** //
+	// ********************************************* //
 
 	private static IReference reference;
 
@@ -30,7 +41,7 @@ public final class StellarAPIReference {
 
 	private EventBus stellarEventBus = new EventBus();
 
-	private static StellarAPIReference INSTANCE = new StellarAPIReference();
+	private static SAPIReferences INSTANCE = new SAPIReferences();
 
 	/** Getter for the daytime checker. */
 	public static DaytimeChecker getDaytimeChecker() {

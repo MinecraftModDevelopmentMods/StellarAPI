@@ -11,7 +11,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.StellarAPICapabilities;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.event.world.ClientWorldEvent;
 import stellarapi.api.event.world.ServerWorldEvent;
 import stellarapi.api.helper.LivingItemAccessHelper;
@@ -84,33 +84,33 @@ public class StellarAPIForgeEventHook {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldLoad(WorldEvent.Load event) {
 		if (event.getWorld().isRemote)
-			StellarAPIReference.getEventBus()
+			SAPIReferences.getEventBus()
 					.post(new ClientWorldEvent.Load(event.getWorld(), StellarAPI.PROXY.getLoadingProgress()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
 			if (!PerServerManager.isInitiated(server)) {
-				StellarAPIReference.getEventBus().post(new ServerWorldEvent.Initial(server, server.getEntityWorld()));
+				SAPIReferences.getEventBus().post(new ServerWorldEvent.Initial(server, server.getEntityWorld()));
 				PerServerManager.initiatePerServerManager(server);
 			}
 
-			StellarAPIReference.getEventBus().post(new ServerWorldEvent.Load(server, event.getWorld()));
+			SAPIReferences.getEventBus().post(new ServerWorldEvent.Load(server, event.getWorld()));
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldUnload(WorldEvent.Unload event) {
 		if (event.getWorld().isRemote)
-			StellarAPIReference.getEventBus()
+			SAPIReferences.getEventBus()
 					.post(new ClientWorldEvent.Unload(event.getWorld(), StellarAPI.PROXY.getLoadingProgress()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
-			StellarAPIReference.getEventBus().post(new ServerWorldEvent.Unload(server, event.getWorld()));
+			SAPIReferences.getEventBus().post(new ServerWorldEvent.Unload(server, event.getWorld()));
 		}
 	}
 
 	@SubscribeEvent
 	public void onSleepInBed(PlayerSleepInBedEvent event) {
-		if (!StellarAPIReference.getSleepWakeManager().isEnabled() || event.getEntityPlayer().world.isRemote) {
+		if (!SAPIReferences.getSleepWakeManager().isEnabled() || event.getEntityPlayer().world.isRemote) {
 			return;
 		}
 
@@ -119,7 +119,7 @@ public class StellarAPIForgeEventHook {
 			World worldObj = event.getEntityPlayer().world;
 
 			event.setResult(
-					StellarAPIReference.getSleepWakeManager().getSleepPossibility(worldObj, event.getResultStatus()));
+					SAPIReferences.getSleepWakeManager().getSleepPossibility(worldObj, event.getResultStatus()));
 		}
 
 		if (event.getResultStatus() == SleepResult.OK) {

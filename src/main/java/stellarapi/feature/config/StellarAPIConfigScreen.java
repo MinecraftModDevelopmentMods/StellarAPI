@@ -10,11 +10,12 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import stellarapi.StellarAPI;
+import stellarapi.api.SAPIReferences;
 
 public class StellarAPIConfigScreen extends GuiConfig {
 
 	public StellarAPIConfigScreen(GuiScreen parentScreen) {
-		super(parentScreen, getConfigElement(), StellarAPI.MODID, false, false, "Stellar API");
+		super(parentScreen, getConfigElement(), SAPIReferences.MODID, false, false, "Stellar API");
 	}
 
 	private static List<IConfigElement> getConfigElement() {

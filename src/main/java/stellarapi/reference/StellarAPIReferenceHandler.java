@@ -19,7 +19,7 @@ import stellarapi.api.IPerEntityReference;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.IReference;
 import stellarapi.api.StellarAPICapabilities;
-import stellarapi.api.StellarAPIReference;
+import stellarapi.api.SAPIReferences;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalFilter;
@@ -116,9 +116,9 @@ public class StellarAPIReferenceHandler implements IReference {
 	@SubscribeEvent
 	public void onGatherEntityCapability(AttachCapabilitiesEvent<Entity> event) {
 		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getObject());
-		StellarAPIReference.getEventBus().post(check);
+		SAPIReferences.getEventBus().post(check);
 		if (check.isOpticalEntity())
-			event.addCapability(new ResourceLocation(StellarAPI.MODID, "viewer"),
+			event.addCapability(new ResourceLocation(SAPIReferences.MODID, "viewer"),
 					new PerEntityManager(event.getObject()));
 	}
 

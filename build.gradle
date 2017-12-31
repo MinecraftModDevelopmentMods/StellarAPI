@@ -1,7 +1,10 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -9,16 +12,24 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.7.4.1.2"
-group= "stellarapi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Stellar API"
+ext.config = parseConfig(file('build.properties'))
+
+ext.stModVersion = "${config.version.stellarapi.major}.${config.version.stellarapi.minor}.${config.version.stellarapi.revis}.${config.version.stellarapi.patch}"
+ext.wsModVersion = "${config.version.worldsets.major}.${config.version.worldsets.minor}.${config.worldsets.stellarapi.revis}"
+
+version = "${config.version.minecraft}-${stModVersion}"
+ext.wsversion = "${config.version.minecraft}-${wsModVersion}"
+
+group= "${config.group}"
+archivesBaseName = "${config.archive}"
 
 minecraft {
-    version = "1.12-14.21.1.2387"
+    version = "${config.version.minecraft}-${config.version.forge}"
     runDir = "run"
+    mappings = "${config.version.mcpmappings}"
 
-    mappings = "snapshot_20170730"
-    replace "@VERSION@", project.version
+    replace "@STVERSION@", project.version
+    replace "@WSVERSION@", "${wsversion}"
 }
 
 
@@ -48,10 +59,19 @@ task srcJar(type: Jar) {
     classifier = 'sources'
 }
 
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
+    inputs.property "stversion", project.version
+    inputs.property "wsversion", project.wsversion
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -59,7 +79,7 @@ processResources
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'stversion':project.version, 'wsversion':project.wsversion, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info
