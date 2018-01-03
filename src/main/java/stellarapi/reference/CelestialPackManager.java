@@ -21,8 +21,7 @@ import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
-import worldsets.api.WAPIReferences;
-import worldsets.api.worldset.WorldSet;
+import stellarapi.api.worldset.WorldSet;
 
 /**
  * Per world manager to contain the per-world(dimension) objects.
@@ -45,7 +44,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 		List<ICelestialCollection> collections = Lists.newArrayList();
 		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
 
-		for(WorldSet wSet : WAPIReferences.appliedWorldSets(world)) {
+		for(WorldSet wSet : SAPIReferences.appliedWorldSets(world)) {
 			// Only one pack for WorldSet for now
 			ICelestialPack pack = SAPIReferences.getCelestialPack(wSet);
 			if(pack != null) {

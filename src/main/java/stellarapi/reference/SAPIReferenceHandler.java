@@ -1,9 +1,15 @@
 package stellarapi.reference;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,9 +17,11 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.StellarAPI;
@@ -29,15 +37,16 @@ import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.interact.IOpticalProperties;
+import stellarapi.api.lib.config.IConfigHandler;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.optics.NakedScope;
-import worldsets.api.WAPIReferences;
-import worldsets.api.worldset.WorldSet;
+import stellarapi.api.worldset.WorldSet;
+import stellarapi.api.worldset.WorldSetFactory;
 
-public class SAPIReferenceHandler implements IReference {
+public class SAPIReferenceHandler implements IReference, IConfigHandler {
 
 	public void initialize() {
 		CapabilityManager.INSTANCE.register(ICelestialWorld.class, new Capability.IStorage<ICelestialWorld>() {
@@ -153,7 +162,7 @@ public class SAPIReferenceHandler implements IReference {
 	@SubscribeEvent
 	public void onGatherWorldCapability(AttachCapabilitiesEvent<World> event) {
 		boolean hasPack = false;
-		for(WorldSet wSet : WAPIReferences.appliedWorldSets(event.getObject())) {
+		for(WorldSet wSet : SAPIReferences.appliedWorldSets(event.getObject())) {
 			if(SAPIReferences.getCelestialPack(wSet) != null) {
 				hasPack = true;
 				break;
@@ -184,8 +193,75 @@ public class SAPIReferenceHandler implements IReference {
 	}
 
 	@Override
-	public World getClientWorld() {
-		return StellarAPI.PROXY.getClientWorld();
+	public World getDefaultWorld(boolean isRemote) {
+		if(isRemote)
+			return StellarAPI.PROXY.getClientWorld();
+		else return DimensionManager.getWorld(0);
+	}
+
+
+	// TODO Move this worldset related things to somewhere else
+	private Map<ResourceLocation, WorldSetFactory> factories = Maps.newHashMap();
+	private List<WorldSet> worldSets = Lists.newArrayList();
+	private Map<ResourceLocation, WorldSet[]> generated = Maps.newHashMap();
+
+	@Override
+	public void registerFactory(WorldSetFactory factory) {
+		factories.put(factory.getLocation(), factory);
+	}
+
+
+	@Override
+	public ImmutableList<WorldSet> getAllWorldSets() {
+		return ImmutableList.copyOf(this.worldSets);
+	}
+
+	@Override
+	public WorldSet[] getGeneratedWorldSets(ResourceLocation location) {
+		return generated.get(location);
+	}
+
+	@Override
+	public WorldSet getPrimaryWorldSet(World world) {
+		return PerWorldData.getWorldSets(world).appliedWorldSets.get(0);
+	}
+
+	@Override
+	public ImmutableList<WorldSet> appliedWorldSets(World world) {
+		return PerWorldData.getWorldSets(world).appliedWorldSets;
+	}
+
+
+	@Override
+	public void setupConfig(Configuration config, String category) {
+		config.setCategoryComment(category, "Configuration for WorldSets.");
+		config.setCategoryLanguageKey(category, "config.category.worldset"); // TODO Edit language file to include this
+		config.setCategoryRequiresMcRestart(category, true);
+
+		for(WorldSetFactory factory : factories.values()) {
+			String title = factory.getTitle();
+			if(title != null) {
+				factory.configure(config, config.getCategory(
+						category + Configuration.CATEGORY_SPLITTER + title));
+			}
+		}
+	}
+
+	@Override
+	public void loadFromConfig(Configuration config, String category) {
+		for(Map.Entry<ResourceLocation, WorldSetFactory> entry : factories.entrySet()) {
+			WorldSetFactory factory = entry.getValue();
+			String title = factory.getTitle();
+			WorldSet[] sets = factory.generate(title != null? config.getCategory(
+					category + Configuration.CATEGORY_SPLITTER + title) : null);
+			worldSets.addAll(Arrays.asList(sets));
+			generated.put(entry.getKey(), sets);
+		}
+	}
+
+	@Override
+	public void saveToConfig(Configuration config, String category) {
+		// Unable to save to config
 	}
 
 }

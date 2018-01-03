@@ -9,16 +9,4 @@
   "credits": "Abastro",
   "requiredMods": [ "Forge", "worldsetapi" ],
   "depenencies": [  ]
-},
-{
-  "modid": "worldsetapi",
-  "name": "WorldSet API",
-  "description": "API of World Sets.",
-  "version": "${wsversion}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "authorList": [ "Abastro" ],
-  "credits": "Abastro",
-  "requiredMods": [ "Forge" ],
-  "depenencies": [  ]
 }]

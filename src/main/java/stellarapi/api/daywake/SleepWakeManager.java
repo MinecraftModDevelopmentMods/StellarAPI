@@ -12,7 +12,7 @@ import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
-import worldsets.api.lib.config.IConfigHandler;
+import stellarapi.api.lib.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
 

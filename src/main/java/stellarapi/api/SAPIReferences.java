@@ -2,6 +2,9 @@ package stellarapi.api;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
@@ -18,8 +21,7 @@ import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
-import worldsets.WorldSetAPI;
-import worldsets.api.worldset.WorldSet;
+import stellarapi.api.worldset.WorldSet;
 
 /**
  * Central reference for Stellar API.
@@ -64,8 +66,69 @@ public final class SAPIReferences {
 
 	/** Gets the celestial pack for certain WorldSet. */
 	public static ICelestialPack getCelestialPack(WorldSet worldSet) {
-		WorldSetAPI.INSTANCE.getConfigManager();
 		return INSTANCE.packs.get(worldSet);
+	}
+
+	/**
+	 * Checks if this world is default.
+	 * On server, this checks for overworld.
+	 * On client, this checks for the main loaded world.
+	 * */
+	public static boolean isDefaultWorld(World world) {
+		if(world.isRemote)
+			return true;
+		return world.provider.getDimension() == 0;
+	}
+
+	/**
+	 * Get one of the default worlds.
+	 * */
+	public static World getDefaultWorld(boolean isRemote) {
+		return reference.getDefaultWorld(isRemote);
+	}
+
+	public static final ResourceLocation VANILLA_FACTORY = new ResourceLocation("basics");
+	public static final ResourceLocation NAMED_WORLDSET_FACTORY = new ResourceLocation("named");
+
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet exactOverworld() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[0];
+	}
+
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet overworldType() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[1];
+	}
+
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet endType() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[2];
+	}
+
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet netherType() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[3];
+	}
+
+	/**
+	 * Gets the list of the world sets.
+	 * */
+	public static ImmutableList<WorldSet> getAllWorldSets() {
+		return reference.getAllWorldSets();
+	}
+
+	/**
+	 * Gets primary WorldSet for this world.
+	 * */
+	public static @Nullable WorldSet getPrimaryWorldSet(World world) {
+		return reference.getPrimaryWorldSet(world);
+	}
+
+	/**
+	 * Gets applied WorldSets for this world. WorldSet with higher priority comes first.
+	 * */
+	public static ImmutableList<WorldSet> appliedWorldSets(World world) {
+		return reference.appliedWorldSets(world);
 	}
 
 	/**
@@ -219,7 +282,7 @@ public final class SAPIReferences {
 	 *            the default resource location
 	 */
 	public static ResourceLocation getLocation(String resourceId, ResourceLocation defaultLocation) {
-		World world = reference.getClientWorld();
+		World world = reference.getDefaultWorld(true);
 		if (world != null)
 			return INSTANCE.resourceManager.getLocation(world, resourceId, defaultLocation);
 		else

@@ -2,7 +2,7 @@
  * Per dimension features of Stellar API,
  * this is for mods register their own textures here.
  * */
-@API(apiVersion = "@VERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
+@API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
 package stellarapi.feature.perdimres;
 
 

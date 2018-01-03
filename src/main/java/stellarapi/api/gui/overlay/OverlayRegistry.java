@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import net.minecraftforge.fml.common.Loader;
-import worldsets.api.lib.config.ConfigManager;
+import stellarapi.api.lib.config.ConfigManager;
 
 @SuppressWarnings("rawtypes")
 public class OverlayRegistry {

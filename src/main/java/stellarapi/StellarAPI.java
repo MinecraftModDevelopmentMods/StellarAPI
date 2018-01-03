@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
+import stellarapi.api.lib.config.ConfigManager;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
@@ -28,13 +29,11 @@ import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.SAPIReferenceHandler;
-import worldsets.api.WAPIReferences;
-import worldsets.api.lib.config.ConfigManager;
+import stellarapi.reference.WorldSets;
 
 @Mod(modid = SAPIReferences.MODID, version = SAPIReferences.VERSION,
 acceptedMinecraftVersions="[1.12.0, 1.13.0)",
-guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory",
-dependencies = "required-after:worldsetapi")
+guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
 	// FIXME License change
 
@@ -50,6 +49,7 @@ public final class StellarAPI {
 	}
 
 	private static final String wakeCategory = "wake";
+	private static final String worldCategory = "worldsets";
 
 	private Logger logger;
 
@@ -97,6 +97,11 @@ public final class StellarAPI {
 		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
 		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
 
+		cfgManager.register(worldCategory, reference);
+		WorldSets worldSets = new WorldSets();
+		worldSets.onPreInit(reference);
+		MinecraftForge.EVENT_BUS.register(worldSets);
+
 		SAPIReferences.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
 
 		SAPIReferences.getEventBus().register(new SAPIOwnEventHook());
@@ -111,7 +116,7 @@ public final class StellarAPI {
 		cfgManager.syncFromFile();
 
 		DefaultCelestialPack defPack = new DefaultCelestialPack();
-		SAPIReferences.setCelestialPack(WAPIReferences.exactOverworld(), defPack);
+		SAPIReferences.setCelestialPack(SAPIReferences.exactOverworld(), defPack);
 
 		PROXY.load(event);
 
