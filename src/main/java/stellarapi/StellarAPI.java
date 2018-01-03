@@ -18,31 +18,32 @@ import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
-import stellarapi.api.lib.config.ConfigManager;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
 import stellarapi.impl.AlarmWakeHandler;
+import stellarapi.impl.DefaultCelestialPack;
 import stellarapi.impl.DefaultDaytimeChecker;
 import stellarapi.impl.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
-import stellarapi.reference.StellarAPIReferenceHandler;
+import stellarapi.reference.SAPIReferenceHandler;
+import worldsets.api.WAPIReferences;
+import worldsets.api.lib.config.ConfigManager;
 
 @Mod(modid = SAPIReferences.MODID, version = SAPIReferences.VERSION,
 acceptedMinecraftVersions="[1.12.0, 1.13.0)",
-guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
+guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory",
+dependencies = "required-after:worldsetapi")
 public final class StellarAPI {
 	// FIXME License change
 
-	// The instance of Stellarium
+	// The instance of Stellar API
 	@Instance(SAPIReferences.MODID)
-	public static StellarAPI INSTANCE;
+	public static StellarAPI INSTANCE = null;
 
 	@SidedProxy(clientSide = "stellarapi.ClientProxy", serverSide = "stellarapi.CommonProxy")
 	public static IProxy PROXY;
-
-	public static Logger LOGGER;
 
 	public static Configuration getConfiguration(File configDir, String subName) {
 		return new Configuration(new File(new File(configDir, "stellarapi"), subName));
@@ -50,12 +51,18 @@ public final class StellarAPI {
 
 	private static final String wakeCategory = "wake";
 
+	private Logger logger;
+
 	private SAPIForgeEventHook eventHook = new SAPIForgeEventHook();
 	private SAPITickHandler tickHandler = new SAPITickHandler();
 	private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
 
 	private Configuration config;
 	private ConfigManager cfgManager;
+
+	public Logger getLogger() {
+		return this.logger;
+	}
 
 	public StellarAPINetworkManager getNetworkManager() {
 		return this.networkManager;
@@ -68,16 +75,16 @@ public final class StellarAPI {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		LOGGER = event.getModLog();
+		logger = event.getModLog();
 
-		StellarAPIReferenceHandler reference = new StellarAPIReferenceHandler();
+		SAPIReferenceHandler reference = new SAPIReferenceHandler();
 		reference.initialize();
 		SAPIReferences.putReference(reference);
 
 		MinecraftForge.EVENT_BUS.register(this.eventHook);
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
 		MinecraftForge.EVENT_BUS.register(this.networkManager);
-		MinecraftForge.EVENT_BUS.register(SAPIRegistries.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(SAPIItems.INSTANCE);
 
 		this.config = getConfiguration(event.getModConfigurationDirectory(), "MainConfig.cfg");
 		this.cfgManager = new ConfigManager(this.config);
@@ -102,6 +109,9 @@ public final class StellarAPI {
 	@EventHandler
 	public void load(FMLInitializationEvent event) throws IOException {
 		cfgManager.syncFromFile();
+
+		DefaultCelestialPack defPack = new DefaultCelestialPack();
+		SAPIReferences.setCelestialPack(WAPIReferences.exactOverworld(), defPack);
 
 		PROXY.load(event);
 

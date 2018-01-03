@@ -22,7 +22,7 @@ import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
-import stellarapi.api.lib.config.ConfigManager;
+import worldsets.api.lib.config.ConfigManager;
 
 @SuppressWarnings("rawtypes")
 public class OverlayManager implements IOverlayManager, IOverlayInjectable {

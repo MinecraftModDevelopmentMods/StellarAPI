@@ -1,7 +1,7 @@
 package stellarapi.api.daywake;
 
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.celestials.CelestialEffectors;
 
 /**
@@ -19,7 +19,7 @@ public interface IDaytimeChecker {
 	 * Checks if this daytime checker will work on certain case or not.
 	 * <p>
 	 * Should return false when
-	 * {@link #timeForCertainDescriptor(World, CelestialEffectors, ICelestialCoordinate, EnumDaytimeDescriptor, long)}
+	 * {@link #timeForCertainDescriptor(World, CelestialEffectors, ICelestialCoordinates, EnumDaytimeDescriptor, long)}
 	 * } can't give right value.
 	 * 
 	 * @param world
@@ -32,7 +32,7 @@ public interface IDaytimeChecker {
 	 * @param descriptor
 	 *            the daytime descriptor
 	 */
-	public boolean accept(World world, CelestialEffectors sources, ICelestialCoordinate coordinate,
+	public boolean accept(World world, CelestialEffectors sources, ICelestialCoordinates coordinate,
 			EnumDaytimeDescriptor descriptor);
 
 	/**
@@ -53,7 +53,7 @@ public interface IDaytimeChecker {
 	 *            the time tolerance in tick
 	 * @return if the time is appropriate for the descriptor or not
 	 */
-	public boolean isDescriptorApply(World world, CelestialEffectors sources, ICelestialCoordinate coordinate,
+	public boolean isDescriptorApply(World world, CelestialEffectors sources, ICelestialCoordinates coordinate,
 			EnumDaytimeDescriptor descriptor, long time, int tolerance);
 
 	/**
@@ -73,7 +73,7 @@ public interface IDaytimeChecker {
 	 * @throws ImpossibleDescriptorException
 	 *             if there is no time for the certain descriptor
 	 */
-	public long timeForCertainDescriptor(World world, CelestialEffectors sources, ICelestialCoordinate coordinate,
+	public long timeForCertainDescriptor(World world, CelestialEffectors sources, ICelestialCoordinates coordinate,
 			EnumDaytimeDescriptor descriptor, long currentTime);
 
 }

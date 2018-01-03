@@ -89,6 +89,7 @@ public class SAPIForgeEventHook {
 					.post(new ClientWorldEvent.Load(event.getWorld()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
+			// TODO Simplify this code - do PerServerManager really needed? Or not?
 			if (!PerServerManager.isInitiated(server)) {
 				SAPIReferences.getEventBus().post(new ServerWorldEvent.Initial(server, server.getEntityWorld()));
 				PerServerManager.initiatePerServerManager(server);

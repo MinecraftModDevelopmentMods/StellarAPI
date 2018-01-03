@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import stellarapi.StellarAPI;
 
 public class GuiRenderer implements IRenderer {
@@ -101,7 +100,7 @@ public class GuiRenderer implements IRenderer {
 		if (currentModel == null)
 			throw new IllegalStateException("The model doesn't have got bound!");
 		if (info == null) {
-			StellarAPI.LOGGER.warn(
+			StellarAPI.INSTANCE.getLogger().warn(
 					"Found invalid null argument as information on gui rendering." + "Replacing it with empty String.");
 			info = "";
 		}

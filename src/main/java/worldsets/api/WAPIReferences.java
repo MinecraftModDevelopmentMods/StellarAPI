@@ -6,9 +6,6 @@ import com.google.common.collect.ImmutableList;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-import net.minecraftforge.registries.IForgeRegistry;
-import stellarapi.api.SAPIReferences;
 import worldsets.api.worldset.WorldSet;
 
 /**
@@ -20,26 +17,36 @@ public final class WAPIReferences {
 	// ************** Mod Information ************** //
 	// ********************************************* //
 
-	public static final String modid = "worldsetapi";
-	public static final String version = "@WSVERSION@";
+	public static final String MODID = "worldsetapi";
+	public static final String VERSION = "@WSVERSION@";
+	public static final String APIID = "worldsetapi|api";
 
 	// ********************************************* //
 	// ************ WorldSet References ************ //
 	// ********************************************* //
 
-	public static final ResourceLocation WORLDSETS = new ResourceLocation(SAPIReferences.MODID, "worldsets");
+	public static final ResourceLocation VANILLA_FACTORY = new ResourceLocation("basics");
+	public static final ResourceLocation NAMED_WORLDSET_FACTORY = new ResourceLocation("named");
 
-	@ObjectHolder("minecraft:overworld")
-	public static final WorldSet overworld = null;
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet exactOverworld() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[0];
+	}
 
-	@ObjectHolder("minecraft:overworldtype")
-	public static final WorldSet overworldTypeSet = null;
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet overworldType() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[1];
+	}
 
-	@ObjectHolder("minecraft:endtype")
-	public static final WorldSet endTypeSet = null;
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet endType() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[2];
+	}
 
-	@ObjectHolder("minecraft:nethertype")
-	public static final WorldSet NetherTypeSet = null;
+	/** Can only be used after Init phase of this API. */
+	public static WorldSet netherType() {
+		return reference.getGeneratedWorldSets(VANILLA_FACTORY)[3];
+	}
 
 	// ********************************************* //
 	// ************* WorldSet API Calls ************ //
@@ -61,7 +68,7 @@ public final class WAPIReferences {
 	 * Get one of the default worlds.
 	 * */
 	public static World getDefaultWorld(boolean isRemote) {
-		return INSTANCE.reference.getDefaultWorld(isRemote);
+		return reference.getDefaultWorld(isRemote);
 	}
 
 	/**
@@ -72,17 +79,17 @@ public final class WAPIReferences {
 	}
 
 	/**
-	 * Gets primary worldset for this world.
+	 * Gets primary WorldSet for this world.
 	 * */
 	public static @Nullable WorldSet getPrimaryWorldSet(World world) {
-		return INSTANCE.reference.getPrimaryWorldSet(world);
+		return reference.getPrimaryWorldSet(world);
 	}
 
 	/**
-	 * Gets applied worldsets for this world.
+	 * Gets applied WorldSets for this world. WorldSet with higher priority comes first.
 	 * */
 	public static ImmutableList<WorldSet> appliedWorldSets(World world) {
-		return INSTANCE.reference.appliedWorldSets(world);
+		return reference.appliedWorldSets(world);
 	}
 
 	// ********************************************* //

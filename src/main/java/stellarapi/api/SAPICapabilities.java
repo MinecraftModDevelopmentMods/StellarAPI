@@ -6,6 +6,10 @@ import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalViewer;
 
 public class SAPICapabilities {
+	@CapabilityInject(ICelestialWorld.class)
+	public static final Capability<ICelestialWorld> CELESTIAL_CAPABILITY = null;
+
+
 	@CapabilityInject(IOpticalViewer.class)
 	public static final Capability<IOpticalViewer> VIEWER_CAPABILITY = null;
 	

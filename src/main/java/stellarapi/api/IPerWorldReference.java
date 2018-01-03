@@ -8,14 +8,7 @@ import stellarapi.api.celestials.IEffectorType;
 
 /** Interface of per world reference to improve independence of api. */
 public interface IPerWorldReference {
-
-	public void constructCollections();
-
-	public void resetCoordinate();
-
-	public void resetSkyEffect();
-
-	public ICelestialCoordinate getCoordinate();
+	public ICelestialCoordinates getCoordinate();
 
 	public ISkyEffect getSkyEffect();
 

@@ -1,7 +1,7 @@
 package stellarapi.example;
 
 import net.minecraft.util.math.MathHelper;
-import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.Spmath;
@@ -28,12 +28,12 @@ public class CelestialHelperExample {
 	private final ICelestialObject sun;
 	private final ICelestialObject moon;
 
-	private final ICelestialCoordinate coordinate;
+	private final ICelestialCoordinates coordinate;
 
 	private final ISkyEffect sky;
 
 	public CelestialHelperExample(float relativeMultiplierSun, float relativeMultiplierMoon, ICelestialObject sun,
-			ICelestialObject moon, ICelestialCoordinate coordinate, ISkyEffect sky) {
+			ICelestialObject moon, ICelestialCoordinates coordinate, ISkyEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;
 		this.relativeMultiplierMoon = relativeMultiplierMoon;
 		this.sun = sun;

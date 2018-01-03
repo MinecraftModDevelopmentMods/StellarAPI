@@ -1,26 +1,36 @@
 package worldsets.api.worldset;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
 import com.google.common.collect.Maps;
 
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public abstract class WorldSet extends IForgeRegistryEntry.Impl<WorldSet> {
+/**
+ * Represents certain set of world. There is only one instance of worldset allowed. (It's singleton)
+ * Initialized on Init phase.
+ * */
+public abstract class WorldSet {
+	// FIXME WorldSet shouldn't be a registry entry - it should be dynamic Predicate<World>
+	// The parameter is given or what form would be good?
+	// Some declarable
+	public final String name;
 
 	/** Types of worlds which this set definitely have, to identify the world */
-	private DimensionType[] explicitTypes;
-	private EnumCPriority priority;
+	private final DimensionType[] explicitTypes;
+	private final Predicate<World> predicate;
+	private final EnumCPriority priority;
 	private EnumFlag hasSky = EnumFlag.UNCERTAIN;
 	private EnumFlag hasAtmosphere = EnumFlag.UNCERTAIN;
 	private Map<String, EnumFlag> flags = Maps.newHashMap();
 
-	public abstract boolean containsWorld(World world);
-
-	protected WorldSet(EnumCPriority priority, DimensionType... explicitTypes) {
+	protected WorldSet(String name, EnumCPriority priority, Predicate<World> predicate,
+			DimensionType... explicitTypes) {
+		this.name = name;
 		this.priority = priority;
+		this.predicate = predicate;
 		this.explicitTypes = explicitTypes;
 	}
 
@@ -43,6 +53,10 @@ public abstract class WorldSet extends IForgeRegistryEntry.Impl<WorldSet> {
 		return this.priority;
 	}
 
+	public Predicate<World> getCondition() {
+		return this.predicate;
+	}
+
 	public DimensionType[] getExplicitTypes() {
 		return this.explicitTypes;
 	}
@@ -60,5 +74,4 @@ public abstract class WorldSet extends IForgeRegistryEntry.Impl<WorldSet> {
 	public EnumFlag getFlag(String property) {
 		return flags.get(property);
 	}
-
 }

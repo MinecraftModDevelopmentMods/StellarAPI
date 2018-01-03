@@ -8,11 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
-import stellarapi.api.lib.config.IConfigHandler;
+import worldsets.api.lib.config.IConfigHandler;
 
 public class SleepWakeManager implements IConfigHandler {
 
@@ -88,7 +88,7 @@ public class SleepWakeManager implements IConfigHandler {
 	 */
 	public long getWakeTime(World world, long defaultWakeTime) {
 
-		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
+		ICelestialCoordinates coordinate = SAPIReferences.getCoordinate(world);
 		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		long wakeTime;
@@ -133,7 +133,7 @@ public class SleepWakeManager implements IConfigHandler {
 	 *         {@code EntityPlayer.SleepResult.NOT_POSSIBLE_HERE}
 	 */
 	public EntityPlayer.SleepResult getSleepPossibility(World world, EntityPlayer.SleepResult defaultStatus) {
-		ICelestialCoordinate coordinate = SAPIReferences.getCoordinate(world);
+		ICelestialCoordinates coordinate = SAPIReferences.getCoordinate(world);
 		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		EntityPlayer.SleepResult status = EntityPlayer.SleepResult.OK;

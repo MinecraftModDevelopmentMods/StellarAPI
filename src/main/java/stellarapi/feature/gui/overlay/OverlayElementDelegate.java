@@ -9,7 +9,7 @@ import stellarapi.api.gui.overlay.PerOverlaySettings;
 import stellarapi.api.gui.pos.ElementPos;
 import stellarapi.api.gui.pos.EnumHorizontalPos;
 import stellarapi.api.gui.pos.EnumVerticalPos;
-import stellarapi.api.lib.config.ConfigManager;
+import worldsets.api.lib.config.ConfigManager;
 
 public class OverlayElementDelegate<Element extends IOverlayElement<Settings>, Settings extends PerOverlaySettings>
 		implements IRawOverlayElement {

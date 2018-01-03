@@ -16,8 +16,8 @@ public class PerServerManager extends WorldSavedData {
 	}
 
 	public static boolean isInitiated(MinecraftServer server) {
-		return server.getEntityWorld().getMapStorage().getOrLoadData(PerServerManager.class,
-				ID) instanceof PerServerManager;
+		return server.getEntityWorld().getMapStorage().getOrLoadData(PerServerManager.class, ID)
+				instanceof PerServerManager;
 	}
 
 	public static PerServerManager getPerServerManager(MinecraftServer server) {

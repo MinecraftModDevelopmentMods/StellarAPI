@@ -24,4 +24,8 @@
  * WorldSet section of WorldSet API.
  * @author Abastro
  */
+@API(apiVersion = "@WSVERSION@", owner = WAPIReferences.MODID, provides = WAPIReferences.APIID)
 package worldsets.api.worldset;
+
+import net.minecraftforge.fml.common.API;
+import worldsets.api.WAPIReferences;

@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.ICelestialCoordinate;
+import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.daywake.IWakeHandler;
@@ -19,12 +19,12 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	private double wakeAngle;
 
 	@Override
-	public boolean accept(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate) {
+	public boolean accept(World world, CelestialEffectors lightSource, ICelestialCoordinates coordinate) {
 		return lightSource != null && coordinate != null;
 	}
 
 	@Override
-	public long getWakeTime(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate,
+	public long getWakeTime(World world, CelestialEffectors lightSource, ICelestialCoordinates coordinate,
 			long sleepTime) {
 		ICelestialObject sun = lightSource.getPrimarySource();
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);
@@ -32,7 +32,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	}
 
 	@Override
-	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource, ICelestialCoordinate coordinate,
+	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource, ICelestialCoordinates coordinate,
 			long sleepTime) {
 		ICelestialObject sun = lightSource.getPrimarySource();
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);

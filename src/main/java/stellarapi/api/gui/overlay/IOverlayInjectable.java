@@ -1,6 +1,6 @@
 package stellarapi.api.gui.overlay;
 
-import stellarapi.api.lib.config.ConfigManager;
+import worldsets.api.lib.config.ConfigManager;
 
 /**
  * Used for internal logic related with registration.

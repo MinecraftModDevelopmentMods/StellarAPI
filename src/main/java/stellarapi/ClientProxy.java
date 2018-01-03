@@ -11,12 +11,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import stellarapi.api.gui.overlay.OverlayRegistry;
-import stellarapi.api.lib.config.ConfigManager;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.feature.gui.overlay.OverlaySetMain;
 import stellarapi.feature.gui.overlay.OverlaySetStellarAPI;
 import stellarapi.feature.gui.overlay.configurator.OverlayConfiguratorType;
 import stellarapi.feature.gui.overlay.time.OverlayTimeType;
+import worldsets.api.lib.config.ConfigManager;
 
 public class ClientProxy extends CommonProxy implements IProxy {
 
@@ -42,9 +42,9 @@ public class ClientProxy extends CommonProxy implements IProxy {
 
 	@Override
 	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(SAPIRegistries.INSTANCE.telescope, 0,
+		ModelLoader.setCustomModelResourceLocation(SAPIItems.INSTANCE.telescope, 0,
 				new ModelResourceLocation("stellarapi:deftelescope", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(SAPIRegistries.INSTANCE.filteredTelescope, 0,
+		ModelLoader.setCustomModelResourceLocation(SAPIItems.INSTANCE.filteredTelescope, 0,
 				new ModelResourceLocation("stellarapi:deffilteredtelescope", "inventory"));
 	}
 

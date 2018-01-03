@@ -12,10 +12,10 @@ public class CommonProxy implements IProxy {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		StellarAPI.LOGGER.info("Initializing Math class...");
+		StellarAPI.INSTANCE.getLogger().info("Initializing Math class...");
 		// Initializing Spmath
 		Spmath.Initialize();
-		StellarAPI.LOGGER.info("Math Class Initialized!");
+		StellarAPI.INSTANCE.getLogger().info("Math Class Initialized!");
 	}
 
 	@Override

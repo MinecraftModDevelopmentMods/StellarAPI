@@ -1,6 +1,9 @@
 package stellarapi.api;
 
+import java.util.Map;
+
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +18,8 @@ import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
+import worldsets.WorldSetAPI;
+import worldsets.api.worldset.WorldSet;
 
 /**
  * Central reference for Stellar API.
@@ -32,6 +37,7 @@ public final class SAPIReferences {
 	// *********** StellarAPI References *********** //
 	// ********************************************* //
 
+	private Map<WorldSet, ICelestialPack> packs = Maps.newIdentityHashMap();
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
 
@@ -51,6 +57,17 @@ public final class SAPIReferences {
 		return INSTANCE.sleepWakeManager;
 	}
 
+	/** Placeholder method for versions before 1.13(data packs) - put this anytime */
+	public static void setCelestialPack(WorldSet worldSet, ICelestialPack pack) {
+		INSTANCE.packs.put(worldSet, pack);
+	}
+
+	/** Gets the celestial pack for certain WorldSet. */
+	public static ICelestialPack getCelestialPack(WorldSet worldSet) {
+		WorldSetAPI.INSTANCE.getConfigManager();
+		return INSTANCE.packs.get(worldSet);
+	}
+
 	/**
 	 * registers per dimension resource handler.
 	 * 
@@ -59,31 +76,6 @@ public final class SAPIReferences {
 	 */
 	public static void registerPerDimResourceHandler(IPerDimensionResourceHandler handler) {
 		INSTANCE.resourceManager.register(handler);
-	}
-
-	/**
-	 * Constructs the celestial collections/objects for the world. It is
-	 * necessary to call this method at least once per world with celestial
-	 * settings.
-	 */
-	public static void constructCelestials(World world) {
-		reference.getPerWorldReference(world).constructCollections();
-	}
-
-	/**
-	 * Resets the celestial coordinate for the world. It is necessary to call
-	 * this method at least once per world with celestial settings.
-	 */
-	public static void resetCoordinate(World world) {
-		reference.getPerWorldReference(world).resetCoordinate();
-	}
-
-	/**
-	 * Resets the sky effect for the world. It is necessary to call this method
-	 * at least once per world with celestial settings.
-	 */
-	public static void resetSkyEffect(World world) {
-		reference.getPerWorldReference(world).resetSkyEffect();
 	}
 
 	public static boolean isOpticalEntity(Entity entity) {
@@ -130,7 +122,7 @@ public final class SAPIReferences {
 	 * @return the coordinate for the world if it is available now, or
 	 *         <code>null</code> otherwise
 	 */
-	public static ICelestialCoordinate getCoordinate(World world) {
+	public static ICelestialCoordinates getCoordinate(World world) {
 		return reference.getPerWorldReference(world).getCoordinate();
 	}
 

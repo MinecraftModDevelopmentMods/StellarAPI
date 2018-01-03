@@ -12,7 +12,7 @@
 },
 {
   "modid": "worldsetapi",
-  "name": "WorldSets API",
+  "name": "WorldSet API",
   "description": "API of World Sets.",
   "version": "${wsversion}",
   "mcversion": "${mcversion}",
