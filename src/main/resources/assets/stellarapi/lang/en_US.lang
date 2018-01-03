@@ -72,5 +72,15 @@ config.property.wakeangle=Sun height for wake
 config.property.wakeangle.tooltip=Solar azimuth(height) angle to wake up (in degrees). (Sun can be replaced by primary celestial light source)
 
 
+config.category.worldset=WorldSets
+config.category.worldset.tooltip=Configuration for WorldSets. WorldSets are used to determine whether or not to use certain celestial model on certain worlds.
+
+config.category.worldset.named=Named WorldSets
+config.category.worldset.named.tooltip=Configure named WorldSets. Each named WorldSet is defined by the world name.
+
+config.property.worldset.namelist=WorldSet Name List
+config.property.worldset.namelist.tooltip=This list specifies named worldsets. Each worldset contains one world name in this list.
+
+
 item.stellarapi.deftelescope.name=Default Telescope
 item.stellarapi.deffilteredtelescope.name=Default Filtered Telescope

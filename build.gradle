@@ -15,10 +15,8 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 ext.config = parseConfig(file('build.properties'))
 
 ext.stModVersion = "${config.version.stellarapi.major}.${config.version.stellarapi.minor}.${config.version.stellarapi.revis}.${config.version.stellarapi.patch}"
-ext.wsModVersion = "${config.version.worldsets.major}.${config.version.worldsets.minor}.${config.worldsets.stellarapi.revis}"
 
 version = "${config.version.minecraft}-${stModVersion}"
-ext.wsversion = "${config.version.minecraft}-${wsModVersion}"
 
 group= "${config.group}"
 archivesBaseName = "${config.archive}"
@@ -29,7 +27,6 @@ minecraft {
     mappings = "${config.version.mcpmappings}"
 
     replace "@STVERSION@", project.version
-    replace "@WSVERSION@", "${wsversion}"
 }
 
 
@@ -71,7 +68,6 @@ processResources
 {
     // this will ensure that this task is redone when the versions change.
     inputs.property "stversion", project.version
-    inputs.property "wsversion", project.wsversion
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -79,7 +75,7 @@ processResources
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'stversion':project.version, 'wsversion':project.wsversion, 'mcversion':project.minecraft.version
+        expand 'stversion':project.version, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info

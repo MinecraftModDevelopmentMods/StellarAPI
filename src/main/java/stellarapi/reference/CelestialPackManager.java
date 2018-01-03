@@ -3,6 +3,8 @@ package stellarapi.reference;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -51,6 +53,10 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 				pack.onRegisterCollection(world, collection -> collections.add(collection),
 						(effType, object) -> effectors.computeIfAbsent(
 								effType, type -> Lists.newArrayList()).add(object));
+				this.collectionManager = new CelestialCollectionManager(collections);
+				this.effectorMap = effectors.entrySet().stream().collect(
+						Collectors.toMap(entry -> entry.getKey(),
+								entry -> new CelestialEffectors(entry.getValue())));
 				this.coordinate = pack.createCoordinates(world);
 				this.skyEffect = pack.createSkyEffect(world);
 				break;
