@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialPack;
@@ -25,6 +26,7 @@ import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.helper.WorldProviderReplaceHelper;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.feature.celestial.tweakable.SAPICelestialPack;
 import stellarapi.feature.network.MessageSyncPackSettings;
@@ -87,7 +89,9 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 		this.coordinate = scene.createCoordinates();
 		this.skyEffect = scene.createSkyEffect();
 
-		// TODO Patch WorldProvider here
+		WorldProvider replaced = scene.replaceWorldProvider(world.provider);
+		if(replaced != null)
+			WorldProviderReplaceHelper.patchWorldProviderWith(this.world, replaced);
 	}
 
 	private static final Ordering<ICelestialCollection> collectionOrdering = Ordering

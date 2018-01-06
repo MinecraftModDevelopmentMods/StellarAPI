@@ -11,14 +11,14 @@ import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
-import stellarapi.example.CelestialHelperExample;
+import stellarapi.example.CelestialHelper;
 import stellarapi.example.WorldProviderExample;
 import stellarapi.impl.celestial.DefaultSkyVanilla;
 
 public class SAPICelestialScene implements ICelestialScene {
 	private final World world;
 
-	private final CelestialHelperExample helper;
+	private final CelestialHelper helper;
 	private final SAPICollection collection;
 	private final ICelestialCoordinates coordinate;
 	private final ISkyEffect skyEffect;
@@ -29,8 +29,8 @@ public class SAPICelestialScene implements ICelestialScene {
 		this.collection = new SAPICollection(this.world, dayLength, monthInDay);
 		this.coordinate = new SAPICoordinate(this.world, dayLength);
 		this.skyEffect = new DefaultSkyVanilla();
-		this.helper = new CelestialHelperExample(
-				1.0f, 1.0f, collection.sun, collection.moon, null, null);
+		this.helper = new CelestialHelper(
+				1.0f, 1.0f, collection.sun, collection.moon, this.coordinate, this.skyEffect);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class SAPICelestialScene implements ICelestialScene {
 
 	@Override
 	public WorldProvider replaceWorldProvider(WorldProvider provider) {
-		return new WorldProviderExample(provider, this.helper);
+		return new WorldProviderExample(this.world, provider, this.helper);
 	}
 
 }

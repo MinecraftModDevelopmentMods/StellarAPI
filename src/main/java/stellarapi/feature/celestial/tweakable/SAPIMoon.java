@@ -1,6 +1,7 @@
 package stellarapi.feature.celestial.tweakable;
 
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.celestials.EnumCelestialObjectType;
 import stellarapi.api.celestials.ICelestialObject;
@@ -37,7 +38,9 @@ public class SAPIMoon implements ICelestialObject {
 
 	@Override
 	public double getCurrentPhase() {
-		return world.getCurrentMoonPhaseFactor();
+		long worldTime = world.getWorldTime();
+		int phase = (int) Math.floor(this.getPhasePeriod().getOffset(worldTime, 0.0f) * 8.0);
+		return WorldProvider.MOON_PHASE_FACTORS[phase];
 	}
 
 	@Override

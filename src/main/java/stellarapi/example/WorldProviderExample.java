@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
@@ -26,14 +27,15 @@ import stellarapi.api.optics.EnumRGBA;
 public class WorldProviderExample extends WorldProvider {
 
 	private WorldProvider parProvider;
-	private CelestialHelperExample celestialHelper;
+	private CelestialHelper celestialHelper;
 
 	/** Array for sunrise/sunset colors (RGBA) */
 	private float[] colorsSunriseSunset = new float[4];
 
 	private long cloudColour = 16777215L;
 
-	public WorldProviderExample(WorldProvider provider, CelestialHelperExample celestialHelper) {
+	public WorldProviderExample(World world, WorldProvider provider, CelestialHelper celestialHelper) {
+		this.world = world;
 		this.parProvider = provider;
 		this.celestialHelper = celestialHelper;
 	}

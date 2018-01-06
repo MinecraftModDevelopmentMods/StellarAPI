@@ -13,7 +13,7 @@ public class SAPIConfigHandler implements IConfigHandler {
 	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryComment(category, "Configure world settings for each worldsets.");
-		config.setCategoryLanguageKey(category, "config.category.worldsettings"); // TODO Localize
+		config.setCategoryLanguageKey(category, "config.category.worldsettings");
 		config.setCategoryRequiresWorldRestart(category, true);
 
 		for(WorldSet worldSet : SAPIReferences.getAllWorldSets()) {
@@ -26,7 +26,7 @@ public class SAPIConfigHandler implements IConfigHandler {
 			config.setCategoryRequiresWorldRestart(worldCategory, true);
 
 			Property enabled = config.get(worldCategory, "Enabled", false);
-			enabled.setComment("Enable Stellar API tweak for worlds within this worldset.");
+			enabled.setComment("Enable/Disable Stellar API tweak for worlds within this worldset.");
 			enabled.setLanguageKey("config.property.worldsettings.enabled");
 			enabled.setRequiresWorldRestart(true);
 

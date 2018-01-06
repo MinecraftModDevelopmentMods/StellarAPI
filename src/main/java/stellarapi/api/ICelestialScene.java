@@ -34,7 +34,6 @@ public interface ICelestialScene {
 	/**
 	 * Replaces current WorldProvider with the new one. Return <code>null</code> to do nothing.
 	 * Can put some things in the world as well.
-	 * TODO Group this with some synchronization
 	 * */
 	public @Nullable WorldProvider replaceWorldProvider(WorldProvider provider);
 }

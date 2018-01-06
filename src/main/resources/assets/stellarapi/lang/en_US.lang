@@ -74,5 +74,20 @@ config.property.worldset.namelist=WorldSet Name List
 config.property.worldset.namelist.tooltip=This list specifies named worldsets. Each worldset contains one world name in this list.
 
 
+config.category.worldsettings=World Settings
+config.category.worldsettings.tooltip=Configure world settings for each worldsets.
+
+config.category.worldsettings.worldset.tooltip=Configure world settings for the specific worldset here.
+
+config.property.worldsettings.enabled=Tweak Enabled
+config.property.worldsettings.enabled.tooltip=Enable/Disable Stellar API tweak for worlds within this worldset. You need to enable it to change day/month length.
+
+config.property.worldsettings.daylength=Day Length
+config.property.worldsettings.daylength.tooltip=Tweak length of day with this settings.
+
+config.property.worldsettings.monthlengthinday=Month Length in Days
+config.property.worldsettings.monthlengthinday.tooltip=Tweak length of month (in days) with this settings.
+
+
 item.stellarapi.deftelescope.name=Default Telescope
 item.stellarapi.deffilteredtelescope.name=Default Filtered Telescope

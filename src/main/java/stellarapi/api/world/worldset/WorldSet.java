@@ -13,7 +13,7 @@ import net.minecraft.world.World;
  * Initialized on Init phase.
  * */
 public abstract class WorldSet {
-	// TODO This should be dynamic Predicate<World>
+	// TODO 1.13 This should be dynamic Predicate<World>
 	public final String name;
 
 	/** Types of worlds which this set definitely have, to identify the world */

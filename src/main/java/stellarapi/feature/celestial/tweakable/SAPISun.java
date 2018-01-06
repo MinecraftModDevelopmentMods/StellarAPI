@@ -25,7 +25,8 @@ public class SAPISun implements ICelestialObject {
 
 	@Override
 	public CelestialPeriod getHorizontalPeriod() {
-		return new CelestialPeriod("Day", this.dayLength, 0.25);
+		// Fake it, refraction is hard here
+		return new CelestialPeriod("Day", this.dayLength, 0.3);
 	}
 
 	@Override

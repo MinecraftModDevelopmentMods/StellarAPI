@@ -20,7 +20,7 @@ import stellarapi.api.optics.Wavelength;
  * <li>{@link ICelestialObject#getPhasePeriod()} is not null for Moon.
  * </ul>
  */
-public class CelestialHelperExample {
+public class CelestialHelper {
 
 	private final float relativeMultiplierSun;
 	private final float relativeMultiplierMoon;
@@ -32,7 +32,7 @@ public class CelestialHelperExample {
 
 	private final ISkyEffect sky;
 
-	public CelestialHelperExample(float relativeMultiplierSun, float relativeMultiplierMoon,
+	public CelestialHelper(float relativeMultiplierSun, float relativeMultiplierMoon,
 			ICelestialObject sun, ICelestialObject moon,
 			ICelestialCoordinates coordinate, ISkyEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;
