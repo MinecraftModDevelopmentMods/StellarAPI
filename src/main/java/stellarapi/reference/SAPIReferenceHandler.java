@@ -24,6 +24,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialWorld;
@@ -43,8 +44,8 @@ import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.optics.NakedScope;
-import stellarapi.api.worldset.WorldSet;
-import stellarapi.api.worldset.WorldSetFactory;
+import stellarapi.api.world.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSetFactory;
 
 public class SAPIReferenceHandler implements IReference, IConfigHandler {
 
@@ -235,7 +236,7 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryComment(category, "Configuration for WorldSets.");
-		config.setCategoryLanguageKey(category, "config.category.worldset"); // TODO Edit language file to include this
+		config.setCategoryLanguageKey(category, "config.category.worldset");
 		config.setCategoryRequiresMcRestart(category, true);
 
 		for(WorldSetFactory factory : factories.values()) {

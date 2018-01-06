@@ -1,4 +1,4 @@
-package stellarapi.api.worldset;
+package stellarapi.api.world.worldset;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

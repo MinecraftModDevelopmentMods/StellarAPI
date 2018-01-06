@@ -21,11 +21,11 @@
  * */
 
 /**
- * WorldSet section of WorldSet API.
+ * WorldSet section of Stellar API.
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
-package stellarapi.api.worldset;
+package stellarapi.api.world.worldset;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.api.SAPIReferences;

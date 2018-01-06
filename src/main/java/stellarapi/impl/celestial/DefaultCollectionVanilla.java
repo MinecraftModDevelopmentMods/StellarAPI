@@ -1,4 +1,4 @@
-package stellarapi.impl;
+package stellarapi.impl.celestial;
 
 import com.google.common.collect.ImmutableSet;
 

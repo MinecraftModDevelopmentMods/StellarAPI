@@ -21,7 +21,7 @@ import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
-import stellarapi.api.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSet;
 
 /**
  * Central reference for Stellar API.
@@ -40,6 +40,7 @@ public final class SAPIReferences {
 	// ********************************************* //
 
 	private Map<WorldSet, ICelestialPack> packs = Maps.newIdentityHashMap();
+	private Map<String, ICelestialPack> nameToPacks = Maps.newHashMap();
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
 
@@ -59,7 +60,19 @@ public final class SAPIReferences {
 		return INSTANCE.sleepWakeManager;
 	}
 
-	/** Placeholder method for versions before 1.13(data packs) - put this anytime */
+
+	/** Registers the pack. Placeholder method before 1.13 data packs. */
+	public static void registerPack(ICelestialPack pack) {
+		INSTANCE.nameToPacks.put(pack.getPackName(), pack);
+	}
+
+	/** Gets the celestial pack with name. */
+	public static ICelestialPack getPackWithName(String packName) {
+		return INSTANCE.nameToPacks.get(packName);
+	}
+
+
+	/** Placeholder method for versions before 1.13(data packs) - put this in any time */
 	public static void setCelestialPack(WorldSet worldSet, ICelestialPack pack) {
 		INSTANCE.packs.put(worldSet, pack);
 	}

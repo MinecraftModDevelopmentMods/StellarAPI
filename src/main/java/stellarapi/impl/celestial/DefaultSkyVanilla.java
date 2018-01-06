@@ -1,4 +1,4 @@
-package stellarapi.impl;
+package stellarapi.impl.celestial;
 
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.lib.math.SpCoord;

@@ -1,4 +1,4 @@
-package stellarapi.impl;
+package stellarapi.impl.daytime;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;

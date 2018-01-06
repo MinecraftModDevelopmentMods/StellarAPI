@@ -3,40 +3,27 @@ package stellarapi.api;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 
 /**
  * Celestial pack which can be provided by mods.
- * This will be integrated into data pack in 1.13 - for now it's actually a placeholder.
- * TODO CelestialPack world-specific configuration.
  * */
-public interface ICelestialPack {
-
+public interface ICelestialPack extends INBTSerializable<NBTTagCompound> {
 	/**
 	 * Gets the pack name.
 	 * */
 	public String getPackName();
 
 	/**
-	 * Register celestial collections here.
+	 * Gets the world-specific scene.
 	 * */
-	public void onRegisterCollection(World world, Consumer<ICelestialCollection> colRegistry,
-			BiConsumer<IEffectorType, ICelestialObject> effRegistry);
-
-	/**
-	 * Creates coordinates, or returns <code>null</code> if this pack doesn't provide coordinates.
-	 * Nonnull for now.
-	 * TODO Refactor on 1.13
-	 * */
-	public ICelestialCoordinates createCoordinates(World world);
-
-	/**
-	 * Creates sky effect, or returns <code>null</code> if this pack doesn't provide sky effect.
-	 * Nonnull for now.
-	 * */
-	public ISkyEffect createSkyEffect(World world);
-
+	public ICelestialScene getScene(World world);
 }

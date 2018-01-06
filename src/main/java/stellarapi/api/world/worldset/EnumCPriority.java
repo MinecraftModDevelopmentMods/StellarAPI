@@ -1,4 +1,4 @@
-package stellarapi.api.worldset;
+package stellarapi.api.world.worldset;
 
 public enum EnumCPriority {
 	HIGHEST,

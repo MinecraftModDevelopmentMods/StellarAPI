@@ -32,8 +32,9 @@ public class CelestialHelperExample {
 
 	private final ISkyEffect sky;
 
-	public CelestialHelperExample(float relativeMultiplierSun, float relativeMultiplierMoon, ICelestialObject sun,
-			ICelestialObject moon, ICelestialCoordinates coordinate, ISkyEffect sky) {
+	public CelestialHelperExample(float relativeMultiplierSun, float relativeMultiplierMoon,
+			ICelestialObject sun, ICelestialObject moon,
+			ICelestialCoordinates coordinate, ISkyEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;
 		this.relativeMultiplierMoon = relativeMultiplierMoon;
 		this.sun = sun;

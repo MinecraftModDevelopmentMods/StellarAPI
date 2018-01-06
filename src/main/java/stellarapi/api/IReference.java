@@ -7,8 +7,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
-import stellarapi.api.worldset.WorldSet;
-import stellarapi.api.worldset.WorldSetFactory;
+import stellarapi.api.world.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSetFactory;
 
 public interface IReference {
 	public IPerWorldReference getPerWorldReference(World world);

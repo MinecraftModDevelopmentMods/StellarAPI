@@ -10,8 +10,8 @@ import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
-import stellarapi.api.worldset.EnumCPriority;
-import stellarapi.api.worldset.WorldSet;
+import stellarapi.api.world.worldset.EnumCPriority;
+import stellarapi.api.world.worldset.WorldSet;
 
 public class PerWorldData extends WorldSavedData {
 

@@ -38,7 +38,7 @@ public class SleepWakeManager implements IConfigHandler {
 	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryComment(category, "Configuration for Waking System.");
-		config.setCategoryLanguageKey(category, "config.category.server.wake");
+		config.setCategoryLanguageKey(category, "config.category.wake");
 		config.setCategoryRequiresWorldRestart(category, true);
 
 		Property allEnabled = config.get(category, "Custom_Wake_Enabled", true);

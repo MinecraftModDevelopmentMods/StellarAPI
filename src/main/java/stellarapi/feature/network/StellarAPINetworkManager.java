@@ -5,10 +5,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import stellarapi.api.ICelestialWorld;
+import stellarapi.api.SAPICapabilities;
+import stellarapi.api.SAPIReferences;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
+import stellarapi.reference.CelestialPackManager;
 
 public class StellarAPINetworkManager {
 
@@ -18,7 +24,10 @@ public class StellarAPINetworkManager {
 	public StellarAPINetworkManager() {
 		this.wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(this.id);
 
-		wrapper.registerMessage(MessageSync.MessageSyncCommonHandler.class, MessageSync.class, 0, Side.CLIENT);
+		wrapper.registerMessage(MessageSyncPerDimRes.MessageSyncCommonHandler.class,
+				MessageSyncPerDimRes.class, 0, Side.CLIENT);
+		wrapper.registerMessage(MessageSyncPackSettings.MessageSyncPackHandler.class,
+				MessageSyncPackSettings.class, 1, Side.CLIENT);
 	}
 
 	public void onSyncToAll(World world) {
@@ -27,7 +36,7 @@ public class StellarAPINetworkManager {
 		NBTTagCompound compound = new NBTTagCompound();
 		data.writeToNBT(compound);
 
-		wrapper.sendToDimension(new MessageSync(compound), world.provider.getDimension());
+		wrapper.sendToDimension(new MessageSyncPerDimRes(compound), world.provider.getDimension());
 	}
 
 	public void onSync(EntityPlayerMP player, World world) {
@@ -36,7 +45,23 @@ public class StellarAPINetworkManager {
 		NBTTagCompound compound = new NBTTagCompound();
 		data.writeToNBT(compound);
 
-		wrapper.sendTo(new MessageSync(compound), player);
+		wrapper.sendTo(new MessageSyncPerDimRes(compound), player);
+
+
+		ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
+		if(cWorld instanceof CelestialPackManager) {
+			IMessage syncMessage = ((CelestialPackManager) cWorld).getSyncMessage();
+			if(syncMessage != null)
+				wrapper.sendTo(syncMessage, player);
+		}
+	}
+
+	public void handleNotHave() {
+		World world = SAPIReferences.getDefaultWorld(true);
+		ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
+		if(cWorld instanceof CelestialPackManager) {
+			
+		}
 	}
 
 	@SubscribeEvent
@@ -54,6 +79,19 @@ public class StellarAPINetworkManager {
 	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		EntityPlayerMP player = (EntityPlayerMP) event.player;
 		this.onSync(player, player.world);
+	}
+
+	@SubscribeEvent
+	public void handleNotModded(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+		if(!event.getConnectionType().equals("MODDED"))
+			this.handleNotHave();
+	}
+
+	@SubscribeEvent
+	public void handleNotHave(FMLNetworkEvent.CustomPacketRegistrationEvent event) {
+		if(event.getOperation().equals("REGISTER") && !event.getRegistrations().contains(this.id)
+				&& event.getSide().isClient())
+			this.handleNotHave();
 	}
 
 }

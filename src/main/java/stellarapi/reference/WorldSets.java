@@ -17,10 +17,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.IReference;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.ConfigManager;
-import stellarapi.api.worldset.EnumCPriority;
-import stellarapi.api.worldset.EnumFlag;
-import stellarapi.api.worldset.WorldSet;
-import stellarapi.api.worldset.WorldSetFactory;
+import stellarapi.api.world.worldset.EnumCPriority;
+import stellarapi.api.world.worldset.EnumFlag;
+import stellarapi.api.world.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSetFactory;
 
 public class WorldSets {
 	public void onPreInit(IReference reference) {
@@ -82,7 +82,7 @@ public class WorldSets {
 	/** Those resembling overworld */
 	private static class OverworldSet extends WorldSet {
 		protected OverworldSet() {
-			super("OverworldSet", EnumCPriority.MODERATE,
+			super("Overworld_Like", EnumCPriority.MODERATE,
 					world -> world.provider.hasSkyLight()
 					&& !world.provider.isNether()
 					&& world.provider.isSurfaceWorld(),
@@ -122,7 +122,7 @@ public class WorldSets {
 		@Override
 		public void configure(Configuration config, ConfigCategory category) {
 			category.setComment("Configure named worldsets.");
-			category.setLanguageKey("config.category.worldset.named"); // TODO Edit language file to include this
+			category.setLanguageKey("config.category.worldset.named");
 			category.setRequiresMcRestart(true);
 
 			Property worldNames = config.get(category.getQualifiedName(), "World_Names", new String[] { });

@@ -1,4 +1,4 @@
-package stellarapi.api.worldset;
+package stellarapi.api.world.worldset;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -13,9 +13,7 @@ import net.minecraft.world.World;
  * Initialized on Init phase.
  * */
 public abstract class WorldSet {
-	// FIXME WorldSet shouldn't be a registry entry - it should be dynamic Predicate<World>
-	// The parameter is given or what form would be good?
-	// Some declarable
+	// TODO This should be dynamic Predicate<World>
 	public final String name;
 
 	/** Types of worlds which this set definitely have, to identify the world */
@@ -66,7 +64,7 @@ public abstract class WorldSet {
 		return this.hasSky;
 	}
 
-	/** Gives if worlds in this world set has atmosphere. */
+	/** Gives if worlds in this world set has proper atmosphere. */
 	public EnumFlag hasAtmosphere() {
 		return this.hasAtmosphere;
 	}

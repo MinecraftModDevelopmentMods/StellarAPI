@@ -1,4 +1,4 @@
-package stellarapi.impl;
+package stellarapi.impl.celestial;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
@@ -18,8 +18,7 @@ public class DefaultMoon implements ICelestialObject {
 
 	@Override
 	public CelestialPeriod getAbsolutePeriod() {
-		// Month is not absolute period in minecraft; It does not alter position
-		// of the moon.
+		// Month is not absolute period in minecraft; It does not alter position of the moon.
 		return null;
 	}
 
@@ -69,19 +68,4 @@ public class DefaultMoon implements ICelestialObject {
 	public String getName() {
 		return "Moon";
 	}
-
-	/*
-	 * @Override public ImmutableList<String> additionalNumericalProperties() {
-	 * return ImmutableList.of(); }
-	 * 
-	 * @Override public double additionalNumericalProperty(String propertyName)
-	 * { return 0; }
-	 * 
-	 * @Override public ImmutableList<String> additionalGenericProperties() {
-	 * return ImmutableList.of(); }
-	 * 
-	 * @Override public String additionalGenericProperty(String propertyName) {
-	 * return null; }
-	 */
-
 }

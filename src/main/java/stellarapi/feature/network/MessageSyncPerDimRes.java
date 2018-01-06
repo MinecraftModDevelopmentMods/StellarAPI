@@ -9,14 +9,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import stellarapi.StellarAPI;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 
-public class MessageSync implements IMessage {
-
+public class MessageSyncPerDimRes implements IMessage {
 	private NBTTagCompound compoundInfo;
 
-	public MessageSync() {
+	public MessageSyncPerDimRes() {
 	}
 
-	public MessageSync(NBTTagCompound commonInfo) {
+	public MessageSyncPerDimRes(NBTTagCompound commonInfo) {
 		this.compoundInfo = commonInfo;
 	}
 
@@ -30,10 +29,10 @@ public class MessageSync implements IMessage {
 		ByteBufUtils.writeTag(buf, this.compoundInfo);
 	}
 
-	public static class MessageSyncCommonHandler implements IMessageHandler<MessageSync, IMessage> {
+	public static class MessageSyncCommonHandler implements IMessageHandler<MessageSyncPerDimRes, IMessage> {
 
 		@Override
-		public IMessage onMessage(final MessageSync message, MessageContext ctx) {
+		public IMessage onMessage(final MessageSyncPerDimRes message, MessageContext ctx) {
 			StellarAPI.PROXY.registerTask(new Runnable() {
 				@Override
 				public void run() {

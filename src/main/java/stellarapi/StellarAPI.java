@@ -19,14 +19,15 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.feature.celestial.tweakable.SAPICelestialPack;
+import stellarapi.feature.celestial.tweakable.SAPIConfigHandler;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
 import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
-import stellarapi.impl.AlarmWakeHandler;
-import stellarapi.impl.DefaultCelestialPack;
-import stellarapi.impl.DefaultDaytimeChecker;
-import stellarapi.impl.SunHeightWakeHandler;
+import stellarapi.impl.daytime.DefaultDaytimeChecker;
+import stellarapi.impl.wake.AlarmWakeHandler;
+import stellarapi.impl.wake.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.SAPIReferenceHandler;
 import stellarapi.reference.WorldSets;
@@ -49,7 +50,8 @@ public final class StellarAPI {
 	}
 
 	private static final String wakeCategory = "wake";
-	private static final String worldCategory = "worldsets";
+	private static final String worldSetCategory = "worldsets";
+	private static final String worldCfgCategory = "worldconfig";
 
 	private Logger logger;
 
@@ -97,7 +99,7 @@ public final class StellarAPI {
 		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
 		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
 
-		cfgManager.register(worldCategory, reference);
+		cfgManager.register(worldSetCategory, reference);
 		WorldSets worldSets = new WorldSets();
 		worldSets.onPreInit(reference);
 		MinecraftForge.EVENT_BUS.register(worldSets);
@@ -113,10 +115,15 @@ public final class StellarAPI {
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) throws IOException {
+		// First sync from file
 		cfgManager.syncFromFile();
 
-		DefaultCelestialPack defPack = new DefaultCelestialPack();
-		SAPIReferences.setCelestialPack(SAPIReferences.exactOverworld(), defPack);
+		// Second sync from file
+		SAPIConfigHandler packCfgHandler = new SAPIConfigHandler();
+		cfgManager.register(worldCfgCategory, packCfgHandler);
+		cfgManager.syncFromFile();
+		// This is for client
+		SAPIReferences.registerPack(new SAPICelestialPack());
 
 		PROXY.load(event);
 

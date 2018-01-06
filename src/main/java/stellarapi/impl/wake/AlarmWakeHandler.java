@@ -1,4 +1,4 @@
-package stellarapi.impl;
+package stellarapi.impl.wake;
 
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;

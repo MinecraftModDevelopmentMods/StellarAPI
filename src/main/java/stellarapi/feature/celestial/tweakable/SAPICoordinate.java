@@ -1,4 +1,4 @@
-package stellarapi.impl;
+package stellarapi.feature.celestial.tweakable;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
@@ -8,13 +8,14 @@ import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;
 
-public class DefaultCoordinateVanilla implements ICelestialCoordinates {
-
+public class SAPICoordinate implements ICelestialCoordinates {
 	private World world;
+	private double dayLength;
 	private Matrix3 projREqToHor = new Matrix3().setAsRotation(1.0, 0.0, 0.0, Math.PI / 2);
 
-	public DefaultCoordinateVanilla(World world) {
+	public SAPICoordinate(World world, double day) {
 		this.world = world;
+		this.dayLength = day;
 	}
 
 	// Ground directions are x : East, y : North=Pole, z : Zenith,
@@ -28,7 +29,7 @@ public class DefaultCoordinateVanilla implements ICelestialCoordinates {
 
 	@Override
 	public CelestialPeriod getPeriod() {
-		return new CelestialPeriod("Celestial Day", 24000.0, 0.75);
+		return new CelestialPeriod("Celestial Day", this.dayLength, 0.75);
 	}
 
 	@Override

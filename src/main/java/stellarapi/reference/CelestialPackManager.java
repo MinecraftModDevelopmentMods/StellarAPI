@@ -1,9 +1,9 @@
 package stellarapi.reference;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
@@ -12,8 +12,10 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialPack;
+import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.ISkyEffect;
@@ -23,7 +25,10 @@ import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
-import stellarapi.api.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSet;
+import stellarapi.feature.celestial.tweakable.SAPICelestialPack;
+import stellarapi.feature.network.MessageSyncPackSettings;
+import stellarapi.impl.celestial.DefaultCelestialPack;
 
 /**
  * Per world manager to contain the per-world(dimension) objects.
@@ -34,6 +39,8 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 
 	private World world;
 
+	private ICelestialPack pack;
+
 	private CelestialCollectionManager collectionManager = null;
 	private Map<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
 
@@ -43,25 +50,44 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 
 	CelestialPackManager(World world) {
 		this.world = world;
-		List<ICelestialCollection> collections = Lists.newArrayList();
-		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
 
 		for(WorldSet wSet : SAPIReferences.appliedWorldSets(world)) {
 			// Only one pack for WorldSet for now
 			ICelestialPack pack = SAPIReferences.getCelestialPack(wSet);
 			if(pack != null) {
-				pack.onRegisterCollection(world, collection -> collections.add(collection),
-						(effType, object) -> effectors.computeIfAbsent(
-								effType, type -> Lists.newArrayList()).add(object));
-				this.collectionManager = new CelestialCollectionManager(collections);
-				this.effectorMap = effectors.entrySet().stream().collect(
-						Collectors.toMap(entry -> entry.getKey(),
-								entry -> new CelestialEffectors(entry.getValue())));
-				this.coordinate = pack.createCoordinates(world);
-				this.skyEffect = pack.createSkyEffect(world);
+				this.loadPack(pack);
 				break;
 			}
 		}
+	}
+
+	public void onVanillaServer() {
+		if(this.pack instanceof SAPICelestialPack) {
+			this.loadPack(new DefaultCelestialPack());
+		}
+	}
+
+	public void loadPack(ICelestialPack pack) {
+		this.pack = pack;
+
+		List<ICelestialCollection> collections = Lists.newArrayList();
+		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
+
+		ICelestialScene scene = pack.getScene(this.world);
+		scene.onRegisterCollection(collection -> collections.add(collection),
+				(effType, object) -> effectors.computeIfAbsent(effType, type -> Lists.newArrayList())
+				.add(object));
+
+		Collections.sort(collections, collectionOrdering);
+
+		this.collectionManager = new CelestialCollectionManager(collections);
+		this.effectorMap = effectors.entrySet().stream().collect(
+				Collectors.toMap(entry -> entry.getKey(),
+						entry -> new CelestialEffectors(entry.getValue())));
+		this.coordinate = scene.createCoordinates();
+		this.skyEffect = scene.createSkyEffect();
+
+		// TODO Patch WorldProvider here
 	}
 
 	private static final Ordering<ICelestialCollection> collectionOrdering = Ordering
@@ -72,6 +98,11 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 				}
 			});
 
+	public IMessage getSyncMessage() {
+		if(this.pack != null)
+			return new MessageSyncPackSettings(this.pack);
+		else return null;
+	}
 
 	@Override
 	public CelestialCollectionManager getCollectionManager() {
