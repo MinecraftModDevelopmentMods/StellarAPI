@@ -11,11 +11,13 @@ import stellarapi.api.lib.math.Vector3;
 public class SAPICoordinate implements ICelestialCoordinates {
 	private World world;
 	private double dayLength;
+	private double offset;
 	private Matrix3 projREqToHor = new Matrix3().setAsRotation(1.0, 0.0, 0.0, Math.PI / 2);
 
-	public SAPICoordinate(World world, double day) {
+	public SAPICoordinate(World world, double day, double dayOffset) {
 		this.world = world;
 		this.dayLength = day;
+		this.offset = dayOffset / day;
 	}
 
 	// Ground directions are x : East, y : North=Pole, z : Zenith,
@@ -29,7 +31,8 @@ public class SAPICoordinate implements ICelestialCoordinates {
 
 	@Override
 	public CelestialPeriod getPeriod() {
-		return new CelestialPeriod("Celestial Day", this.dayLength, 0.75);
+		return new CelestialPeriod("Celestial Day", this.dayLength,
+				this.offset < 0.5? this.offset + 0.5 : this.offset - 0.5);
 	}
 
 	@Override

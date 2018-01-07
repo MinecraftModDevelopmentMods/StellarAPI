@@ -13,11 +13,15 @@ public class SAPIMoon implements ICelestialObject {
 	private World world;
 	private double dayLength;
 	private double monthInDay;
+	private double relOffsetDay;
+	private double relOffsetMonth;
 
-	public SAPIMoon(World world, double day, double month) {
+	public SAPIMoon(World world, double day, double month, double dayOffset, double monthOffset) {
 		this.world = world;
 		this.dayLength = day;
 		this.monthInDay = month;
+		this.relOffsetDay = dayOffset / day;
+		this.relOffsetMonth = monthOffset / month;
 	}
 
 	@Override
@@ -28,12 +32,13 @@ public class SAPIMoon implements ICelestialObject {
 
 	@Override
 	public CelestialPeriod getHorizontalPeriod() {
-		return new CelestialPeriod("Lunar Day", this.dayLength, 0.75);
+		return new CelestialPeriod("Lunar Day", this.dayLength,
+				this.relOffsetDay < 0.5? this.relOffsetDay + 0.5 : this.relOffsetDay - 0.5);
 	}
 
 	@Override
 	public CelestialPeriod getPhasePeriod() {
-		return new CelestialPeriod("Lunar Month", this.dayLength * this.monthInDay, 0.5);
+		return new CelestialPeriod("Lunar Month", this.dayLength * this.monthInDay, this.relOffsetMonth);
 	}
 
 	@Override

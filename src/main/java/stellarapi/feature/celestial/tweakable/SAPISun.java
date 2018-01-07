@@ -11,10 +11,12 @@ import stellarapi.api.optics.Wavelength;
 public class SAPISun implements ICelestialObject {
 	private World world;
 	private double dayLength;
+	private double offset;
 
-	public SAPISun(World world, double day) {
+	public SAPISun(World world, double day, double dayOffset) {
 		this.world = world;
 		this.dayLength = day;
+		this.offset = dayOffset / day;
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class SAPISun implements ICelestialObject {
 	@Override
 	public CelestialPeriod getHorizontalPeriod() {
 		// Fake it, refraction is hard here
-		return new CelestialPeriod("Day", this.dayLength, 0.3);
+		return new CelestialPeriod("Day", this.dayLength, this.offset);
 	}
 
 	@Override

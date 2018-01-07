@@ -83,10 +83,19 @@ config.property.worldsettings.enabled=Tweak Enabled
 config.property.worldsettings.enabled.tooltip=Enable/Disable Stellar API tweak for worlds within this worldset. You need to enable it to change day/month length.
 
 config.property.worldsettings.daylength=Day Length
-config.property.worldsettings.daylength.tooltip=Tweak length of day with this settings.
+config.property.worldsettings.daylength.tooltip=Tweak length of day (in ticks) with this settings.
 
 config.property.worldsettings.monthlengthinday=Month Length in Days
 config.property.worldsettings.monthlengthinday.tooltip=Tweak length of month (in days) with this settings.
+
+config.property.worldsettings.dayoffset=Day Offset
+config.property.worldsettings.dayoffset.tooltip=Tweak day offset (in ticks), which determines starting position of celestial objects.
+
+config.property.worldsettings.monthoffset=Month Offset
+config.property.worldsettings.monthoffset.tooltip=Tweak month offset (in days), which determines starting phase of the moon.
+
+config.property.worldsettings.minskybrightness=Minimum Sky Brightness
+config.property.worldsettings.minskybrightness.tooltip=Tweak minimum sky brightness, which determines the brightness of night.
 
 
 item.stellarapi.deftelescope.name=Default Telescope

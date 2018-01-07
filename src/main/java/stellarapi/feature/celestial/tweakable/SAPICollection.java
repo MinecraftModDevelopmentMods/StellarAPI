@@ -13,9 +13,10 @@ public class SAPICollection implements ICelestialCollection {
 	public final SAPISun sun;
 	public final SAPIMoon moon;
 
-	public SAPICollection(World world, double day, double monthInDay) {
-		this.sun = new SAPISun(world, day);
-		this.moon = new SAPIMoon(world, day, monthInDay);
+	public SAPICollection(World world, double day, double monthInDay,
+			double dayOffset, double monthOffset) {
+		this.sun = new SAPISun(world, day, dayOffset);
+		this.moon = new SAPIMoon(world, day, monthInDay, dayOffset, monthOffset);
 	}
 
 	@Override
