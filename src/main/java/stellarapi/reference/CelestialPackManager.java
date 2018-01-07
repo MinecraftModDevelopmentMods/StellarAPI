@@ -11,8 +11,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialPack;
@@ -29,13 +31,14 @@ import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.helper.WorldProviderReplaceHelper;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.feature.celestial.tweakable.SAPICelestialPack;
+import stellarapi.feature.celestial.tweakable.SAPIConfigHandler;
 import stellarapi.feature.network.MessageSyncPackSettings;
 import stellarapi.impl.celestial.DefaultCelestialPack;
 
 /**
  * Per world manager to contain the per-world(dimension) objects.
  */
-public class CelestialPackManager implements ICelestialWorld, IPerWorldReference {
+public class CelestialPackManager implements ICelestialWorld, IPerWorldReference, INBTSerializable<NBTTagCompound> {
 
 	private static final String ID = "stellarapiperworldmanager";
 
@@ -135,7 +138,28 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	}
 
 	public ICelestialScene getScene() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.scene;
+	}
+
+
+	@Override
+	public NBTTagCompound serializeNBT() {
+		if(this.pack != null) {
+			NBTTagCompound nbt = pack.serializeNBT();
+			nbt.setString("PackName", pack.getPackName());
+			return nbt;
+		}
+		else return new NBTTagCompound();
+	}
+
+	@Override
+	public void deserializeNBT(NBTTagCompound nbt) {
+		if(this.pack != null) {
+			if(pack.getPackName().equals(nbt.getString("PackName"))) {
+				if(!SAPIConfigHandler.forceConfig)
+					// Load save, which overwrites pack from configuration.
+					pack.deserializeNBT(nbt);
+			}
+		}
 	}
 }

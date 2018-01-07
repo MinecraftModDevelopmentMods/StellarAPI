@@ -1,12 +1,14 @@
 package stellarapi.reference;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.SAPICapabilities;
 
-public class SAPIWorldCaps implements ICapabilityProvider {
+public class SAPIWorldCaps implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
 	private CelestialPackManager celestials;
 
@@ -24,6 +26,19 @@ public class SAPIWorldCaps implements ICapabilityProvider {
 		if(capability == SAPICapabilities.CELESTIAL_CAPABILITY)
 			return SAPICapabilities.CELESTIAL_CAPABILITY.cast(this.celestials);
 		else return null;
+	}
+
+
+	@Override
+	public NBTTagCompound serializeNBT() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deserializeNBT(NBTTagCompound nbt) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

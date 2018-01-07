@@ -1,5 +1,7 @@
 package stellarapi.feature.celestial.tweakable;
 
+import com.google.common.collect.Lists;
+
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -10,11 +12,21 @@ import stellarapi.impl.celestial.DefaultCelestialPack;
 
 public class SAPIConfigHandler implements IConfigHandler {
 
+	// Yes, bad flag. I lack time to organize these stuffs
+	// TODO Fix this flag
+	public static boolean forceConfig;
+
 	@Override
 	public void setupConfig(Configuration config, String category) {
 		config.setCategoryComment(category, "Configure world settings for each worldsets.");
 		config.setCategoryLanguageKey(category, "config.category.worldsettings");
 		config.setCategoryRequiresWorldRestart(category, true);
+
+		Property forceChange = config.get(category, "Force_Config", false);
+		forceChange.setComment("Set this to true to force configuration change to the existing world"
+				+ " which is opened at least once with Stellar API.");
+		forceChange.setLanguageKey("config.property.worldsettings.forceconfig");
+		forceChange.setRequiresWorldRestart(true);
 
 		for(WorldSet worldSet : SAPIReferences.getAllWorldSets()) {
 			if(worldSet.hasAtmosphere().isFalse)
@@ -53,11 +65,17 @@ public class SAPIConfigHandler implements IConfigHandler {
 			Property minSkyBrightness = config.get(worldCategory, "Minimum_Sky_Brightness", 0.2f, "", 0.0f, 1.0f);
 			minSkyBrightness.setComment("Tweak minimum sky brightness, which determines the brightness of night.");
 			minSkyBrightness.setLanguageKey("config.property.worldsettings.minskybrightness");
+
+			config.setCategoryPropertyOrder(worldCategory,
+					Lists.newArrayList(enabled.getName(), dayLength.getName(), monthInDay.getName(),
+							dayOffset.getName(), monthOffset.getName(), minSkyBrightness.getName()));
 		}
 	}
 
 	@Override
 	public void loadFromConfig(Configuration config, String category) {
+		forceConfig = config.getCategory(category).get("Force_Config").getBoolean();
+
 		for(WorldSet worldSet : SAPIReferences.getAllWorldSets()) {
 			if(worldSet.hasAtmosphere().isFalse)
 				return;
