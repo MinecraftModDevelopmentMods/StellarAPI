@@ -5,7 +5,6 @@ import net.minecraft.world.World;
 import stellarapi.api.ICelestialPack;
 import stellarapi.api.ICelestialScene;
 
-// TODO Forced flag for updating world day length - enough to check on deserialize
 public class SAPICelestialPack implements ICelestialPack {
 
 	private double dayLength = 24000.0;

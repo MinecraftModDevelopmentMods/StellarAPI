@@ -31,14 +31,12 @@ public class SAPIWorldCaps implements ICapabilityProvider, INBTSerializable<NBTT
 
 	@Override
 	public NBTTagCompound serializeNBT() {
-		// TODO Auto-generated method stub
-		return null;
+		return celestials.serializeNBT();
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		// TODO Auto-generated method stub
-		
+		celestials.deserializeNBT(nbt);
 	}
 
 }

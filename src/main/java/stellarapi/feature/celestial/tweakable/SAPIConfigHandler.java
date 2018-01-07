@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import stellarapi.api.ICelestialPack;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.IConfigHandler;
 import stellarapi.api.world.worldset.WorldSet;
@@ -82,7 +83,8 @@ public class SAPIConfigHandler implements IConfigHandler {
 
 			String worldCategory = category + Configuration.CATEGORY_SPLITTER + worldSet.name;
 
-			if(SAPIReferences.getCelestialPack(worldSet) == null) {
+			ICelestialPack pack = SAPIReferences.getCelestialPack(worldSet);
+			if(pack == null || "Stellar API".equals(pack.getPackName())) {
 				ConfigCategory cfgCat = config.getCategory(worldCategory);
 				if(cfgCat.get("Enabled").getBoolean()) {
 					double day = cfgCat.get("Day_Length").getDouble();
@@ -93,7 +95,7 @@ public class SAPIConfigHandler implements IConfigHandler {
 
 					SAPIReferences.setCelestialPack(worldSet,
 							new SAPICelestialPack(day, month, dayOffset, monthOffset, minSkyBrightness));
-				} else if(worldSet == SAPIReferences.exactOverworld()) {
+				} else if(pack == null && worldSet == SAPIReferences.exactOverworld()) {
 					SAPIReferences.setCelestialPack(worldSet, new DefaultCelestialPack());
 				}
 			}
