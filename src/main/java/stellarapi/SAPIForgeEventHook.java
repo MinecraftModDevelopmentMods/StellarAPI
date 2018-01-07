@@ -102,8 +102,7 @@ public class SAPIForgeEventHook {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onWorldUnload(WorldEvent.Unload event) {
 		if (event.getWorld().isRemote)
-			SAPIReferences.getEventBus()
-					.post(new ClientWorldEvent.Unload(event.getWorld()));
+			SAPIReferences.getEventBus().post(new ClientWorldEvent.Unload(event.getWorld()));
 		else {
 			MinecraftServer server = event.getWorld().getMinecraftServer();
 			SAPIReferences.getEventBus().post(new ServerWorldEvent.Unload(server, event.getWorld()));

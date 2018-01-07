@@ -24,9 +24,9 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialCoordinates;
+import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.IPerEntityReference;
 import stellarapi.api.IPerWorldReference;
@@ -230,6 +230,15 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 	@Override
 	public ImmutableList<WorldSet> appliedWorldSets(World world) {
 		return PerWorldData.getWorldSets(world).appliedWorldSets;
+	}
+
+
+	@Override
+	public ICelestialScene getActivePack(World world) {
+		ICelestialWorld celWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, EnumFacing.UP);
+		if(celWorld instanceof CelestialPackManager)
+			return ((CelestialPackManager) celWorld).getScene();
+		else return null;
 	}
 
 

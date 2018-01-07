@@ -82,6 +82,12 @@ public final class SAPIReferences {
 		return INSTANCE.packs.get(worldSet);
 	}
 
+	/** Gets the active scene for now. */
+	public static @Nullable ICelestialScene getActivePack(World world) {
+		return reference.getActivePack(world);
+	}
+
+
 	/**
 	 * Checks if this world is default.
 	 * On server, this checks for overworld.

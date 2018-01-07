@@ -26,4 +26,6 @@ public interface IReference {
 	public WorldSet[] getGeneratedWorldSets(ResourceLocation location);
 	public WorldSet getPrimaryWorldSet(World world);
 	public ImmutableList<WorldSet> appliedWorldSets(World world);
+
+	public ICelestialScene getActivePack(World world);
 }

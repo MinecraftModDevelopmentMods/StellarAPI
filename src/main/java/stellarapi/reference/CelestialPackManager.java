@@ -42,6 +42,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	private World world;
 
 	private ICelestialPack pack;
+	private ICelestialScene scene;
 
 	private CelestialCollectionManager collectionManager = null;
 	private Map<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
@@ -75,7 +76,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 		List<ICelestialCollection> collections = Lists.newArrayList();
 		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
 
-		ICelestialScene scene = pack.getScene(this.world);
+		this.scene = pack.getScene(this.world);
 		scene.onRegisterCollection(collection -> collections.add(collection),
 				(effType, object) -> effectors.computeIfAbsent(effType, type -> Lists.newArrayList())
 				.add(object));
@@ -131,5 +132,10 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	@Override
 	public ISkyEffect getSkyEffect() {
 		return this.skyEffect;
+	}
+
+	public ICelestialScene getScene() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
