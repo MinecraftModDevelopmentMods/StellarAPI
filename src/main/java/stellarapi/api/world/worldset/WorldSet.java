@@ -21,7 +21,6 @@ public abstract class WorldSet {
 	private final Predicate<World> predicate;
 	private final EnumCPriority priority;
 	private EnumFlag hasSky = EnumFlag.UNCERTAIN;
-	private EnumFlag hasAtmosphere = EnumFlag.UNCERTAIN;
 	private Map<String, EnumFlag> flags = Maps.newHashMap();
 
 	protected WorldSet(String name, EnumCPriority priority, Predicate<World> predicate,
@@ -34,11 +33,6 @@ public abstract class WorldSet {
 
 	protected WorldSet setHasSky(EnumFlag flag) {
 		this.hasSky = flag;
-		return this;
-	}
-
-	protected WorldSet setHasAtmosphere(EnumFlag flag) {
-		this.hasAtmosphere = flag;
 		return this;
 	}
 
@@ -62,11 +56,6 @@ public abstract class WorldSet {
 	/** Gives if worlds in this world set has sky, i.e. any kind of opening on the upside. */
 	public EnumFlag hasSky() {
 		return this.hasSky;
-	}
-
-	/** Gives if worlds in this world set has proper atmosphere. */
-	public EnumFlag hasAtmosphere() {
-		return this.hasAtmosphere;
 	}
 
 	public EnumFlag getFlag(String property) {

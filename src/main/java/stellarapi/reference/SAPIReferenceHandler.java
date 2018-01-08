@@ -259,6 +259,10 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 
 	@Override
 	public void loadFromConfig(Configuration config, String category) {
+		// This requires MC restart. Don't respond any attempts after the first loading.
+		if(!worldSets.isEmpty())
+			return;
+
 		for(Map.Entry<ResourceLocation, WorldSetFactory> entry : factories.entrySet()) {
 			WorldSetFactory factory = entry.getValue();
 			String title = factory.getTitle();

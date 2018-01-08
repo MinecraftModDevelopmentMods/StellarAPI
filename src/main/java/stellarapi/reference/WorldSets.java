@@ -75,7 +75,6 @@ public class WorldSets {
 					world -> false,
 					DimensionType.OVERWORLD);
 			this.setHasSky(EnumFlag.TRUE);
-			this.setHasAtmosphere(EnumFlag.TRUE);
 		}
 	}
 
@@ -88,7 +87,6 @@ public class WorldSets {
 					&& world.provider.isSurfaceWorld(),
 					DimensionType.OVERWORLD);
 			this.setHasSky(EnumFlag.TRUE);
-			this.setHasAtmosphere(EnumFlag.TRUE);
 		}
 	}
 
@@ -99,7 +97,6 @@ public class WorldSets {
 					&& !world.provider.isNether() && !world.provider.isSurfaceWorld(),
 					DimensionType.THE_END);
 			this.setHasSky(EnumFlag.TRUE);
-			this.setHasAtmosphere(EnumFlag.FALSE);
 		}
 	}
 
@@ -109,7 +106,6 @@ public class WorldSets {
 					world -> world.provider.isNether(),
 					DimensionType.NETHER);
 			this.setHasSky(EnumFlag.FALSE);
-			this.setHasAtmosphere(EnumFlag.FALSE);
 		}
 	}
 

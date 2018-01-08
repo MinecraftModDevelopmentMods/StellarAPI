@@ -3,6 +3,7 @@ package stellarapi.impl.celestial;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import stellarapi.api.ICelestialCoordinates;
@@ -40,8 +41,15 @@ public class DefaultCelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public WorldProvider replaceWorldProvider(WorldProvider provider) {
-		return null;
-	}
+	public WorldProvider replaceWorldProvider(WorldProvider provider) { return null; }
+
+	@Override
+	public NBTTagCompound serializeNBT() { return new NBTTagCompound(); }
+
+	@Override
+	public void deserializeNBT(NBTTagCompound nbt) { }
+
+	@Override
+	public void prepare() { }
 
 }

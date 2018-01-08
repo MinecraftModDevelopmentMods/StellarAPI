@@ -20,11 +20,12 @@ import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
 import stellarapi.feature.celestial.tweakable.SAPICelestialPack;
-import stellarapi.feature.celestial.tweakable.SAPIConfigHandler;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
+import stellarapi.feature.config.SAPIConfigHandler;
 import stellarapi.feature.network.StellarAPINetworkManager;
 import stellarapi.feature.perdimres.PerDimensionResourceRegistry;
+import stellarapi.impl.celestial.DefaultCelestialPack;
 import stellarapi.impl.daytime.DefaultDaytimeChecker;
 import stellarapi.impl.wake.AlarmWakeHandler;
 import stellarapi.impl.wake.SunHeightWakeHandler;
@@ -62,6 +63,8 @@ public final class StellarAPI {
 	private Configuration config;
 	private ConfigManager cfgManager;
 
+	private SAPIConfigHandler packCfgHandler;
+
 	public Logger getLogger() {
 		return this.logger;
 	}
@@ -72,6 +75,10 @@ public final class StellarAPI {
 
 	public ConfigManager getCfgManager() {
 		return this.cfgManager;
+	}
+
+	public SAPIConfigHandler getPackCfgHandler() {
+		return this.packCfgHandler;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -119,11 +126,12 @@ public final class StellarAPI {
 		cfgManager.syncFromFile();
 
 		// Second sync from file
-		SAPIConfigHandler packCfgHandler = new SAPIConfigHandler();
-		cfgManager.register(worldCfgCategory, packCfgHandler);
+		this.packCfgHandler = new SAPIConfigHandler();
+		cfgManager.register(worldCfgCategory, this.packCfgHandler);
 		cfgManager.syncFromFile();
 		// This is for client
-		SAPIReferences.registerPack(new SAPICelestialPack());
+		SAPIReferences.registerPack(DefaultCelestialPack.INSTANCE);
+		SAPIReferences.registerPack(SAPICelestialPack.INSTANCE);
 
 		PROXY.load(event);
 

@@ -1,22 +1,13 @@
 package stellarapi.api;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.util.INBTSerializable;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
-import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.world.worldset.WorldSet;
 
 /**
  * Celestial pack which can be provided by mods.
+ * Singleton for each pack.
  * */
-public interface ICelestialPack extends INBTSerializable<NBTTagCompound> {
+public interface ICelestialPack {
 	/**
 	 * Gets the pack name.
 	 * */
@@ -25,5 +16,5 @@ public interface ICelestialPack extends INBTSerializable<NBTTagCompound> {
 	/**
 	 * Gets the world-specific scene.
 	 * */
-	public ICelestialScene getScene(World world);
+	public ICelestialScene getScene(WorldSet worldSet, World world, boolean vanillaServer);
 }

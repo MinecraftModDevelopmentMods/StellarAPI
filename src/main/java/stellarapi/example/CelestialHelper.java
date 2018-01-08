@@ -1,5 +1,7 @@
 package stellarapi.example;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.math.MathHelper;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ISkyEffect;
@@ -25,15 +27,15 @@ public class CelestialHelper {
 	private final float relativeMultiplierSun;
 	private final float relativeMultiplierMoon;
 
-	private final ICelestialObject sun;
-	private final ICelestialObject moon;
+	private final @Nullable ICelestialObject sun;
+	private final @Nullable ICelestialObject moon;
 
 	private final ICelestialCoordinates coordinate;
 
 	private final ISkyEffect sky;
 
 	public CelestialHelper(float relativeMultiplierSun, float relativeMultiplierMoon,
-			ICelestialObject sun, ICelestialObject moon,
+			@Nullable ICelestialObject sun, @Nullable ICelestialObject moon,
 			ICelestialCoordinates coordinate, ISkyEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;
 		this.relativeMultiplierMoon = relativeMultiplierMoon;
@@ -55,7 +57,9 @@ public class CelestialHelper {
 	 *            the partial tick
 	 */
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
-		return (float) sun.getHorizontalPeriod().getBiasedOffset(worldTime, partialTicks, 0.5);
+		if(this.sun != null)
+			return (float) sun.getHorizontalPeriod().getBiasedOffset(worldTime, partialTicks, 0.5);
+		else return (float) coordinate.getPeriod().getOffset(worldTime, partialTicks);
 	}
 
 	/**
@@ -66,7 +70,9 @@ public class CelestialHelper {
 	 * @return <code>sin(Height_Angle_Of_Sun)</code>
 	 */
 	public float getSunHeightFactor(float partialTicks) {
-		return (float) Spmath.sind(sun.getCurrentHorizontalPos().y);
+		if(this.sun != null)
+			return (float) Spmath.sind(sun.getCurrentHorizontalPos().y);
+		else return 0.0f;
 	}
 
 	/**
@@ -78,8 +84,10 @@ public class CelestialHelper {
 	 *            the partial tick
 	 */
 	public float getSunlightFactor(EnumRGBA color, float partialTicks) {
-		return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.5f, 0.0f, 1.0f)
-				* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color)) * this.relativeMultiplierSun;
+		if(this.sun != null)
+			return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.5f, 0.0f, 1.0f)
+					* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color)) * this.relativeMultiplierSun;
+		else return 0.0f;
 	}
 
 	/**
@@ -91,9 +99,11 @@ public class CelestialHelper {
 	 *            the partial tick
 	 */
 	public float getSunlightRenderBrightnessFactor(float partialTicks) {
-		return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.2f, 0.0f, 1.0f)
-				* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(EnumRGBA.Alpha))
-				* this.relativeMultiplierSun;
+		if(this.sun != null)
+			return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.2f, 0.0f, 1.0f)
+					* (float) sun.getCurrentBrightness(Wavelength.colorWaveMap.get(EnumRGBA.Alpha))
+					* this.relativeMultiplierSun;
+		else return 0.0f;
 	}
 
 	/**
@@ -113,7 +123,9 @@ public class CelestialHelper {
 	 *            the partial tick
 	 */
 	public float calculateSunriseSunsetFactor(EnumRGBA color, float partialTicks) {
-		return (float) (sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color))) * this.relativeMultiplierSun;
+		if(this.sun != null)
+			return (float) (sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color))) * this.relativeMultiplierSun;
+		else return 0.0f;
 	}
 
 	/**
@@ -146,7 +158,9 @@ public class CelestialHelper {
 	 *            undefined result.
 	 */
 	public int getCurrentMoonPhase(long worldTime) {
-		return (int) Math.floor(moon.getPhasePeriod().getOffset(worldTime, 0.0f) * 8);
+		if(this.moon != null)
+			return (int) Math.floor(moon.getPhasePeriod().getBiasedOffset(worldTime, 0.0f, 0.5) * 8);
+		else return 0;
 	}
 
 	/**
@@ -154,7 +168,9 @@ public class CelestialHelper {
 	 * <p>
 	 */
 	public float getCurrentMoonPhaseFactor() {
-		return (float) moon.getCurrentPhase() * this.relativeMultiplierMoon;
+		if(this.moon != null)
+			return (float) moon.getCurrentPhase() * this.relativeMultiplierMoon;
+		else return 0.0f;
 	}
 
 	public float minimumSkyRenderBrightness() {

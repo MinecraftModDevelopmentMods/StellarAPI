@@ -1,5 +1,9 @@
 package stellarapi.feature.celestial.tweakable;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.world.World;
@@ -13,10 +17,10 @@ public class SAPICollection implements ICelestialCollection {
 	public final SAPISun sun;
 	public final SAPIMoon moon;
 
-	public SAPICollection(World world, double day, double monthInDay,
+	public SAPICollection(World world, boolean sunExist, boolean moonExist, double day, double monthInDay,
 			double dayOffset, double monthOffset) {
-		this.sun = new SAPISun(world, day, dayOffset);
-		this.moon = new SAPIMoon(world, day, monthInDay, dayOffset, monthOffset);
+		this.sun = sunExist? new SAPISun(world, day, dayOffset) : null;
+		this.moon = moonExist? new SAPIMoon(world, day, monthInDay, dayOffset, monthOffset) : null;
 	}
 
 	@Override
@@ -26,15 +30,16 @@ public class SAPICollection implements ICelestialCollection {
 
 	@Override
 	public ImmutableSet<ICelestialObject> getObjects() {
-		return ImmutableSet.of(sun, moon);
+		return ImmutableSet.copyOf(
+				Stream.of(this.sun, this.moon).filter(Objects::nonNull).collect(Collectors.toSet()));
 	}
 
 	@Override
 	public ImmutableSet<ICelestialObject> getObjectInRange(SpCoord pos, double radius) {
 		ImmutableSet.Builder<ICelestialObject> builder = ImmutableSet.builder();
-		if (pos.distanceTo(sun.getCurrentHorizontalPos()) < radius)
+		if (this.sun != null && pos.distanceTo(sun.getCurrentHorizontalPos()) < radius)
 			builder.add(sun);
-		if (pos.distanceTo(moon.getCurrentHorizontalPos()) < radius)
+		if (this.moon != null && pos.distanceTo(moon.getCurrentHorizontalPos()) < radius)
 			builder.add(moon);
 		return builder.build();
 	}

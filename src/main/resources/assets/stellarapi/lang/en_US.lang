@@ -85,6 +85,12 @@ config.category.worldsettings.worldset.tooltip=Configure world settings for the 
 config.property.worldsettings.enabled=Tweak Enabled
 config.property.worldsettings.enabled.tooltip=Enable/Disable Stellar API tweak for worlds within this worldset. You need to enable it to change day/month length.
 
+config.property.worldsettings.sunexist=Sun Exist
+config.property.worldsettings.sunexist.tooltip=Configure existence of the sun. This affects the brightness as well.
+
+config.property.worldsettings.moonexist=Moon Exist
+config.property.worldsettings.moonexist.tooltip=Configure existence of the moon.
+
 config.property.worldsettings.daylength=Day Length
 config.property.worldsettings.daylength.tooltip=Tweak length of day (in ticks) with this settings.
 

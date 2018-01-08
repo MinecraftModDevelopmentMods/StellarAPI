@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import stellarapi.api.ICelestialPack;
+import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
@@ -19,9 +20,9 @@ public class MessageSyncPackSettings implements IMessage {
 
 	public MessageSyncPackSettings() { }
 
-	public MessageSyncPackSettings(ICelestialPack pack) {
-		this.packName = pack.getPackName();
-		this.compoundInfo = pack.serializeNBT();
+	public MessageSyncPackSettings(String packName, ICelestialScene scene) {
+		this.packName = packName;
+		this.compoundInfo = scene.serializeNBT();
 	}
 
 	@Override
@@ -45,8 +46,8 @@ public class MessageSyncPackSettings implements IMessage {
 				ICelestialPack pack = SAPIReferences.getPackWithName(message.packName);
 				if(pack == null)
 					throw new IllegalStateException("No pack detected on client side, something should be wrong.");
-				pack.deserializeNBT(message.compoundInfo);
-				((CelestialPackManager) cWorld).loadPack(pack);
+
+				((CelestialPackManager) cWorld).loadPackWithData(pack, message.compoundInfo);
 			}
 
 			return null;

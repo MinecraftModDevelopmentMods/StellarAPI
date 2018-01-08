@@ -44,7 +44,7 @@ public class SAPIMoon implements ICelestialObject {
 	@Override
 	public double getCurrentPhase() {
 		long worldTime = world.getWorldTime();
-		int phase = (int) Math.floor(this.getPhasePeriod().getOffset(worldTime, 0.0f) * 8.0);
+		int phase = (int) Math.floor(this.getPhasePeriod().getBiasedOffset(worldTime, 0.0f, 0.5) * 8.0);
 		return WorldProvider.MOON_PHASE_FACTORS[phase];
 	}
 

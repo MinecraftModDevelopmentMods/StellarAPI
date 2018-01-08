@@ -39,7 +39,7 @@ public final class SAPIReferences {
 	// *********** StellarAPI References *********** //
 	// ********************************************* //
 
-	private Map<WorldSet, ICelestialPack> packs = Maps.newIdentityHashMap();
+	private Map<WorldSet, ICelestialPack> linkedPacks = Maps.newIdentityHashMap();
 	private Map<String, ICelestialPack> nameToPacks = Maps.newHashMap();
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
@@ -74,12 +74,12 @@ public final class SAPIReferences {
 
 	/** Placeholder method for versions before 1.13(data packs) - put this in any time */
 	public static void setCelestialPack(WorldSet worldSet, ICelestialPack pack) {
-		INSTANCE.packs.put(worldSet, pack);
+		INSTANCE.linkedPacks.put(worldSet, pack);
 	}
 
 	/** Gets the celestial pack for certain WorldSet. */
 	public static ICelestialPack getCelestialPack(WorldSet worldSet) {
-		return INSTANCE.packs.get(worldSet);
+		return INSTANCE.linkedPacks.get(worldSet);
 	}
 
 	/** Gets the active scene for now. */
