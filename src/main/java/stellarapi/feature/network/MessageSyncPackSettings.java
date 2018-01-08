@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialPack;
 import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
@@ -40,15 +41,17 @@ public class MessageSyncPackSettings implements IMessage {
 	public static class MessageSyncPackHandler implements IMessageHandler<MessageSyncPackSettings, IMessage> {
 		@Override
 		public IMessage onMessage(MessageSyncPackSettings message, MessageContext ctx) {
-			World world = SAPIReferences.getDefaultWorld(true);
-			ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
-			if(cWorld instanceof CelestialPackManager) {
-				ICelestialPack pack = SAPIReferences.getPackWithName(message.packName);
-				if(pack == null)
-					throw new IllegalStateException("No pack detected on client side, something should be wrong.");
+			StellarAPI.PROXY.registerTask(() -> {
+				World world = SAPIReferences.getDefaultWorld(true);
+				ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
+				if(cWorld instanceof CelestialPackManager) {
+					ICelestialPack pack = SAPIReferences.getPackWithName(message.packName);
+					if(pack == null)
+						throw new IllegalStateException("No pack detected on client side, something should be wrong.");
 
-				((CelestialPackManager) cWorld).loadPackWithData(pack, message.compoundInfo);
-			}
+					((CelestialPackManager) cWorld).loadPackWithData(pack, message.compoundInfo);
+				}
+			});
 
 			return null;
 		}
