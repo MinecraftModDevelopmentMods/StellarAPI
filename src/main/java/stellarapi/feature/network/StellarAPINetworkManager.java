@@ -3,6 +3,7 @@ package stellarapi.feature.network;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -56,11 +57,16 @@ public class StellarAPINetworkManager {
 		}
 	}
 
-	public void handleNotHave() {
-		World world = SAPIReferences.getDefaultWorld(true);
-		ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
-		if(cWorld instanceof CelestialPackManager) {
-			((CelestialPackManager) cWorld).onVanillaServer();
+	private boolean mark = false;
+
+	@SubscribeEvent
+	public void onWorldLoad(WorldEvent.Load loadEvent) {
+		if(mark) {
+			World world = loadEvent.getWorld();
+			ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
+			if(cWorld instanceof CelestialPackManager) {
+				((CelestialPackManager) cWorld).onVanillaServer();
+			}
 		}
 	}
 
@@ -84,14 +90,19 @@ public class StellarAPINetworkManager {
 	@SubscribeEvent
 	public void handleNotModded(FMLNetworkEvent.ClientConnectedToServerEvent event) {
 		if(!event.getConnectionType().equals("MODDED"))
-			this.handleNotHave();
+			mark = true;
 	}
 
 	@SubscribeEvent
 	public void handleNotHave(FMLNetworkEvent.CustomPacketRegistrationEvent event) {
 		if(event.getOperation().equals("REGISTER") && !event.getRegistrations().contains(this.id)
 				&& event.getSide().isClient())
-			this.handleNotHave();
+			mark = true;
+	}
+
+	@SubscribeEvent
+	public void onFinish(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+		mark = false;
 	}
 
 }

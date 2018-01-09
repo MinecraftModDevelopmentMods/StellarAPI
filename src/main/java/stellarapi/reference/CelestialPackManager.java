@@ -32,14 +32,12 @@ import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.helper.WorldProviderReplaceHelper;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.feature.network.MessageSyncPackSettings;
+import stellarapi.impl.celestial.DefaultCelestialPack;
 
 /**
  * Per world manager to contain the per-world(dimension) objects.
  */
 public class CelestialPackManager implements ICelestialWorld, IPerWorldReference, INBTSerializable<NBTTagCompound> {
-
-	private static final String ID = "stellarapiperworldmanager";
-
 	private World world;
 	private WorldSet worldSet;
 	private ICelestialPack pack;
@@ -71,6 +69,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	}
 
 	public void loadPack(ICelestialPack pack, boolean vanillaServer) {
+		// TODO Find a way to switch from default to custom on some case
 		this.pack = pack;
 		this.scene = pack.getScene(this.worldSet, this.world, vanillaServer);
 		this.loadPack(this.pack, this.scene);

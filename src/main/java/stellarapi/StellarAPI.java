@@ -2,20 +2,21 @@ package stellarapi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkCheckHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
@@ -40,7 +41,7 @@ public final class StellarAPI {
 	// FIXME License change
 
 	// The instance of Stellar API
-	@Instance(SAPIReferences.MODID)
+	@Mod.Instance(SAPIReferences.MODID)
 	public static StellarAPI INSTANCE = null;
 
 	@SidedProxy(clientSide = "stellarapi.ClientProxy", serverSide = "stellarapi.CommonProxy")
@@ -82,7 +83,7 @@ public final class StellarAPI {
 	}
 
 	@SuppressWarnings("deprecation")
-	@EventHandler
+	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 
@@ -120,7 +121,7 @@ public final class StellarAPI {
 		CompatManager.getInstance().onPreInit();
 	}
 
-	@EventHandler
+	@Mod.EventHandler
 	public void load(FMLInitializationEvent event) throws IOException {
 		// First sync from file
 		cfgManager.syncFromFile();
@@ -138,21 +139,36 @@ public final class StellarAPI {
 		CompatManager.getInstance().onInit();
 	}
 
-	@EventHandler
+	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		PROXY.postInit(event);
 
 		CompatManager.getInstance().onPostInit();
 	}
 
-	@EventHandler
+	@Mod.EventHandler
 	public void serverAboutToStart(FMLServerAboutToStartEvent event) {
 		;
 	}
 
-	@EventHandler
+	@Mod.EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandPerDimensionResource());
 		event.registerServerCommand(new FixedCommandTime());
 	}
+
+
+	/*private boolean existOnServer;
+
+	public boolean existOnServer() { 
+		return this.existOnServer;
+	}
+
+	@NetworkCheckHandler
+	public boolean checkNetwork(Map<String, String> modsNversions, Side from) {
+		if(from.isServer())
+			this.existOnServer = modsNversions.containsKey(SAPIReferences.MODID);
+
+		return true;
+	}*/
 }
