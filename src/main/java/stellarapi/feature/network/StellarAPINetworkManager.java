@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
@@ -57,11 +58,9 @@ public class StellarAPINetworkManager {
 		}
 	}
 
-	private boolean mark = false;
-
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load loadEvent) {
-		if(mark) {
+		if(loadEvent.getWorld().isRemote && !StellarAPI.INSTANCE.existOnServer()) {
 			World world = loadEvent.getWorld();
 			ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
 			if(cWorld instanceof CelestialPackManager) {
@@ -86,23 +85,4 @@ public class StellarAPINetworkManager {
 		EntityPlayerMP player = (EntityPlayerMP) event.player;
 		this.onSync(player, player.world);
 	}
-
-	@SubscribeEvent
-	public void handleNotModded(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-		if(!event.getConnectionType().equals("MODDED"))
-			mark = true;
-	}
-
-	@SubscribeEvent
-	public void handleNotHave(FMLNetworkEvent.CustomPacketRegistrationEvent event) {
-		if(event.getOperation().equals("REGISTER") && !event.getRegistrations().contains(this.id)
-				&& event.getSide().isClient())
-			mark = true;
-	}
-
-	@SubscribeEvent
-	public void onFinish(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-		mark = false;
-	}
-
 }

@@ -158,7 +158,7 @@ public final class StellarAPI {
 	}
 
 
-	/*private boolean existOnServer;
+	private boolean existOnServer = true;
 
 	public boolean existOnServer() { 
 		return this.existOnServer;
@@ -170,5 +170,5 @@ public final class StellarAPI {
 			this.existOnServer = modsNversions.containsKey(SAPIReferences.MODID);
 
 		return true;
-	}*/
+	}
 }
