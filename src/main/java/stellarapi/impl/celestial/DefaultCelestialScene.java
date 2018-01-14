@@ -53,6 +53,6 @@ public class DefaultCelestialScene implements ICelestialScene {
 	public void prepare() { }
 
 	@Override
-	public void onWorldLoad() { }
+	public void onSetupWorld() { }
 
 }

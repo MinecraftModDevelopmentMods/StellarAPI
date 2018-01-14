@@ -116,5 +116,5 @@ public class SAPICelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public void onWorldLoad() { }
+	public void onSetupWorld() { }
 }

@@ -66,6 +66,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	public void onLackServerAPI() {
 		// Load pack from configuration when there's no API.
 		this.loadPackFromConfig();
+		this.setupWorld();
 	}
 
 	public void loadPackFromConfig() {
@@ -131,6 +132,11 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 		if(this.pack != null)
 			return new MessageSyncPackSettings(pack.getPackName(), this.scene);
 		else return null;
+	}
+
+	public void setupWorld() {
+		// Sets up the world after everything is decided
+		scene.onSetupWorld();
 	}
 
 	@Override
