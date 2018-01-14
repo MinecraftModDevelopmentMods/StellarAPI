@@ -94,8 +94,8 @@ public class SAPIWorldCfgHandler implements IConfigHandler {
 		this.monthOffset = cfgCat.get("Month_Offset").getDouble();
 		this.minimumSkyBrightness = (float) cfgCat.get("Minimum_Sky_Brightness").getDouble();
 
-		ICelestialPack pack = SAPIReferences.getCelestialPack(worldSet);
-		if(pack == null) {
+		ICelestialPack pack = SAPIReferences.getCelestialPack(this.worldSet);
+		if(pack == null || pack == DefaultCelestialPack.INSTANCE) {
 			if(this.enabled)
 				SAPIReferences.setCelestialPack(this.worldSet, SAPICelestialPack.INSTANCE);
 			else if(worldSet == SAPIReferences.exactOverworld())

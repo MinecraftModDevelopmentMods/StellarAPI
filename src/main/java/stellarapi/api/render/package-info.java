@@ -21,10 +21,7 @@
  * */
 
 /**
- * Main section of Stellar API.
+ * Rendering section of Stellar API.
  * @author Abastro
  */
-@API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
-package stellarapi.api;
-
-import net.minecraftforge.fml.common.API;
+package stellarapi.api.render;

@@ -23,7 +23,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialCoordinates;
@@ -45,8 +44,10 @@ import stellarapi.api.optics.IOpticalViewer;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.optics.NakedScope;
+import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.api.world.worldset.WorldSetFactory;
+import stellarapi.example.WorldReplacerDefault;
 
 public class SAPIReferenceHandler implements IReference, IConfigHandler {
 
@@ -192,6 +193,11 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 	@Override
 	public IOpticalFilter getDefaultFilter() {
 		return new NakedFilter();
+	}
+
+	@Override
+	public IWorldProviderReplacer getDefaultReplacer() {
+		return WorldReplacerDefault.INSTANCE;
 	}
 
 	@Override

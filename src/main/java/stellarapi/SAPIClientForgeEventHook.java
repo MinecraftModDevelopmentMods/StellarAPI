@@ -11,8 +11,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.world.World;
+import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -20,12 +23,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import stellarapi.api.ICelestialWorld;
+import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.optics.EyeDetector;
 import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
+import stellarapi.api.render.IAdaptiveRenderer;
 import stellarapi.feature.gui.overlay.OverlayHandler;
+import stellarapi.reference.CelestialPackManager;
 
 public class SAPIClientForgeEventHook {
 
@@ -55,6 +62,20 @@ public class SAPIClientForgeEventHook {
 		ClientRegistry.registerKeyBinding(this.focusGuiKey);
 
 		this.overlay = overlay;
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public void onRenderWorldLast(RenderWorldLastEvent event) {
+		World world = Minecraft.getMinecraft().world;
+		ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
+		if(cWorld instanceof CelestialPackManager) {
+			IAdaptiveRenderer renderer = ((CelestialPackManager) cWorld).getRenderer();
+			IRenderHandler wrapped = world.provider.getSkyRenderer();
+			if(renderer != null && !(wrapped instanceof IAdaptiveRenderer)) {
+				renderer.setReplacedRenderer(wrapped);
+				world.provider.setSkyRenderer(renderer);
+			}
+		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)

@@ -46,7 +46,7 @@ public class MessageSyncPackSettings implements IMessage {
 				ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
 				if(cWorld instanceof CelestialPackManager) {
 					CelestialPackManager manager = (CelestialPackManager) cWorld;
-					manager.deserializeNBT(message.compoundInfo);
+					manager.readFromPacket(message.packName, message.compoundInfo);
 					manager.setupWorld();
 				}
 			});

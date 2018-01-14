@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abastro
+ * Copyright (c) 2017 Abastro
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,11 @@
  * */
 
 /**
- * Main section of Stellar API.
+ * World section of Stellar API.
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
-package stellarapi.api;
+package stellarapi.api.world;
 
 import net.minecraftforge.fml.common.API;
+import stellarapi.api.SAPIReferences;

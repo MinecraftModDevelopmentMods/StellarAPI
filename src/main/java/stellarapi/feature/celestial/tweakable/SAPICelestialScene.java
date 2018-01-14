@@ -7,13 +7,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import stellarapi.api.ICelestialCoordinates;
+import stellarapi.api.ICelestialHelper;
 import stellarapi.api.ICelestialScene;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.render.IAdaptiveRenderer;
 import stellarapi.example.CelestialHelper;
-import stellarapi.example.WorldProviderExample;
+import stellarapi.example.WorldProviderDefault;
 import stellarapi.impl.celestial.DefaultSkyVanilla;
 
 public class SAPICelestialScene implements ICelestialScene {
@@ -111,10 +113,13 @@ public class SAPICelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public WorldProvider replaceWorldProvider(WorldProvider provider) {
-		return new WorldProviderExample(this.world, provider, this.helper);
+	public ICelestialHelper createCelestialHelper() {
+		return this.helper;
 	}
 
 	@Override
-	public void onSetupWorld() { }
+	public IAdaptiveRenderer createSkyRenderer() {
+		// TODO Alternative Rendering
+		return null;
+	}
 }

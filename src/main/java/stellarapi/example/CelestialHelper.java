@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.util.math.MathHelper;
 import stellarapi.api.ICelestialCoordinates;
+import stellarapi.api.ICelestialHelper;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.Spmath;
@@ -22,7 +23,7 @@ import stellarapi.api.optics.Wavelength;
  * <li>{@link ICelestialObject#getPhasePeriod()} is not null for Moon.
  * </ul>
  */
-public class CelestialHelper {
+public class CelestialHelper implements ICelestialHelper {
 
 	private final float relativeMultiplierSun;
 	private final float relativeMultiplierMoon;
@@ -56,6 +57,7 @@ public class CelestialHelper {
 	 * @param partialTicks
 	 *            the partial tick
 	 */
+	@Override
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		if(this.sun != null)
 			return (float) sun.getHorizontalPeriod().getBiasedOffset(worldTime, partialTicks, 0.5);
@@ -69,6 +71,7 @@ public class CelestialHelper {
 	 *            the partial tick
 	 * @return <code>sin(Height_Angle_Of_Sun)</code>
 	 */
+	@Override
 	public float getSunHeightFactor(float partialTicks) {
 		if(this.sun != null)
 			return (float) Spmath.sind(sun.getCurrentHorizontalPos().y);
@@ -83,6 +86,7 @@ public class CelestialHelper {
 	 * @param partialTicks
 	 *            the partial tick
 	 */
+	@Override
 	public float getSunlightFactor(EnumRGBA color, float partialTicks) {
 		if(this.sun != null)
 			return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.5f, 0.0f, 1.0f)
@@ -98,6 +102,7 @@ public class CelestialHelper {
 	 * @param partialTicks
 	 *            the partial tick
 	 */
+	@Override
 	public float getSunlightRenderBrightnessFactor(float partialTicks) {
 		if(this.sun != null)
 			return MathHelper.clamp(2.0f * this.getSunHeightFactor(partialTicks) + 0.2f, 0.0f, 1.0f)
@@ -112,6 +117,7 @@ public class CelestialHelper {
 	 * @param partialTicks
 	 *            the partial tick
 	 */
+	@Override
 	public float getSkyTransmissionFactor(float partialTicks) {
 		return 1.0f - sky.getAbsorptionFactor(partialTicks);
 	}
@@ -122,6 +128,7 @@ public class CelestialHelper {
 	 * @param partialTicks
 	 *            the partial tick
 	 */
+	@Override
 	public float calculateSunriseSunsetFactor(EnumRGBA color, float partialTicks) {
 		if(this.sun != null)
 			return (float) (sun.getCurrentBrightness(Wavelength.colorWaveMap.get(color))) * this.relativeMultiplierSun;
@@ -136,6 +143,7 @@ public class CelestialHelper {
 	 * @param partialTicks
 	 *            the partial tick
 	 */
+	@Override
 	public float getDispersionFactor(EnumRGBA color, float partialTicks) {
 		return sky.getDispersionFactor(Wavelength.colorWaveMap.get(color), partialTicks);
 	}
@@ -146,6 +154,7 @@ public class CelestialHelper {
 	 * @param partialTicks
 	 *            the partial tick
 	 */
+	@Override
 	public float getLightPollutionFactor(EnumRGBA color, float partialTicks) {
 		return sky.getLightPollutionFactor(Wavelength.colorWaveMap.get(color), partialTicks);
 	}
@@ -157,6 +166,7 @@ public class CelestialHelper {
 	 *            the current World Time. If it isn't, this method will give
 	 *            undefined result.
 	 */
+	@Override
 	public int getCurrentMoonPhase(long worldTime) {
 		if(this.moon != null)
 			return (int) Math.floor(moon.getPhasePeriod().getBiasedOffset(worldTime, 0.0f, 0.5) * 8);
@@ -167,12 +177,14 @@ public class CelestialHelper {
 	 * Gets current moon phase factor.
 	 * <p>
 	 */
+	@Override
 	public float getCurrentMoonPhaseFactor() {
 		if(this.moon != null)
 			return (float) moon.getCurrentPhase() * this.relativeMultiplierMoon;
 		else return 0.0f;
 	}
 
+	@Override
 	public float minimumSkyRenderBrightness() {
 		return sky.minimumSkyRenderBrightness();
 	}

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -13,11 +15,11 @@ import com.google.common.collect.Ordering;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialCoordinates;
+import stellarapi.api.ICelestialHelper;
 import stellarapi.api.ICelestialPack;
 import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
@@ -30,6 +32,7 @@ import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.helper.WorldProviderReplaceHelper;
+import stellarapi.api.render.IAdaptiveRenderer;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.feature.network.MessageSyncPackSettings;
 import stellarapi.impl.celestial.DefaultCelestialPack;
@@ -49,6 +52,8 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	private ICelestialCoordinates coordinate;
 
 	private ISkyEffect skyEffect;
+
+	private @Nullable IAdaptiveRenderer renderer;
 
 	CelestialPackManager(World world) {
 		this.world = world;
@@ -70,7 +75,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	}
 
 	public void loadPackFromConfig() {
-		for(WorldSet wSet : SAPIReferences.appliedWorldSets(world)) {
+		for(WorldSet wSet : SAPIReferences.appliedWorldSets(this.world)) {
 			// Only one pack for WorldSet for now
 			ICelestialPack pack = SAPIReferences.getCelestialPack(wSet);
 			if(pack != null) {
@@ -91,8 +96,8 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	public void loadPackWithData(ICelestialPack pack, NBTTagCompound data) {
 		// Load pack with data.
 		this.pack = pack;
-		// Load with default settings, as it'll be overwritten anyway.
-		this.scene = pack.getScene(this.worldSet, this.world, true);
+		// Load with configuration settings, as it'll be overwritten anyway.
+		this.scene = pack.getScene(this.worldSet, this.world, false);
 		scene.deserializeNBT(data);
 		this.loadPack(this.pack, this.scene);
 	}
@@ -115,9 +120,10 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 		this.coordinate = scene.createCoordinates();
 		this.skyEffect = scene.createSkyEffect();
 
-		WorldProvider replaced = scene.replaceWorldProvider(world.provider);
-		if(replaced != null)
-			WorldProviderReplaceHelper.patchWorldProviderWith(this.world, replaced);
+		ICelestialHelper helper = scene.createCelestialHelper();
+		if(helper != null)
+			WorldProviderReplaceHelper.patchWorldProviderWith(this.world,
+					SAPIReferences.getReplacedWorldProvider(this.world, world.provider, helper));
 	}
 
 	private static final Ordering<ICelestialCollection> collectionOrdering = Ordering
@@ -136,7 +142,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 
 	public void setupWorld() {
 		// Sets up the world after everything is decided
-		scene.onSetupWorld();
+		this.renderer = scene.createSkyRenderer();
 	}
 
 	@Override
@@ -164,6 +170,10 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 		return this.skyEffect;
 	}
 
+	public @Nullable IAdaptiveRenderer getRenderer() {
+		return this.renderer;
+	}
+
 	public ICelestialScene getScene() {
 		return this.scene;
 	}
@@ -181,25 +191,26 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
+		// Read pack name from nbt if not forced.
 		ICelestialPack readPack = SAPIReferences.getPackWithName(nbt.getString("PackName"));
-
-		if(!world.isRemote) {
-			// On the server, read pack name from nbt if not forced.
-			if(!StellarAPI.INSTANCE.getPackCfgHandler().forceConfig()) {
-				// Select saved pack and load it if it's not forced.
-				if(readPack != null)
-					this.loadPackWithData(readPack, nbt);
-			}
-			// When the pack is just missing, go for the one loaded from configuration.
-		} else {
-			// On the client, read from nbt only if there's the pack with the name.
-			// Configuration can overwrite default.
-			if(readPack == DefaultCelestialPack.INSTANCE)
-				// Load from configuration when it's default
-				this.loadPackFromConfig();
-			else if(readPack != null)
-				// Load from read pack when it exists
+		if(!StellarAPI.INSTANCE.getPackCfgHandler().forceConfig()) {
+			// Select saved pack and load it if it's not forced.
+			if(readPack != null)
 				this.loadPackWithData(readPack, nbt);
 		}
+		// When the pack is just missing, go for the one loaded from configuration.
+	}
+
+	public void readFromPacket(String packName, NBTTagCompound nbt) {
+		ICelestialPack readPack = SAPIReferences.getPackWithName(packName);
+
+		// On the client, read from nbt only if there's the pack with the name.
+		// Configuration can overwrite default.
+		if(readPack == DefaultCelestialPack.INSTANCE)
+			// Load from configuration when it's default
+			this.loadPackFromConfig();
+		else if(readPack != null)
+			// Load from read pack when it exists
+			this.loadPackWithData(readPack, nbt);
 	}
 }

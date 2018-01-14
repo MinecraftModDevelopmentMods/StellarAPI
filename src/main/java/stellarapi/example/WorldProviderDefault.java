@@ -16,25 +16,26 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import stellarapi.api.ICelestialHelper;
 import stellarapi.api.optics.EnumRGBA;
 
 /**
- * Example of WorldProvider with celestial helper.
+ * Vanilla WorldProvider with celestial helper.
  * <p>
  * In most case, custom WorldProvider should know celestial conditions of the
  * world, e.g. the celestial objects as Sun and Moon.
  */
-public class WorldProviderExample extends WorldProvider {
+public class WorldProviderDefault extends WorldProvider {
 
 	private WorldProvider parProvider;
-	private CelestialHelper celestialHelper;
+	private ICelestialHelper celestialHelper;
 
 	/** Array for sunrise/sunset colors (RGBA) */
 	private float[] colorsSunriseSunset = new float[4];
 
 	private long cloudColour = 16777215L;
 
-	public WorldProviderExample(World world, WorldProvider provider, CelestialHelper celestialHelper) {
+	public WorldProviderDefault(World world, WorldProvider provider, ICelestialHelper celestialHelper) {
 		this.world = world;
 		this.parProvider = provider;
 		this.celestialHelper = celestialHelper;

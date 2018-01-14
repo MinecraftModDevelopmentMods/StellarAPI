@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.render.IAdaptiveRenderer;
 
 /**
  * Actual implementation of celestial scene for each world.
@@ -42,13 +43,11 @@ public interface ICelestialScene extends INBTSerializable<NBTTagCompound> {
 	public ISkyEffect createSkyEffect();
 
 	/**
-	 * Replaces current WorldProvider with the new one. Return <code>null</code> to do nothing.
-	 * Can put some things in the world as well.
+	 * Creates celestial helper for world provider.
+	 * Return <code>null</code> to not replace the world provider.
 	 * */
-	public @Nullable WorldProvider replaceWorldProvider(WorldProvider provider);
+	public @Nullable ICelestialHelper createCelestialHelper();
 
-	/**
-	 * Called when everthing about the packs are decided, to set up this pack on the world.
-	 * */
-	public void onSetupWorld();
+	/** Creates the sky renderer after the pack is determined. */
+	public @Nullable IAdaptiveRenderer createSkyRenderer();
 }

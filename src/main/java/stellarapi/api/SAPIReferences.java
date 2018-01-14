@@ -1,16 +1,19 @@
 package stellarapi.api;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
@@ -21,6 +24,7 @@ import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
+import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
 
 /**
@@ -41,6 +45,7 @@ public final class SAPIReferences {
 
 	private Map<WorldSet, ICelestialPack> linkedPacks = Maps.newIdentityHashMap();
 	private Map<String, ICelestialPack> nameToPacks = Maps.newHashMap();
+	private List<IWorldProviderReplacer> worldProvReplacers = Lists.newArrayList();
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
 
@@ -82,9 +87,34 @@ public final class SAPIReferences {
 		return INSTANCE.linkedPacks.get(worldSet);
 	}
 
-	/** Gets the active scene for now. */
+	/** Gets the active scene for now. It will be removed. */
+	@Deprecated
 	public static @Nullable ICelestialScene getActivePack(World world) {
 		return reference.getActivePack(world);
+	}
+
+
+	/**
+	 * Registers world provider replacer.
+	 * @param replacer the world provider replacer to register
+	 * */
+	public static void registerWorldProviderReplacer(IWorldProviderReplacer replacer) {
+		INSTANCE.worldProvReplacers.add(replacer);
+	}
+
+	/**
+	 * Gets replaced world provider.
+	 * @param world the world to replace the provider
+	 * @param originalProvider original provider to be replaced
+	 * @param helper the celestial helper
+	 * @return the provider which will replace original provider
+	 * */
+	public static WorldProvider getReplacedWorldProvider(World world, WorldProvider originalProvider, ICelestialHelper helper) {
+		for(IWorldProviderReplacer replacer : INSTANCE.worldProvReplacers)
+			if(replacer.accept(world, originalProvider))
+				return replacer.createWorldProvider(world, originalProvider, helper);
+
+		return reference.getDefaultReplacer().createWorldProvider(world, originalProvider, helper);
 	}
 
 
