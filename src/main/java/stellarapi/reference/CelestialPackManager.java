@@ -53,6 +53,22 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	CelestialPackManager(World world) {
 		this.world = world;
 
+		if(!world.isRemote) {
+			// By default, load from configuration on the server.
+			this.loadPackFromConfig();
+		} else {
+			// By default, load with default pack on the client.
+			this.worldSet = SAPIReferences.getPrimaryWorldSet(world);
+			this.loadPack(DefaultCelestialPack.INSTANCE, true);
+		}
+	}
+
+	public void onLackServerAPI() {
+		// Load pack from configuration when there's no API.
+		this.loadPackFromConfig();
+	}
+
+	public void loadPackFromConfig() {
 		for(WorldSet wSet : SAPIReferences.appliedWorldSets(world)) {
 			// Only one pack for WorldSet for now
 			ICelestialPack pack = SAPIReferences.getCelestialPack(wSet);
@@ -64,20 +80,18 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 		}
 	}
 
-	public void onVanillaServer() {
-		this.loadPack(this.pack, true);
-	}
-
-	public void loadPack(ICelestialPack pack, boolean vanillaServer) {
-		// TODO Find a way to switch from default to custom on some case
+	public void loadPack(ICelestialPack pack, boolean isDefault) {
+		// Load pack without data. This falls back to default or loads configuration.
 		this.pack = pack;
-		this.scene = pack.getScene(this.worldSet, this.world, vanillaServer);
+		this.scene = pack.getScene(this.worldSet, this.world, isDefault);
 		this.loadPack(this.pack, this.scene);
 	}
 
 	public void loadPackWithData(ICelestialPack pack, NBTTagCompound data) {
+		// Load pack with data.
 		this.pack = pack;
-		this.scene = pack.getScene(this.worldSet, this.world, false);
+		// Load with default settings, as it'll be overwritten anyway.
+		this.scene = pack.getScene(this.worldSet, this.world, true);
 		scene.deserializeNBT(data);
 		this.loadPack(this.pack, this.scene);
 	}
@@ -161,13 +175,25 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		if(this.scene != null) {
+		ICelestialPack readPack = SAPIReferences.getPackWithName(nbt.getString("PackName"));
+
+		if(!world.isRemote) {
+			// On the server, read pack name from nbt if not forced.
 			if(!StellarAPI.INSTANCE.getPackCfgHandler().forceConfig()) {
 				// Select saved pack and load it if it's not forced.
-				ICelestialPack pack = SAPIReferences.getPackWithName(nbt.getString("PackName"));
-				if(pack != null)
-					this.loadPackWithData(pack, nbt);
+				if(readPack != null)
+					this.loadPackWithData(readPack, nbt);
 			}
+			// When the pack is just missing, go for the one loaded from configuration.
+		} else {
+			// On the client, read from nbt only if there's the pack with the name.
+			// Configuration can overwrite default.
+			if(readPack == DefaultCelestialPack.INSTANCE)
+				// Load from configuration when it's default
+				this.loadPackFromConfig();
+			else if(readPack != null)
+				// Load from read pack when it exists
+				this.loadPackWithData(readPack, nbt);
 		}
 	}
 }

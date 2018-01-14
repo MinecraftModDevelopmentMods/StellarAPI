@@ -115,4 +115,6 @@ public class SAPICelestialScene implements ICelestialScene {
 		return new WorldProviderExample(this.world, provider, this.helper);
 	}
 
+	@Override
+	public void onWorldLoad() { }
 }

@@ -14,7 +14,7 @@ public enum DefaultCelestialPack implements ICelestialPack {
 	}
 
 	@Override
-	public ICelestialScene getScene(WorldSet worldSet, World world, boolean vanillaServer) {
+	public ICelestialScene getScene(WorldSet worldSet, World world, boolean isDefault) {
 		return new DefaultCelestialScene(world);
 	}
 }

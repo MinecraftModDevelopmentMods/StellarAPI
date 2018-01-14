@@ -16,14 +16,15 @@ public enum SAPICelestialPack implements ICelestialPack {
 	}
 
 	@Override
-	public ICelestialScene getScene(WorldSet worldSet, World world, boolean vanillaServer) {
-		if(vanillaServer)
+	public ICelestialScene getScene(WorldSet worldSet, World world, boolean isDefault) {
+		if(isDefault) {
 			return new DefaultCelestialScene(world);
-
-		SAPIWorldCfgHandler config = StellarAPI.INSTANCE.getPackCfgHandler().getHandler(worldSet);
-		return new SAPICelestialScene(world,
-				config.sunExist, config.moonExist,
-				config.dayLength, config.monthInDay,
-				config.dayOffset, config.monthOffset, config.minimumSkyBrightness);
+		} else {
+			SAPIWorldCfgHandler config = StellarAPI.INSTANCE.getPackCfgHandler().getHandler(worldSet);
+			return new SAPICelestialScene(world,
+					config.sunExist, config.moonExist,
+					config.dayLength, config.monthInDay,
+					config.dayOffset, config.monthOffset, config.minimumSkyBrightness);
+		}
 	}
 }

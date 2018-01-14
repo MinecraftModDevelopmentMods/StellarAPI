@@ -64,7 +64,7 @@ public class StellarAPINetworkManager {
 			World world = loadEvent.getWorld();
 			ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
 			if(cWorld instanceof CelestialPackManager) {
-				((CelestialPackManager) cWorld).onVanillaServer();
+				((CelestialPackManager) cWorld).onLackServerAPI();
 			}
 		}
 	}

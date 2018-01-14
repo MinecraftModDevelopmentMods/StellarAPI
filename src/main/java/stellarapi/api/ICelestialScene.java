@@ -46,4 +46,9 @@ public interface ICelestialScene extends INBTSerializable<NBTTagCompound> {
 	 * Can put some things in the world as well.
 	 * */
 	public @Nullable WorldProvider replaceWorldProvider(WorldProvider provider);
+
+	/**
+	 * Called when the the world is loaded.
+	 * */
+	public void onWorldLoad();
 }

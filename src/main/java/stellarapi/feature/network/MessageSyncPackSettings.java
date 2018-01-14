@@ -45,11 +45,7 @@ public class MessageSyncPackSettings implements IMessage {
 				World world = SAPIReferences.getDefaultWorld(true);
 				ICelestialWorld cWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
 				if(cWorld instanceof CelestialPackManager) {
-					ICelestialPack pack = SAPIReferences.getPackWithName(message.packName);
-					if(pack == null)
-						throw new IllegalStateException("No pack detected on client side, something should be wrong.");
-
-					((CelestialPackManager) cWorld).loadPackWithData(pack, message.compoundInfo);
+					((CelestialPackManager) cWorld).deserializeNBT(message.compoundInfo);
 				}
 			});
 

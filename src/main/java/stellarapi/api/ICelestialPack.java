@@ -15,9 +15,11 @@ public interface ICelestialPack {
 
 	/**
 	 * Gets the world-specific scene.
+	 * This should be read from configuration if it's not handling default case.
 	 * @param worldSet the WorldSet
 	 * @param world the world
-	 * @param vanillaServer if the server lacks Stellar API, so no pack could be loaded
+	 * @param isDefault whether it's for default or not
+	 *  - it should handle default case when it's <code>true</code>
 	 * */
-	public ICelestialScene getScene(WorldSet worldSet, World world, boolean vanillaServer);
+	public ICelestialScene getScene(WorldSet worldSet, World world, boolean isDefault);
 }
