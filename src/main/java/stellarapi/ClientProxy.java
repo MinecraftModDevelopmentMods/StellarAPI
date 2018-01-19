@@ -12,6 +12,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import stellarapi.api.gui.overlay.OverlayRegistry;
 import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.feature.celestial.tweakable.SAPICelestialScene;
+import stellarapi.feature.celestial.tweakable.SAPIRendererCommon;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.feature.gui.overlay.OverlaySetMain;
 import stellarapi.feature.gui.overlay.OverlaySetStellarAPI;
@@ -70,4 +73,8 @@ public class ClientProxy extends CommonProxy implements IProxy {
 		Minecraft.getMinecraft().addScheduledTask(runnable);
 	}
 
+	@Override
+	public IAdaptiveRenderer getRenderer(SAPICelestialScene scene) {
+		return new SAPIRendererCommon(scene);
+	}
 }

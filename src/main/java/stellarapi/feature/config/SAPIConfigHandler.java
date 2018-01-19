@@ -40,11 +40,9 @@ public class SAPIConfigHandler implements IConfigHandler {
 		forceChange.setRequiresWorldRestart(true);
 
 		for(WorldSet worldSet : SAPIReferences.getAllWorldSets()) {
-			if(worldSet.hasSky().isFalse || worldSet == SAPIReferences.endType())
+			if(worldSet.hasSky().isFalse)
 				return;
-			// TODO Remove specialty of End Type and implement things right to be applied on The End as well
-			// Don't let packs give the raw worldprovider.
-
+			// Well, the end won't have any effect but it could worth it.
 			SAPIWorldCfgHandler handler = subHandlers.computeIfAbsent(worldSet, k -> new SAPIWorldCfgHandler(k));
 			handler.setupConfig(config, category + Configuration.CATEGORY_SPLITTER + worldSet.name);
 		}

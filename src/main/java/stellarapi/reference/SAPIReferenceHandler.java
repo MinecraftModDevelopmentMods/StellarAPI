@@ -47,7 +47,7 @@ import stellarapi.api.optics.NakedScope;
 import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.api.world.worldset.WorldSetFactory;
-import stellarapi.example.WorldReplacerDefault;
+import stellarapi.example.world.WorldReplacerDefault;
 
 public class SAPIReferenceHandler implements IReference, IConfigHandler {
 

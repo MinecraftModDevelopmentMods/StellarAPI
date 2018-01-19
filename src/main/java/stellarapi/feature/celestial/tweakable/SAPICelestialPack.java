@@ -21,10 +21,7 @@ public enum SAPICelestialPack implements ICelestialPack {
 			return new DefaultCelestialScene(world);
 		} else {
 			SAPIWorldCfgHandler config = StellarAPI.INSTANCE.getPackCfgHandler().getHandler(worldSet);
-			return new SAPICelestialScene(world,
-					config.sunExist, config.moonExist,
-					config.dayLength, config.monthInDay,
-					config.dayOffset, config.monthOffset, config.minimumSkyBrightness);
+			return new SAPICelestialScene(world, config);
 		}
 	}
 }

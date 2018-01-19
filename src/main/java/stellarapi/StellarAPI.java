@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.example.world.WorldReplacerEnd;
 import stellarapi.feature.celestial.tweakable.SAPICelestialPack;
 import stellarapi.feature.command.CommandPerDimensionResource;
 import stellarapi.feature.command.FixedCommandTime;
@@ -111,6 +112,9 @@ public final class StellarAPI {
 		WorldSets worldSets = new WorldSets();
 		worldSets.onPreInit(reference);
 		MinecraftForge.EVENT_BUS.register(worldSets);
+
+		// Registers end provider replacer.
+		SAPIReferences.registerWorldProviderReplacer(WorldReplacerEnd.INSTANCE);
 
 		SAPIReferences.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
 

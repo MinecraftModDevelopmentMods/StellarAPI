@@ -50,4 +50,15 @@ public interface ICelestialScene extends INBTSerializable<NBTTagCompound> {
 
 	/** Creates the sky renderer after the pack is determined. */
 	public @Nullable IAdaptiveRenderer createSkyRenderer();
+
+
+	/** Gets the update tag for server-client synchronization. */
+	default public NBTTagCompound getUpdateTag() {
+		return this.serializeNBT();
+	}
+
+	/** Handles the update tag for server-client synchronization. */
+	default public void handleUpdateTag(NBTTagCompound nbt) {
+		this.deserializeNBT(nbt);
+	}
 }

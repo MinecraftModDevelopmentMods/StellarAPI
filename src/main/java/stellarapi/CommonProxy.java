@@ -7,6 +7,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import stellarapi.api.lib.math.Spmath;
+import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.feature.celestial.tweakable.SAPICelestialScene;
 
 public class CommonProxy implements IProxy {
 
@@ -35,5 +37,10 @@ public class CommonProxy implements IProxy {
 	@Override
 	public void registerTask(Runnable runnable) {
 		// MinecraftServer.getServer().addScheduledTask(runnable);
+	}
+
+	@Override
+	public IAdaptiveRenderer getRenderer(SAPICelestialScene sapiCelestialScene) {
+		return null;
 	}
 }

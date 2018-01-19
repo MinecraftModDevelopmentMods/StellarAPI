@@ -1,4 +1,4 @@
-package stellarapi.example;
+package stellarapi.example.world;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
