@@ -118,9 +118,8 @@ public class SAPICelestialScene implements ICelestialScene {
 		}
 
 		this.collection = new SAPICollection(this.world, this.sunExist, this.moonExist,
-				this.dayLength, this.monthInDay, this.dayOffset, this.monthOffset,
-				this.yearlyChangeEnabled, this.yearInDay, this.yearOffset);
-		this.coordinate = new SAPICoordinates(this);
+				this.dayLength, this.monthInDay, this.dayOffset, this.monthOffset);
+		this.coordinate = new SAPICoordinates(this.world, this.dayLength, this.dayOffset);
 		this.skyEffect = new SAPISky(this.minimumSkyBrightness);
 		this.helper = new CelestialHelper(
 				1.0f, 1.0f, collection.sun, collection.moon, this.coordinate, this.skyEffect);

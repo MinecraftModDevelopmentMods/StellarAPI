@@ -8,13 +8,13 @@ import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;
 
-public class SAPICoordinate implements ICelestialCoordinates {
+public class SAPICoordinates implements ICelestialCoordinates {
 	private World world;
 	private double dayLength;
 	private double offset;
 	private Matrix3 projREqToHor = new Matrix3().setAsRotation(1.0, 0.0, 0.0, Math.PI / 2);
 
-	public SAPICoordinate(World world, double day, double dayOffset) {
+	public SAPICoordinates(World world, double day, double dayOffset) {
 		this.world = world;
 		this.dayLength = day;
 		this.offset = dayOffset / day;
