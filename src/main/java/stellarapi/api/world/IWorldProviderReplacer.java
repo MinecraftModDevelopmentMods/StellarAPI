@@ -2,7 +2,6 @@ package stellarapi.api.world;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import stellarapi.api.ICelestialHelper;
 
 /**
  * Interface of world provider replacer to replace WorldProvider with the information of ICelestialHelper.

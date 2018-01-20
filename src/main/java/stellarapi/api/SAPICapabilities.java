@@ -4,6 +4,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.IOpticalViewer;
+import stellarapi.api.world.ICelestialWorld;
 
 public class SAPICapabilities {
 	@CapabilityInject(ICelestialWorld.class)

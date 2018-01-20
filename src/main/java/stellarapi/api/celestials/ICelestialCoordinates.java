@@ -1,6 +1,7 @@
 
-package stellarapi.api;
+package stellarapi.api.celestials;
 
+import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.Vector3;
 

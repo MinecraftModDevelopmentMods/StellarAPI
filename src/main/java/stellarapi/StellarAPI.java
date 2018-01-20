@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.daywake.SleepWakeManager;
 import stellarapi.api.lib.config.ConfigManager;
+import stellarapi.api.world.worldset.WorldSets;
 import stellarapi.example.world.WorldReplacerEnd;
 import stellarapi.feature.celestial.tweakable.SAPICelestialPack;
 import stellarapi.feature.command.CommandPerDimensionResource;
@@ -33,7 +34,7 @@ import stellarapi.impl.wake.AlarmWakeHandler;
 import stellarapi.impl.wake.SunHeightWakeHandler;
 import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.SAPIReferenceHandler;
-import stellarapi.reference.WorldSets;
+import stellarapi.reference.WorldSetReference;
 
 @Mod(modid = SAPIReferences.MODID, version = SAPIReferences.VERSION,
 acceptedMinecraftVersions="[1.12.0, 1.13.0)",
@@ -108,10 +109,11 @@ public final class StellarAPI {
 		sleepWake.register("wakeBySunHeight", new SunHeightWakeHandler(), true);
 		sleepWake.register("wakeByAlarm", new AlarmWakeHandler(), false);
 
-		cfgManager.register(worldSetCategory, reference);
-		WorldSets worldSets = new WorldSets();
-		worldSets.onPreInit(reference);
-		MinecraftForge.EVENT_BUS.register(worldSets);
+		WorldSetReference worldRef = new WorldSetReference();
+		worldRef.initialize();
+		WorldSets.putReference(worldRef);
+		MinecraftForge.EVENT_BUS.register(worldRef);
+		cfgManager.register(worldSetCategory, worldRef);
 
 		// Registers end provider replacer.
 		SAPIReferences.registerWorldProviderReplacer(WorldReplacerEnd.INSTANCE);

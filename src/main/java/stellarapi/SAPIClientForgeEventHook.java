@@ -23,7 +23,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.optics.EyeDetector;
@@ -31,6 +30,7 @@ import stellarapi.api.optics.IOpticalFilter;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.world.ICelestialWorld;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.reference.CelestialPackManager;
 

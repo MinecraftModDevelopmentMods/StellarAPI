@@ -18,29 +18,30 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import stellarapi.StellarAPI;
-import stellarapi.api.ICelestialCoordinates;
-import stellarapi.api.ICelestialHelper;
-import stellarapi.api.ICelestialPack;
-import stellarapi.api.ICelestialScene;
-import stellarapi.api.ICelestialWorld;
-import stellarapi.api.IPerWorldReference;
 import stellarapi.api.ISkyEffect;
+import stellarapi.api.IWorldReference;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.helper.WorldProviderReplaceHelper;
+import stellarapi.api.pack.ICelestialPack;
+import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.world.ICelestialHelper;
+import stellarapi.api.world.ICelestialWorld;
 import stellarapi.api.world.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSets;
 import stellarapi.feature.network.MessageSyncPackSettings;
 import stellarapi.impl.celestial.DefaultCelestialPack;
 
 /**
  * Per world manager to contain the per-world(dimension) objects.
  */
-public class CelestialPackManager implements ICelestialWorld, IPerWorldReference, INBTSerializable<NBTTagCompound> {
+public class CelestialPackManager implements ICelestialWorld, IWorldReference, INBTSerializable<NBTTagCompound> {
 	private World world;
 	private WorldSet worldSet;
 	private ICelestialPack pack;
@@ -63,7 +64,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 			this.loadPackFromConfig();
 		} else {
 			// By default, load with default pack on the client.
-			this.worldSet = SAPIReferences.getPrimaryWorldSet(world);
+			this.worldSet = WorldSets.getPrimaryWorldSet(world);
 			this.loadPack(DefaultCelestialPack.INSTANCE, true);
 		}
 	}
@@ -75,7 +76,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	}
 
 	public void loadPackFromConfig() {
-		for(WorldSet wSet : SAPIReferences.appliedWorldSets(this.world)) {
+		for(WorldSet wSet : WorldSets.appliedWorldSets(this.world)) {
 			// Only one pack for WorldSet for now
 			ICelestialPack pack = SAPIReferences.getCelestialPack(wSet);
 			if(pack != null) {

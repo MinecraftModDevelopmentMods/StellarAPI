@@ -2,7 +2,7 @@ package stellarapi.example.world;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import stellarapi.api.ICelestialHelper;
+import stellarapi.api.world.ICelestialHelper;
 import stellarapi.api.world.IWorldProviderReplacer;
 
 public enum WorldReplacerDefault implements IWorldProviderReplacer {

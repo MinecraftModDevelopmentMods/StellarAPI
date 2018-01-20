@@ -1,8 +1,8 @@
 package stellarapi.impl.celestial;
 
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialPack;
-import stellarapi.api.ICelestialScene;
+import stellarapi.api.pack.ICelestialPack;
+import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.world.worldset.WorldSet;
 
 public enum DefaultCelestialPack implements ICelestialPack {

@@ -6,16 +6,16 @@ import java.util.function.Consumer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
-import stellarapi.api.ICelestialCoordinates;
-import stellarapi.api.ICelestialHelper;
-import stellarapi.api.ICelestialScene;
 import stellarapi.api.ISkyEffect;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.ICelestialCollection;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.render.IAdaptiveRenderer;
-import stellarapi.example.CelestialHelper;
+import stellarapi.api.world.ICelestialHelper;
+import stellarapi.example.CelestialHelperSimple;
 
 public class SAPICelestialScene implements ICelestialScene {
 	private final World world;
@@ -105,7 +105,7 @@ public class SAPICelestialScene implements ICelestialScene {
 	}
 
 
-	private CelestialHelper helper;
+	private CelestialHelperSimple helper;
 	private SAPICollection collection;
 	private ICelestialCoordinates coordinate;
 	private ISkyEffect skyEffect;
@@ -116,12 +116,15 @@ public class SAPICelestialScene implements ICelestialScene {
 			this.latitude = 0.0;
 			this.angleAxialTilt = 0.0;
 		}
+		// No complete implementation before coordinates system overhaul.
+		// FIXME Coordinates System Overhaul
+		// FIXME Clean up codes
 
 		this.collection = new SAPICollection(this.world, this.sunExist, this.moonExist,
 				this.dayLength, this.monthInDay, this.dayOffset, this.monthOffset);
 		this.coordinate = new SAPICoordinates(this.world, this.dayLength, this.dayOffset);
 		this.skyEffect = new SAPISky(this.minimumSkyBrightness);
-		this.helper = new CelestialHelper(
+		this.helper = new CelestialHelperSimple(
 				1.0f, 1.0f, collection.sun, collection.moon, this.coordinate, this.skyEffect);
 	}
 

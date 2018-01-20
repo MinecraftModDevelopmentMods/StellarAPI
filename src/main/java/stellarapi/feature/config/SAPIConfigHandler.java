@@ -2,18 +2,14 @@ package stellarapi.feature.config;
 
 import java.util.Map;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.ICelestialPack;
-import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.IConfigHandler;
 import stellarapi.api.world.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSets;
 import stellarapi.feature.celestial.tweakable.SAPIWorldCfgHandler;
-import stellarapi.impl.celestial.DefaultCelestialPack;
 
 public class SAPIConfigHandler implements IConfigHandler {
 	private boolean forceConfig;
@@ -39,7 +35,7 @@ public class SAPIConfigHandler implements IConfigHandler {
 		forceChange.setLanguageKey("config.property.worldsettings.forceconfig");
 		forceChange.setRequiresWorldRestart(true);
 
-		for(WorldSet worldSet : SAPIReferences.getAllWorldSets()) {
+		for(WorldSet worldSet : WorldSets.getAllWorldSets()) {
 			if(worldSet.hasSky().isFalse)
 				return;
 			// Well, the end won't have any effect but it could worth it.
@@ -52,8 +48,8 @@ public class SAPIConfigHandler implements IConfigHandler {
 	public void loadFromConfig(Configuration config, String category) {
 		forceConfig = config.getCategory(category).get("Force_Config").getBoolean();
 
-		for(WorldSet worldSet : SAPIReferences.getAllWorldSets()) {
-			if(worldSet.hasSky().isFalse || worldSet == SAPIReferences.endType())
+		for(WorldSet worldSet : WorldSets.getAllWorldSets()) {
+			if(worldSet.hasSky().isFalse || worldSet == WorldSets.endType())
 				return;
 
 			SAPIWorldCfgHandler handler = subHandlers.get(worldSet);
