@@ -21,11 +21,11 @@
  * */
 
 /**
- * Rendering section of Stellar API.
+ * Coordinates section of Stellar API.
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
-package stellarapi.api.render;
+package stellarapi.api.coordinates;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.api.SAPIReferences;
