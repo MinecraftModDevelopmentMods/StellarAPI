@@ -1,9 +1,8 @@
 package stellarapi.api.celestials;
 
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
+import stellarapi.api.position.ICTrajectory;
 
 /**
  * Celestial Object interface.
@@ -38,23 +37,6 @@ public interface ICelestialObject {
 	public CelestialPeriod getAbsolutePeriod();
 
 	/**
-	 * Horizontal period for the effector.
-	 * <p>
-	 * This is the period that the horizontal position of this effector returns
-	 * to original position.
-	 * <p>
-	 * Normally starts from the lowest position.
-	 * 
-	 * @return
-	 *         <ul>
-	 *         <li>horizontal period object for this effector if it exists
-	 *         <li><b><code>null</code></b> if this effector is stopped in
-	 *         horizontal coordinate or have sufficiently fast random movements.
-	 *         </ul>
-	 */
-	public CelestialPeriod getHorizontalPeriod();
-
-	/**
 	 * Phase period for this effector. Normally starts from the darkest phase.
 	 * 
 	 * @return
@@ -79,17 +61,11 @@ public interface ICelestialObject {
 	 */
 	public double getCurrentBrightness(Wavelength wavelength);
 
-	/**
-	 * Gets current absolute position.
-	 * <p>
-	 * Note that the center is still on the ground,
-	 * <p>
-	 * and this position is per dimension.
-	 */
-	public Vector3 getCurrentAbsolutePos();
+	/** Gets current trajectory of this object. */
+	public ICTrajectory getTrajectory();
 
-	/** Gets current position for horizontal coordinate. */
-	public SpCoord getCurrentHorizontalPos();
+	/** Adds a tracker. */
+	public void addTracker(ICObjectTracker tracker);
 
 	/**
 	 * Gets standard visible magnitude of this object.
@@ -97,32 +73,6 @@ public interface ICelestialObject {
 	 * Should be constant.
 	 */
 	public double getStandardMagnitude();
-
-	/**
-	 * Gives the list of additional numerical properties.
-	 */
-	// public ImmutableList<String> additionalNumericalProperties();
-
-	/**
-	 * Additional numerical properties.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 */
-	// public double additionalNumericalProperty(String propertyName);
-
-	/**
-	 * Gives the list of additional generic properties.
-	 */
-	// public ImmutableList<String> additionalGenericProperties();
-
-	/**
-	 * Additional generic properties.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 */
-	// public String additionalGenericProperty(String propertyName);
 
 	/**
 	 * Gets type of this object.

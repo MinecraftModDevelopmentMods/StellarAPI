@@ -40,8 +40,6 @@ import stellarapi.reference.WorldSetReference;
 acceptedMinecraftVersions="[1.12.0, 1.13.0)",
 guiFactory = "stellarapi.feature.config.StellarAPIConfigGuiFactory")
 public final class StellarAPI {
-	// FIXME License change
-
 	// The instance of Stellar API
 	@Mod.Instance(SAPIReferences.MODID)
 	public static StellarAPI INSTANCE = null;

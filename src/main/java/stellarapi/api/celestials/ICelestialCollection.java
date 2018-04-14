@@ -2,6 +2,7 @@ package stellarapi.api.celestials;
 
 import com.google.common.collect.ImmutableSet;
 
+import stellarapi.api.coordinates.CCoordinates;
 import stellarapi.api.lib.math.SpCoord;
 
 /**
@@ -62,10 +63,9 @@ public interface ICelestialCollection {
 	public int searchOrder();
 
 	/**
-	 * Gets flag if this collection should be served as background, i.e. the
-	 * objects are fixed on the celestial sphere, without any change.
-	 */
-	public boolean isBackground();
+	 * Gets the base coordinates for this collection.
+	 * */
+	public CCoordinates baseCoordinates();
 
 	/**
 	 * Gets type of this collection.

@@ -58,8 +58,7 @@ public interface ICelestialCoordinates {
 	 * @param initialAbsPos
 	 *            the absolute position of the object
 	 * @param periodLength
-	 *            the length of the period, exist for the case which time 0 on
-	 *            sky is different from tick 0.
+	 *            the length of the period, exist for objects with different period
 	 * @return the initial offset for the initial absolute position
 	 */
 	public double calculateInitialOffset(Vector3 initialAbsPos, double periodLength);
