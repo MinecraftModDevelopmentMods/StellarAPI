@@ -49,8 +49,8 @@ public class CompatManager {
 	}
 
 	private class CompatModuleDelegate {
-		public String modid;
-		public ICompatModule module;
+		public final String modid;
+		public final ICompatModule module;
 
 		public CompatModuleDelegate(String key, ICompatModule value) {
 			this.modid = key;

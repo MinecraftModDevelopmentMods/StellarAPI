@@ -9,8 +9,6 @@ public abstract class ConfigProperty {
 	protected String configKey;
 	protected String dataKey;
 
-	private String comment;
-
 	public ConfigProperty(String configKey, String dataKey) {
 		this.configKey = configKey;
 		this.dataKey = dataKey;

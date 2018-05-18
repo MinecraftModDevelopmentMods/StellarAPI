@@ -10,7 +10,6 @@ import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialHelper;
 import stellarapi.api.ICelestialScene;
 import stellarapi.api.ISkyEffect;
-import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;

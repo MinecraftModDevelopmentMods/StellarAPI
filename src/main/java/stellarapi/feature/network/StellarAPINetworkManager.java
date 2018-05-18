@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -14,7 +13,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.api.SAPIReferences;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 import stellarapi.reference.CelestialPackManager;
 

@@ -3,8 +3,6 @@ package stellarapi.api.helper;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import com.google.common.base.Throwables;
-
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -21,7 +19,7 @@ public class WorldProviderReplaceHelper {
 			modifiersField.setAccessible(true);
 			modifiersField.setInt(providerField, providerField.getModifiers() & ~Modifier.FINAL);
 		} catch (Exception exc) {
-			Throwables.propagate(exc);
+			throw new RuntimeException(exc);
 		}
 	}
 
@@ -37,7 +35,7 @@ public class WorldProviderReplaceHelper {
 		try {
 			providerField.set(world, provider);
 		} catch (Exception exc) {
-			Throwables.propagate(exc);
+			throw new RuntimeException(exc);
 		}
 	}
 

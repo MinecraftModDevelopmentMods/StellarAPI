@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import stellarapi.StellarAPI;
-import stellarapi.api.ICelestialPack;
 import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;

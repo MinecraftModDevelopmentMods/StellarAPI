@@ -2,18 +2,14 @@ package stellarapi.feature.config;
 
 import java.util.Map;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.ICelestialPack;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.IConfigHandler;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.feature.celestial.tweakable.SAPIWorldCfgHandler;
-import stellarapi.impl.celestial.DefaultCelestialPack;
 
 public class SAPIConfigHandler implements IConfigHandler {
 	private boolean forceConfig;

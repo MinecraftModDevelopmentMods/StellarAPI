@@ -5,8 +5,6 @@ import java.lang.reflect.Modifier;
 
 import org.lwjgl.input.Keyboard;
 
-import com.google.common.base.Throwables;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -50,7 +48,7 @@ public class SAPIClientForgeEventHook {
 			modifiersField.setAccessible(true);
 			modifiersField.setInt(lightMapField, lightMapField.getModifiers() & ~Modifier.FINAL);
 		} catch (Exception exc) {
-			Throwables.propagate(exc);
+			throw new RuntimeException(exc);
 		}
 	}
 
@@ -90,8 +88,6 @@ public class SAPIClientForgeEventHook {
 		else
 			event.setFOV(event.getFOV() / (float) scope.getMP());
 	}
-
-	private int counter = 0;
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
@@ -135,7 +131,7 @@ public class SAPIClientForgeEventHook {
 				lightMapUpdatedField.set(event.getRenderer(), true);
 
 			} catch (Exception exc) {
-				Throwables.propagate(exc);
+				throw new RuntimeException(exc);
 			}
 		}
 	}
@@ -149,7 +145,7 @@ public class SAPIClientForgeEventHook {
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
-			Minecraft mc = Minecraft.getMinecraft();
+			//Minecraft mc = Minecraft.getMinecraft();
 			overlay.updateOverlay();
 		}
 	}
