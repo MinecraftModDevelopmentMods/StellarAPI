@@ -19,7 +19,7 @@ public class PeriodHelper {
 	 */
 	public static CelestialPeriod getDayPeriod(World world) {
 		CelestialEffectors effectors = SAPIReferences.getEffectors(world, IEffectorType.Light);
-		return effectors == null ? null : effectors.getPrimarySource().getHorizontalPeriod();
+		return effectors != null ? effectors.getPrimarySource().getHorizontalPeriod() : null;
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class PeriodHelper {
 	 */
 	public static CelestialPeriod getLunarPeriod(World world) {
 		CelestialEffectors effectors = SAPIReferences.getEffectors(world, IEffectorType.Tide);
-		return effectors == null ? null : effectors.getPrimarySource().getAbsolutePeriod();
+		return effectors != null ? effectors.getPrimarySource().getAbsolutePeriod() : null;
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class PeriodHelper {
 	 */
 	public static CelestialPeriod getYearPeriod(World world) {
 		CelestialEffectors effectors = SAPIReferences.getEffectors(world, IEffectorType.Light);
-		return effectors == null ? null : effectors.getPrimarySource().getAbsolutePeriod();
+		return effectors != null ? effectors.getPrimarySource().getAbsolutePeriod() : null;
 	}
 
 }
