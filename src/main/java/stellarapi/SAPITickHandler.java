@@ -2,19 +2,12 @@ package stellarapi;
 
 import java.lang.reflect.Method;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.WorldInfo;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.helper.LivingItemAccessHelper;
-import stellarapi.api.interact.IOpticalProperties;
 
 public class SAPITickHandler {
 
@@ -30,45 +23,6 @@ public class SAPITickHandler {
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@SubscribeEvent
-	public void livingUpdate(LivingUpdateEvent event) {
-		if(!SAPIReferences.isOpticalEntity(event.getEntityLiving()))
-			return;
-
-		EnumHand hand = event.getEntityLiving().getActiveHand();
-		ItemStack itemstack = hand != null ? event.getEntityLiving().getHeldItem(hand) : ItemStack.EMPTY;
-		ItemStack itemInUse = event.getEntityLiving().getActiveItemStack();
-
-		if (!ItemStack.areItemStacksEqual(itemstack, itemInUse)) {
-			boolean updateScope = false;
-			boolean updateFilter = false;
-
-			if (itemstack.hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
-				IOpticalProperties property = itemstack.getCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
-				updateScope = updateScope || property.isScope();
-				updateFilter = updateFilter || property.isFilter();
-			}
-
-			if (itemInUse.hasCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP)) {
-				IOpticalProperties property = itemInUse.getCapability(SAPICapabilities.OPTICAL_PROPERTY, EnumFacing.UP);
-				updateScope = updateScope || property.isScope();
-				updateFilter = updateFilter || property.isFilter();
-			}
-
-			if(updateScope) {
-				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse.isEmpty()? ItemStack.EMPTY : itemstack);
-				SAPIReferences.updateScope(event.getEntityLiving());
-			}
-
-			if(updateFilter) {
-				LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemInUse.isEmpty()? ItemStack.EMPTY :  itemstack);
-				SAPIReferences.updateFilter(event.getEntityLiving());
-			}
-		} else if(itemstack != itemInUse)
-			LivingItemAccessHelper.setUsingItem(event.getEntityLiving(), itemstack);
 	}
 
 	@SubscribeEvent

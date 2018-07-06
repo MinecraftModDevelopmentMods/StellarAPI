@@ -22,7 +22,7 @@ import stellarapi.api.optics.RGBFilter;
 /**
  * Example for telescope item which gets activated any time the player press the
  * right click to use the item.
- * TODO Implement 10 times multiplication via events
+ * TODO AA Implement 10 times multiplication via events
  */
 public class ItemTelescopeExample extends Item {
 	private IOpticalProp filter = new RGBFilter() {

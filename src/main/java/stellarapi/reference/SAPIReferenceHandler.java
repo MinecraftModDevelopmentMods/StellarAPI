@@ -12,7 +12,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +27,6 @@ import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
-import stellarapi.api.IPerEntityReference;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.IReference;
 import stellarapi.api.ISkyEffect;
@@ -37,11 +35,7 @@ import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
-import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.api.optics.IOpticalProp;
-import stellarapi.api.optics.IOpticalViewer;
-import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.api.world.worldset.WorldSetFactory;
@@ -84,48 +78,6 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 			}
 		});
 
-		CapabilityManager.INSTANCE.register(IOpticalViewer.class, new Capability.IStorage<IOpticalViewer>() {
-			@Override
-			public NBTBase writeNBT(Capability<IOpticalViewer> capability, IOpticalViewer instance, EnumFacing side) { return null; }
-			@Override
-			public void readNBT(Capability<IOpticalViewer> capability, IOpticalViewer instance, EnumFacing side, NBTBase nbt) { }
-		}, new Callable<IOpticalViewer>() {
-			@Override
-			public IOpticalViewer call() throws Exception {
-				return new IOpticalViewer() {
-					@Override
-					public IOpticalProp getFilter() {
-						return null;
-					}
-				};
-			}
-		});
-		
-		CapabilityManager.INSTANCE.register(IOpticalProperties.class, new Capability.IStorage<IOpticalProperties>() {
-			public NBTBase writeNBT(Capability<IOpticalProperties> capability, IOpticalProperties instance, EnumFacing side) {
-				return null;
-			}
-
-			public void readNBT(Capability<IOpticalProperties> capability, IOpticalProperties instance, EnumFacing side,
-					NBTBase nbt) {
-			}
-		}, new Callable<IOpticalProperties>() {
-			@Override
-			public IOpticalProperties call() throws Exception {
-				return new IOpticalProperties() {
-					@Override
-					public boolean isFilter() {
-						return false;
-					}
-
-					@Override
-					public IOpticalProp getFilter(EntityLivingBase viewer) {
-						return null;
-					}
-				};
-			}
-		});
-
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
@@ -134,14 +86,6 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 		ICelestialWorld celWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, EnumFacing.UP);
 		if(celWorld instanceof IPerWorldReference)
 			return (IPerWorldReference) celWorld;
-		else return null;
-	}
-
-	@Override
-	public IPerEntityReference getPerEntityReference(Entity entity) {
-		IOpticalViewer viewer = entity.getCapability(SAPICapabilities.VIEWER_CAPABILITY, EnumFacing.DOWN);
-		if (viewer instanceof IPerEntityReference)
-			return (IPerEntityReference) viewer;
 		else return null;
 	}
 
@@ -167,12 +111,6 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 		if (check.isOpticalEntity())
 			event.addCapability(new ResourceLocation(SAPIReferences.MODID, "viewer"),
 					new SAPIEntityCaps(event.getObject()));
-	}
-
-
-	@Override
-	public IOpticalProp getDefaultFilter() {
-		return new NakedFilter();
 	}
 
 	@Override
