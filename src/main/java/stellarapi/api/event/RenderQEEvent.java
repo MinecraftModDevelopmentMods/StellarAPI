@@ -9,14 +9,14 @@ import stellarapi.api.optics.Wavelength;
 /**
  * Event that determines quantum efficiency of filter for an entity.
  * */
-public class FilterQEEvent extends EntityViewRenderEvent {
+public class RenderQEEvent extends EntityViewRenderEvent {
 	private final Wavelength wavelength;
 	private float efficiency;
 
-	public FilterQEEvent(EntityRenderer renderer, Entity entity, IBlockState state, double renderPartialTicks, Wavelength wavelengthIn, float initialQE) {
+	public RenderQEEvent(EntityRenderer renderer, Entity entity, IBlockState state, double renderPartialTicks, Wavelength wavelengthIn, float initialQE) {
 		super(renderer, entity, state, renderPartialTicks);
 		this.wavelength = wavelengthIn;
-		this.efficiency = initialQE;
+		this.setQE(initialQE);
 	}
 
 	public Wavelength getWavelength() {

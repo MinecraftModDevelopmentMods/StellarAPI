@@ -30,7 +30,9 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
-import stellarapi.api.event.FilterQEEvent;
+import stellarapi.api.event.FOVEvent;
+import stellarapi.api.event.QEEvent;
+import stellarapi.api.event.RenderQEEvent;
 import stellarapi.api.interact.IFilter;
 import stellarapi.api.interact.IScope;
 import stellarapi.api.optics.EnumRGBA;
@@ -83,29 +85,17 @@ public class SAPIClientEventHook {
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onDecideFOV(EntityViewRenderEvent.FOVModifier event) {
-		if(event.getEntity() instanceof EntityLivingBase) {
-			EntityLivingBase viewer = (EntityLivingBase) event.getEntity();
-			ItemStack active = viewer.getActiveItemStack();
-			if(active != null) {
-				IScope scope = active.getCapability(SAPICapabilities.SCOPE_CAPABILITY, null);
-				if(scope != null)
-					event.setFOV(scope.transformFOV(event.getFOV()));
-			}
-		}
+	public void onDecideFOV(EntityViewRenderEvent.FOVModifier e) {
+		FOVEvent event = new FOVEvent(e.getEntity(), e.getFOV());
+		MinecraftForge.EVENT_BUS.post(event);
+		e.setFOV(event.getFOV());
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onDecideQE(FilterQEEvent event) {
-		if(event.getEntity() instanceof EntityLivingBase) {
-			EntityLivingBase viewer = (EntityLivingBase) event.getEntity();
-			ItemStack active = viewer.getActiveItemStack();
-			if(active != null) {
-				IFilter filter = active.getCapability(SAPICapabilities.FILTER_CAPABILITY, null);
-				if(filter != null)
-					event.setQE(filter.transformQE(event.getWavelength(), event.getQE()));
-			}
-		}
+	public void onDecideQE(RenderQEEvent e) {
+		QEEvent event = new QEEvent(e.getEntity(), e.getWavelength(), e.getQE());
+		MinecraftForge.EVENT_BUS.post(event);
+		e.setQE(event.getQE());
 	}
 
 
@@ -114,14 +104,13 @@ public class SAPIClientEventHook {
 	}
 
 	private float getFilterQE(EntityRenderer renderer, Entity entity, IBlockState state, double renderPartialTicks, Wavelength wavelengthIn, float initialQE) {
-		FilterQEEvent event = new FilterQEEvent(renderer, entity, state, renderPartialTicks, wavelengthIn, initialQE);
+		RenderQEEvent event = new RenderQEEvent(renderer, entity, state, renderPartialTicks, wavelengthIn, initialQE);
 		MinecraftForge.EVENT_BUS.post(event);
 		return event.getQE();
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
-		//IOpticalProp filter = SAPIReferences.getFilter(event.getEntity());
 		float[] eff = new float[3];
 		for(EnumRGBA color : EnumRGBA.RGB)
 			eff[color.ordinal()] = this.getFilterQE(event, Wavelength.colorWaveMap.get(color), 1.0f);
