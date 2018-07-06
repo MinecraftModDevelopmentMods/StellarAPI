@@ -1,9 +1,8 @@
 package stellarapi.lib.gui.model.font;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -69,7 +68,7 @@ public class WrappedFontRenderer extends FontRenderer {
 
 	@Override
 	protected void setColor(float r, float g, float b, float a) {
-		GL11.glColor4f(this.redWrapped * r, this.greenWrapped * g, this.blueWrapped * b, this.alphaWrapped * a);
+		GlStateManager.color(this.redWrapped * r, this.greenWrapped * g, this.blueWrapped * b, this.alphaWrapped * a);
 	}
 
 }

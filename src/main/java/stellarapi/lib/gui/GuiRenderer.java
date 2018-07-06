@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import stellarapi.StellarAPI;
@@ -108,8 +109,8 @@ public class GuiRenderer implements IRenderer {
 		float centerX = totalBound.getMainX(0.5f);
 		float centerY = totalBound.getMainY(0.5f);
 
-		GL11.glPushMatrix();
-		GL11.glTranslatef(centerX, centerY, 0.0f);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(centerX, centerY, 0.0f);
 
 		for (IMatrixTransformation trans : this.transformation)
 			trans.doTransform();
@@ -128,7 +129,7 @@ public class GuiRenderer implements IRenderer {
 
 		currentModel.renderModel(info, this.temp, this.tempClip, this.tessellator, this.worldRenderer,
 				this.textureManager, this.currentColor);
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 
 		if (this.matrixPushedTillNextRender) {
 			innerTrans.clear();
@@ -148,7 +149,7 @@ public class GuiRenderer implements IRenderer {
 		transformation.clear();
 		innerTrans.clear();
 		this.currentModel = null;
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	private interface IMatrixTransformation {
@@ -166,7 +167,7 @@ public class GuiRenderer implements IRenderer {
 
 		@Override
 		public void doTransform() {
-			GL11.glTranslatef(x, y, 0.0f);
+			GlStateManager.translate(x, y, 0.0f);
 		}
 	}
 
@@ -181,7 +182,7 @@ public class GuiRenderer implements IRenderer {
 
 		@Override
 		public void doTransform() {
-			GL11.glScalef(x, y, 1.0f);
+			GlStateManager.scale(x, y, 1.0f);
 		}
 	}
 
@@ -198,7 +199,7 @@ public class GuiRenderer implements IRenderer {
 
 		@Override
 		public void doTransform() {
-			GL11.glRotatef(angle, x, y, z);
+			GlStateManager.rotate(angle, x, y, z);
 		}
 	}
 
@@ -214,6 +215,6 @@ public class GuiRenderer implements IRenderer {
 
 	@Override
 	public void postRender(float partialTicks) {
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }

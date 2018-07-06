@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
 import stellarapi.api.gui.overlay.IOverlayElement;
 import stellarapi.api.gui.overlay.IRawOverlayElement;
@@ -159,19 +160,19 @@ public class OverlayContainer {
 			scaledMouseX -= animationOffsetX;
 			scaledMouseY -= animationOffsetY;
 
-			GL11.glPushMatrix();
-			GL11.glTranslatef((pos.getHorizontalPos().getOffset(this.width, width) + animationOffsetX),
+			GlStateManager.pushMatrix();
+			GlStateManager.translate((pos.getHorizontalPos().getOffset(this.width, width) + animationOffsetX),
 					(pos.getVerticalPos().getOffset(this.height, height) + animationOffsetY), 0.0f);
 
 			element.render(scaledMouseX, scaledMouseY, partialTicks);
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 
 			if (delegate.getHandler() != null)
 				delegate.getHandler().render(mouseX, mouseY, partialTicks);
 		}
 
 		// Refreshes color for next elements to be rendered correctly.
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	public int getWidth() {

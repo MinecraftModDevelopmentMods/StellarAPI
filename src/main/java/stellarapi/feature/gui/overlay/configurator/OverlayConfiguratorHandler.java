@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import stellarapi.api.gui.overlay.EnumOverlayMode;
 import stellarapi.api.gui.overlay.IOverlayManager;
 import stellarapi.api.gui.overlay.IRawHandler;
@@ -153,10 +154,10 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 						possible ? 0xff00ff00 : 0xffff0000);
 				GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 
-				GL11.glDisable(GL11.GL_ALPHA_TEST);
+				GlStateManager.disableAlpha();
 				Gui.drawRect(offsetX + 1, offsetY + 1, offsetX + elementWidth - 1, offsetY + elementHeight - 1,
 						possible ? 0x0f00ff00 : 0x0fff0000);
-				GL11.glEnable(GL11.GL_ALPHA_TEST);
+				GlStateManager.enableAlpha();
 			} else if (this.eventButton == 1) {
 				boolean contain = mainOverlay.doesContain(this.currentSelected);
 
@@ -165,10 +166,10 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 						!contain ? 0xff0066ff : 0xffff0000);
 				GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 
-				GL11.glDisable(GL11.GL_ALPHA_TEST);
+				GlStateManager.disableAlpha();
 				Gui.drawRect(offsetX + 3, offsetY + 3, offsetX + elementWidth - 3, offsetY + elementHeight - 3,
 						!contain ? 0x0f0099ff : 0x0fff0000);
-				GL11.glEnable(GL11.GL_ALPHA_TEST);
+				GlStateManager.enableAlpha();
 
 				if (!contain)
 					Gui.drawRect(offsetX + elementWidth / 2 - 1, offsetY + elementHeight / 2 - 8,
@@ -199,9 +200,9 @@ public class OverlayConfiguratorHandler implements IRawHandler<OverlayConfigurat
 			Gui.drawRect(offsetX + 3, offsetY + 3, offsetX + elementWidth - 3, offsetY + elementHeight - 3, 0xff0000ff);
 			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
+			GlStateManager.disableAlpha();
 			Gui.drawRect(offsetX + 3, offsetY + 3, offsetX + elementWidth - 3, offsetY + elementHeight - 3, 0x0f0000ff);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
+			GlStateManager.enableAlpha();
 		}
 	}
 
