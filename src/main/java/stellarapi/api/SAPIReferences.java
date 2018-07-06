@@ -194,25 +194,16 @@ public final class SAPIReferences {
 	}
 
 	/**
-	 * Updates the scope for the entity. Only works for entities with optical
-	 * event callback capabilities.
-	 * 
-	 * @param additionalParams
-	 *            additional parameters like changed itemstack.
-	 */
-	public static void updateScope(Entity entity, Object... additionalParams) {
-		reference.getPerEntityReference(entity).updateScope(additionalParams);
-	}
-
-	/**
 	 * Updates the filter for the entity. Only works for entities with optical
 	 * event callback capabilities.
 	 * 
 	 * @param additionalParams
 	 *            additional parameters like changed itemstack.
 	 */
+	@Deprecated
 	public static void updateFilter(Entity entity, Object... additionalParams) {
-		reference.getPerEntityReference(entity).updateFilter(additionalParams);
+		IPerEntityReference entityRef = reference.getPerEntityReference(entity);
+		if(entityRef != null) entityRef.updateFilter(additionalParams);
 	}
 
 	/**
@@ -233,8 +224,10 @@ public final class SAPIReferences {
 	 * @return the coordinate for the world if it is available now, or
 	 *         <code>null</code> otherwise
 	 */
+	@Deprecated
 	public static ICelestialCoordinates getCoordinate(World world) {
-		return reference.getPerWorldReference(world).getCoordinate();
+		IPerWorldReference worldRef = reference.getPerWorldReference(world);
+		return worldRef != null? worldRef.getCoordinate() : null;
 	}
 
 	/**
@@ -248,8 +241,10 @@ public final class SAPIReferences {
 	 * @return the sky effect for the world if it is available now, or
 	 *         <code>null</code> otherwise
 	 */
+	@Deprecated
 	public static ISkyEffect getSkyEffect(World world) {
-		return reference.getPerWorldReference(world).getSkyEffect();
+		IPerWorldReference worldRef = reference.getPerWorldReference(world);
+		return worldRef != null? worldRef.getSkyEffect() : null;
 	}
 
 	/**
@@ -260,8 +255,10 @@ public final class SAPIReferences {
 	 *            the world
 	 * @return the immutable set with effect types on the world
 	 */
+	@Deprecated
 	public static ImmutableSet<IEffectorType> getEffectTypeSet(World world) {
-		return reference.getPerWorldReference(world).getEffectorTypeSet();
+		IPerWorldReference worldRef = reference.getPerWorldReference(world);
+		return worldRef != null? worldRef.getEffectorTypeSet() : null;
 	}
 
 	/**
@@ -276,8 +273,10 @@ public final class SAPIReferences {
 	 * @return the celestial effectors for the world if it exists, or
 	 *         <code>null</code> otherwise
 	 */
+	@Deprecated
 	public static CelestialEffectors getEffectors(World world, IEffectorType type) {
-		return reference.getPerWorldReference(world).getCelestialEffectors(type);
+		IPerWorldReference worldRef = reference.getPerWorldReference(world);
+		return worldRef != null? worldRef.getCelestialEffectors(type) : null;
 	}
 
 	/**
@@ -288,8 +287,10 @@ public final class SAPIReferences {
 	 * @return the celestial collection manager for the world, or
 	 *         <code>null</code> if it is not established yet.
 	 */
+	@Deprecated
 	public static CelestialCollectionManager getCollectionManager(World world) {
-		return reference.getPerWorldReference(world).getCollectionManager();
+		IPerWorldReference worldRef = reference.getPerWorldReference(world);
+		return worldRef != null? worldRef.getCollectionManager() : null;
 	}
 
 	/**

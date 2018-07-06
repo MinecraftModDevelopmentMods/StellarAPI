@@ -10,13 +10,19 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven-publish'
 
 ext.config = parseConfig(file('build.properties'))
 
-ext.stModVersion = "${config.version.stellarapi.major}.${config.version.stellarapi.minor}.${config.version.stellarapi.revis}.${config.version.stellarapi.patch}"
+ext.modversion = "${config.version.stellarapi.major}.${config.version.stellarapi.minor}.${config.version.stellarapi.revis}.${config.version.stellarapi.patch}"
 
-version = "${config.version.minecraft}-${stModVersion}"
+version = "${config.version.minecraft}-${modversion}"
 
 group= "${config.group}"
 archivesBaseName = "${config.archive}"
@@ -31,20 +37,44 @@ minecraft {
 
 
 dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
 }
+
+
+rootProject.tasks.getByName('build').dependsOn bintrayUpload
+
+publishing {
+    publications {
+        MavenJar(MavenPublication) {
+            from components.java
+            artifact sourceJar
+            groupId "${config.group}"
+            artifactId "${config.artifact}"
+            version "${config.version.minecraft}-${modversion}"
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    dryRun = true
+    publish = true
+    pkg {
+        repo = 'StellarMods'
+        name = 'stellarapi'
+        licenses = ['MIT']
+        websiteUrl = 'https://github.com/Abastro/StellarAPI'
+        issueTrackerUrl = 'https://github.com/Abastro/StellarAPI/issues'
+        vcsUrl = 'https://github.com/Abastro/StellarAPI.git'
+        version {
+            name = "${config.version.minecraft}-${modversion}"
+        }
+    }
+    publications = ['MavenJar']
+}
+
+
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output

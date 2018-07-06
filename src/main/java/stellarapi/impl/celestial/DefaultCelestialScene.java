@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialHelper;
 import stellarapi.api.ICelestialScene;

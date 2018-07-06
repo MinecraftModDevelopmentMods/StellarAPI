@@ -2,8 +2,6 @@ package stellarapi;
 
 import java.lang.reflect.Method;
 
-import com.google.common.base.Throwables;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -30,7 +28,7 @@ public class SAPITickHandler {
 		try {
 			wakeAllPlayers.invoke(world);
 		} catch (Exception exception) {
-			throw Throwables.propagate(exception);
+			throw new RuntimeException(exception);
 		}
 	}
 

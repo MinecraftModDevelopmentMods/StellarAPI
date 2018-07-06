@@ -26,9 +26,7 @@ import stellarapi.api.optics.EnumRGBA;
 public class WorldProviderRepEnd extends WorldProviderEnd {
 	private WorldProviderEnd parProvider;
 	private ICelestialHelper celestialHelper;
-	
-	private final float[] colorsSunriseSunset = new float[4];
-		
+			
 	private long cloudColour = 16777215L;
 	
 	public WorldProviderRepEnd(World world, WorldProviderEnd provider, ICelestialHelper celestialHelper) {
@@ -180,7 +178,7 @@ public class WorldProviderRepEnd extends WorldProviderEnd {
     public float getMixedBrightnessOnBlock(int i, int j, int k) {
     	BlockPos pos = new BlockPos(i, j, k);
     	IBlockState state = world.getBlockState(pos);
-    	return ((state.getBlock().getPackedLightmapCoords(state, this.world, pos) & 0xff)>>4) * 0.005f;
+    	return ((state.getPackedLightmapCoords(this.world, pos) & 0xff)>>4) * 0.005f;
     }
 
     @Override

@@ -155,8 +155,9 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 			}
 		}
 
-		event.addCapability(new ResourceLocation(SAPIReferences.MODID, "celestials"),
-				new SAPIWorldCaps(event.getObject()));
+		if(hasPack)
+			event.addCapability(new ResourceLocation(SAPIReferences.MODID, "celestials"),
+					new SAPIWorldCaps(event.getObject()));
 	}
 
 	@SubscribeEvent

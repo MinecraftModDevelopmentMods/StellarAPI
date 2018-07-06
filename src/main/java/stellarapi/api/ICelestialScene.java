@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
