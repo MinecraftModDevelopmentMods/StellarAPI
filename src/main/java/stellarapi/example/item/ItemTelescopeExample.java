@@ -15,16 +15,24 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.interact.IOpticalProperties;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
-import stellarapi.api.optics.NakedScope;
-import stellarapi.api.optics.Wavelength;
+import stellarapi.api.optics.EnumRGBA;
+import stellarapi.api.optics.IOpticalProp;
+import stellarapi.api.optics.RGBFilter;
 
 /**
  * Example for telescope item which gets activated any time the player press the
  * right click to use the item.
+ * TODO AA Implement 10 times multiplication via events
  */
 public class ItemTelescopeExample extends Item {
+	private IOpticalProp filter = new RGBFilter() {
+
+		@Override
+		public double getFilterEfficiency(EnumRGBA color) {
+			return 2.0;
+		}
+
+	};
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
@@ -56,22 +64,12 @@ public class ItemTelescopeExample extends Item {
 	public class ScopeProvider implements ICapabilityProvider, IOpticalProperties {
 		@Override
 		public boolean isFilter() {
-			return false;
-		}
-
-		@Override
-		public IOpticalFilter getFilter(EntityLivingBase viewer) {
-			return null;
-		}
-
-		@Override
-		public boolean isScope() {
 			return true;
 		}
 
 		@Override
-		public IViewScope getScope(EntityLivingBase viewer) {
-			return scope;
+		public IOpticalProp getFilter(EntityLivingBase viewer) {
+			return filter;
 		}
 
 		@Override
@@ -86,32 +84,4 @@ public class ItemTelescopeExample extends Item {
 			} else return null;
 		}
 	}
-
-	private IViewScope scope = new IViewScope() {
-		@Override
-		public double getLGP() {
-			return 200.0;
-		}
-
-		@Override
-		public double getResolution(Wavelength wl) {
-			return NakedScope.DEFAULT_RESOLUTION / 3.0;
-		}
-
-		@Override
-		public double getMP() {
-			return 10.0;
-		}
-
-		@Override
-		public boolean forceChange() {
-			return true;
-		}
-
-		@Override
-		public boolean isFOVCoverSky() {
-			return true;
-		}
-	};
-
 }

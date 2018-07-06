@@ -20,8 +20,6 @@ import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
 import stellarapi.api.world.IWorldProviderReplacer;
@@ -190,36 +188,6 @@ public final class SAPIReferences {
 		INSTANCE.resourceManager.register(handler);
 	}
 
-	public static boolean isOpticalEntity(Entity entity) {
-		return reference.getPerEntityReference(entity) != null;
-	}
-
-	/**
-	 * Updates the scope for the entity. Only works for entities with optical
-	 * event callback capabilities.
-	 * 
-	 * @param additionalParams
-	 *            additional parameters like changed itemstack.
-	 */
-	@Deprecated
-	public static void updateScope(Entity entity, Object... additionalParams) {
-		IPerEntityReference entityRef = reference.getPerEntityReference(entity);
-		if(entityRef != null) entityRef.updateScope(additionalParams);
-	}
-
-	/**
-	 * Updates the filter for the entity. Only works for entities with optical
-	 * event callback capabilities.
-	 * 
-	 * @param additionalParams
-	 *            additional parameters like changed itemstack.
-	 */
-	@Deprecated
-	public static void updateFilter(Entity entity, Object... additionalParams) {
-		IPerEntityReference entityRef = reference.getPerEntityReference(entity);
-		if(entityRef != null) entityRef.updateFilter(additionalParams);
-	}
-
 	/**
 	 * Gets the event bus for Stellar API.
 	 */
@@ -305,35 +273,6 @@ public final class SAPIReferences {
 	public static CelestialCollectionManager getCollectionManager(World world) {
 		IPerWorldReference worldRef = reference.getPerWorldReference(world);
 		return worldRef != null? worldRef.getCollectionManager() : null;
-	}
-
-	/**
-	 * Checks if certain entity has optical information.
-	 * Check this before trying to get the scope.
-	 * @param entity the entity
-	 * */
-	public static boolean hasOpticalInformation(Entity entity) {
-		return reference.getPerEntityReference(entity) != null;
-	}
-
-	/**
-	 * Gets scope for certain entity.
-	 * @param entity the entity
-	 */
-	@Deprecated
-	public static IViewScope getScope(Entity entity) {
-		IPerEntityReference entityRef = reference.getPerEntityReference(entity);
-		return entityRef != null? entityRef.getScope() : reference.getDefaultScope();
-	}
-
-	/**
-	 * Gets filter for certain entity.
-	 * @param entity the entity
-	 */
-	@Deprecated
-	public static IOpticalFilter getFilter(Entity entity) {
-		IPerEntityReference entityRef = reference.getPerEntityReference(entity);
-		return entityRef != null? entityRef.getFilter() : reference.getDefaultFilter();
 	}
 
 	/**

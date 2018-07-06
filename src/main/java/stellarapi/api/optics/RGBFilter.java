@@ -2,7 +2,7 @@ package stellarapi.api.optics;
 
 import com.google.common.collect.ImmutableMap;
 
-public abstract class RGBFilter implements IOpticalFilter {
+public abstract class RGBFilter implements IOpticalProp {
 
 	private WaveExtensive extensive;
 

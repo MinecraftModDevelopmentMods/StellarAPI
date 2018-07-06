@@ -25,8 +25,7 @@ import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.optics.EyeDetector;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.IOpticalProp;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.render.IAdaptiveRenderer;
 import stellarapi.feature.gui.overlay.OverlayHandler;
@@ -78,34 +77,20 @@ public class SAPIClientForgeEventHook {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onUpdateFOV(EntityViewRenderEvent.FOVModifier event) {
-		if(!SAPIReferences.hasOpticalInformation(event.getEntity()))
-			return;
-
-		IViewScope scope = SAPIReferences.getScope(event.getEntity());
-
-		if (scope.forceChange())
-			event.setFOV(70.0F / (float) scope.getMP());
-		else
-			event.setFOV(event.getFOV() / (float) scope.getMP());
+		// TODO AA FOV change - manual?
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDecideFogColor(EntityViewRenderEvent.FogColors event) {
-		if(!SAPIReferences.hasOpticalInformation(event.getEntity()))
-			return;
+		IOpticalProp filter = SAPIReferences.getFilter(event.getEntity());
 
-		IViewScope scope = SAPIReferences.getScope(event.getEntity());
-		IOpticalFilter filter = SAPIReferences.getFilter(event.getEntity());
-
-		double multiplier = scope.getLGP() / (scope.getMP() * scope.getMP());
-
-		double[] value = EyeDetector.getInstance().process(multiplier, filter,
+		double[] value = EyeDetector.getInstance().process(1.0, filter,
 				new double[] { event.getRed(), event.getGreen(), event.getBlue() });
 		event.setRed((float) Math.min(value[0], 1.0));
 		event.setGreen((float) Math.min(value[1], 1.0));
 		event.setBlue((float) Math.min(value[2], 1.0));
 
-		if (multiplier != 1.0 || !(filter instanceof NakedFilter)) {
+		if (!(filter instanceof NakedFilter)) {
 			DynamicTexture texture;
 			try {
 				texture = (DynamicTexture) lightMapField.get(event.getRenderer());
@@ -116,7 +101,7 @@ public class SAPIClientForgeEventHook {
 					int green = ((data & 0x0000ff00) >> 8);
 					int blue = data & 0x000000ff;
 
-					double[] modified = EyeDetector.getInstance().process(multiplier, filter,
+					double[] modified = EyeDetector.getInstance().process(1.0, filter,
 							new double[] { red / 255.0, green / 255.0, blue / 255.0 });
 
 					red = Math.min(0xff, (int) (modified[0] * 0xff));

@@ -6,8 +6,12 @@ package stellarapi.api.optics;
  * limitations due to its bound, So using R/G/B/A is recommended.
  */
 public class EyeDetector implements IOpticalDetector {
+	/**
+	 * Naked eye resolution
+	 */
+	public static final double DEFAULT_RESOLUTION = 0.06;
 
-	private static EyeDetector INSTANCE = new EyeDetector();
+	private static final EyeDetector INSTANCE = new EyeDetector();
 
 	public static EyeDetector getInstance() {
 		return INSTANCE;
@@ -22,7 +26,7 @@ public class EyeDetector implements IOpticalDetector {
 	private static final double LOWER_LIMIT_FACTOR = 0.0001;
 
 	@Override
-	public double[] process(double multiplier, IOpticalFilter filter, double[] origin) {
+	public double[] process(double multiplier, IOpticalProp filter, double[] origin) {
 		if (origin.length == 3) {
 			double scale = 0.0;
 			double result[] = new double[3];
