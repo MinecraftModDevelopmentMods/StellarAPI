@@ -5,8 +5,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.IOpticalProp;
 import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.api.world.worldset.WorldSetFactory;
@@ -17,8 +16,7 @@ public interface IReference {
 	public IPerEntityReference getPerEntityReference(Entity entity);
 
 	public World getDefaultWorld(boolean isRemote);
-	public IViewScope getDefaultScope();
-	public IOpticalFilter getDefaultFilter();
+	public IOpticalProp getDefaultFilter();
 
 
 	public void registerFactory(WorldSetFactory factory);

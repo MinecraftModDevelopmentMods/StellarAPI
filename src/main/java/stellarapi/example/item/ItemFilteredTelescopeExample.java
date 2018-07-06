@@ -16,59 +16,26 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.optics.EnumRGBA;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
-import stellarapi.api.optics.NakedScope;
+import stellarapi.api.optics.IOpticalProp;
 import stellarapi.api.optics.RGBFilter;
-import stellarapi.api.optics.Wavelength;
 
 /**
  * Example for filtered telescope item.
  */
 public class ItemFilteredTelescopeExample extends Item {
-
-	private IViewScope scope = new IViewScope() {
-
-		@Override
-		public double getLGP() {
-			return 200.0;
-		}
-
-		@Override
-		public double getResolution(Wavelength wl) {
-			return NakedScope.DEFAULT_RESOLUTION / 3.0;
-		}
-
-		@Override
-		public double getMP() {
-			return 10.0;
-		}
-
-		@Override
-		public boolean forceChange() {
-			return true;
-		}
-
-		@Override
-		public boolean isFOVCoverSky() {
-			return true;
-		}
-
-	};
-
-	private IOpticalFilter filter = new RGBFilter() {
+	private IOpticalProp filter = new RGBFilter() {
 
 		@Override
 		public double getFilterEfficiency(EnumRGBA color) {
 			switch (color) {
 			case Red:
-				return 0.3;
+				return 0.3 * 2;
 			case Green:
-				return 0.9;
+				return 0.9 * 2;
 			case Blue:
-				return 0.6;
+				return 0.6 * 2;
 			case Alpha:
-				return 0.7;
+				return 0.7 * 2;
 			}
 
 			return 1.0;
@@ -110,18 +77,8 @@ public class ItemFilteredTelescopeExample extends Item {
 		}
 
 		@Override
-		public IOpticalFilter getFilter(EntityLivingBase viewer) {
+		public IOpticalProp getFilter(EntityLivingBase viewer) {
 			return filter;
-		}
-
-		@Override
-		public boolean isScope() {
-			return true;
-		}
-
-		@Override
-		public IViewScope getScope(EntityLivingBase viewer) {
-			return scope;
 		}
 
 		@Override

@@ -39,11 +39,9 @@ import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
 import stellarapi.api.interact.IOpticalProperties;
 import stellarapi.api.lib.config.IConfigHandler;
-import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IOpticalProp;
 import stellarapi.api.optics.IOpticalViewer;
-import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
-import stellarapi.api.optics.NakedScope;
 import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.api.world.worldset.WorldSetFactory;
@@ -96,12 +94,7 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 			public IOpticalViewer call() throws Exception {
 				return new IOpticalViewer() {
 					@Override
-					public IViewScope getScope() {
-						return null;
-					}
-
-					@Override
-					public IOpticalFilter getFilter() {
+					public IOpticalProp getFilter() {
 						return null;
 					}
 				};
@@ -126,17 +119,7 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 					}
 
 					@Override
-					public IOpticalFilter getFilter(EntityLivingBase viewer) {
-						return null;
-					}
-
-					@Override
-					public boolean isScope() {
-						return false;
-					}
-
-					@Override
-					public IViewScope getScope(EntityLivingBase viewer) {
+					public IOpticalProp getFilter(EntityLivingBase viewer) {
 						return null;
 					}
 				};
@@ -185,13 +168,9 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 					new SAPIEntityCaps(event.getObject()));
 	}
 
-	@Override
-	public IViewScope getDefaultScope() {
-		return new NakedScope();
-	}
 
 	@Override
-	public IOpticalFilter getDefaultFilter() {
+	public IOpticalProp getDefaultFilter() {
 		return new NakedFilter();
 	}
 

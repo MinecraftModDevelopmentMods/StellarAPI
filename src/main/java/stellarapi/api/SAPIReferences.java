@@ -20,8 +20,7 @@ import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
-import stellarapi.api.optics.IOpticalFilter;
-import stellarapi.api.optics.IViewScope;
+import stellarapi.api.optics.IOpticalProp;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
 import stellarapi.api.world.IWorldProviderReplacer;
@@ -303,19 +302,10 @@ public final class SAPIReferences {
 	}
 
 	/**
-	 * Gets scope for certain entity.
-	 * @param entity the entity
-	 */
-	public static IViewScope getScope(Entity entity) {
-		IPerEntityReference ref = reference.getPerEntityReference(entity);
-		return ref != null? ref.getScope() : reference.getDefaultScope();
-	}
-
-	/**
 	 * Gets filter for certain entity.
 	 * @param entity the entity
 	 */
-	public static IOpticalFilter getFilter(Entity entity) {
+	public static IOpticalProp getFilter(Entity entity) {
 		IPerEntityReference ref = reference.getPerEntityReference(entity);
 		return ref != null? ref.getFilter() : reference.getDefaultFilter();
 	}

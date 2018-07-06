@@ -1,7 +1,7 @@
 package stellarapi.api.event;
 
 import net.minecraft.entity.Entity;
-import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IOpticalProp;
 
 /**
  * Fired to reset the scope.
@@ -12,22 +12,22 @@ public class UpdateFilterEvent extends PerEntityEvent {
 	 * The current optical filter, {@link stellarapi.api.optics.EyeDetector
 	 * NakedFilter} by default. Should not be null.
 	 */
-	private IOpticalFilter filter;
+	private IOpticalProp filter;
 
 	/** Additional parameters, like items which is changed or started using */
 	private final Object[] params;
 
-	public UpdateFilterEvent(Entity entity, IOpticalFilter defFilter, Object... additionalParams) {
+	public UpdateFilterEvent(Entity entity, IOpticalProp defFilter, Object... additionalParams) {
 		super(entity);
 		this.filter = defFilter;
 		this.params = additionalParams;
 	}
 
-	public IOpticalFilter getFilter() {
+	public IOpticalProp getFilter() {
 		return this.filter;
 	}
 
-	public void setFilter(IOpticalFilter filter) {
+	public void setFilter(IOpticalProp filter) {
 		this.filter = filter;
 	}
 

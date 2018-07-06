@@ -27,7 +27,7 @@ import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.optics.EyeDetector;
-import stellarapi.api.optics.IOpticalFilter;
+import stellarapi.api.optics.IOpticalProp;
 import stellarapi.api.optics.IViewScope;
 import stellarapi.api.optics.NakedFilter;
 import stellarapi.api.render.IAdaptiveRenderer;
@@ -99,7 +99,7 @@ public class SAPIClientForgeEventHook {
 			return;
 
 		IViewScope scope = SAPIReferences.getScope(event.getEntity());
-		IOpticalFilter filter = SAPIReferences.getFilter(event.getEntity());
+		IOpticalProp filter = SAPIReferences.getFilter(event.getEntity());
 
 		double multiplier = scope.getLGP() / (scope.getMP() * scope.getMP());
 

@@ -27,6 +27,6 @@ public interface IOpticalDetector {
 	 *            the origin value in R/G/B or R/G/B/A format, will throw
 	 *            <code>IllegalArgumentException</code> if it is not.
 	 */
-	public double[] process(double multiplier, IOpticalFilter filter, double[] origin);
+	public double[] process(double multiplier, IOpticalProp filter, double[] origin);
 
 }

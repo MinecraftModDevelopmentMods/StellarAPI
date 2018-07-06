@@ -5,7 +5,7 @@ package stellarapi.api.optics;
  * {@link stellarapi.example.item.ItemFilteredTelescopeExample
  * ItemFilteredTelescopeExample}.
  */
-public interface IOpticalFilter {
+public interface IOpticalProp {
 
 	/**
 	 * Filter Efficiency for the specific wavelength.

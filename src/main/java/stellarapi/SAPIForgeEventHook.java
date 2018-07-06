@@ -33,8 +33,6 @@ public class SAPIForgeEventHook {
 
 			OpticalViewerEventCallback callback = (OpticalViewerEventCallback) optics;
 
-			if (properties.isScope())
-				callback.updateScope();
 			if (properties.isFilter())
 				callback.updateFilter();
 
@@ -67,8 +65,6 @@ public class SAPIForgeEventHook {
 
 			OpticalViewerEventCallback callback = (OpticalViewerEventCallback) optics;
 
-			if (properties.isScope())
-				callback.updateScope();
 			if (properties.isFilter())
 				callback.updateFilter();
 
