@@ -33,6 +33,7 @@ public class WaveExtensive implements IWaveEstimation {
 		}
 	}
 
+	@Override
 	public Double apply(Wavelength wavelength) {
 		double res = 0.0;
 		double weightedSum = 0.0;

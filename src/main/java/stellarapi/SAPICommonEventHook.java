@@ -4,10 +4,12 @@ import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.api.SAPIReferences;
 
-public class SAPIForgeEventHook {
+public class SAPICommonEventHook {
 	@SubscribeEvent
 	public void onSleepInBed(PlayerSleepInBedEvent event) {
 		if (!SAPIReferences.getSleepWakeManager().isEnabled() || event.getEntityPlayer().world.isRemote) {

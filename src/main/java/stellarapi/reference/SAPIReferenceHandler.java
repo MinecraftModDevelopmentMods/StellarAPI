@@ -11,7 +11,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -34,7 +33,10 @@ import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
-import stellarapi.api.event.interact.CheckEntityOpticalViewerEvent;
+import stellarapi.api.interact.IFilter;
+import stellarapi.api.interact.IScope;
+import stellarapi.api.interact.NakedFilter;
+import stellarapi.api.interact.NakedScope;
 import stellarapi.api.lib.config.IConfigHandler;
 import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
@@ -55,20 +57,11 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 			public ICelestialWorld call() throws Exception {
 				return new ICelestialWorld() {
 					@Override
-					public ICelestialCoordinates getCoordinate() {
-						return null;
-					}
-
+					public ICelestialCoordinates getCoordinate() { return null; }
 					@Override
-					public ISkyEffect getSkyEffect() {
-						return null;
-					}
-
+					public ISkyEffect getSkyEffect() { return null; }
 					@Override
-					public ImmutableSet<IEffectorType> getEffectorTypeSet() {
-						return ImmutableSet.of();
-					}
-
+					public ImmutableSet<IEffectorType> getEffectorTypeSet() { return ImmutableSet.of(); }
 					private final CelestialEffectors effectors = new CelestialEffectors(Collections.emptyList());
 					@Override
 					public CelestialEffectors getCelestialEffectors(IEffectorType type) {
@@ -77,6 +70,20 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 				};
 			}
 		});
+
+		CapabilityManager.INSTANCE.register(IScope.class, new Capability.IStorage<IScope>() {
+			@Override
+			public NBTBase writeNBT(Capability<IScope> capability, IScope instance, EnumFacing side) { return null; }
+			@Override
+			public void readNBT(Capability<IScope> capability, IScope instance, EnumFacing side, NBTBase nbt) { }
+		}, NakedScope::new);
+
+		CapabilityManager.INSTANCE.register(IFilter.class, new Capability.IStorage<IFilter>() {
+			@Override
+			public NBTBase writeNBT(Capability<IFilter> capability, IFilter instance, EnumFacing side) { return null; }
+			@Override
+			public void readNBT(Capability<IFilter> capability, IFilter instance, EnumFacing side, NBTBase nbt) { }
+		}, NakedFilter::new);
 
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -102,15 +109,6 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 		if(hasPack)
 			event.addCapability(new ResourceLocation(SAPIReferences.MODID, "celestials"),
 					new SAPIWorldCaps(event.getObject()));
-	}
-
-	@SubscribeEvent
-	public void onGatherEntityCapability(AttachCapabilitiesEvent<Entity> event) {
-		CheckEntityOpticalViewerEvent check = new CheckEntityOpticalViewerEvent(event.getObject());
-		SAPIReferences.getEventBus().post(check);
-		if (check.isOpticalEntity())
-			event.addCapability(new ResourceLocation(SAPIReferences.MODID, "viewer"),
-					new SAPIEntityCaps(event.getObject()));
 	}
 
 	@Override

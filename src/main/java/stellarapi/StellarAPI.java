@@ -58,7 +58,7 @@ public final class StellarAPI {
 
 	private Logger logger;
 
-	private SAPIForgeEventHook eventHook = new SAPIForgeEventHook();
+	private SAPICommonEventHook eventHook = new SAPICommonEventHook();
 	private SAPITickHandler tickHandler = new SAPITickHandler();
 	private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
 
@@ -117,8 +117,6 @@ public final class StellarAPI {
 		SAPIReferences.registerWorldProviderReplacer(WorldReplacerEnd.INSTANCE);
 
 		SAPIReferences.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
-
-		SAPIReferences.getEventBus().register(new SAPIOwnEventHook());
 
 		PROXY.preInit(event);
 

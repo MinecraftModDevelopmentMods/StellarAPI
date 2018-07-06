@@ -32,7 +32,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 
 		this.overlay = new OverlayHandler();
 
-		MinecraftForge.EVENT_BUS.register(new SAPIClientForgeEventHook(this.overlay));
+		MinecraftForge.EVENT_BUS.register(new SAPIClientEventHook(this.overlay));
 
 		this.guiConfig = new ConfigManager(
 				StellarAPI.getConfiguration(event.getModConfigurationDirectory(), "GuiConfig.cfg"));

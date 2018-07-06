@@ -49,8 +49,6 @@ public final class SAPIReferences {
 
 	private PerDimensionResourceManager resourceManager = new PerDimensionResourceManager();
 
-	private EventBus stellarEventBus = new EventBus();
-
 	private static final SAPIReferences INSTANCE = new SAPIReferences();
 
 	/** Getter for the daytime checker. */
@@ -186,13 +184,6 @@ public final class SAPIReferences {
 	 */
 	public static void registerPerDimResourceHandler(IPerDimensionResourceHandler handler) {
 		INSTANCE.resourceManager.register(handler);
-	}
-
-	/**
-	 * Gets the event bus for Stellar API.
-	 */
-	public static EventBus getEventBus() {
-		return INSTANCE.stellarEventBus;
 	}
 
 	/**
