@@ -9,7 +9,7 @@ import stellarapi.StellarAPI;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialHelper;
 import stellarapi.api.ICelestialScene;
-import stellarapi.api.ISkyEffect;
+import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
@@ -107,7 +107,7 @@ public class SAPICelestialScene implements ICelestialScene {
 	private CelestialHelper helper;
 	private SAPICollection collection;
 	private ICelestialCoordinates coordinate;
-	private ISkyEffect skyEffect;
+	private IAtmosphereEffect skyEffect;
 
 	@Override
 	public void prepare() {
@@ -140,7 +140,7 @@ public class SAPICelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public ISkyEffect createSkyEffect() {
+	public IAtmosphereEffect createSkyEffect() {
 		return this.skyEffect;
 	}
 

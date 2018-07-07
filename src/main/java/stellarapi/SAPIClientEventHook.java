@@ -41,12 +41,12 @@ import stellarapi.reference.CelestialPackManager;
 public class SAPIClientEventHook {
 
 	private static final Field lightMapField = ReflectionHelper.findField(EntityRenderer.class,
-			ObfuscationReflectionHelper.remapFieldNames(EntityRenderer.class.getName(), "lightmapTexture",
-					"field_78513_d"));
+			ObfuscationReflectionHelper.remapFieldNames(
+					EntityRenderer.class.getName(), "field_78513_d"));
 
 	private static final Field lightMapUpdatedField = ReflectionHelper.findField(EntityRenderer.class,
-			ObfuscationReflectionHelper.remapFieldNames(EntityRenderer.class.getName(), "lightmapUpdateNeeded",
-					"field_78536_aa"));
+			ObfuscationReflectionHelper.remapFieldNames(
+					EntityRenderer.class.getName(), "field_78536_aa"));
 
 	static {
 		try {

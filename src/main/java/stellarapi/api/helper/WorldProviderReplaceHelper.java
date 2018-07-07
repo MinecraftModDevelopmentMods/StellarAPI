@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class WorldProviderReplaceHelper {
 
 	private static final Field providerField = ReflectionHelper.findField(World.class,
-			ObfuscationReflectionHelper.remapFieldNames(World.class.getName(), "provider", "field_73011_w"));
+			ObfuscationReflectionHelper.remapFieldNames(World.class.getName(), "field_73011_w"));
 
 	static {
 		try {

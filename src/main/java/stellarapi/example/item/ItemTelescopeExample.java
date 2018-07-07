@@ -22,7 +22,6 @@ import stellarapi.api.optics.EnumRGBA;
 /**
  * Example for telescope item which gets activated any time the player press the
  * right click to use the item.
- * TODO AA Implement 10 times multiplication via events
  */
 public class ItemTelescopeExample extends Item {
 	@Override

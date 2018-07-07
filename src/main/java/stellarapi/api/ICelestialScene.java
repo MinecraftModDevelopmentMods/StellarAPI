@@ -39,7 +39,7 @@ public interface ICelestialScene extends INBTSerializable<NBTTagCompound> {
 	 * Creates sky effect, or returns <code>null</code> if this pack doesn't provide sky effect.
 	 * Nonnull for now.
 	 * */
-	public ISkyEffect createSkyEffect();
+	public IAtmosphereEffect createSkyEffect();
 
 	/**
 	 * Creates celestial helper for world provider.

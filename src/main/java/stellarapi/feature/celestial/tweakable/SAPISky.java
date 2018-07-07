@@ -1,13 +1,13 @@
 package stellarapi.feature.celestial.tweakable;
 
-import stellarapi.api.ISkyEffect;
+import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;
 
 /**
  * Tweakable implementation of sky.
  */
-public class SAPISky implements ISkyEffect {
+public class SAPISky implements IAtmosphereEffect {
 
 	private float minBrightness;
 

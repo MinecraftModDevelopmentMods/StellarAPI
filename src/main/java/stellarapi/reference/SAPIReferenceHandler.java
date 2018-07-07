@@ -28,7 +28,7 @@ import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.IPerWorldReference;
 import stellarapi.api.IReference;
-import stellarapi.api.ISkyEffect;
+import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
@@ -59,7 +59,7 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 					@Override
 					public ICelestialCoordinates getCoordinate() { return null; }
 					@Override
-					public ISkyEffect getSkyEffect() { return null; }
+					public IAtmosphereEffect getSkyEffect() { return null; }
 					@Override
 					public ImmutableSet<IEffectorType> getEffectorTypeSet() { return ImmutableSet.of(); }
 					private final CelestialEffectors effectors = new CelestialEffectors(Collections.emptyList());

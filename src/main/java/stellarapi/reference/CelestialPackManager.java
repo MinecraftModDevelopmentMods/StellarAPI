@@ -24,7 +24,7 @@ import stellarapi.api.ICelestialPack;
 import stellarapi.api.ICelestialScene;
 import stellarapi.api.ICelestialWorld;
 import stellarapi.api.IPerWorldReference;
-import stellarapi.api.ISkyEffect;
+import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
@@ -51,7 +51,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 
 	private ICelestialCoordinates coordinate;
 
-	private ISkyEffect skyEffect;
+	private IAtmosphereEffect skyEffect;
 
 	private @Nullable IAdaptiveRenderer renderer;
 
@@ -166,7 +166,7 @@ public class CelestialPackManager implements ICelestialWorld, IPerWorldReference
 	}
 
 	@Override
-	public ISkyEffect getSkyEffect() {
+	public IAtmosphereEffect getSkyEffect() {
 		return this.skyEffect;
 	}
 

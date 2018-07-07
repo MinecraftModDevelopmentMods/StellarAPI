@@ -4,23 +4,21 @@ import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;
 
 /**
- * Interface which represents the sky effect.
+ * Interface which represents the atmosphere effect.
  */
-public interface ISkyEffect {
+public interface IAtmosphereEffect {
 
 	/**
 	 * Applies atmospheric refraction to horizontal spherical position.
 	 * 
-	 * @param pos
-	 *            the horizontal spherical position
+	 * @param pos the horizontal spherical position
 	 */
 	public void applyAtmRefraction(SpCoord pos);
 
 	/**
 	 * Disapply atmospheric refraction to horizontal spherical position.
 	 * 
-	 * @param pos
-	 *            the horizontal spherical position
+	 * @param pos the horizontal spherical position
 	 */
 	public void disapplyAtmRefraction(SpCoord pos);
 

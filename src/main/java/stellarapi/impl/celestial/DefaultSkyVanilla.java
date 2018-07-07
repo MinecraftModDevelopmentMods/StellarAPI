@@ -1,13 +1,13 @@
 package stellarapi.impl.celestial;
 
-import stellarapi.api.ISkyEffect;
+import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;
 
 /**
  * Default implementation of sky.
  */
-public class DefaultSkyVanilla implements ISkyEffect {
+public class DefaultSkyVanilla implements IAtmosphereEffect {
 
 	@Override
 	public void applyAtmRefraction(SpCoord pos) {

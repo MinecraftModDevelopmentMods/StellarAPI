@@ -244,7 +244,7 @@ public final class SAPIReferences {
 	 *         <code>null</code> otherwise
 	 */
 	@Deprecated
-	public static ISkyEffect getSkyEffect(World world) {
+	public static IAtmosphereEffect getSkyEffect(World world) {
 		IPerWorldReference worldRef = reference.getPerWorldReference(world);
 		return worldRef != null? worldRef.getSkyEffect() : null;
 	}

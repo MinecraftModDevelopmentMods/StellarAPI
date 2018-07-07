@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.util.math.MathHelper;
 import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.ICelestialHelper;
-import stellarapi.api.ISkyEffect;
+import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.optics.EnumRGBA;
@@ -33,11 +33,11 @@ public class CelestialHelper implements ICelestialHelper {
 
 	private final ICelestialCoordinates coordinate;
 
-	private final ISkyEffect sky;
+	private final IAtmosphereEffect sky;
 
 	public CelestialHelper(float relativeMultiplierSun, float relativeMultiplierMoon,
 			@Nullable ICelestialObject sun, @Nullable ICelestialObject moon,
-			ICelestialCoordinates coordinate, ISkyEffect sky) {
+			ICelestialCoordinates coordinate, IAtmosphereEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;
 		this.relativeMultiplierMoon = relativeMultiplierMoon;
 		this.sun = sun;

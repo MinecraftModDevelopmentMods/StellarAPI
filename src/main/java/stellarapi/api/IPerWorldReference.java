@@ -10,7 +10,7 @@ import stellarapi.api.celestials.IEffectorType;
 public interface IPerWorldReference {
 	public ICelestialCoordinates getCoordinate();
 
-	public ISkyEffect getSkyEffect();
+	public IAtmosphereEffect getSkyEffect();
 
 	public ImmutableSet<IEffectorType> getEffectorTypeSet();
 
