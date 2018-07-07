@@ -58,6 +58,6 @@ public class DefaultCoordinateVanilla implements ICelestialCoordinates {
 		if (heightAngle > maxHeight || heightAngle < -maxHeight)
 			return Double.NaN;
 
-		return Math.acos(-Spmath.sind(heightAngle) / (Spmath.cosd(coord.y))) / (2 * Math.PI);
+		return Math.acos(-Math.sin(heightAngle) / (Math.cos(coord.y))) / (2 * Math.PI);
 	}
 }

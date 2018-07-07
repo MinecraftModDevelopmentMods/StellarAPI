@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
@@ -15,9 +15,10 @@ import stellarapi.api.event.QEEvent;
 import stellarapi.api.interact.IFilter;
 import stellarapi.api.interact.IScope;
 
+@Mod.EventBusSubscriber(modid = SAPIReferences.MODID)
 public class SAPICommonEventHook {
 	@SubscribeEvent
-	public void onDecideFOV(FOVEvent event) {
+	public static void onDecideFOV(FOVEvent event) {
 		if(event.getEntity() instanceof EntityLivingBase) {
 			EntityLivingBase viewer = (EntityLivingBase) event.getEntity();
 			ItemStack active = viewer.getActiveItemStack();
@@ -30,7 +31,7 @@ public class SAPICommonEventHook {
 	}
 
 	@SubscribeEvent
-	public void onDecideQE(QEEvent event) {
+	public static void onDecideQE(QEEvent event) {
 		if(event.getEntity() instanceof EntityLivingBase) {
 			EntityLivingBase viewer = (EntityLivingBase) event.getEntity();
 			ItemStack active = viewer.getActiveItemStack();
@@ -44,7 +45,7 @@ public class SAPICommonEventHook {
 
 
 	@SubscribeEvent
-	public void onSleepInBed(PlayerSleepInBedEvent event) {
+	public static void onSleepInBed(PlayerSleepInBedEvent event) {
 		if (!SAPIReferences.getSleepWakeManager().isEnabled() || event.getEntityPlayer().world.isRemote) {
 			return;
 		}
@@ -64,7 +65,7 @@ public class SAPICommonEventHook {
 	}
 
 	@SubscribeEvent
-	public void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event) {
+	public static void onSyncConfig(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(SAPIReferences.MODID))
 			StellarAPI.INSTANCE.getCfgManager().syncFromGUI();
 	}

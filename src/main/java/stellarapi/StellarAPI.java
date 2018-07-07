@@ -58,7 +58,6 @@ public final class StellarAPI {
 
 	private Logger logger;
 
-	private SAPICommonEventHook eventHook = new SAPICommonEventHook();
 	private SAPITickHandler tickHandler = new SAPITickHandler();
 	private StellarAPINetworkManager networkManager = new StellarAPINetworkManager();
 
@@ -92,7 +91,6 @@ public final class StellarAPI {
 		reference.initialize();
 		SAPIReferences.putReference(reference);
 
-		MinecraftForge.EVENT_BUS.register(this.eventHook);
 		MinecraftForge.EVENT_BUS.register(this.tickHandler);
 		MinecraftForge.EVENT_BUS.register(this.networkManager);
 		MinecraftForge.EVENT_BUS.register(SAPIItems.INSTANCE);

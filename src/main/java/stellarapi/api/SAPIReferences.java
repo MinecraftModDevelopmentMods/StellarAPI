@@ -11,15 +11,20 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.fml.common.eventhandler.EventBus;
+import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.common.MinecraftForge;
 import stellarapi.api.celestials.CelestialCollectionManager;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
+import stellarapi.api.event.FOVEvent;
+import stellarapi.api.event.QEEvent;
+import stellarapi.api.optics.Wavelength;
 import stellarapi.api.perdimres.IPerDimensionResourceHandler;
 import stellarapi.api.perdimres.PerDimensionResourceManager;
 import stellarapi.api.world.IWorldProviderReplacer;
@@ -184,6 +189,30 @@ public final class SAPIReferences {
 	 */
 	public static void registerPerDimResourceHandler(IPerDimensionResourceHandler handler) {
 		INSTANCE.resourceManager.register(handler);
+	}
+
+	/**
+	 * Estimates FOV of an entity on server.
+	 * */
+	public static float estimateFOV(Entity entity) {
+		float mult = 1.0f;
+		if(entity instanceof EntityPlayer) {
+			FOVUpdateEvent updateEvent = new FOVUpdateEvent((EntityPlayer)entity, 1.0f);
+			MinecraftForge.EVENT_BUS.post(updateEvent);
+			mult = updateEvent.getNewfov();
+		}
+		FOVEvent event = new FOVEvent(entity, mult * 70.0f);
+		MinecraftForge.EVENT_BUS.post(event);
+		return event.getFOV();
+	}
+
+	/**
+	 * Estimates Quantum Efficiency of an entity on server.
+	 * */
+	public static float estimateQE(Entity entity, Wavelength wavelength) {
+		QEEvent event = new QEEvent(entity, wavelength, 1.0f);
+		MinecraftForge.EVENT_BUS.post(event);
+		return event.getQE();
 	}
 
 	/**

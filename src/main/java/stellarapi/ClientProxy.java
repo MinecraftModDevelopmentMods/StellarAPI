@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,7 +15,6 @@ import stellarapi.api.lib.config.ConfigManager;
 import stellarapi.api.render.IAdaptiveRenderer;
 import stellarapi.feature.celestial.tweakable.SAPICelestialScene;
 import stellarapi.feature.celestial.tweakable.SAPIRendererCommon;
-import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.feature.gui.overlay.OverlaySetMain;
 import stellarapi.feature.gui.overlay.OverlaySetStellarAPI;
 import stellarapi.feature.gui.overlay.configurator.OverlayConfiguratorType;
@@ -23,16 +22,13 @@ import stellarapi.feature.gui.overlay.time.OverlayTimeType;
 
 public class ClientProxy extends CommonProxy implements IProxy {
 
-	private OverlayHandler overlay;
 	private ConfigManager guiConfig;
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 
-		this.overlay = new OverlayHandler();
-
-		MinecraftForge.EVENT_BUS.register(new SAPIClientEventHook(this.overlay));
+		ClientRegistry.registerKeyBinding(SAPIClientEventHook.KEY_FOCUSGUI);
 
 		this.guiConfig = new ConfigManager(
 				StellarAPI.getConfiguration(event.getModConfigurationDirectory(), "GuiConfig.cfg"));
@@ -60,7 +56,7 @@ public class ClientProxy extends CommonProxy implements IProxy {
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
-		overlay.initialize(Minecraft.getMinecraft());
+		SAPIClientEventHook.OVERLAY.initialize(Minecraft.getMinecraft());
 	}
 
 	@Override

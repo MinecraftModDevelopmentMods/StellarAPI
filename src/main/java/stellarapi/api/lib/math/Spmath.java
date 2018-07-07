@@ -30,26 +30,6 @@ public class Spmath {
 		return x;
 	}
 
-	// Degrees to Radians
-	public static final double Radians(double d) {
-		return d * Math.PI / 180.0;
-	}
-
-	// Radians to Degrees
-	public static final double Degrees(double r) {
-		return r / Math.PI * 180.0;
-	}
-
-	// Degrees to Radians
-	public static final float Radians(float d) {
-		return d * PI / 180.0f;
-	}
-
-	// Radians to Degrees
-	public static final float Degrees(float r) {
-		return r / PI * 180.0f;
-	}
-
 	// Preparing datas for float sin/cos/tan
 	public static final void Initialize() {
 		int i;
@@ -70,17 +50,17 @@ public class Spmath {
 		}
 	}
 
-	// Float sine
+	// Float sine with lookup table
 	public static final float sinf(float d) {
 		return MathHelper.sin(d);
 	}
 
-	// Float cosine
+	// Float cosine with lookup table
 	public static final float cosf(float d) {
 		return MathHelper.cos(d);
 	}
 
-	// Float tangent
+	// Float tangent with lookup table
 	public static final float tanf(float d) {
 		int k = MathHelper.floor(d * signi / PI);
 		k %= signi;
@@ -133,36 +113,6 @@ public class Spmath {
 				+ atan2[yi * ATAN2_DIM + xi + 1] * part * (1 - part2)
 				+ atan2[(yi + 1) * ATAN2_DIM + xi] * (1 - part) * part2
 				+ atan2[(yi + 1) * ATAN2_DIM + xi + 1] * part * part2 + add) * mul;
-	}
-
-	// Degree sine
-	public static final double sind(double d) {
-		return Math.sin(Radians(d));
-	}
-
-	// Degree cosine
-	public static final double cosd(double d) {
-		return Math.cos(Radians(d));
-	}
-
-	// Degree tangent
-	public static final double tand(double d) {
-		return Math.tan(Radians(d));
-	}
-
-	// Degree sine
-	public static final float sind(float d) {
-		return sinf(Radians(d));
-	}
-
-	// Degree cosine
-	public static final float cosd(float d) {
-		return cosf(Radians(d));
-	}
-
-	// Degree tangent
-	public static final float tand(float d) {
-		return tanf(Radians(d));
 	}
 
 	/*

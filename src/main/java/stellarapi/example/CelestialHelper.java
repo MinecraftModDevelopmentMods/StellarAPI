@@ -74,7 +74,7 @@ public class CelestialHelper implements ICelestialHelper {
 	@Override
 	public float getSunHeightFactor(float partialTicks) {
 		if(this.sun != null)
-			return (float) Spmath.sind(sun.getCurrentHorizontalPos().y);
+			return Spmath.sinf((float)sun.getCurrentHorizontalPos().y);
 		else return 0.0f;
 	}
 

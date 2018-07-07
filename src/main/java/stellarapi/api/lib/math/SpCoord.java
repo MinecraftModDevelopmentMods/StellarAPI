@@ -32,15 +32,15 @@ public class SpCoord {
 	 * @return the distance between two coordinates in degrees
 	 */
 	public double distanceTo(SpCoord coord) {
-		return Spmath.Degrees(Math.acos(Spmath.sind(this.y) * Spmath.sind(coord.y)
-				+ Spmath.cosd(this.y) * Spmath.cosd(coord.y) * Spmath.sind(coord.x - this.x)));
+		return Math.toDegrees(Math.acos(Math.sin(this.y) * Math.sin(coord.y)
+				+ Math.cos(this.y) * Math.cos(coord.y) * Math.sin(coord.x - this.x)));
 	}
 
 	/**
 	 * Gives new instance of a vector with this SpCoord.
 	 */
 	public Vector3 getVec() {
-		return new Vector3(Spmath.cosd(y) * Spmath.cosd(x), Spmath.cosd(y) * Spmath.sind(x), Spmath.sind(y));
+		return new Vector3(Math.cos(y) * Math.cos(x), Math.cos(y) * Math.sin(x), Math.sin(y));
 	}
 
 	/**
@@ -53,8 +53,8 @@ public class SpCoord {
 	public SpCoord setWithVec(Vector3 vec) {
 		Vector3 temp = new Vector3(vec);
 		temp.normalize();
-		this.x = Spmath.Degrees(Spmath.atan2(temp.getY(), temp.getX()));
-		this.y = Spmath.Degrees(Spmath.asin(temp.getZ()));
+		this.x = Math.toDegrees(Spmath.atan2(temp.getY(), temp.getX()));
+		this.y = Math.toDegrees(Spmath.asin(temp.getZ()));
 
 		return this;
 	}
