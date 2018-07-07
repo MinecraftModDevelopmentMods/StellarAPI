@@ -5,10 +5,11 @@ import com.google.common.collect.Lists;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import stellarapi.api.ICelestialPack;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.lib.config.IConfigHandler;
+import stellarapi.api.pack.ICelestialPack;
 import stellarapi.api.world.worldset.WorldSet;
+import stellarapi.api.world.worldset.WorldSets;
 import stellarapi.impl.celestial.DefaultCelestialPack;
 
 public class SAPIWorldCfgHandler implements IConfigHandler {
@@ -147,7 +148,7 @@ public class SAPIWorldCfgHandler implements IConfigHandler {
 		if(pack == null || pack == DefaultCelestialPack.INSTANCE) {
 			if(this.enabled)
 				SAPIReferences.setCelestialPack(this.worldSet, SAPICelestialPack.INSTANCE);
-			else if(worldSet == SAPIReferences.exactOverworld())
+			else if(worldSet == WorldSets.exactOverworld())
 				SAPIReferences.setCelestialPack(this.worldSet, DefaultCelestialPack.INSTANCE);
 		}
 	}

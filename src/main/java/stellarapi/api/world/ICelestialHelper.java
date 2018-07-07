@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.api.world;
 
 import stellarapi.api.optics.EnumRGBA;
 

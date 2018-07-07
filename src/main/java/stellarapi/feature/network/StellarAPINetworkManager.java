@@ -11,8 +11,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import stellarapi.StellarAPI;
-import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
+import stellarapi.api.world.ICelestialWorld;
 import stellarapi.feature.perdimres.PerDimensionResourceData;
 import stellarapi.reference.CelestialPackManager;
 

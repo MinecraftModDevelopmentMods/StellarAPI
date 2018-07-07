@@ -2,7 +2,7 @@ package stellarapi.feature.celestial.tweakable;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.ICelestialCoordinates;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;

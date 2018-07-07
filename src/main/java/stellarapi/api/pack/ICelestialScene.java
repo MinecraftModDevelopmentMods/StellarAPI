@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.api.pack;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -7,10 +7,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
+import stellarapi.api.ISkyEffect;
 import stellarapi.api.celestials.ICelestialCollection;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.world.ICelestialHelper;
 
 /**
  * Actual implementation of celestial scene for each world.

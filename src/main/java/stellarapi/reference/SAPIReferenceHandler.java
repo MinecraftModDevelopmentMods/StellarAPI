@@ -1,15 +1,9 @@
 package stellarapi.reference;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -19,31 +13,29 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.StellarAPI;
-import stellarapi.api.ICelestialCoordinates;
-import stellarapi.api.ICelestialScene;
-import stellarapi.api.ICelestialWorld;
-import stellarapi.api.IPerWorldReference;
-import stellarapi.api.IReference;
 import stellarapi.api.IAtmosphereEffect;
+import stellarapi.api.IReference;
+import stellarapi.api.IWorldReference;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.interact.IFilter;
 import stellarapi.api.interact.IScope;
 import stellarapi.api.interact.NakedFilter;
 import stellarapi.api.interact.NakedScope;
-import stellarapi.api.lib.config.IConfigHandler;
+import stellarapi.api.pack.ICelestialScene;
+import stellarapi.api.world.ICelestialWorld;
 import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
-import stellarapi.api.world.worldset.WorldSetFactory;
+import stellarapi.api.world.worldset.WorldSets;
 import stellarapi.example.world.WorldReplacerDefault;
 
-public class SAPIReferenceHandler implements IReference, IConfigHandler {
+public class SAPIReferenceHandler implements IReference {
 
 	public void initialize() {
 		CapabilityManager.INSTANCE.register(ICelestialWorld.class, new Capability.IStorage<ICelestialWorld>() {
@@ -89,17 +81,17 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 	}
 
 	@Override
-	public IPerWorldReference getPerWorldReference(World world) {
+	public IWorldReference getPerWorldReference(World world) {
 		ICelestialWorld celWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, EnumFacing.UP);
-		if(celWorld instanceof IPerWorldReference)
-			return (IPerWorldReference) celWorld;
+		if(celWorld instanceof IWorldReference)
+			return (IWorldReference) celWorld;
 		else return null;
 	}
 
 	@SubscribeEvent
 	public void onGatherWorldCapability(AttachCapabilitiesEvent<World> event) {
 		boolean hasPack = false;
-		for(WorldSet wSet : SAPIReferences.appliedWorldSets(event.getObject())) {
+		for(WorldSet wSet : WorldSets.appliedWorldSets(event.getObject())) {
 			if(SAPIReferences.getCelestialPack(wSet) != null) {
 				hasPack = true;
 				break;
@@ -124,38 +116,6 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 	}
 
 
-	// TODO Move this worldset related things to somewhere else
-	private Map<ResourceLocation, WorldSetFactory> factories = Maps.newHashMap();
-	private List<WorldSet> worldSets = Lists.newArrayList();
-	private Map<ResourceLocation, WorldSet[]> generated = Maps.newHashMap();
-
-	@Override
-	public void registerFactory(WorldSetFactory factory) {
-		factories.put(factory.getLocation(), factory);
-	}
-
-
-	@Override
-	public ImmutableList<WorldSet> getAllWorldSets() {
-		return ImmutableList.copyOf(this.worldSets);
-	}
-
-	@Override
-	public WorldSet[] getGeneratedWorldSets(ResourceLocation location) {
-		return generated.get(location);
-	}
-
-	@Override
-	public WorldSet getPrimaryWorldSet(World world) {
-		return PerWorldData.getWorldSets(world).appliedWorldSets.get(0);
-	}
-
-	@Override
-	public ImmutableList<WorldSet> appliedWorldSets(World world) {
-		return PerWorldData.getWorldSets(world).appliedWorldSets;
-	}
-
-
 	@Override
 	public ICelestialScene getActivePack(World world) {
 		ICelestialWorld celWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, EnumFacing.UP);
@@ -163,42 +123,4 @@ public class SAPIReferenceHandler implements IReference, IConfigHandler {
 			return ((CelestialPackManager) celWorld).getScene();
 		else return null;
 	}
-
-
-	@Override
-	public void setupConfig(Configuration config, String category) {
-		config.setCategoryComment(category, "Configuration for WorldSets.");
-		config.setCategoryLanguageKey(category, "config.category.worldset");
-		config.setCategoryRequiresMcRestart(category, true);
-
-		for(WorldSetFactory factory : factories.values()) {
-			String title = factory.getTitle();
-			if(title != null) {
-				factory.configure(config, config.getCategory(
-						category + Configuration.CATEGORY_SPLITTER + title));
-			}
-		}
-	}
-
-	@Override
-	public void loadFromConfig(Configuration config, String category) {
-		// This requires MC restart. Don't respond any attempts after the first loading.
-		if(!worldSets.isEmpty())
-			return;
-
-		for(Map.Entry<ResourceLocation, WorldSetFactory> entry : factories.entrySet()) {
-			WorldSetFactory factory = entry.getValue();
-			String title = factory.getTitle();
-			WorldSet[] sets = factory.generate(title != null? config.getCategory(
-					category + Configuration.CATEGORY_SPLITTER + title) : null);
-			worldSets.addAll(Arrays.asList(sets));
-			generated.put(entry.getKey(), sets);
-		}
-	}
-
-	@Override
-	public void saveToConfig(Configuration config, String category) {
-		// Unable to save to config
-	}
-
 }

@@ -16,8 +16,8 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import stellarapi.api.ICelestialHelper;
 import stellarapi.api.optics.EnumRGBA;
+import stellarapi.api.world.ICelestialHelper;
 
 /**
  * Vanilla WorldProvider with celestial helper.

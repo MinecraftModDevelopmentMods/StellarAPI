@@ -2,8 +2,8 @@ package stellarapi.feature.celestial.tweakable;
 
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
-import stellarapi.api.ICelestialPack;
-import stellarapi.api.ICelestialScene;
+import stellarapi.api.pack.ICelestialPack;
+import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.world.worldset.WorldSet;
 import stellarapi.impl.celestial.DefaultCelestialScene;
 

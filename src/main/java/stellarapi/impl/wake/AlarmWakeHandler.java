@@ -6,9 +6,9 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialEffectors;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IWakeHandler;
 

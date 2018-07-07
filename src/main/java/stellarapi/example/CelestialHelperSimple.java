@@ -3,13 +3,13 @@ package stellarapi.example;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.math.MathHelper;
-import stellarapi.api.ICelestialCoordinates;
-import stellarapi.api.ICelestialHelper;
 import stellarapi.api.IAtmosphereEffect;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.Wavelength;
+import stellarapi.api.world.ICelestialHelper;
 
 /**
  * Helper for WorldProvider.
@@ -23,7 +23,7 @@ import stellarapi.api.optics.Wavelength;
  * <li>{@link ICelestialObject#getPhasePeriod()} is not null for Moon.
  * </ul>
  */
-public class CelestialHelper implements ICelestialHelper {
+public class CelestialHelperSimple implements ICelestialHelper {
 
 	private final float relativeMultiplierSun;
 	private final float relativeMultiplierMoon;
@@ -35,7 +35,7 @@ public class CelestialHelper implements ICelestialHelper {
 
 	private final IAtmosphereEffect sky;
 
-	public CelestialHelper(float relativeMultiplierSun, float relativeMultiplierMoon,
+	public CelestialHelperSimple(float relativeMultiplierSun, float relativeMultiplierMoon,
 			@Nullable ICelestialObject sun, @Nullable ICelestialObject moon,
 			ICelestialCoordinates coordinate, IAtmosphereEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;

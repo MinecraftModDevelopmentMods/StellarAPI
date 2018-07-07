@@ -8,10 +8,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import stellarapi.StellarAPI;
-import stellarapi.api.ICelestialScene;
-import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
+import stellarapi.api.pack.ICelestialScene;
+import stellarapi.api.world.ICelestialWorld;
 import stellarapi.reference.CelestialPackManager;
 
 public class MessageSyncPackSettings implements IMessage {

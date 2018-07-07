@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.api.pack;
 
 import net.minecraft.world.World;
 import stellarapi.api.world.worldset.WorldSet;

@@ -2,8 +2,8 @@ package stellarapi.api.daywake;
 
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCoordinates;
 import stellarapi.api.celestials.CelestialEffectors;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.lib.config.IConfigHandler;
 
 /**

@@ -25,7 +25,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
-import stellarapi.api.ICelestialWorld;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.event.FOVEvent;
@@ -34,6 +33,7 @@ import stellarapi.api.event.RenderQEEvent;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.Wavelength;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.world.ICelestialWorld;
 import stellarapi.feature.gui.overlay.OverlayHandler;
 import stellarapi.reference.CelestialPackManager;
 

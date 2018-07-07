@@ -5,14 +5,14 @@ import java.util.function.Consumer;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import stellarapi.api.ICelestialCoordinates;
-import stellarapi.api.ICelestialHelper;
-import stellarapi.api.ICelestialScene;
 import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.celestials.ICelestialCollection;
+import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.world.ICelestialHelper;
 
 public class DefaultCelestialScene implements ICelestialScene {
 	private final World world;
