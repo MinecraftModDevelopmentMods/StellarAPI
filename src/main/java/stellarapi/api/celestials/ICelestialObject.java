@@ -1,7 +1,6 @@
 package stellarapi.api.celestials;
 
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
@@ -14,10 +13,8 @@ import stellarapi.api.optics.Wavelength;
  * So this object is, indeed, per-dimensional.
  */
 public interface ICelestialObject {
-
-	/**
-	 * The name of the celestial object.
-	 */
+	// TODO AA ALL ResourceLocation?
+	/** The name of the celestial object. */
 	public String getName();
 
 	/**
@@ -38,12 +35,11 @@ public interface ICelestialObject {
 	public CelestialPeriod getAbsolutePeriod();
 
 	/**
-	 * Horizontal period for the effector.
-	 * <p>
+	 * Horizontal period for the effector.<p>
 	 * This is the period that the horizontal position of this effector returns
-	 * to original position.
-	 * <p>
-	 * Normally starts from the lowest position.
+	 * to original position.<p>
+	 * Normally starts from the lowest position.<p>
+	 * Will be removed when proper calculation for period takes in place
 	 * 
 	 * @return
 	 *         <ul>
@@ -52,6 +48,7 @@ public interface ICelestialObject {
 	 *         horizontal coordinate or have sufficiently fast random movements.
 	 *         </ul>
 	 */
+	@Deprecated
 	public CelestialPeriod getHorizontalPeriod();
 
 	/**
@@ -72,7 +69,7 @@ public interface ICelestialObject {
 	public double getCurrentPhase();
 
 	/**
-	 * Gets current relative brightness to the maximum brightness.
+	 * Gets current relative brightness to the standard brightness.
 	 * 
 	 * @param wavelength
 	 *            the wavelength to get certain brightness on
@@ -81,15 +78,8 @@ public interface ICelestialObject {
 
 	/**
 	 * Gets current absolute position.
-	 * <p>
-	 * Note that the center is still on the ground,
-	 * <p>
-	 * and this position is per dimension.
 	 */
-	public Vector3 getCurrentAbsolutePos();
-
-	/** Gets current position for horizontal coordinate. */
-	public SpCoord getCurrentHorizontalPos();
+	public Vector3 getCurrentPos();
 
 	/**
 	 * Gets standard visible magnitude of this object.
@@ -97,32 +87,6 @@ public interface ICelestialObject {
 	 * Should be constant.
 	 */
 	public double getStandardMagnitude();
-
-	/**
-	 * Gives the list of additional numerical properties.
-	 */
-	// public ImmutableList<String> additionalNumericalProperties();
-
-	/**
-	 * Additional numerical properties.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 */
-	// public double additionalNumericalProperty(String propertyName);
-
-	/**
-	 * Gives the list of additional generic properties.
-	 */
-	// public ImmutableList<String> additionalGenericProperties();
-
-	/**
-	 * Additional generic properties.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 */
-	// public String additionalGenericProperty(String propertyName);
 
 	/**
 	 * Gets type of this object.

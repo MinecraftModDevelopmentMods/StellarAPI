@@ -5,7 +5,6 @@ import net.minecraft.world.WorldProvider;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.celestials.EnumObjectType;
 import stellarapi.api.celestials.ICelestialObject;
-import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
@@ -54,14 +53,8 @@ public class SAPIMoon implements ICelestialObject {
 	}
 
 	@Override
-	public Vector3 getCurrentAbsolutePos() {
+	public Vector3 getCurrentPos() {
 		return new Vector3(-1.0, 0.0, 0.0);
-	}
-
-	@Override
-	public SpCoord getCurrentHorizontalPos() {
-		float celestialAngle = world.getCelestialAngle(0.0f);
-		return new SpCoord(celestialAngle < 0.5 ? 180.0 : 0.0, 90.0 - 360.0 * Math.abs(celestialAngle - 0.5));
 	}
 
 	@Override

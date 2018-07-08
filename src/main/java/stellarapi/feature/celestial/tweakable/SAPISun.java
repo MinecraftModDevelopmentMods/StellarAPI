@@ -1,20 +1,16 @@
 package stellarapi.feature.celestial.tweakable;
 
-import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.celestials.EnumObjectType;
 import stellarapi.api.celestials.ICelestialObject;
-import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
 public class SAPISun implements ICelestialObject {
-	private World world;
 	private double dayLength;
 	private double offset;
 
-	public SAPISun(World world, double day, double dayOffset) {
-		this.world = world;
+	public SAPISun(double day, double dayOffset) {
 		this.dayLength = day;
 		this.offset = dayOffset / day;
 	}
@@ -47,14 +43,8 @@ public class SAPISun implements ICelestialObject {
 	}
 
 	@Override
-	public Vector3 getCurrentAbsolutePos() {
+	public Vector3 getCurrentPos() {
 		return new Vector3(1.0, 0.0, 0.0);
-	}
-
-	@Override
-	public SpCoord getCurrentHorizontalPos() {
-		float celestialAngle = world.getCelestialAngle(0.0f);
-		return new SpCoord(celestialAngle < 0.5 ? 0.0 : 180.0, 360.0 * Math.abs(celestialAngle - 0.5) - 90.0);
 	}
 
 	@Override

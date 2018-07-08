@@ -20,7 +20,7 @@ public class DefaultCelestialScene implements ICelestialScene {
 
 	public DefaultCelestialScene(World world) {
 		this.world = world;
-		this.sun = new DefaultSun(world);
+		this.sun = new DefaultSun();
 		this.moon = new DefaultMoon(world);
 	}
 

@@ -27,7 +27,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	public long getWakeTime(World world, CelestialEffectors lightSource, ICCoordinates coordinate,
 			long sleepTime) {
 		ICelestialObject sun = lightSource.getPrimarySource();
-		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);
+		double offset = coordinate.offsetTillObjectReach(sun.getCurrentPos(), this.wakeAngle);
 		return sun.getHorizontalPeriod().getTimeForOffset(sleepTime, offset);
 	}
 
@@ -35,7 +35,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource, ICCoordinates coordinate,
 			long sleepTime) {
 		ICelestialObject sun = lightSource.getPrimarySource();
-		double offset = coordinate.offsetTillObjectReach(sun.getCurrentAbsolutePos(), this.wakeAngle);
+		double offset = coordinate.offsetTillObjectReach(sun.getCurrentPos(), this.wakeAngle);
 		if (Double.isNaN(offset))
 			return SleepResult.NOT_POSSIBLE_HERE;
 		return world.provider.isDaytime() ? SleepResult.NOT_POSSIBLE_NOW : SleepResult.OK;

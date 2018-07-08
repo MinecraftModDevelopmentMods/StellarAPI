@@ -121,8 +121,8 @@ public class SAPICelestialScene implements ICelestialScene {
 		// FIXME Coordinates System Overhaul
 		// FIXME Clean up codes
 
-		this.sun = sunExist? new SAPISun(world, dayLength, dayOffset) : null;
-		this.moon = moonExist? new SAPIMoon(world, dayLength, monthInDay, dayOffset, monthOffset) : null;
+		this.sun = this.sunExist? new SAPISun(this.dayLength, this.dayOffset) : null;
+		this.moon = this.moonExist? new SAPIMoon(this.world, this.dayLength, this.monthInDay, this.dayOffset, this.monthOffset) : null;
 
 		this.collection = new SAPICollection(this.sun, this.moon);
 		this.coordinate = new SAPICoordinates(this.world, this.dayLength, this.dayOffset);

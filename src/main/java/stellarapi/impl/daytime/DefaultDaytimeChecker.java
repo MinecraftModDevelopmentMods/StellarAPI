@@ -20,7 +20,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 		if (sources == null || coordinate == null)
 			return false;
 
-		Vector3 pos = sources.getPrimarySource().getCurrentAbsolutePos();
+		Vector3 pos = sources.getPrimarySource().getCurrentPos();
 
 		switch (descriptor) {
 		case MORNING:
@@ -53,7 +53,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 		double currentOffset = period.getOffset(time, 0.0f);
 		double toleranceOffset = tolerance / period.getPeriodLength();
 
-		Vector3 pos = sources.getPrimarySource().getCurrentAbsolutePos();
+		Vector3 pos = sources.getPrimarySource().getCurrentPos();
 
 		double riseOffset = coordinate.offsetTillObjectReach(pos, (Math.max(coordinate.getHighestHeightAngle(pos), 0.0)
 				+ Math.max(coordinate.getLowestHeightAngle(pos), 0.0)) / 2.0);
@@ -92,7 +92,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 			EnumDaytimeDescriptor descriptor, long currentTime) {
 		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod();
 
-		Vector3 pos = sources.getPrimarySource().getCurrentAbsolutePos();
+		Vector3 pos = sources.getPrimarySource().getCurrentPos();
 
 		double riseOffset = coordinate.offsetTillObjectReach(pos, (Math.max(coordinate.getHighestHeightAngle(pos), 0.0)
 				+ Math.max(coordinate.getLowestHeightAngle(pos), 0.0)) / 2.0);

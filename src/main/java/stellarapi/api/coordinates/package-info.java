@@ -22,6 +22,7 @@
 
 /**
  * Coordinates section of Stellar API.
+ * TODO Coordinates system - the celestial collection and the viewer can choose one of the coordinates
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)

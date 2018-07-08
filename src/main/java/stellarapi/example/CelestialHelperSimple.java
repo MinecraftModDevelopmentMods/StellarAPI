@@ -4,11 +4,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.util.math.MathHelper;
 import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.optics.EnumRGBA;
 import stellarapi.api.optics.Wavelength;
 import stellarapi.api.view.IAtmosphereEffect;
 import stellarapi.api.view.ICCoordinates;
+import stellarapi.api.view.ViewUtil;
 import stellarapi.api.world.ICelestialHelper;
 
 /**
@@ -73,8 +75,9 @@ public class CelestialHelperSimple implements ICelestialHelper {
 	 */
 	@Override
 	public float getSunHeightFactor(float partialTicks) {
+		SpCoord sunCoord = ViewUtil.transformToHor(this.coordinate, this.sky, sun.getCurrentPos());
 		if(this.sun != null)
-			return Spmath.sinf((float)sun.getCurrentHorizontalPos().y);
+			return Spmath.sinf((float)sunCoord.y);
 		else return 0.0f;
 	}
 
