@@ -77,7 +77,7 @@ public class CelestialHelperSimple implements ICelestialHelper {
 	public float getSunHeightFactor(float partialTicks) {
 		SpCoord sunCoord = ViewUtil.transformToHor(this.coordinate, this.sky, sun.getCurrentPos());
 		if(this.sun != null)
-			return Spmath.sinf((float)sunCoord.y);
+			return (float) Math.sin(Math.toRadians(sunCoord.y));
 		else return 0.0f;
 	}
 

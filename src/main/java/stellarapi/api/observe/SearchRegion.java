@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.SpCoord;
+import stellarapi.api.lib.math.Vector3;
 
 /**
  * Search region defined as a sum of triangles on the sphere.
  * */
 public class SearchRegion implements Predicate<SpCoord> {
 	public final SpCoord[] coords;
+	private Vector3[] positions = null;
 	public final int[][] triangles;
 
 	private SearchRegion(SpCoord[] coordsIn, int[][] trianglesIn) {
@@ -20,12 +23,48 @@ public class SearchRegion implements Predicate<SpCoord> {
 
 	@Override
 	public boolean test(SpCoord t) {
-		// TODO AA Search IMPLEMENT THIS
+		return this.test(t.getVec());
+	}
+
+	// TODO Consider direction of the triangle & More accurate calculation for small triangles
+	public boolean test(Vector3 pos) {
+		if(this.positions == null) {
+			this.positions = new Vector3[coords.length];
+			for(int i = 0; i < coords.length; i++)
+				this.positions[i] = coords[i].getVec();
+		}
+
+		Vector3 copy = new Vector3();
+		for(int[] triangle : this.triangles) {
+			Matrix3 conv = new Matrix3();
+			for(int i = 0; i < 3; i++)
+				conv.setRow(i, this.positions[triangle[i]]);
+			conv.invert();
+			conv.transform(copy.set(pos));
+			return copy.getX() > 0.0 && copy.getY() > 0.0 && copy.getZ() > 0.0;
+		}
+
+		return false;
+	}
+
+	public boolean doesIntersect(SpCoord[] convex) {
+		for(SpCoord pos : convex) {
+			if(this.test(pos))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean doesIntersect(Vector3[] convex) {
+		for(Vector3 pos : convex) {
+			if(this.test(pos))
+				return true;
+		}
 		return false;
 	}
 
 
-	/** Creates quad search region. It should be in counterclockwise order. */
+	/** Creates quad search region. It should be in counterclockwise order viewed from the center. */
 	public static SearchRegion quad(SpCoord a, SpCoord b, SpCoord c, SpCoord d) {
 		Builder builder = builder();
 		builder.addPos(a).addPos(b).addPos(c).addPos(d);

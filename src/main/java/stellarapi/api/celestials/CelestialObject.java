@@ -14,8 +14,8 @@ public class CelestialObject {
 
 	private CelestialPeriod absolutePeriod = null, horizontalPeriod = null, phasePeriod = null;
 
-	protected Vector3 pos;
-	protected double standardMagnitude;
+	private Vector3 pos;
+	private double standardMagnitude;
 
 	public CelestialObject(ResourceLocation nameIn, EnumObjectType typeIn) {
 		this.name = nameIn;

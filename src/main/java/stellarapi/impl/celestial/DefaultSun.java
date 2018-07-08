@@ -2,16 +2,21 @@ package stellarapi.impl.celestial;
 
 import net.minecraft.util.ResourceLocation;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.celestials.EnumObjectType;
 import stellarapi.api.lib.math.Vector3;
 
-public class DefaultSun extends CelestialObject {
-	public DefaultSun() {
-		super(new ResourceLocation("sun"), EnumObjectType.Star);
+public class DefaultSun extends CelestialQuadObject {
+	private static final Vector3[] VERTICES = new Vector3[] {
+			new Vector3(1.0, -0.3, -0.3),
+			new Vector3(1.0, -0.3, 0.3),
+			new Vector3(1.0, 0.3, 0.3),
+			new Vector3(1.0, 0.3, -0.3)
+	};
 
+	public DefaultSun() {
+		super(new ResourceLocation("sun"), EnumObjectType.Star,
+				new Vector3(1.0, 0.0, 0.0), VERTICES);
 		this.setHoritontalPeriod(new CelestialPeriod("Day", 24000.0, 0.25));
-		this.setPos(new Vector3(1.0, 0.0, 0.0));
 		this.setStandardMagnitude(-26.74);
 	}
 }

@@ -74,57 +74,64 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 		this.setupWorld();
 	}
 
-	public void loadPackFromConfig() {
+	public boolean loadPackFromConfig() {
 		for(WorldSet wSet : WorldSets.appliedWorldSets(this.world)) {
 			// Only one pack for WorldSet for now
 			ICelestialPack pack = SAPIReferences.getCelestialPack(wSet);
 			if(pack != null) {
 				this.worldSet = wSet;
-				this.loadPack(pack, false);
-				break;
+				return this.loadPack(pack, false);
 			}
 		}
+		return true;
 	}
 
-	public void loadPack(ICelestialPack pack, boolean isDefault) {
+	public boolean loadPack(ICelestialPack pack, boolean isDefault) {
 		// Load pack without data. This falls back to default or loads configuration.
 		this.pack = pack;
 		this.scene = pack.getScene(this.worldSet, this.world, isDefault);
-		this.loadPack(this.pack, this.scene);
+		return this.loadPack(this.pack, this.scene);
 	}
 
-	public void loadPackWithData(ICelestialPack pack, NBTTagCompound data) {
+	public boolean loadPackWithData(ICelestialPack pack, NBTTagCompound data) {
 		// Load pack with data.
 		this.pack = pack;
 		// Load with configuration settings, as it'll be overwritten anyway.
 		this.scene = pack.getScene(this.worldSet, this.world, false);
 		scene.deserializeNBT(data);
-		this.loadPack(this.pack, this.scene);
+		return this.loadPack(this.pack, this.scene);
 	}
 
-	private void loadPack(ICelestialPack pack, ICelestialScene scene) {
+	private boolean loadPack(ICelestialPack pack, ICelestialScene scene) {
 		// TODO Code defensively; Don't make exceptions here
 		List<CelestialCollection> collections = Lists.newArrayList();
 		Map<IEffectorType, List<CelestialObject>> effectors = Maps.newHashMap();
 
-		scene.prepare();
-		scene.onRegisterCollection(collection -> collections.add(collection),
-				(effType, object) -> effectors.computeIfAbsent(effType, type -> Lists.newArrayList())
-				.add(object));
+		try {
+			scene.prepare();
+			scene.onRegisterCollection(collection -> collections.add(collection),
+					(effType, object) -> effectors.computeIfAbsent(effType, type -> Lists.newArrayList())
+					.add(object));
 
-		Collections.sort(collections, collectionOrdering);
+			Collections.sort(collections, collectionOrdering);
 
-		this.collectionManager = new CelestialCollections(collections);
-		this.effectorMap = effectors.entrySet().stream().collect(
-				Collectors.toMap(entry -> entry.getKey(),
-						entry -> new CelestialEffectors(entry.getValue())));
-		this.coordinate = scene.createCoordinates();
-		this.skyEffect = scene.createAtmosphereEffect();
+			this.collectionManager = new CelestialCollections(collections);
+			this.effectorMap = effectors.entrySet().stream().collect(
+					Collectors.toMap(entry -> entry.getKey(),
+							entry -> new CelestialEffectors(entry.getValue())));
+			this.coordinate = scene.createCoordinates();
+			this.skyEffect = scene.createAtmosphereEffect();
 
-		ICelestialHelper helper = scene.createCelestialHelper();
-		if(helper != null)
-			WorldProviderReplaceHelper.patchWorldProviderWith(this.world,
-					SAPIReferences.getReplacedWorldProvider(this.world, world.provider, helper));
+			ICelestialHelper helper = scene.createCelestialHelper();
+			if(helper != null)
+				WorldProviderReplaceHelper.patchWorldProviderWith(this.world,
+						SAPIReferences.getReplacedWorldProvider(this.world, world.provider, helper));
+		} catch(RuntimeException exception) {
+			StellarAPI.INSTANCE.getLogger().error("Exception Occured while loading pack", exception);
+			return false;
+		}
+
+		return true;
 	}
 
 	private static final Ordering<CelestialCollection> collectionOrdering = Ordering

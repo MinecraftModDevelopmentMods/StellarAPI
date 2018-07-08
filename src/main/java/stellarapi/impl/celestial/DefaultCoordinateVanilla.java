@@ -22,7 +22,7 @@ public class DefaultCoordinateVanilla implements ICCoordinates {
 	@Override
 	public Matrix3 getProjectionToGround() {
 		return new Matrix3().set(this.projREqToHor).preMult(
-				new Matrix3().setAsRotation(0.0, 0.0, 1.0, -Math.PI / 2 - 2 * Math.PI * world.getCelestialAngle(0.0f)));
+				new Matrix3().setAsRotation(0.0, 1.0, 0.0, -Math.PI / 2 - 2 * Math.PI * world.getCelestialAngle(0.0f)));
 	}
 
 	@Override

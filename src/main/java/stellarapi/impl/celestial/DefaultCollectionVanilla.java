@@ -16,7 +16,8 @@ public class DefaultCollectionVanilla extends BasicCelestialCollection {
 
 	@Override
 	public boolean isIn(CelestialObject object, SearchRegion region) {
-		// TODO Auto-generated method stub
+		if(object instanceof CelestialQuadObject)
+			return ((CelestialQuadObject)object).intersects(region);
 		return false;
 	}
 

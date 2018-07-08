@@ -50,15 +50,16 @@ public class Spmath {
 		}
 	}
 
+	// TODO Math Correct these
 	// Float sine with lookup table
-	public static final float sinf(float d) {
-		return MathHelper.sin(d);
+	/*public static final float sinf(float d) {
+		return MathHelper.sin(d * PI / 180);
 	}
 
 	// Float cosine with lookup table
 	public static final float cosf(float d) {
-		return MathHelper.cos(d);
-	}
+		return MathHelper.cos(d * PI / 180);
+	}*/
 
 	// Float tangent with lookup table
 	public static final float tanf(float d) {
