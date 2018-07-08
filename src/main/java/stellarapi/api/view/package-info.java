@@ -24,4 +24,8 @@
  * View section of Stellar API.
  * @author Abastro
  */
+@API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
 package stellarapi.api.view;
+
+import net.minecraftforge.fml.common.API;
+import stellarapi.api.SAPIReferences;

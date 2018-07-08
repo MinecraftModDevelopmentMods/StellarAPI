@@ -14,9 +14,9 @@ import stellarapi.api.observe.SearchRegion;
  */
 public final class CelestialCollections {
 
-	private List<ICelestialCollection> celestialCollections;
+	private List<CelestialCollection> celestialCollections;
 
-	public CelestialCollections(List<ICelestialCollection> collections) {
+	public CelestialCollections(List<CelestialCollection> collections) {
 		this.celestialCollections = collections;
 	}
 
@@ -28,11 +28,11 @@ public final class CelestialCollections {
 	 * @param efficiency quantum efficiency of the viewer
 	 * @return all objects in the search range which is visible
 	 */
-	public Set<ICelestialObject> findIn(SearchRegion region, float efficiency, float multPower) {
-		Set<ICelestialObject> foundSet = Sets.newHashSet();
+	public Set<CelestialObject> findIn(SearchRegion region, float efficiency, float multPower) {
+		Set<CelestialObject> foundSet = Sets.newHashSet();
 
-		for (ICelestialCollection collection : this.celestialCollections) {
-			Set<? extends ICelestialObject> objectSet = collection.findIn(region, efficiency, multPower);
+		for (CelestialCollection collection : this.celestialCollections) {
+			Set<? extends CelestialObject> objectSet = collection.findIn(region, efficiency, multPower);
 			foundSet.addAll(objectSet);
 		}
 

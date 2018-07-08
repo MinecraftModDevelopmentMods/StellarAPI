@@ -1,21 +1,46 @@
 package stellarapi.api.celestials;
 
+import net.minecraft.util.ResourceLocation;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
 /**
- * Celestial Object interface.
- * <p>
- * Note that this object is not the static celestial object itself, but the
- * image of the object which can be seen from specific world.
- * <p>
- * So this object is, indeed, per-dimensional.
+ * Celestial Object.
  */
-public interface ICelestialObject {
-	// TODO AA ALL ResourceLocation?
+public class CelestialObject {
+	private final ResourceLocation name;
+	private final EnumObjectType type;
+
+	private CelestialPeriod absolutePeriod = null, horizontalPeriod = null, phasePeriod = null;
+
+	protected Vector3 pos;
+	protected double standardMagnitude;
+
+	public CelestialObject(ResourceLocation nameIn, EnumObjectType typeIn) {
+		this.name = nameIn;
+		this.type = typeIn;
+	}
+
 	/** The name of the celestial object. */
-	public String getName();
+	public ResourceLocation getName() {
+		return this.name;
+	}
+
+	/**
+	 * Gets type of this object.
+	 */
+	public EnumObjectType getObjectType() {
+		return this.type;
+	}
+
+	protected void setPos(Vector3 posIn) {
+		this.pos = posIn;
+	}
+
+	protected void setStandardMagnitude(double magnitude) {
+		this.standardMagnitude = magnitude;
+	}
 
 	/**
 	 * Absolute period for the effector.
@@ -32,7 +57,9 @@ public interface ICelestialObject {
 	 *         random movements.
 	 *         </ul>
 	 */
-	public CelestialPeriod getAbsolutePeriod();
+	public CelestialPeriod getAbsolutePeriod() {
+		return this.absolutePeriod;
+	}
 
 	/**
 	 * Horizontal period for the effector.<p>
@@ -49,7 +76,9 @@ public interface ICelestialObject {
 	 *         </ul>
 	 */
 	@Deprecated
-	public CelestialPeriod getHorizontalPeriod();
+	public CelestialPeriod getHorizontalPeriod() {
+		return this.horizontalPeriod;
+	}
 
 	/**
 	 * Phase period for this effector. Normally starts from the darkest phase.
@@ -61,12 +90,29 @@ public interface ICelestialObject {
 	 *         e.g. sun.
 	 *         </ul>
 	 */
-	public CelestialPeriod getPhasePeriod();
+	public CelestialPeriod getPhasePeriod() {
+		return this.phasePeriod;
+	}
+
+
+	protected void setAbsolutePeriod(CelestialPeriod period) {
+		this.absolutePeriod = period;
+	}
+
+	protected void setHoritontalPeriod(CelestialPeriod period) {
+		this.horizontalPeriod = period;
+	}
+
+	protected void setPhasePeriod(CelestialPeriod period) {
+		this.phasePeriod = period;
+	}
 
 	/**
-	 * Gets current phase of this effector.
+	 * Gets current phase of this effector. Meaningful only if this object has phase.
 	 */
-	public double getCurrentPhase();
+	public double getCurrentPhase() {
+		return 0.0;
+	}
 
 	/**
 	 * Gets current relative brightness to the standard brightness.
@@ -74,23 +120,24 @@ public interface ICelestialObject {
 	 * @param wavelength
 	 *            the wavelength to get certain brightness on
 	 */
-	public double getCurrentBrightness(Wavelength wavelength);
+	public double getCurrentBrightness(Wavelength wavelength) {
+		return 1.0;
+	}
 
 	/**
 	 * Gets current absolute position.
 	 */
-	public Vector3 getCurrentPos();
+	public Vector3 getCurrentPos() {
+		return this.pos;
+	}
 
 	/**
 	 * Gets standard visible magnitude of this object.
 	 * <p>
 	 * Should be constant.
 	 */
-	public double getStandardMagnitude();
-
-	/**
-	 * Gets type of this object.
-	 */
-	public EnumObjectType getObjectType();
+	public double getStandardMagnitude() {
+		return this.standardMagnitude;
+	}
 
 }

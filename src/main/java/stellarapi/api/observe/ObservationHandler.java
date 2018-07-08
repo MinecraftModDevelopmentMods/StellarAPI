@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import net.minecraft.entity.Entity;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialCollections;
-import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
@@ -18,10 +18,10 @@ public class ObservationHandler {
 	 * @param region the search region
 	 * @param work the work to do on each celestial object
 	 * */
-	public static void observe(Entity viewer, SearchRegion region, Consumer<ICelestialObject> work) {
+	public static void observe(Entity viewer, SearchRegion region, Consumer<CelestialObject> work) {
 		CelestialCollections manager = SAPIReferences.getCollections(viewer.world);
 		if(manager != null) {
-			ICCoordinates coordinate = SAPIReferences.getCoordinate(viewer.world);
+			ICCoordinates coordinate = SAPIReferences.getCoordinates(viewer.world);
 			IAtmosphereEffect atmosphere = SAPIReferences.getAtmosphereEffect(viewer.world);
 			float efficiency = SAPIReferences.estimateQE(viewer, Wavelength.visible);
 			float multPower = SAPIReferences.estimateFOV(viewer) / 70.0f;
@@ -37,7 +37,7 @@ public class ObservationHandler {
 			for(int[] trig : region.triangles)
 				builder.addTriangle(trig[0], trig[1], trig[2]);
 
-			for(ICelestialObject object : manager.findIn(builder.build(), efficiency, multPower))
+			for(CelestialObject object : manager.findIn(builder.build(), efficiency, multPower))
 				work.accept(object);
 		}
 	}

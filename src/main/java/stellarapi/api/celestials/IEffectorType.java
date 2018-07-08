@@ -11,10 +11,10 @@ public interface IEffectorType {
 	 */
 	public static IEffectorType Light = new IEffectorType() {
 		@Override
-		public Ordering<ICelestialObject> getOrderingFor(List<ICelestialObject> objects) {
-			return Ordering.from(new Comparator<ICelestialObject>() {
+		public Ordering<CelestialObject> getOrderingFor(List<CelestialObject> objects) {
+			return Ordering.from(new Comparator<CelestialObject>() {
 				@Override
-				public int compare(ICelestialObject obj1, ICelestialObject obj2) {
+				public int compare(CelestialObject obj1, CelestialObject obj2) {
 					return Double.compare(obj1.getStandardMagnitude(), obj2.getStandardMagnitude());
 				}
 			});
@@ -38,7 +38,7 @@ public interface IEffectorType {
 	 */
 	public static IEffectorType Tide = new IEffectorType() {
 		@Override
-		public Ordering<ICelestialObject> getOrderingFor(List<ICelestialObject> objects) {
+		public Ordering<CelestialObject> getOrderingFor(List<CelestialObject> objects) {
 			return Ordering.explicit(objects);
 		}
 
@@ -58,7 +58,7 @@ public interface IEffectorType {
 	 * @param objects
 	 *            the celestial effector object list.
 	 */
-	public Ordering<ICelestialObject> getOrderingFor(List<ICelestialObject> objects);
+	public Ordering<CelestialObject> getOrderingFor(List<CelestialObject> objects);
 
 	/**
 	 * Gets effector priority. The bigger this method returns, the prior this

@@ -182,27 +182,27 @@ public final class SAPIReferences {
 
 	/**
 	 * Gets celestial coordinate for certain world.
+	 * Short-circuit for getting celestial capability and getting the coodrinates.
 	 * 
 	 * @param world
 	 *            the world
 	 * @return the coordinate for the world if it is available now, or
 	 *         <code>null</code> otherwise
 	 */
-	@Deprecated
-	public static ICCoordinates getCoordinate(World world) {
+	public static ICCoordinates getCoordinates(World world) {
 		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getCoordinate() : null;
 	}
 
 	/**
 	 * Gets sky effect for certain world.
+	 * Short-circuit for getting celestial capability and getting the coodrinates.
 	 * 
 	 * @param world
 	 *            the world
 	 * @return the sky effect for the world if it is available now, or
 	 *         <code>null</code> otherwise
 	 */
-	@Deprecated
 	public static IAtmosphereEffect getAtmosphereEffect(World world) {
 		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getSkyEffect() : null;
@@ -210,12 +210,12 @@ public final class SAPIReferences {
 
 	/**
 	 * Gets set of types of celestial effectors for certain world.
+	 * Short-circuit for getting celestial capability and getting the coodrinates.
 	 * 
 	 * @param world
 	 *            the world
 	 * @return the immutable set with effect types on the world
 	 */
-	@Deprecated
 	public static ImmutableSet<IEffectorType> getEffectTypeSet(World world) {
 		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getEffectorTypeSet() : null;
@@ -225,6 +225,7 @@ public final class SAPIReferences {
 	 * Gets celestial effectors for certain world.
 	 * <p>
 	 * There are light sources(or Sun), tidal effectors(or Moon), and so on.
+	 * Short-circuit for getting celestial capability and getting the coodrinates.
 	 * 
 	 * @param world
 	 *            the world
@@ -233,7 +234,6 @@ public final class SAPIReferences {
 	 * @return the celestial effectors for the world if it exists, or
 	 *         <code>null</code> otherwise
 	 */
-	@Deprecated
 	public static CelestialEffectors getEffectors(World world, IEffectorType type) {
 		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getCelestialEffectors(type) : null;
@@ -241,13 +241,13 @@ public final class SAPIReferences {
 
 	/**
 	 * Gets celestial collection manager for certain world.
+	 * Short-circuit for getting celestial capability and getting the coodrinates.
 	 * 
 	 * @param world
 	 *            the world
 	 * @return the celestial collection manager for the world, or
 	 *         <code>null</code> if it is not established yet.
 	 */
-	@Deprecated
 	public static CelestialCollections getCollections(World world) {
 		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getCollections() : null;

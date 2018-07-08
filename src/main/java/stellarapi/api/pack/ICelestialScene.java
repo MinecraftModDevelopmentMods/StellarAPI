@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.CelestialCollection;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.render.IAdaptiveRenderer;
 import stellarapi.api.view.IAtmosphereEffect;
@@ -28,8 +28,8 @@ public interface ICelestialScene extends INBTSerializable<NBTTagCompound> {
 	/**
 	 * Register celestial collections here.
 	 * */
-	public void onRegisterCollection(Consumer<ICelestialCollection> colRegistry,
-			BiConsumer<IEffectorType, ICelestialObject> effRegistry);
+	public void onRegisterCollection(Consumer<CelestialCollection> colRegistry,
+			BiConsumer<IEffectorType, CelestialObject> effRegistry);
 
 	/**
 	 * Creates coordinates, or returns <code>null</code> if this pack doesn't provide coordinates.

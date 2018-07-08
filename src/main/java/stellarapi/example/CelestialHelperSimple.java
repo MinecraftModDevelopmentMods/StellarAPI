@@ -3,7 +3,7 @@ package stellarapi.example;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.math.MathHelper;
-import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.optics.EnumRGBA;
@@ -20,9 +20,9 @@ import stellarapi.api.world.ICelestialHelper;
  * <p>
  * <ul>
  * <li>There is one Sun and one Moon.
- * <li>{@link ICelestialObject#getHorizontalPeriod()} is not null for Sun and
+ * <li>{@link CelestialObject#getHorizontalPeriod()} is not null for Sun and
  * Moon.
- * <li>{@link ICelestialObject#getPhasePeriod()} is not null for Moon.
+ * <li>{@link CelestialObject#getPhasePeriod()} is not null for Moon.
  * </ul>
  */
 public class CelestialHelperSimple implements ICelestialHelper {
@@ -30,15 +30,15 @@ public class CelestialHelperSimple implements ICelestialHelper {
 	private final float relativeMultiplierSun;
 	private final float relativeMultiplierMoon;
 
-	private final @Nullable ICelestialObject sun;
-	private final @Nullable ICelestialObject moon;
+	private final @Nullable CelestialObject sun;
+	private final @Nullable CelestialObject moon;
 
 	private final ICCoordinates coordinate;
 
 	private final IAtmosphereEffect sky;
 
 	public CelestialHelperSimple(float relativeMultiplierSun, float relativeMultiplierMoon,
-			@Nullable ICelestialObject sun, @Nullable ICelestialObject moon,
+			@Nullable CelestialObject sun, @Nullable CelestialObject moon,
 			ICCoordinates coordinate, IAtmosphereEffect sky) {
 		this.relativeMultiplierSun = relativeMultiplierSun;
 		this.relativeMultiplierMoon = relativeMultiplierMoon;

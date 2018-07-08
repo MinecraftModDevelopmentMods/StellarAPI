@@ -19,10 +19,10 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import stellarapi.StellarAPI;
 import stellarapi.api.SAPIReferences;
+import stellarapi.api.celestials.CelestialCollection;
 import stellarapi.api.celestials.CelestialCollections;
 import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.helper.WorldProviderReplaceHelper;
 import stellarapi.api.pack.ICelestialPack;
@@ -104,8 +104,8 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 
 	private void loadPack(ICelestialPack pack, ICelestialScene scene) {
 		// TODO Code defensively; Don't make exceptions here
-		List<ICelestialCollection> collections = Lists.newArrayList();
-		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
+		List<CelestialCollection> collections = Lists.newArrayList();
+		Map<IEffectorType, List<CelestialObject>> effectors = Maps.newHashMap();
 
 		scene.prepare();
 		scene.onRegisterCollection(collection -> collections.add(collection),
@@ -127,10 +127,10 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 					SAPIReferences.getReplacedWorldProvider(this.world, world.provider, helper));
 	}
 
-	private static final Ordering<ICelestialCollection> collectionOrdering = Ordering
-			.from(new Comparator<ICelestialCollection>() {
+	private static final Ordering<CelestialCollection> collectionOrdering = Ordering
+			.from(new Comparator<CelestialCollection>() {
 				@Override
-				public int compare(ICelestialCollection col1, ICelestialCollection col2) {
+				public int compare(CelestialCollection col1, CelestialCollection col2) {
 					return Integer.compare(-col1.searchOrder(), -col2.searchOrder());
 				}
 			});

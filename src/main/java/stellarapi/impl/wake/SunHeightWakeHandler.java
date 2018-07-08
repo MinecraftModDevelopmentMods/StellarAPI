@@ -6,7 +6,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.daywake.IWakeHandler;
 import stellarapi.api.view.ICCoordinates;
 
@@ -26,7 +26,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	@Override
 	public long getWakeTime(World world, CelestialEffectors lightSource, ICCoordinates coordinate,
 			long sleepTime) {
-		ICelestialObject sun = lightSource.getPrimarySource();
+		CelestialObject sun = lightSource.getPrimarySource();
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentPos(), this.wakeAngle);
 		return sun.getHorizontalPeriod().getTimeForOffset(sleepTime, offset);
 	}
@@ -34,7 +34,7 @@ public class SunHeightWakeHandler implements IWakeHandler {
 	@Override
 	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource, ICCoordinates coordinate,
 			long sleepTime) {
-		ICelestialObject sun = lightSource.getPrimarySource();
+		CelestialObject sun = lightSource.getPrimarySource();
 		double offset = coordinate.offsetTillObjectReach(sun.getCurrentPos(), this.wakeAngle);
 		if (Double.isNaN(offset))
 			return SleepResult.NOT_POSSIBLE_HERE;

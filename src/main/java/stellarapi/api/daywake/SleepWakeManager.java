@@ -88,7 +88,7 @@ public class SleepWakeManager implements IConfigHandler {
 	 */
 	public long getWakeTime(World world, long defaultWakeTime) {
 
-		ICCoordinates coordinate = SAPIReferences.getCoordinate(world);
+		ICCoordinates coordinate = SAPIReferences.getCoordinates(world);
 		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		long wakeTime;
@@ -133,7 +133,7 @@ public class SleepWakeManager implements IConfigHandler {
 	 *         {@code EntityPlayer.SleepResult.NOT_POSSIBLE_HERE}
 	 */
 	public EntityPlayer.SleepResult getSleepPossibility(World world, EntityPlayer.SleepResult defaultStatus) {
-		ICCoordinates coordinate = SAPIReferences.getCoordinate(world);
+		ICCoordinates coordinate = SAPIReferences.getCoordinates(world);
 		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		EntityPlayer.SleepResult status = EntityPlayer.SleepResult.OK;

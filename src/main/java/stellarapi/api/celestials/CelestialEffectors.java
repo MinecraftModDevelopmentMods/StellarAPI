@@ -14,17 +14,17 @@ import com.google.common.collect.ImmutableList;
  */
 public final class CelestialEffectors {
 
-	private ImmutableList<ICelestialObject> objects;
+	private ImmutableList<CelestialObject> objects;
 
-	public CelestialEffectors(List<ICelestialObject> effectors) {
+	public CelestialEffectors(List<CelestialObject> effectors) {
 		this.objects = ImmutableList.copyOf(effectors);
 	}
 
-	public ICelestialObject getPrimarySource() {
+	public CelestialObject getPrimarySource() {
 		return objects.get(0);
 	}
 
-	public ImmutableList<ICelestialObject> getLightSources() {
+	public ImmutableList<CelestialObject> getLightSources() {
 		return this.objects;
 	}
 

@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.CelestialCollection;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.render.IAdaptiveRenderer;
@@ -109,7 +109,7 @@ public class SAPICelestialScene implements ICelestialScene {
 	private ICCoordinates coordinate;
 	private IAtmosphereEffect skyEffect;
 
-	private ICelestialObject sun, moon;
+	private CelestialObject sun, moon;
 
 	@Override
 	public void prepare() {
@@ -132,8 +132,8 @@ public class SAPICelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public void onRegisterCollection(Consumer<ICelestialCollection> colRegistry,
-			BiConsumer<IEffectorType, ICelestialObject> effRegistry) {
+	public void onRegisterCollection(Consumer<CelestialCollection> colRegistry,
+			BiConsumer<IEffectorType, CelestialObject> effRegistry) {
 		colRegistry.accept(this.collection);
 		if(this.sun != null)
 			effRegistry.accept(IEffectorType.Light, this.sun);

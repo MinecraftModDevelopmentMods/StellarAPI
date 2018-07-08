@@ -5,8 +5,8 @@ import java.util.function.Consumer;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialObject;
+import stellarapi.api.celestials.CelestialCollection;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.render.IAdaptiveRenderer;
@@ -16,7 +16,7 @@ import stellarapi.api.world.ICelestialHelper;
 
 public class DefaultCelestialScene implements ICelestialScene {
 	private final World world;
-	private final ICelestialObject sun, moon;
+	private final CelestialObject sun, moon;
 
 	public DefaultCelestialScene(World world) {
 		this.world = world;
@@ -25,8 +25,8 @@ public class DefaultCelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public void onRegisterCollection(Consumer<ICelestialCollection> colRegistry,
-			BiConsumer<IEffectorType, ICelestialObject> effRegistry) {
+	public void onRegisterCollection(Consumer<CelestialCollection> colRegistry,
+			BiConsumer<IEffectorType, CelestialObject> effRegistry) {
 		DefaultCollectionVanilla vanillaCollection = new DefaultCollectionVanilla(this.sun, this.moon);
 		colRegistry.accept(vanillaCollection);
 		effRegistry.accept(IEffectorType.Light, this.sun);

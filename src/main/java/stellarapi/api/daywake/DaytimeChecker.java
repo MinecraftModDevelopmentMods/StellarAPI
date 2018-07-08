@@ -44,7 +44,7 @@ public class DaytimeChecker {
 	 */
 	public boolean isDescriptorApply(World world, EnumDaytimeDescriptor descriptor, long time, int tolerance,
 			boolean defaultApply) {
-		ICCoordinates coordinate = SAPIReferences.getCoordinate(world);
+		ICCoordinates coordinate = SAPIReferences.getCoordinates(world);
 		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		for (IDaytimeChecker checker : this.daytimeCheckers) {
@@ -67,7 +67,7 @@ public class DaytimeChecker {
 	 *            stellar settings is invalid to check daytime settings
 	 */
 	public long timeForCertainDescriptor(World world, EnumDaytimeDescriptor descriptor, long defaultValue) {
-		ICCoordinates coordinate = SAPIReferences.getCoordinate(world);
+		ICCoordinates coordinate = SAPIReferences.getCoordinates(world);
 		CelestialEffectors lightSources = SAPIReferences.getEffectors(world, IEffectorType.Light);
 
 		for (IDaytimeChecker checker : this.daytimeCheckers) {

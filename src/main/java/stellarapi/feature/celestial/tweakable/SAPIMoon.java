@@ -1,43 +1,28 @@
 package stellarapi.feature.celestial.tweakable;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import stellarapi.api.CelestialPeriod;
+import stellarapi.api.celestials.CelestialObject;
 import stellarapi.api.celestials.EnumObjectType;
-import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
 
-public class SAPIMoon implements ICelestialObject {
+public class SAPIMoon extends CelestialObject {
 	private World world;
-	private double dayLength;
-	private double monthInDay;
-	private double relOffsetDay;
-	private double relOffsetMonth;
 
 	public SAPIMoon(World world, double day, double month, double dayOffset, double monthOffset) {
+		super(new ResourceLocation("moon"), EnumObjectType.Planet);
 		this.world = world;
-		this.dayLength = day;
-		this.monthInDay = month;
-		this.relOffsetDay = dayOffset / day;
-		this.relOffsetMonth = monthOffset / month;
-	}
+		double relOffsetDay = dayOffset / day;
+		double relOffsetMonth = monthOffset / month;
 
-	@Override
-	public CelestialPeriod getAbsolutePeriod() {
-		// Month is not absolute period in minecraft; It does not alter position of the moon.
-		return null;
-	}
-
-	@Override
-	public CelestialPeriod getHorizontalPeriod() {
-		return new CelestialPeriod("Lunar Day", this.dayLength,
-				this.relOffsetDay < 0.5? this.relOffsetDay + 0.5 : this.relOffsetDay - 0.5);
-	}
-
-	@Override
-	public CelestialPeriod getPhasePeriod() {
-		return new CelestialPeriod("Lunar Month", this.dayLength * this.monthInDay, this.relOffsetMonth);
+		this.setHoritontalPeriod(new CelestialPeriod("Lunar Day", day,
+				relOffsetDay < 0.5? relOffsetDay + 0.5 : relOffsetDay - 0.5));
+		this.setPhasePeriod(new CelestialPeriod("Lunar Month", day * month, relOffsetMonth));
+		this.setPos(new Vector3(-1.0, 0.0, 0.0));
+		this.setStandardMagnitude(-12.74);
 	}
 
 	@Override
@@ -50,26 +35,5 @@ public class SAPIMoon implements ICelestialObject {
 	@Override
 	public double getCurrentBrightness(Wavelength wavelength) {
 		return this.getCurrentPhase();
-	}
-
-	@Override
-	public Vector3 getCurrentPos() {
-		return new Vector3(-1.0, 0.0, 0.0);
-	}
-
-	@Override
-	public double getStandardMagnitude() {
-		// For astronomical convention
-		return -12.74;
-	}
-
-	@Override
-	public EnumObjectType getObjectType() {
-		return EnumObjectType.Planet;
-	}
-
-	@Override
-	public String getName() {
-		return "Moon";
 	}
 }
