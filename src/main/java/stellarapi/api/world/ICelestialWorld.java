@@ -2,7 +2,7 @@ package stellarapi.api.world;
 
 import com.google.common.collect.ImmutableSet;
 
-import stellarapi.api.ISkyEffect;
+import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.IEffectorType;

@@ -1,6 +1,6 @@
 package stellarapi.api.celestials;
 
-public enum EnumCelestialCollectionType {
+public enum EnumCollectionType {
 	/**
 	 * Collection of {@linkplain EnumCelestialObjectType#Star stars}.
 	 */

@@ -23,12 +23,17 @@ public class SpCoord {
 		this(0.0, 0.0);
 	}
 
+	public SpCoord set(SpCoord coord) {
+		this.x = coord.x;
+		this.y = coord.y;
+		return this;
+	}
+
 	/**
 	 * Distance to certain SpCoord, note that here not cached version of
 	 * trigonometric methods are used.
 	 * 
-	 * @param coord
-	 *            the coordinate
+	 * @param coord the coordinate
 	 * @return the distance between two coordinates in degrees
 	 */
 	public double distanceTo(SpCoord coord) {
@@ -46,8 +51,7 @@ public class SpCoord {
 	/**
 	 * Set this SpCoord with vector.
 	 * 
-	 * @param vec
-	 *            the vector
+	 * @param vec the vector
 	 * @return <code>this</code>
 	 */
 	public SpCoord setWithVec(Vector3 vec) {

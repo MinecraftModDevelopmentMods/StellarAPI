@@ -21,7 +21,7 @@ import stellarapi.StellarAPI;
 import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.IWorldReference;
 import stellarapi.api.SAPIReferences;
-import stellarapi.api.celestials.CelestialCollectionManager;
+import stellarapi.api.celestials.CelestialCollections;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
 import stellarapi.api.celestials.ICelestialCoordinates;
@@ -47,7 +47,7 @@ public class CelestialPackManager implements ICelestialWorld, IWorldReference, I
 	private ICelestialPack pack;
 	private ICelestialScene scene;
 
-	private CelestialCollectionManager collectionManager = null;
+	private CelestialCollections collectionManager = null;
 	private Map<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
 
 	private ICelestialCoordinates coordinate;
@@ -104,6 +104,7 @@ public class CelestialPackManager implements ICelestialWorld, IWorldReference, I
 	}
 
 	private void loadPack(ICelestialPack pack, ICelestialScene scene) {
+		// TODO Code defensively; Don't make exceptions here
 		List<ICelestialCollection> collections = Lists.newArrayList();
 		Map<IEffectorType, List<ICelestialObject>> effectors = Maps.newHashMap();
 
@@ -114,12 +115,12 @@ public class CelestialPackManager implements ICelestialWorld, IWorldReference, I
 
 		Collections.sort(collections, collectionOrdering);
 
-		this.collectionManager = new CelestialCollectionManager(collections);
+		this.collectionManager = new CelestialCollections(collections);
 		this.effectorMap = effectors.entrySet().stream().collect(
 				Collectors.toMap(entry -> entry.getKey(),
 						entry -> new CelestialEffectors(entry.getValue())));
 		this.coordinate = scene.createCoordinates();
-		this.skyEffect = scene.createSkyEffect();
+		this.skyEffect = scene.createAtmosphereEffect();
 
 		ICelestialHelper helper = scene.createCelestialHelper();
 		if(helper != null)
@@ -147,7 +148,7 @@ public class CelestialPackManager implements ICelestialWorld, IWorldReference, I
 	}
 
 	@Override
-	public CelestialCollectionManager getCollectionManager() {
+	public CelestialCollections getCollectionManager() {
 		return this.collectionManager;
 	}
 

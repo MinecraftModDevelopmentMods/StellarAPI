@@ -127,6 +127,6 @@ public interface ICelestialObject {
 	/**
 	 * Gets type of this object.
 	 */
-	public EnumCelestialObjectType getObjectType();
+	public EnumObjectType getObjectType();
 
 }

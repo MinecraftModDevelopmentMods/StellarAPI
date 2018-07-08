@@ -1,6 +1,6 @@
 package stellarapi.api.celestials;
 
-public enum EnumCelestialObjectType {
+public enum EnumObjectType {
 	/**
 	 * Celestial light source which can emit light.
 	 */

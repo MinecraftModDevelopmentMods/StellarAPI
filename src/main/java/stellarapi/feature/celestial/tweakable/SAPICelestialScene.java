@@ -109,6 +109,8 @@ public class SAPICelestialScene implements ICelestialScene {
 	private ICelestialCoordinates coordinate;
 	private IAtmosphereEffect skyEffect;
 
+	private ICelestialObject sun, moon;
+
 	@Override
 	public void prepare() {
 		if(!this.yearlyChangeEnabled) {
@@ -119,22 +121,24 @@ public class SAPICelestialScene implements ICelestialScene {
 		// FIXME Coordinates System Overhaul
 		// FIXME Clean up codes
 
-		this.collection = new SAPICollection(this.world, this.sunExist, this.moonExist,
-				this.dayLength, this.monthInDay, this.dayOffset, this.monthOffset);
+		this.sun = sunExist? new SAPISun(world, dayLength, dayOffset) : null;
+		this.moon = moonExist? new SAPIMoon(world, dayLength, monthInDay, dayOffset, monthOffset) : null;
+
+		this.collection = new SAPICollection(this.sun, this.moon);
 		this.coordinate = new SAPICoordinates(this.world, this.dayLength, this.dayOffset);
 		this.skyEffect = new SAPISky(this.minimumSkyBrightness);
 		this.helper = new CelestialHelperSimple(
-				1.0f, 1.0f, collection.sun, collection.moon, this.coordinate, this.skyEffect);
+				1.0f, 1.0f, this.sun, this.moon, this.coordinate, this.skyEffect);
 	}
 
 	@Override
 	public void onRegisterCollection(Consumer<ICelestialCollection> colRegistry,
 			BiConsumer<IEffectorType, ICelestialObject> effRegistry) {
 		colRegistry.accept(this.collection);
-		if(collection.sun != null)
-			effRegistry.accept(IEffectorType.Light, collection.sun);
-		if(collection.moon != null)
-			effRegistry.accept(IEffectorType.Tide, collection.moon);
+		if(this.sun != null)
+			effRegistry.accept(IEffectorType.Light, this.sun);
+		if(this.moon != null)
+			effRegistry.accept(IEffectorType.Tide, this.moon);
 	}
 
 	@Override
@@ -143,7 +147,7 @@ public class SAPICelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public IAtmosphereEffect createSkyEffect() {
+	public IAtmosphereEffect createAtmosphereEffect() {
 		return this.skyEffect;
 	}
 

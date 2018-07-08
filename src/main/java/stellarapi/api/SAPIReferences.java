@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
-import stellarapi.api.celestials.CelestialCollectionManager;
+import stellarapi.api.celestials.CelestialCollections;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.IEffectorType;
@@ -207,7 +207,7 @@ public final class SAPIReferences {
 	 *         <code>null</code> otherwise
 	 */
 	@Deprecated
-	public static IAtmosphereEffect getSkyEffect(World world) {
+	public static IAtmosphereEffect getAtmosphereEffect(World world) {
 		IWorldReference worldRef = reference.getPerWorldReference(world);
 		return worldRef != null? worldRef.getSkyEffect() : null;
 	}
@@ -253,7 +253,7 @@ public final class SAPIReferences {
 	 *         <code>null</code> if it is not established yet.
 	 */
 	@Deprecated
-	public static CelestialCollectionManager getCollectionManager(World world) {
+	public static CelestialCollections getCollections(World world) {
 		IWorldReference worldRef = reference.getPerWorldReference(world);
 		return worldRef != null? worldRef.getCollectionManager() : null;
 	}

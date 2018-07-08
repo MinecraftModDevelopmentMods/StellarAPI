@@ -25,7 +25,7 @@
  * @author Abastro
  */
 @API(apiVersion = "@STVERSION@", owner = SAPIReferences.MODID, provides = SAPIReferences.APIID)
-package stellarapi.api.observation;
+package stellarapi.api.observe;
 
 import net.minecraftforge.fml.common.API;
 import stellarapi.api.SAPIReferences;

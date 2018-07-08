@@ -2,7 +2,7 @@ package stellarapi.feature.celestial.tweakable;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.celestials.EnumCelestialObjectType;
+import stellarapi.api.celestials.EnumObjectType;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
@@ -64,8 +64,8 @@ public class SAPISun implements ICelestialObject {
 	}
 
 	@Override
-	public EnumCelestialObjectType getObjectType() {
-		return EnumCelestialObjectType.Star;
+	public EnumObjectType getObjectType() {
+		return EnumObjectType.Star;
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package stellarapi.api.event;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import stellarapi.api.optics.Wavelength;

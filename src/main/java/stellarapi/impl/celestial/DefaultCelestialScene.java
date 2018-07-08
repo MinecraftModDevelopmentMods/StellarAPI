@@ -16,19 +16,21 @@ import stellarapi.api.world.ICelestialHelper;
 
 public class DefaultCelestialScene implements ICelestialScene {
 	private final World world;
+	private final ICelestialObject sun, moon;
 
 	public DefaultCelestialScene(World world) {
 		this.world = world;
-		
+		this.sun = new DefaultSun(world);
+		this.moon = new DefaultMoon(world);
 	}
 
 	@Override
 	public void onRegisterCollection(Consumer<ICelestialCollection> colRegistry,
 			BiConsumer<IEffectorType, ICelestialObject> effRegistry) {
-		DefaultCollectionVanilla vanillaCollection = new DefaultCollectionVanilla(this.world);
+		DefaultCollectionVanilla vanillaCollection = new DefaultCollectionVanilla(this.sun, this.moon);
 		colRegistry.accept(vanillaCollection);
-		effRegistry.accept(IEffectorType.Light, vanillaCollection.sun);
-		effRegistry.accept(IEffectorType.Tide, vanillaCollection.moon);
+		effRegistry.accept(IEffectorType.Light, this.sun);
+		effRegistry.accept(IEffectorType.Tide, this.moon);
 	}
 
 	@Override
@@ -37,7 +39,7 @@ public class DefaultCelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public IAtmosphereEffect createSkyEffect() {
+	public IAtmosphereEffect createAtmosphereEffect() {
 		return new DefaultSkyVanilla();
 	}
 
