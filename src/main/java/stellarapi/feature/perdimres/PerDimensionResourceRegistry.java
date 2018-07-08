@@ -7,12 +7,12 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import stellarapi.api.perdimres.IPerDimensionResourceHandler;
+import stellarapi.api.world.resource.IWorldResourceHandler;
 
 /**
  * Registry for per-dimension resources.
  */
-public class PerDimensionResourceRegistry implements IPerDimensionResourceHandler {
+public class PerDimensionResourceRegistry implements IWorldResourceHandler {
 
 	private static final PerDimensionResourceRegistry INSTANCE = new PerDimensionResourceRegistry();
 

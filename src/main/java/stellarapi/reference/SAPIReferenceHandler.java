@@ -3,6 +3,7 @@ package stellarapi.reference;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.nbt.NBTBase;
@@ -16,19 +17,19 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stellarapi.StellarAPI;
-import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.IReference;
-import stellarapi.api.IWorldReference;
 import stellarapi.api.SAPICapabilities;
 import stellarapi.api.SAPIReferences;
+import stellarapi.api.celestials.CelestialCollections;
 import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.interact.IFilter;
 import stellarapi.api.interact.IScope;
 import stellarapi.api.interact.NakedFilter;
 import stellarapi.api.interact.NakedScope;
 import stellarapi.api.pack.ICelestialScene;
+import stellarapi.api.view.IAtmosphereEffect;
+import stellarapi.api.view.ICCoordinates;
 import stellarapi.api.world.ICelestialWorld;
 import stellarapi.api.world.IWorldProviderReplacer;
 import stellarapi.api.world.worldset.WorldSet;
@@ -49,9 +50,12 @@ public class SAPIReferenceHandler implements IReference {
 			public ICelestialWorld call() throws Exception {
 				return new ICelestialWorld() {
 					@Override
-					public ICelestialCoordinates getCoordinate() { return null; }
+					public ICCoordinates getCoordinate() { return null; }
 					@Override
 					public IAtmosphereEffect getSkyEffect() { return null; }
+					private final CelestialCollections collections = new CelestialCollections(ImmutableList.of());
+					@Override
+					public CelestialCollections getCollections() { return this.collections; }
 					@Override
 					public ImmutableSet<IEffectorType> getEffectorTypeSet() { return ImmutableSet.of(); }
 					private final CelestialEffectors effectors = new CelestialEffectors(Collections.emptyList());
@@ -81,11 +85,8 @@ public class SAPIReferenceHandler implements IReference {
 	}
 
 	@Override
-	public IWorldReference getPerWorldReference(World world) {
-		ICelestialWorld celWorld = world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, EnumFacing.UP);
-		if(celWorld instanceof IWorldReference)
-			return (IWorldReference) celWorld;
-		else return null;
+	public ICelestialWorld getCelestialWorld(World world) {
+		return world.getCapability(SAPICapabilities.CELESTIAL_CAPABILITY, null);
 	}
 
 	@SubscribeEvent

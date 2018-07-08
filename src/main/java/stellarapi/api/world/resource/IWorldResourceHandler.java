@@ -1,4 +1,4 @@
-package stellarapi.api.perdimres;
+package stellarapi.api.world.resource;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -8,7 +8,7 @@ import net.minecraft.world.World;
  * <p>
  * Note that resource is only available on client.
  */
-public interface IPerDimensionResourceHandler {
+public interface IWorldResourceHandler {
 	/**
 	 * Determine if this getter will accept certain world and previous location.
 	 * 

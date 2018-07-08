@@ -32,7 +32,6 @@ import stellarapi.impl.celestial.DefaultCelestialPack;
 import stellarapi.impl.daytime.DefaultDaytimeChecker;
 import stellarapi.impl.wake.AlarmWakeHandler;
 import stellarapi.impl.wake.SunHeightWakeHandler;
-import stellarapi.lib.compat.CompatManager;
 import stellarapi.reference.SAPIReferenceHandler;
 import stellarapi.reference.WorldSetReference;
 
@@ -119,8 +118,6 @@ public final class StellarAPI {
 		SAPIReferences.registerPerDimResourceHandler(PerDimensionResourceRegistry.getInstance());
 
 		PROXY.preInit(event);
-
-		CompatManager.getInstance().onPreInit();
 	}
 
 	@Mod.EventHandler
@@ -137,15 +134,11 @@ public final class StellarAPI {
 		SAPIReferences.registerPack(SAPICelestialPack.INSTANCE);
 
 		PROXY.load(event);
-
-		CompatManager.getInstance().onInit();
 	}
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		PROXY.postInit(event);
-
-		CompatManager.getInstance().onPostInit();
 	}
 
 	@Mod.EventHandler

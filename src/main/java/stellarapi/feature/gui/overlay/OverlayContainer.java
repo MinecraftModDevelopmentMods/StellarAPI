@@ -1,7 +1,5 @@
 package stellarapi.feature.gui.overlay;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.gui.ScaledResolution;

@@ -2,13 +2,12 @@ package stellarapi.feature.celestial.tweakable;
 
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.SpCoord;
-import stellarapi.api.lib.math.Spmath;
 import stellarapi.api.lib.math.Vector3;
+import stellarapi.api.view.ICCoordinates;
 
-public class SAPICoordinates implements ICelestialCoordinates {
+public class SAPICoordinates implements ICCoordinates {
 	private World world;
 	private double dayLength;
 	private double offset;

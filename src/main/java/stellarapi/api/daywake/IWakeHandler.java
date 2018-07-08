@@ -3,8 +3,8 @@ package stellarapi.api.daywake;
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.world.World;
 import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.lib.config.IConfigHandler;
+import stellarapi.api.view.ICCoordinates;
 
 /**
  * Determine player's sleep availability and wake time.
@@ -29,7 +29,7 @@ public interface IWakeHandler extends IConfigHandler {
 	 *            world)
 	 * @return accept or not
 	 */
-	public boolean accept(World world, CelestialEffectors lightSources, ICelestialCoordinates coordinate);
+	public boolean accept(World world, CelestialEffectors lightSources, ICCoordinates coordinate);
 
 	/**
 	 * Gets wake time for specific sleep time.
@@ -45,7 +45,7 @@ public interface IWakeHandler extends IConfigHandler {
 	 *            specified sleep time in tick (only dependent to the world)
 	 * @return wake time in tick
 	 */
-	public long getWakeTime(World world, CelestialEffectors lightSource, ICelestialCoordinates coordinate,
+	public long getWakeTime(World world, CelestialEffectors lightSource, ICCoordinates coordinate,
 			long sleepTime);
 
 	/**
@@ -64,7 +64,7 @@ public interface IWakeHandler extends IConfigHandler {
 	 *            specified sleep time in tick
 	 * @return flag to determine possibility of sleep
 	 */
-	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource, ICelestialCoordinates coordinate,
+	public SleepResult getSleepPossibility(World world, CelestialEffectors lightSource, ICCoordinates coordinate,
 			long sleepTime);
 
 }

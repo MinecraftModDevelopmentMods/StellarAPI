@@ -3,8 +3,6 @@ package stellarapi.lib.gui;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;

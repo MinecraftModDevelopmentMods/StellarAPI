@@ -3,10 +3,10 @@ package stellarapi.impl.daytime;
 import net.minecraft.world.World;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.daywake.EnumDaytimeDescriptor;
 import stellarapi.api.daywake.IDaytimeChecker;
 import stellarapi.api.lib.math.Vector3;
+import stellarapi.api.view.ICCoordinates;
 
 /**
  * Default implementation for daytime checker when there is one main light
@@ -15,7 +15,7 @@ import stellarapi.api.lib.math.Vector3;
 public class DefaultDaytimeChecker implements IDaytimeChecker {
 
 	@Override
-	public boolean accept(World world, CelestialEffectors sources, ICelestialCoordinates coordinate,
+	public boolean accept(World world, CelestialEffectors sources, ICCoordinates coordinate,
 			EnumDaytimeDescriptor descriptor) {
 		if (sources == null || coordinate == null)
 			return false;
@@ -47,7 +47,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 	}
 
 	@Override
-	public boolean isDescriptorApply(World world, CelestialEffectors sources, ICelestialCoordinates coordinate,
+	public boolean isDescriptorApply(World world, CelestialEffectors sources, ICCoordinates coordinate,
 			EnumDaytimeDescriptor descriptor, long time, int tolerance) {
 		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod();
 		double currentOffset = period.getOffset(time, 0.0f);
@@ -88,7 +88,7 @@ public class DefaultDaytimeChecker implements IDaytimeChecker {
 	}
 
 	@Override
-	public long timeForCertainDescriptor(World world, CelestialEffectors sources, ICelestialCoordinates coordinate,
+	public long timeForCertainDescriptor(World world, CelestialEffectors sources, ICCoordinates coordinate,
 			EnumDaytimeDescriptor descriptor, long currentTime) {
 		CelestialPeriod period = sources.getPrimarySource().getHorizontalPeriod();
 

@@ -6,13 +6,13 @@ import java.util.function.Consumer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import stellarapi.StellarAPI;
-import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.view.IAtmosphereEffect;
+import stellarapi.api.view.ICCoordinates;
 import stellarapi.api.world.ICelestialHelper;
 import stellarapi.example.CelestialHelperSimple;
 
@@ -106,7 +106,7 @@ public class SAPICelestialScene implements ICelestialScene {
 
 	private CelestialHelperSimple helper;
 	private SAPICollection collection;
-	private ICelestialCoordinates coordinate;
+	private ICCoordinates coordinate;
 	private IAtmosphereEffect skyEffect;
 
 	private ICelestialObject sun, moon;
@@ -142,7 +142,7 @@ public class SAPICelestialScene implements ICelestialScene {
 	}
 
 	@Override
-	public ICelestialCoordinates createCoordinates() {
+	public ICCoordinates createCoordinates() {
 		return this.coordinate;
 	}
 

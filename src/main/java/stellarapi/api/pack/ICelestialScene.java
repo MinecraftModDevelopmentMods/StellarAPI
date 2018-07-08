@@ -7,12 +7,12 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.view.IAtmosphereEffect;
+import stellarapi.api.view.ICCoordinates;
 import stellarapi.api.world.ICelestialHelper;
 
 /**
@@ -36,7 +36,7 @@ public interface ICelestialScene extends INBTSerializable<NBTTagCompound> {
 	 * Nonnull for now.
 	 * TODO Refactor on 1.13
 	 * */
-	public ICelestialCoordinates createCoordinates();
+	public ICCoordinates createCoordinates();
 
 	/**
 	 * Creates sky effect, or returns <code>null</code> if this pack doesn't provide sky effect.

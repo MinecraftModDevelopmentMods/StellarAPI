@@ -2,7 +2,6 @@ package stellarapi.impl.celestial;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.minecraft.world.World;
 import stellarapi.api.celestials.AbstractCelestialCollection;
 import stellarapi.api.celestials.EnumCollectionType;
 import stellarapi.api.celestials.ICelestialObject;

@@ -1,4 +1,4 @@
-package stellarapi.api;
+package stellarapi.api.view;
 
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;

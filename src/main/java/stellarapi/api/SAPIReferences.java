@@ -18,7 +18,6 @@ import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
 import stellarapi.api.celestials.CelestialCollections;
 import stellarapi.api.celestials.CelestialEffectors;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.daywake.DaytimeChecker;
 import stellarapi.api.daywake.SleepWakeManager;
@@ -27,10 +26,13 @@ import stellarapi.api.event.QEEvent;
 import stellarapi.api.optics.Wavelength;
 import stellarapi.api.pack.ICelestialPack;
 import stellarapi.api.pack.ICelestialScene;
-import stellarapi.api.perdimres.IPerDimensionResourceHandler;
-import stellarapi.api.perdimres.PerDimensionResourceManager;
+import stellarapi.api.view.IAtmosphereEffect;
+import stellarapi.api.view.ICCoordinates;
 import stellarapi.api.world.ICelestialHelper;
+import stellarapi.api.world.ICelestialWorld;
 import stellarapi.api.world.IWorldProviderReplacer;
+import stellarapi.api.world.resource.IWorldResourceHandler;
+import stellarapi.api.world.resource.WorldResourceManager;
 import stellarapi.api.world.worldset.WorldSet;
 
 /**
@@ -59,7 +61,7 @@ public final class SAPIReferences {
 	private DaytimeChecker dayTimeChecker = new DaytimeChecker();
 	private SleepWakeManager sleepWakeManager = new SleepWakeManager();
 
-	private PerDimensionResourceManager resourceManager = new PerDimensionResourceManager();
+	private WorldResourceManager resourceManager = new WorldResourceManager();
 
 	private static final SAPIReferences INSTANCE = new SAPIReferences();
 
@@ -150,7 +152,7 @@ public final class SAPIReferences {
 	 * @param handler
 	 *            the handler
 	 */
-	public static void registerPerDimResourceHandler(IPerDimensionResourceHandler handler) {
+	public static void registerPerDimResourceHandler(IWorldResourceHandler handler) {
 		INSTANCE.resourceManager.register(handler);
 	}
 
@@ -180,9 +182,6 @@ public final class SAPIReferences {
 
 	/**
 	 * Gets celestial coordinate for certain world.
-	 * <p>
-	 * Note that it should always exist, but the result can be <code>null</code>
-	 * in the cases the initialization has delayed.
 	 * 
 	 * @param world
 	 *            the world
@@ -190,16 +189,13 @@ public final class SAPIReferences {
 	 *         <code>null</code> otherwise
 	 */
 	@Deprecated
-	public static ICelestialCoordinates getCoordinate(World world) {
-		IWorldReference worldRef = reference.getPerWorldReference(world);
+	public static ICCoordinates getCoordinate(World world) {
+		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getCoordinate() : null;
 	}
 
 	/**
 	 * Gets sky effect for certain world.
-	 * <p>
-	 * Note that it should always exist for worlds with sky, but the result can
-	 * be <code>null</code> in the cases the initialization has delayed.
 	 * 
 	 * @param world
 	 *            the world
@@ -208,13 +204,12 @@ public final class SAPIReferences {
 	 */
 	@Deprecated
 	public static IAtmosphereEffect getAtmosphereEffect(World world) {
-		IWorldReference worldRef = reference.getPerWorldReference(world);
+		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getSkyEffect() : null;
 	}
 
 	/**
 	 * Gets set of types of celestial effectors for certain world.
-	 * <p>
 	 * 
 	 * @param world
 	 *            the world
@@ -222,7 +217,7 @@ public final class SAPIReferences {
 	 */
 	@Deprecated
 	public static ImmutableSet<IEffectorType> getEffectTypeSet(World world) {
-		IWorldReference worldRef = reference.getPerWorldReference(world);
+		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getEffectorTypeSet() : null;
 	}
 
@@ -240,7 +235,7 @@ public final class SAPIReferences {
 	 */
 	@Deprecated
 	public static CelestialEffectors getEffectors(World world, IEffectorType type) {
-		IWorldReference worldRef = reference.getPerWorldReference(world);
+		ICelestialWorld worldRef = reference.getCelestialWorld(world);
 		return worldRef != null? worldRef.getCelestialEffectors(type) : null;
 	}
 
@@ -254,8 +249,8 @@ public final class SAPIReferences {
 	 */
 	@Deprecated
 	public static CelestialCollections getCollections(World world) {
-		IWorldReference worldRef = reference.getPerWorldReference(world);
-		return worldRef != null? worldRef.getCollectionManager() : null;
+		ICelestialWorld worldRef = reference.getCelestialWorld(world);
+		return worldRef != null? worldRef.getCollections() : null;
 	}
 
 	/**

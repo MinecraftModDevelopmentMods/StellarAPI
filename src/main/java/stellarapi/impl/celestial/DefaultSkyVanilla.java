@@ -1,8 +1,8 @@
 package stellarapi.impl.celestial;
 
-import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.optics.Wavelength;
+import stellarapi.api.view.IAtmosphereEffect;
 
 /**
  * Default implementation of sky.

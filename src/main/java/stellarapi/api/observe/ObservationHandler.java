@@ -3,15 +3,14 @@ package stellarapi.api.observe;
 import java.util.function.Consumer;
 
 import net.minecraft.entity.Entity;
-import stellarapi.api.IAtmosphereEffect;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialCollections;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.lib.math.SpCoord;
 import stellarapi.api.lib.math.Vector3;
-import stellarapi.api.optics.EyeDetector;
 import stellarapi.api.optics.Wavelength;
+import stellarapi.api.view.IAtmosphereEffect;
+import stellarapi.api.view.ICCoordinates;
 
 public class ObservationHandler {
 	/**
@@ -22,7 +21,7 @@ public class ObservationHandler {
 	public static void observe(Entity viewer, SearchRegion region, Consumer<ICelestialObject> work) {
 		CelestialCollections manager = SAPIReferences.getCollections(viewer.world);
 		if(manager != null) {
-			ICelestialCoordinates coordinate = SAPIReferences.getCoordinate(viewer.world);
+			ICCoordinates coordinate = SAPIReferences.getCoordinate(viewer.world);
 			IAtmosphereEffect atmosphere = SAPIReferences.getAtmosphereEffect(viewer.world);
 			float efficiency = SAPIReferences.estimateQE(viewer, Wavelength.visible);
 			float multPower = SAPIReferences.estimateFOV(viewer) / 70.0f;

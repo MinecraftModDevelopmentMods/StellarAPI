@@ -18,19 +18,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import stellarapi.StellarAPI;
-import stellarapi.api.IAtmosphereEffect;
-import stellarapi.api.IWorldReference;
 import stellarapi.api.SAPIReferences;
 import stellarapi.api.celestials.CelestialCollections;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.ICelestialCollection;
-import stellarapi.api.celestials.ICelestialCoordinates;
 import stellarapi.api.celestials.ICelestialObject;
 import stellarapi.api.celestials.IEffectorType;
 import stellarapi.api.helper.WorldProviderReplaceHelper;
 import stellarapi.api.pack.ICelestialPack;
 import stellarapi.api.pack.ICelestialScene;
 import stellarapi.api.render.IAdaptiveRenderer;
+import stellarapi.api.view.IAtmosphereEffect;
+import stellarapi.api.view.ICCoordinates;
 import stellarapi.api.world.ICelestialHelper;
 import stellarapi.api.world.ICelestialWorld;
 import stellarapi.api.world.worldset.WorldSet;
@@ -41,7 +40,7 @@ import stellarapi.impl.celestial.DefaultCelestialPack;
 /**
  * Per world manager to contain the per-world(dimension) objects.
  */
-public class CelestialPackManager implements ICelestialWorld, IWorldReference, INBTSerializable<NBTTagCompound> {
+public class CelestialPackManager implements ICelestialWorld, INBTSerializable<NBTTagCompound> {
 	private World world;
 	private WorldSet worldSet;
 	private ICelestialPack pack;
@@ -50,7 +49,7 @@ public class CelestialPackManager implements ICelestialWorld, IWorldReference, I
 	private CelestialCollections collectionManager = null;
 	private Map<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
 
-	private ICelestialCoordinates coordinate;
+	private ICCoordinates coordinate;
 
 	private IAtmosphereEffect skyEffect;
 
@@ -148,7 +147,7 @@ public class CelestialPackManager implements ICelestialWorld, IWorldReference, I
 	}
 
 	@Override
-	public CelestialCollections getCollectionManager() {
+	public CelestialCollections getCollections() {
 		return this.collectionManager;
 	}
 
@@ -163,7 +162,7 @@ public class CelestialPackManager implements ICelestialWorld, IWorldReference, I
 	}
 
 	@Override
-	public ICelestialCoordinates getCoordinate() {
+	public ICCoordinates getCoordinate() {
 		return this.coordinate;
 	}
 

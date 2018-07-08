@@ -1,11 +1,11 @@
 
-package stellarapi.api.celestials;
+package stellarapi.api.view;
 
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.Matrix3;
 import stellarapi.api.lib.math.Vector3;
 
-public interface ICelestialCoordinates {
+public interface ICCoordinates {
 
 	/**
 	 * Gets projection which projects absolute position to ground position.

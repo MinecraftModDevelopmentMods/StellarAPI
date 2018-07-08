@@ -1,4 +1,4 @@
-package stellarapi.api.perdimres;
+package stellarapi.api.world.resource;
 
 import java.util.List;
 
@@ -10,16 +10,16 @@ import net.minecraft.world.World;
 /**
  * Per-dimension resource manager. Pretty straightforward.
  */
-public class PerDimensionResourceManager {
-	private List<IPerDimensionResourceHandler> listGetters = Lists.newArrayList();
+public class WorldResourceManager {
+	private List<IWorldResourceHandler> listGetters = Lists.newArrayList();
 
-	public void register(IPerDimensionResourceHandler handler) {
+	public void register(IWorldResourceHandler handler) {
 		listGetters.add(handler);
 	}
 
 	public ResourceLocation getLocation(World world, String resourceId, ResourceLocation defaultLocation) {
 		ResourceLocation location = defaultLocation;
-		for (IPerDimensionResourceHandler handler : this.listGetters)
+		for (IWorldResourceHandler handler : this.listGetters)
 			if (handler.accept(world, resourceId, location))
 				location = handler.getLocation(world, resourceId, location);
 
