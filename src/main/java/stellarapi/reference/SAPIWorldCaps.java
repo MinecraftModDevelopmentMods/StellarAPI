@@ -16,6 +16,10 @@ public class SAPIWorldCaps implements ICapabilityProvider, INBTSerializable<NBTT
 		this.celestials = new CelestialPackManager(world);
 	}
 
+	public RuntimeException getOccuredException() {
+		return celestials.exception;
+	}
+
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == SAPICapabilities.CELESTIAL_CAPABILITY;

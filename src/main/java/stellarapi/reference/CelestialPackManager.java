@@ -50,31 +50,34 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 	private Map<IEffectorType, CelestialEffectors> effectorMap = Maps.newHashMap();
 
 	private ICCoordinates coordinate;
-
 	private IAtmosphereEffect skyEffect;
 
 	private @Nullable IAdaptiveRenderer renderer;
+
+	public final @Nullable RuntimeException exception;
 
 	CelestialPackManager(World world) {
 		this.world = world;
 
 		if(!world.isRemote) {
 			// By default, load from configuration on the server.
-			this.loadPackFromConfig();
+			this.exception = this.loadPackFromConfig();
 		} else {
 			// By default, load with default pack on the client.
 			this.worldSet = WorldSets.getPrimaryWorldSet(world);
-			this.loadPack(DefaultCelestialPack.INSTANCE, true);
+			this.exception = this.loadPack(DefaultCelestialPack.INSTANCE, true);
 		}
 	}
 
 	public void onLackServerAPI() {
 		// Load pack from configuration when there's no API.
-		this.loadPackFromConfig();
+		RuntimeException exception = this.loadPackFromConfig();
+		if(exception != null)
+			throw exception;
 		this.setupWorld();
 	}
 
-	public boolean loadPackFromConfig() {
+	public @Nullable RuntimeException loadPackFromConfig() {
 		for(WorldSet wSet : WorldSets.appliedWorldSets(this.world)) {
 			// Only one pack for WorldSet for now
 			ICelestialPack pack = SAPIReferences.getCelestialPack(wSet);
@@ -83,17 +86,18 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 				return this.loadPack(pack, false);
 			}
 		}
-		return true;
+
+		return null;
 	}
 
-	public boolean loadPack(ICelestialPack pack, boolean isDefault) {
+	public @Nullable RuntimeException loadPack(ICelestialPack pack, boolean isDefault) {
 		// Load pack without data. This falls back to default or loads configuration.
 		this.pack = pack;
 		this.scene = pack.getScene(this.worldSet, this.world, isDefault);
 		return this.loadPack(this.pack, this.scene);
 	}
 
-	public boolean loadPackWithData(ICelestialPack pack, NBTTagCompound data) {
+	public @Nullable RuntimeException loadPackWithData(ICelestialPack pack, NBTTagCompound data) {
 		// Load pack with data.
 		this.pack = pack;
 		// Load with configuration settings, as it'll be overwritten anyway.
@@ -102,7 +106,7 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 		return this.loadPack(this.pack, this.scene);
 	}
 
-	private boolean loadPack(ICelestialPack pack, ICelestialScene scene) {
+	private @Nullable RuntimeException loadPack(ICelestialPack pack, ICelestialScene scene) {
 		// TODO Code defensively; Don't make exceptions here
 		List<CelestialCollection> collections = Lists.newArrayList();
 		Map<IEffectorType, List<CelestialObject>> effectors = Maps.newHashMap();
@@ -128,10 +132,10 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 						SAPIReferences.getReplacedWorldProvider(this.world, world.provider, helper));
 		} catch(RuntimeException exception) {
 			StellarAPI.INSTANCE.getLogger().error("Exception Occured while loading pack", exception);
-			return false;
+			return exception;
 		}
 
-		return true;
+		return null;
 	}
 
 	private static final Ordering<CelestialCollection> collectionOrdering = Ordering

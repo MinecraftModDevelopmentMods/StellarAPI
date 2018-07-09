@@ -99,9 +99,12 @@ public class SAPIReferenceHandler implements IReference {
 			}
 		}
 
-		if(hasPack)
-			event.addCapability(new ResourceLocation(SAPIReferences.MODID, "celestials"),
-					new SAPIWorldCaps(event.getObject()));
+		if(hasPack) {
+			SAPIWorldCaps caps = new SAPIWorldCaps(event.getObject());
+			if(caps.getOccuredException() == null)
+				event.addCapability(new ResourceLocation(SAPIReferences.MODID, "celestials"),
+						caps);
+		}
 	}
 
 	@Override
