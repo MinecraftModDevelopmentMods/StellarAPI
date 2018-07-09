@@ -107,7 +107,6 @@ public class CelestialPackManager implements ICelestialWorld, INBTSerializable<N
 	}
 
 	private @Nullable RuntimeException loadPack(ICelestialPack pack, ICelestialScene scene) {
-		// TODO Code defensively; Don't make exceptions here
 		List<CelestialCollection> collections = Lists.newArrayList();
 		Map<IEffectorType, List<CelestialObject>> effectors = Maps.newHashMap();
 
