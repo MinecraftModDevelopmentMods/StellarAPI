@@ -37,15 +37,23 @@ public class SpCoord {
 	 * @return the distance between two coordinates in degrees
 	 */
 	public double distanceTo(SpCoord coord) {
-		return Math.toDegrees(Math.acos(Math.sin(this.y) * Math.sin(coord.y)
-				+ Math.cos(this.y) * Math.cos(coord.y) * Math.sin(coord.x - this.x)));
+		return Math.toDegrees(Math.acos(sinDeg(this.y) * sinDeg(coord.y)
+				+ cosDeg(this.y) * cosDeg(coord.y) * sinDeg(coord.x - this.x)));
 	}
 
 	/**
 	 * Gives new instance of a vector with this SpCoord.
 	 */
 	public Vector3 getVec() {
-		return new Vector3(Math.cos(y) * Math.cos(x), Math.cos(y) * Math.sin(x), Math.sin(y));
+		return new Vector3(cosDeg(y) * cosDeg(x), cosDeg(y) * sinDeg(x), sinDeg(y));
+	}
+
+	private static double sinDeg(double deg) {
+		return Math.sin(Math.toRadians(deg));
+	}
+
+	private static double cosDeg(double deg) {
+		return Math.cos(Math.toRadians(deg));
 	}
 
 	/**
