@@ -17,7 +17,7 @@ public class SAPISun extends CelestialQuadObject {
 	public SAPISun(double day, double dayOffset) {
 		super(new ResourceLocation("sun"), EnumObjectType.Star,
 				new Vector3(1.0, 0.0, 0.0), VERTICES);
-		this.setHoritontalPeriod(new CelestialPeriod("Day", day, dayOffset / day));
+		this.setHorizontalPeriod(new CelestialPeriod("Day", day, dayOffset / day));
 		this.setStandardMagnitude(-26.74);
 	}
 }

@@ -3,6 +3,7 @@ package stellarapi.api;
 import net.minecraft.world.World;
 import stellarapi.api.celestials.CelestialEffectors;
 import stellarapi.api.celestials.IEffectorType;
+import stellarapi.api.view.ICCoordinates;
 
 /**
  * Helper for getting conventional periods.
@@ -19,7 +20,8 @@ public class PeriodHelper {
 	 */
 	public static CelestialPeriod getDayPeriod(World world) {
 		CelestialEffectors effectors = SAPIReferences.getEffectors(world, IEffectorType.Light);
-		return effectors != null ? effectors.getPrimarySource().getHorizontalPeriod() : null;
+		ICCoordinates coords = SAPIReferences.getCoordinates(world);
+		return effectors != null && coords != null? effectors.getPrimarySource().getHorizontalPeriod(coords) : null;
 	}
 
 	/**

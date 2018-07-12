@@ -22,7 +22,7 @@ public class DefaultMoon extends CelestialQuadObject {
 				new Vector3(-1.0, 0.0, 0.0), VERTICES);
 		this.world = world;
 
-		this.setHoritontalPeriod(new CelestialPeriod("Lunar Day", 24000.0, 0.75));
+		this.setHorizontalPeriod(new CelestialPeriod("Lunar Day", 24000.0, 0.75));
 		this.setPhasePeriod(new CelestialPeriod("Lunar Month", 24000.0 * 8.0, 0.5));
 		this.setStandardMagnitude(-12.74);
 	}

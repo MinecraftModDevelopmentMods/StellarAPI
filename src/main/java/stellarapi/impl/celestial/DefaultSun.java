@@ -16,7 +16,7 @@ public class DefaultSun extends CelestialQuadObject {
 	public DefaultSun() {
 		super(new ResourceLocation("sun"), EnumObjectType.Star,
 				new Vector3(1.0, 0.0, 0.0), VERTICES);
-		this.setHoritontalPeriod(new CelestialPeriod("Day", 24000.0, 0.25));
+		this.setHorizontalPeriod(new CelestialPeriod("Day", 24000.0, 0.25));
 		this.setStandardMagnitude(-26.74);
 	}
 }

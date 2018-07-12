@@ -1,9 +1,12 @@
 package stellarapi.api.celestials;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.ResourceLocation;
 import stellarapi.api.CelestialPeriod;
 import stellarapi.api.lib.math.Vector3;
 import stellarapi.api.optics.Wavelength;
+import stellarapi.api.view.ICCoordinates;
 
 /**
  * Celestial Object.
@@ -14,7 +17,7 @@ public class CelestialObject {
 
 	private CelestialPeriod absolutePeriod = null, horizontalPeriod = null, phasePeriod = null;
 
-	private Vector3 pos;
+	private Vector3 pos = null;
 	private double standardMagnitude;
 
 	public CelestialObject(ResourceLocation nameIn, EnumObjectType typeIn) {
@@ -34,9 +37,6 @@ public class CelestialObject {
 		return this.type;
 	}
 
-	protected void setPos(Vector3 posIn) {
-		this.pos = posIn;
-	}
 
 	protected void setStandardMagnitude(double magnitude) {
 		this.standardMagnitude = magnitude;
@@ -57,7 +57,7 @@ public class CelestialObject {
 	 *         random movements.
 	 *         </ul>
 	 */
-	public CelestialPeriod getAbsolutePeriod() {
+	public @Nullable CelestialPeriod getAbsolutePeriod() {
 		return this.absolutePeriod;
 	}
 
@@ -66,8 +66,9 @@ public class CelestialObject {
 	 * This is the period that the horizontal position of this effector returns
 	 * to original position.<p>
 	 * Normally starts from the lowest position.<p>
-	 * Will be removed when proper calculation for period takes in place
+	 * Will be removed when proper calculation for period takes in place.
 	 * 
+	 * @param coords the coordinates
 	 * @return
 	 *         <ul>
 	 *         <li>horizontal period object for this effector if it exists
@@ -76,7 +77,7 @@ public class CelestialObject {
 	 *         </ul>
 	 */
 	@Deprecated
-	public CelestialPeriod getHorizontalPeriod() {
+	public @Nullable CelestialPeriod getHorizontalPeriod(ICCoordinates coords) {
 		return this.horizontalPeriod;
 	}
 
@@ -90,7 +91,7 @@ public class CelestialObject {
 	 *         e.g. sun.
 	 *         </ul>
 	 */
-	public CelestialPeriod getPhasePeriod() {
+	public @Nullable CelestialPeriod getPhasePeriod() {
 		return this.phasePeriod;
 	}
 
@@ -99,12 +100,18 @@ public class CelestialObject {
 		this.absolutePeriod = period;
 	}
 
-	protected void setHoritontalPeriod(CelestialPeriod period) {
+	@Deprecated
+	protected void setHorizontalPeriod(CelestialPeriod period) {
 		this.horizontalPeriod = period;
 	}
 
 	protected void setPhasePeriod(CelestialPeriod period) {
 		this.phasePeriod = period;
+	}
+
+
+	protected void setPos(Vector3 posIn) {
+		this.pos = posIn;
 	}
 
 	/**
@@ -126,8 +133,9 @@ public class CelestialObject {
 
 	/**
 	 * Gets current absolute position.
+	 * <code>null</code> if this object doesn't have specific position.
 	 */
-	public Vector3 getCurrentPos() {
+	public @Nullable Vector3 getCurrentPos() {
 		return this.pos;
 	}
 

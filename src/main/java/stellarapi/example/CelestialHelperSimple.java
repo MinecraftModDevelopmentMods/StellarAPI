@@ -62,7 +62,7 @@ public class CelestialHelperSimple implements ICelestialHelper {
 	@Override
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		if(this.sun != null)
-			return (float) sun.getHorizontalPeriod().getBiasedOffset(worldTime, partialTicks, 0.5);
+			return (float) sun.getHorizontalPeriod(this.coordinate).getBiasedOffset(worldTime, partialTicks, 0.5);
 		else return (float) coordinate.getPeriod().getOffset(worldTime, partialTicks);
 	}
 

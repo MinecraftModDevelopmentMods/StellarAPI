@@ -26,7 +26,7 @@ public class SAPIMoon extends CelestialQuadObject {
 		double relOffsetDay = dayOffset / day;
 		double relOffsetMonth = monthOffset / month;
 
-		this.setHoritontalPeriod(new CelestialPeriod("Lunar Day", day,
+		this.setHorizontalPeriod(new CelestialPeriod("Lunar Day", day,
 				relOffsetDay < 0.5? relOffsetDay + 0.5 : relOffsetDay - 0.5));
 		this.setPhasePeriod(new CelestialPeriod("Lunar Month", day * month, relOffsetMonth));
 		this.setStandardMagnitude(-12.74);
