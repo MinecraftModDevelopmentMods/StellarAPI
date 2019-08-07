@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -49,8 +49,7 @@ dependencies {
 
 }
 
-
-rootProject.tasks.getByName('build').dependsOn bintrayUpload
+//rootProject.tasks.getByName('build').dependsOn bintrayUpload
 
 publishing {
     publications {
@@ -73,9 +72,9 @@ bintray {
         repo = 'StellarMods'
         name = 'stellarapi'
         licenses = ['MIT']
-        websiteUrl = 'https://github.com/Abastro/StellarAPI'
-        issueTrackerUrl = 'https://github.com/Abastro/StellarAPI/issues'
-        vcsUrl = 'https://github.com/Abastro/StellarAPI.git'
+        websiteUrl = 'https://github.com/MinecraftModDevelopmentMods/StellarAPI'
+        issueTrackerUrl = 'https://github.com/MinecraftModDevelopmentMods/StellarAPI/issues'
+        vcsUrl = 'https://github.com/MinecraftModDevelopmentMods/StellarAPI.git'
         version {
             name = "${config.version.minecraft}-${modversion}"
         }
