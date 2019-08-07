@@ -24,6 +24,9 @@ minecraft {
     replace "@VERSION@", project.version
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 eclipse.project {
   buildCommand 'org.eclipse.buildship.core.gradleprojectbuilder'
   natures 'org.eclipse.buildship.core.gradleprojectnature'
