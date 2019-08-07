@@ -42,18 +42,18 @@ public class StellarAPINetworkManager {
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
 		EntityPlayerMP player = (EntityPlayerMP) event.player;
-		this.onSync(player, player.worldObj);
+		this.onSync(player, player.world);
 	}
 
 	@SubscribeEvent
 	public void onPlayerJoinDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-		this.onSync((EntityPlayerMP) event.player, event.player.worldObj);
+		this.onSync((EntityPlayerMP) event.player, event.player.world);
 	}
 
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		EntityPlayerMP player = (EntityPlayerMP) event.player;
-		this.onSync(player, player.worldObj);
+		this.onSync(player, player.world);
 	}
 
 }

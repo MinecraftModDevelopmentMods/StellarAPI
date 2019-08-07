@@ -17,10 +17,10 @@ group= "stellarapi" // http://maven.apache.org/guides/mini/guide-naming-conventi
 archivesBaseName = "Stellar API"
 
 minecraft {
-    version = "1.10.2-12.18.0.2002-1.10.0"
+    version = "1.10.2-12.18.3.2185"
     runDir = "run"
 
-    mappings = "snapshot_20160623"
+    mappings = "stable_29"
     replace "@VERSION@", project.version
 }
 

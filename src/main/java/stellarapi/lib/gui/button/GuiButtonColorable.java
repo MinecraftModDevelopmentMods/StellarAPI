@@ -52,7 +52,7 @@ public class GuiButtonColorable extends GuiButton {
 			int red = ((l >> 16) & 0xff);
 			int green = ((l >> 8) & 0xff);
 			int blue = l & 0xff;
-			alpha *= MathHelper.clamp_float(this.alpha, 0.0f, 1.0f);
+			alpha *= MathHelper.clamp(this.alpha, 0.0f, 1.0f);
 			red *= this.red;
 			green *= this.green;
 			blue *= this.blue;
