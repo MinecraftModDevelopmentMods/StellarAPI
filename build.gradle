@@ -46,7 +46,6 @@ idea.module {
 }
 
 dependencies {
-
 }
 
 //rootProject.tasks.getByName('build').dependsOn bintrayUpload
@@ -82,8 +81,6 @@ bintray {
     publications = ['MavenJar']
 }
 
-
-
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'deobf'
@@ -102,8 +99,7 @@ def parseConfig(File config) {
     }
 }
 
-processResources
-{
+processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "stversion", project.version
     inputs.property "mcversion", project.minecraft.version
