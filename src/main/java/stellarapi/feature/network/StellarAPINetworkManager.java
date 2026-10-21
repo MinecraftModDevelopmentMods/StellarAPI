@@ -3,6 +3,7 @@ package stellarapi.feature.network;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -82,5 +83,12 @@ public class StellarAPINetworkManager {
 	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		EntityPlayerMP player = (EntityPlayerMP) event.player;
 		this.onSync(player, player.world);
+	}
+	
+	@SubscribeEvent
+	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+		if (event.getEntity() instanceof EntityPlayerMP) {
+			this.onSync((EntityPlayerMP) event.getEntity(), event.getEntity().world);
+		}
 	}
 }
